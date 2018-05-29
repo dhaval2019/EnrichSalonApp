@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FAFAFA</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="hintColor">#9E9E9E</color>
+    <color name="red">#F44336</color>
+    <color name="text_color">#4e5f6f</color>
+    <color name="teal">#1abc9c</color>
+
+    <color name="tab_background">#ffffff</color>
+    <color name="tab_unselected_color">#9e9e9e</color>
+
+    <color name="outline_card">#d4d4d4</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#e5e5e5</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#424242</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
+    </array>
+</resources>

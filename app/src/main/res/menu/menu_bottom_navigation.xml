@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_call"
+        android:enabled="true"
+        android:icon="@drawable/ic_phone"
+        android:title="Call"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_cart"
+        android:enabled="true"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="Cart"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_book_now"
+        android:enabled="true"
+        android:icon="@drawable/ic_touch_app"
+        android:title="Book Now"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_links"
+        android:enabled="true"
+        android:icon="@drawable/ic_insert_link"
+        android:title="Links"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_offers"
+        android:enabled="true"
+        android:icon="@drawable/ic_local_offer"
+        android:title="Links"
+        app:showAsAction="ifRoom"/>
+</menu>

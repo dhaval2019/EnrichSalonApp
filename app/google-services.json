@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "738289583935",
+    "firebase_url": "https://enrich-88c72.firebaseio.com",
+    "project_id": "enrich-88c72",
+    "storage_bucket": "enrich-88c72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738289583935:android:da56b46778995701",
+        "android_client_info": {
+          "package_name": "com.enrich.salonapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738289583935-hnabjd3blebi6oo8qa20q7pj539bijvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSgI_j_L1wNJkO3fZ29ZhgDf1EoAIBPNg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="font_type" />
+        <attr name="strike_text" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomEditText">
+        <attr name="font_type" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomButton">
+        <attr name="font_type" />
+    </declare-styleable>
+
+    <attr name="font_type" format="enum">
+
+        <enum name="black" value="1" />
+
+        <enum name="bold" value="2" />
+
+        <enum name="extra_bold" value="3" />
+
+        <enum name="light" value="4" />
+
+        <enum name="regular" value="5" />
+
+        <enum name="semi_bold" value="6" />
+
+        <enum name="ultra_light" value="7" />
+    </attr>
+</resources>
