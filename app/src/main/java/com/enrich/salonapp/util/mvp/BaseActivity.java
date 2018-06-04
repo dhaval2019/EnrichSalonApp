@@ -2,18 +2,11 @@ package com.enrich.salonapp.util.mvp;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.enrich.salonapp.R;
-
-import butterknife.BindView;
+import com.enrich.salonapp.util.EnrichUtils;
 
 public class BaseActivity extends AppCompatActivity implements IBaseView {
-
-//    @BindView(R.id.progressBar)
-//    protected ProgressBar progressBar;
 
     @Override
     public void showToastMessage(String message) {
@@ -22,11 +15,11 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
 
     @Override
     public void setProgressBar(boolean show) {
-//        if (show) {
-//            progressBar.setVisibility(View.VISIBLE);
-//        } else {
-//            progressBar.setVisibility(View.GONE);
-//        }
+        if (show) {
+            EnrichUtils.showProgressDialog(this);
+        } else {
+            EnrichUtils.cancelCurrentDialog(this);
+        }
     }
 
     @Override

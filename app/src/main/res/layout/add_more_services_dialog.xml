@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/add_more_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Would you like to add more services?"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_18sp"
+        app:font_type="regular"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_more_label"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/add_more_service_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/add_more_service_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:text="YES"
+                android:textColor="@color/colorAccent"
+                app:font_type="regular" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/add_more_service_proceed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:text="PROCEED"
+                android:textColor="@color/colorAccent"
+                app:font_type="regular" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e5e5e5"
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.ui.activities.DateSelectorActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/date_selector_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:theme="@style/ToolbarColoredBackArrow">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="Select a Date"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:font_type="regular" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/date_picker_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
+                android:id="@+id/datePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e5e5e5" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/stylist_recycler_view_container"
+            android:layout_below="@+id/date_picker_container"
+            android:background="@color/white">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/date_time_slot_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/no_slots_available"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="No Slots Available"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_20sp"
+                android:visibility="gone"
+                app:font_type="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/stylist_recycler_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/time_slot_proceed_container"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Selected Therapist"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:font_type="regular" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/stylist_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:padding="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/time_slot_proceed_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white">
+
+            <com.enrich.salonapp.ui.views.CustomButton
+                android:id="@+id/time_slot_proceed"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/grey_gradient_curve_bg"
+                android:enabled="false"
+                android:text="Proceed"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

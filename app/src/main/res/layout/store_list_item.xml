@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toStartOf="@+id/store_arrow"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Infinity Mall"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:font_type="regular" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/store_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="27 km"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:font_type="regular" />
+        </LinearLayout>
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/store_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lineSpacingExtra="5dp"
+            android:maxLines="2"
+            android:text="Link road, malad west, mumbai 400064"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            app:font_type="light" />
+
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/store_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lineSpacingExtra="5dp"
+            android:text="1234567890/0987654321"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            app:font_type="light" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/store_arrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="Select Store"
+        android:src="@drawable/ic_keyboard_arrow_right_48dp"
+        android:tint="@color/red" />
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/outline_card">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="1dp"
+        android:background="#ffffff">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/list_item_parent_service_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:layout_toLeftOf="@+id/list_item_parent_service_arrow"
+            android:gravity="center_vertical"
+            android:text="Bridal make up"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:font_type="regular" />
+
+        <ImageView
+            android:id="@+id/list_item_parent_service_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:src="@drawable/ic_keyboard_arrow_down"
+            android:tint="@color/black" />
+
+    </RelativeLayout>
+</RelativeLayout>

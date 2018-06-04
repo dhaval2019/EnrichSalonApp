@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.ui.activities.SignInActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_bg_image_white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="Login"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:visibility="gone"
+            app:font_type="semi_bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/full_logo_black" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <LinearLayout
+                android:id="@+id/phone_number_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColorHint="#424242">-->
+
+                <com.enrich.salonapp.ui.views.CustomEditText
+                    android:id="@+id/user_name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="Enter your phone number"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#757575"
+                    android:textSize="16sp"
+                    app:font_type="regular" />
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#757575" />
+
+                <LinearLayout
+                    android:id="@+id/password_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.enrich.salonapp.ui.views.CustomEditText
+                        android:id="@+id/password_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter your Password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="#757575"
+                        android:textSize="16sp"
+                        app:font_type="regular" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#757575" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/forgot_password_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Forgot Password?"
+                        android:textColor="#424242"
+                        android:textSize="12sp" />
+
+                    <com.enrich.salonapp.ui.views.CustomButton
+                        android:id="@+id/sign_in_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/red_bg_gradient_curved"
+                        android:text="Sign In"
+                        android:textColor="@color/white"
+                        app:font_type="regular" />
+                </LinearLayout>
+
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="OR"
+                    android:textColor="#424242"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:font_type="light" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/login_sign_up_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:text="Create an account"
+                    android:textColor="#ef473a"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:font_type="regular" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/otp_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.enrich.salonapp.ui.views.CustomEditText
+                        android:id="@+id/otp_number_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="Enter your OTP"
+                        android:inputType="phone"
+                        android:maxLength="6"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        app:font_type="regular" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/red_bg_gradient" />
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/verify_otp_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/red_bg_gradient"
+                    android:text="Verify"
+                    android:textColor="@color/white" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="10dp"
+                    android:text="Resend"
+                    android:textColor="@color/grey" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

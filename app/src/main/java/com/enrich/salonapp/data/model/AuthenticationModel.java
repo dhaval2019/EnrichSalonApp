@@ -69,6 +69,7 @@ public class AuthenticationModel implements Parcelable {
     public AuthenticationModel() {
     }
 
+
     protected AuthenticationModel(Parcel in) {
         accessToken = in.readString();
         tokenType = in.readString();

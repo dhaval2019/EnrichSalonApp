@@ -6,11 +6,19 @@ import android.content.IntentSender;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.enrich.salonapp.data.model.AuthenticationModel;
+import com.enrich.salonapp.data.model.CenterDetailModel;
+import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.ui.views.LoadingDialogBox;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -33,6 +41,58 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EnrichUtils {
+
+    public static DialogDisplay showDialog = new DialogDisplay();
+    public static LoadingDialogBox pDialog;
+    public static Runnable cancelDialog = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                if (pDialog != null)
+                    pDialog.cancel();
+                pDialog = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    public static class DialogDisplay implements Runnable {
+        Activity activity;
+        String message;
+
+        public DialogDisplay updateActivity(Activity activity, String message) {
+            this.activity = activity;
+            this.message = message;
+            return this;
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (pDialog != null) {
+                    pDialog.cancel();
+                }
+                pDialog = new LoadingDialogBox(activity);
+                pDialog.setCanceledOnTouchOutside(false);
+                pDialog.setCancelable(false);
+                pDialog.setMessage(message);
+                pDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void showProgressDialog(final Activity activity) {
+        activity.runOnUiThread(showDialog.updateActivity(activity, null));
+    }
+
+    public static void cancelCurrentDialog(Activity activity) {
+        if (pDialog != null && activity != null) {
+            new Handler().postDelayed(cancelDialog, 150);
+        }
+    }
 
     /**
      * Log String data in Error
@@ -271,5 +331,50 @@ public class EnrichUtils {
     public static AuthenticationModel getAuthenticationModel(Context context) {
         AuthenticationModel model = newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.KEY_AUTHENTICATION, ""), AuthenticationModel.class);
         return model;
+    }
+
+    /**
+     * Change Status color to transparent
+     *
+     * @param window
+     */
+    public static void changeStatusBarColor(Window window) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+
+    /**
+     * Save Guest/User Data
+     *
+     * @param context
+     * @param model
+     */
+    public static void saveUserData(Context context, GuestModel model) {
+        if (model != null) {
+            SharedPreferenceStore.storeValue(context, Constants.KEY_USER_DATA, newGson().toJson(model));
+        }
+    }
+
+    /**
+     * Get Guest/User Data
+     *
+     * @param context
+     * @return
+     */
+    public static GuestModel getUserData(Context context) {
+        GuestModel model = newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.KEY_USER_DATA, ""), GuestModel.class);
+        return model == null ? null : model;
+    }
+
+    public static void saveHomeStore(Context context, String modelStr) {
+        if (modelStr != null) {
+            SharedPreferenceStore.storeValue(context, Constants.HOME_STORE, modelStr);
+        }
+    }
+
+    public static CenterDetailModel getHomeStore(Context context) {
+        return newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.HOME_STORE, ""), CenterDetailModel.class);
     }
 }

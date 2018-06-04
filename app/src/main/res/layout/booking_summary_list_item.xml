@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F5F5F5"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/booking_summary_item_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Item"
+        android:textColor="@color/grey"
+        android:layout_toLeftOf="@+id/booking_summary_item_price"
+        android:textSize="16sp"
+        app:font_type="light"/>
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/booking_summary_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Price"
+        android:textColor="@color/grey"
+        android:textSize="16sp"
+        app:font_type="light"/>
+
+</RelativeLayout>

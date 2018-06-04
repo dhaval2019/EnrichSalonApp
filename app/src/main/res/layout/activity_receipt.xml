@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.activities.OfferActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#ffffff">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/drawer_collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/drawer_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"/>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:clickable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:id="@+id/payment_confirmation_details_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Order No"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/payment_confirm_order_no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/package_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/payment_confirmation_details_container"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Package / Service"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/package_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/oder_purchase_amount_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/package_name_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Amount"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/payment_confirm_order_purchase_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/discount_summary_tv"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/order_date_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/oder_purchase_amount_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Order Date"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/payment_confirm_order_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/service_tax_summary_tv"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-- - ----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/order_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_date_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Time"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/order_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/discount_summary_tv"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="--:-- am/pm"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/oder_payment_mode_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_time_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Payment"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/payment_confirm_order_payment_mode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/discount_summary_tv"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/order_payment_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/oder_payment_mode_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:weightSum="2">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Location"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/payment_confirm_order_salon_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/discount_summary_tv"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/order_payment_address_extended"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/order_payment_address"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/discount_summary_tv"
+                        android:layout_weight="0.8"
+                        android:gravity="left"
+                        android:paddingTop="5dp"
+                        android:text="Malad West"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <com.enrich.salonapp.ui.views.CustomButton
+            android:id="@+id/view_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="20dp"
+            android:background="@drawable/red_bg_gradient_curved"
+            android:text="View Transactions"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

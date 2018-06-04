@@ -14,6 +14,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -22,7 +23,8 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.enrich.salonapp.data.remote.RemoteDataSource.BASE_API_URL;
+import static com.enrich.salonapp.data.remote.RemoteDataSource.HOST;
+
 
 public class Injection {
 
@@ -48,12 +50,14 @@ public class Injection {
 
         OkHttpClient okHttpClient =
                 new OkHttpClient.Builder()
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(60, TimeUnit.SECONDS)
                         .addNetworkInterceptor(new StethoInterceptor())
                         .addInterceptor(interceptor)
                         .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_API_URL)
+                .baseUrl(HOST)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

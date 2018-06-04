@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/therapist_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Are your sure?"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:font_type="semi_bold" />
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/therapist_dialog_sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/therapist_dialog_title"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:text="All the services in this group will be cancelled."
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:font_type="light" />
+
+    <RadioGroup
+        android:id="@+id/reason_radio_button_grp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/therapist_dialog_sub_title"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/reason_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Can't reach on time"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_14sp" />
+
+        <RadioButton
+            android:id="@+id/reason_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="Selected wrong service"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_14sp" />
+
+        <RadioButton
+            android:id="@+id/reason_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="My reason is not listed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_14sp" />
+    </RadioGroup>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/therapist_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/therapist_dialog_sub_title"
+        android:layout_marginTop="5dp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/dialog_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:layout_below="@+id/reason_radio_button_grp"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:background="#e5e5e5"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/reason_radio_button_grp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/appointment_dont_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="DON'T CANCEL"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/appointment_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+    </LinearLayout>
+</RelativeLayout>

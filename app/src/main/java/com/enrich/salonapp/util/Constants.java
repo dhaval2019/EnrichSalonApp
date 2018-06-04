@@ -23,4 +23,9 @@ public class Constants {
     public static final String KEY_CURRENT_LONGITUDE = "currentLongitude";
 
     public static final int IST_EXTRA_MINS = (5 * 60) + 30; // UTC TIME IN MINUTES
+
+    public static final String CURRENT_LATITUDE = "currentLatitude";
+    public static final String CURRENT_LONGITUDE = "currentLongitude";
+
+    public static final String HOME_STORE = "UserHomeStore";
 }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.ui.activities.AppointmentsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="120sp"
+        android:background="#ffffff"
+        app:elevation="0dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/drawer_collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/current_appointment_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/current_appointment_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Current"
+                    android:textColor="@color/red"
+                    android:textSize="20sp"
+                    app:font_type="semi_bold" />
+
+                <View
+                    android:id="@+id/current_appointment_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_alignLeft="@+id/current_appointment_label"
+                    android:layout_alignRight="@+id/current_appointment_label"
+                    android:layout_below="@+id/current_appointment_label"
+                    android:background="@color/red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/past_appointment_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/past_appointment_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="History"
+                    android:textColor="@color/grey"
+                    android:textSize="20sp"
+                    app:font_type="semi_bold" />
+
+                <View
+                    android:id="@+id/past_appointment_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_alignLeft="@+id/past_appointment_label"
+                    android:layout_alignRight="@+id/past_appointment_label"
+                    android:layout_below="@+id/past_appointment_label"
+                    android:background="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/appointments_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/no_appointments_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="No appointments to show."
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:font_type="semi_bold" />
+        </FrameLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg_image_white"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="com.enrich.salonapp.ui.activities.RegisterActivity">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Register"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:visibility="gone"
+        app:font_type="semi_bold" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/full_logo_black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/first_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="First Name"
+            android:inputType="textPersonName"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- LAST NAME -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/last_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Last Name"
+            android:inputType="textPersonName"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- USERNAME -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/username_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Username"
+            android:inputType="text"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- PASSWORD -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/password_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="@integer/int_1"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- EMAIL -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/email_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- MOBILE NUMBER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/phone_number_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575" />
+    </LinearLayout>
+
+    <!-- GENDER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Gender"
+            android:textColor="#757575"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.7"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioButton
+                android:id="@+id/male_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Male"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/female_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Female"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <com.enrich.salonapp.ui.views.CustomButton
+        android:id="@+id/sign_up_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/red_bg_gradient_curved"
+        android:text="SIGN UP"
+        android:textColor="@color/white"
+        app:font_type="regular" />
+</LinearLayout>

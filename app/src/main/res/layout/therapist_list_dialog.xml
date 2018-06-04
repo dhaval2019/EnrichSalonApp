@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/therapist_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select a stylist"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:font_type="semi_bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/therapist_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/therapist_dialog_title"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/therapist_list_recycler_view"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/therapist_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="15dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+    </LinearLayout>
+</RelativeLayout>
