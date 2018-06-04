@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.model.ExpandableWrapper;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -41,29 +44,30 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceViewModel, ServiceViewModel, ServiceListAdapter.ParentServiceViewHolder, ServiceListAdapter.ChildServiceVieHolder> implements TherapistContract.View {
+public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceViewModel, ServiceViewModel, ServiceListAdapter.ParentServiceViewHolder, ServiceListAdapter.ChildServiceVieHolder> implements TherapistContract.View, Filterable {
 
-    ServiceListActivity activity;
+    private ServiceListActivity activity;
     LayoutInflater inflater;
-    List<ParentServiceViewModel> list;
-    ChildServiceVieHolder childHolder;
-    EnrichApplication application;
-    BottomSheetDialog dialog;
-    int parentPos, childPos;
-    DataRepository dataRepository;
-    TherapistPresenter therapistPresenter;
+    ArrayList<ParentServiceViewModel> list;
+    private ArrayList<ParentServiceViewModel> filteredList;
+    private ChildServiceVieHolder childHolder;
+    private EnrichApplication application;
+    private BottomSheetDialog dialog;
+    private int parentPos, childPos;
+    private TherapistPresenter therapistPresenter;
 
-    public ServiceListAdapter(@NonNull List<ParentServiceViewModel> parentList, ServiceListActivity activity) {
+    public ServiceListAdapter(@NonNull ArrayList<ParentServiceViewModel> parentList, ServiceListActivity activity) {
         super(parentList);
         this.activity = activity;
         this.list = parentList;
+        this.filteredList = parentList;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         application = (EnrichApplication) activity.getApplicationContext();
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
-        dataRepository = Injection.provideDataRepository(activity, mainUiThread, threadExecutor, null);
+        DataRepository dataRepository = Injection.provideDataRepository(activity, mainUiThread, threadExecutor, null);
         therapistPresenter = new TherapistPresenter(this, dataRepository);
     }
 
@@ -83,15 +87,13 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
     @Override
     public void onBindParentViewHolder(@NonNull ParentServiceViewHolder parentViewHolder, int parentPosition, @NonNull ParentServiceViewModel parent) {
-        parentViewHolder.setTitle(list.get(parentPosition).name);
+        parentViewHolder.setTitle(filteredList.get(parentPosition).name);
     }
 
     @Override
     public void onBindChildViewHolder(@NonNull ChildServiceVieHolder childViewHolder, final int parentPosition, final int childPosition, @NonNull ServiceViewModel child) {
-//        ServiceViewModel model = list.get(parentPosition).getChildList().get(childPosition);
-
         childHolder = childViewHolder;
-        final ServiceViewModel model = list.get(parentPosition).getChildList().get(childPosition);
+        final ServiceViewModel model = filteredList.get(parentPosition).getChildList().get(childPosition);
 
         if (model.IsAdded || application.hasThisItem(model)) { //cartHostActivity.hasThisItem(model.getId())
             childHolder.serviceCheckbox.setChecked(true);
@@ -107,9 +109,9 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
             public void onClick(View v) {
                 if (model.therapist != null) {
                     model.therapist = null;
-                    notifyItemRangeChanged(0, list.get(parentPosition).ChildServices.size());
+                    notifyItemRangeChanged(0, filteredList.get(parentPosition).ChildServices.size());
 
-                    int toggleResponse = application.toggleItem(list.get(parentPosition).ChildServices.get(childPosition));
+                    int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
 
                     if (toggleResponse == 1) {
                         childHolder.serviceCheckbox.setChecked(true);
@@ -215,9 +217,9 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
     }
 
     public void setTherapist(TherapistModel therapistModel, int parentPosition, int childPosition) {
-        list.get(parentPosition).ChildServices.get(childPosition).therapist = therapistModel;
+        filteredList.get(parentPosition).ChildServices.get(childPosition).therapist = therapistModel;
 
-        int toggleResponse = application.toggleItem(list.get(parentPosition).ChildServices.get(childPosition));
+        int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
 
         if (toggleResponse == 1) {
             childHolder.serviceCheckbox.setChecked(true);
@@ -239,9 +241,14 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
         activity.updateCart();
 
-        notifyChildRangeChanged(parentPosition, childPosition, list.get(parentPosition).ChildServices.size());
+        notifyChildRangeChanged(parentPosition, childPosition, filteredList.get(parentPosition).ChildServices.size());
 //        notifyChildRangeChanged(0, list.get(parentPosition).ChildServices.size());
         dialog.dismiss();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new ChildFilter();
     }
 
     class ParentServiceViewHolder extends ParentViewHolder {
@@ -282,6 +289,47 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         public ChildServiceVieHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    private class ChildFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            final String filterString = constraint.toString().toLowerCase();
+
+            final FilterResults results = new FilterResults();
+
+            if (filterString.isEmpty()) {
+                filteredList = list;
+            } else {
+                ArrayList<ParentServiceViewModel> tempParentFilteredList = new ArrayList<>();
+                ArrayList<ServiceViewModel> tempChildFilteredList = new ArrayList<>();
+
+                for (ParentServiceViewModel parentServiceViewModel : list) {
+                    for (ServiceViewModel serviceViewModel : parentServiceViewModel.ChildServices) {
+                        if (serviceViewModel.name.toLowerCase().contains(filterString.toLowerCase())) {
+                            tempChildFilteredList.add(serviceViewModel);
+                        }
+                    }
+                    if (!tempChildFilteredList.isEmpty())
+                        tempParentFilteredList.add(new ParentServiceViewModel(parentServiceViewModel.id, parentServiceViewModel.name, parentServiceViewModel.Description, parentServiceViewModel.CategoryId, parentServiceViewModel.ServiceType, tempChildFilteredList));
+                }
+
+                filteredList = tempParentFilteredList;
+            }
+
+            results.count = filteredList.size();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            filteredList = (ArrayList<ParentServiceViewModel>) filterResults.values;
+            setParentList(filteredList, false);
+            notifyDataSetChanged();
         }
     }
 }

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParentServiceViewModel implements Parent<ServiceViewModel>, Parcelable {
@@ -26,8 +27,19 @@ public class ParentServiceViewModel implements Parent<ServiceViewModel>, Parcela
     public String ServiceType;
 
     @SerializedName("ChildServices")
-    public List<ServiceViewModel> ChildServices;
+    public ArrayList<ServiceViewModel> ChildServices;
 
+    public ParentServiceViewModel() {
+    }
+
+    public ParentServiceViewModel(String id, String name, String description, String categoryId, String serviceType, ArrayList<ServiceViewModel> childServices) {
+        this.id = id;
+        this.name = name;
+        Description = description;
+        CategoryId = categoryId;
+        ServiceType = serviceType;
+        ChildServices = childServices;
+    }
 
     protected ParentServiceViewModel(Parcel in) {
         id = in.readString();

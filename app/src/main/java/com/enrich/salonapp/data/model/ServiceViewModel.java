@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class ServiceViewModel extends CartItem implements Parcelable {
 
     @SerializedName("Id")
@@ -68,6 +70,19 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @SerializedName("Therapist")
     public TherapistModel therapist;
 
+    @SerializedName("ParentServiceId")
+    public String ParentServiceId;
+
+    @SerializedName("CategoryId")
+    public String CategoryId;
+
+    @SerializedName("CategoryName")
+    public String CategoryName;
+
+    @SerializedName("ServiceTag")
+    public ArrayList<ServiceTagModel> ServiceTag;
+
+
     protected ServiceViewModel(Parcel in) {
 //        super(in);
         id = in.readString();
@@ -91,6 +106,10 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         IsAdded = in.readByte() != 0;
         SlotTime = in.readString();
         therapist = in.readParcelable(TherapistModel.class.getClassLoader());
+        ParentServiceId = in.readString();
+        CategoryId = in.readString();
+        CategoryName = in.readString();
+        ServiceTag = in.createTypedArrayList(ServiceTagModel.CREATOR);
     }
 
     @Override
@@ -117,6 +136,10 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         dest.writeByte((byte) (IsAdded ? 1 : 0));
         dest.writeString(SlotTime);
         dest.writeParcelable(therapist, flags);
+        dest.writeString(ParentServiceId);
+        dest.writeString(CategoryId);
+        dest.writeString(CategoryName);
+        dest.writeTypedList(ServiceTag);
     }
 
     @Override

@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategorySpinnerAdapter;
 import com.enrich.salonapp.ui.adapters.ServiceListAdapter;
@@ -35,6 +39,7 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +78,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    ArrayList<ParentServiceViewModel> serviceList;
     ArrayList<CategoryModel> categoryList;
 
     EnrichApplication application;
@@ -81,6 +87,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     DataRepository dataRepository;
     ServiceListPresenter serviceListPresenter;
+
+    ServiceListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +162,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                adapter.getFilter().filter(s);
+                adapter.getFilter().filter(s);
             }
 
             @Override
@@ -203,6 +211,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                     list.add(model.Services.get(i));
                 }
             }
+
+            serviceList = list;
             setExpandableServiceListAdapter(list);
         } else {
             if (model.Error != null) {
@@ -213,8 +223,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         }
     }
 
-    private void setExpandableServiceListAdapter(List<ParentServiceViewModel> list) {
-        ServiceListAdapter adapter = new ServiceListAdapter(list, this);
+    private void setExpandableServiceListAdapter(ArrayList<ParentServiceViewModel> list) {
+        adapter = new ServiceListAdapter(list, this);
         serviceRecyclerView.setAdapter(adapter);
         serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
@@ -223,5 +233,26 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     public void onBackPressed() {
         super.onBackPressed();
         application.clearCart();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.service_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.service_list_filter) {
+            if (serviceListFilterContainer.getVisibility() == View.VISIBLE) {
+                serviceListFilterContainer.setVisibility(View.GONE);
+            } else {
+                serviceListFilterContainer.setVisibility(View.VISIBLE);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
