@@ -21,6 +21,8 @@ import com.enrich.salonapp.data.model.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
@@ -47,8 +49,8 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
-//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+    //    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
+    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser";
 
@@ -390,12 +392,16 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void createOrder(CreateOrderRequestModel model, final CreateOrderCallBack callBack) {
+        EnrichUtils.log("CreateOrder: " + EnrichUtils.newGson().toJson(model));
+
         Call<CreateOrderResponseModel> call = apiService.createOrder(model);
         call.enqueue(new Callback<CreateOrderResponseModel>() {
             @Override
             public void onResponse(Call<CreateOrderResponseModel> call, Response<CreateOrderResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
+                else
+                    callBack.onFailure(new Throwable());
             }
 
             @Override
@@ -408,6 +414,8 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getInvoice(String url, final GetInvoiceCallBack callBack) {
+        EnrichUtils.log("GetInvoice: " + url);
+
         Call<InvoiceResponseModel> call = apiService.getInvoice(url);
         call.enqueue(new Callback<InvoiceResponseModel>() {
             @Override
@@ -426,6 +434,8 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void confirmReservation(final ConfirmReservationRequestModel model, final ConfirmReservationCallBack callBack) {
+        EnrichUtils.log("ConfirmReservation: " + EnrichUtils.newGson().toJson(model));
+
         Call<ConfirmReservationResponseModel> call = apiService.confirmReservation(model);
         call.enqueue(new Callback<ConfirmReservationResponseModel>() {
             @Override
@@ -491,6 +501,23 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onFailure(Call<CancelResponseModel> call, Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
+                callBack.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void forgotPassword(ForgotPasswordRequestModel model, final ForgotPasswordCallBack callBack) {
+        Call<ForgotPasswordResponseModel> call = apiService.forgotPassword(model);
+        call.enqueue(new Callback<ForgotPasswordResponseModel>() {
+            @Override
+            public void onResponse(Call<ForgotPasswordResponseModel> call, Response<ForgotPasswordResponseModel> response) {
+                if(response.isSuccessful())
+                    callBack.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ForgotPasswordResponseModel> call, Throwable t) {
                 callBack.onFailure(t);
             }
         });

@@ -9,6 +9,7 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -144,6 +145,11 @@ public class LocalDataSource extends DataSource {
 
     @Override
     public void cancelAppointment(String url,CancelRequestModel model, CancelAppointmentCallBack callBack) {
+
+    }
+
+    @Override
+    public void forgotPassword(ForgotPasswordRequestModel model, ForgotPasswordCallBack callBack) {
 
     }
 }

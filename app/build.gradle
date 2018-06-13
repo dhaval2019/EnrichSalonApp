@@ -21,8 +21,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 115
-        versionName '1.1.5'
+        versionCode 118
+        versionName '1.1.8'
         manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
@@ -33,68 +33,55 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
-
     // BUTTERKNIFE (View Binding)
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     // RETROFIT
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.2'
-
     // SHIMMER LAYOUT
     implementation 'io.supercharge:shimmerlayout:1.0.2'
-
     // EXPANDABLE RECYCLER VIEW (DEPRECATED)
     implementation 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
-
     // HORIZONTAL DATE PICKER
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
-
     // ONE SIGNAL
     implementation 'com.onesignal:OneSignal:[3.9.1, 3.99.99]'
-
     // PICASSO
     implementation 'com.squareup.picasso:picasso:2.71828'
-
     // PAY U MONEY SDK
-    implementation('com.payumoney.sdkui:plug-n-play:1.1.0')
+    implementation 'com.payumoney.sdkui:plug-n-play:1.1.0'
     implementation 'com.payumoney.core:payumoney-sdk:7.1.0'
-
     // GOOGLE SERVICES (MAPS, LOCATIONS)
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
-
     // FIREBASE (CORE, MESSAGING)
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
-
     // CRASHLYTICS
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true
     }
-
     // STETHO (For offline debugging)
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
-
     // PARCELER
     implementation 'org.parceler:parceler-api:1.1.10'
     annotationProcessor 'org.parceler:parceler:1.1.10'
-
     // DBFLOW ORM for local Database
     implementation 'com.github.Raizlabs.DBFlow:dbflow:4.2.4'
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:4.2.4"
-
     // PAGE INDICATOR VIEW
     implementation 'com.romandanylyk:pageindicatorview:1.0.0'
 }

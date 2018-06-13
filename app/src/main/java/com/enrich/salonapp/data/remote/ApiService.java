@@ -20,6 +20,8 @@ import com.enrich.salonapp.data.model.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
@@ -110,4 +112,7 @@ public interface ApiService {
 
     @POST()
     Call<CancelResponseModel> cancelAppointment(@Url String url, @Body CancelRequestModel body);
+
+    @POST("Catalog/Guests/ForgottenPassword")
+    Call<ForgotPasswordResponseModel> forgotPassword(@Body ForgotPasswordRequestModel model);
 }

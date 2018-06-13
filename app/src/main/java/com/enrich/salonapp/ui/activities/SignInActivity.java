@@ -12,10 +12,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
@@ -92,6 +95,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setProgressBar(true);
+
                 String userNameStr = userNameEdit.getText().toString();
                 String passwordStr = passwordEdit.getText().toString();
 
@@ -104,7 +109,23 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
                 model.username = userNameStr;
                 model.password = passwordStr;
 
-                authenticationTokenPresenter.getAuthenticationToken(SignInActivity.this, model, true);
+                authenticationTokenPresenter.getAuthenticationToken(SignInActivity.this, model, false);
+            }
+        });
+
+        forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumber = userNameEdit.getText().toString();
+
+                if (phoneNumber.isEmpty()) {
+                    EnrichUtils.showMessage(SignInActivity.this, "Please enter your phone number");
+                } else {
+                    ForgotPasswordRequestModel forgotPasswordRequestModel = new ForgotPasswordRequestModel();
+                    forgotPasswordRequestModel.UserName = "" + phoneNumber;
+
+                    signInPresenter.forgotPassword(SignInActivity.this, forgotPasswordRequestModel);
+                }
             }
         });
     }
@@ -129,6 +150,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         model.Password = passwordEdit.getText().toString();
 
         EnrichUtils.saveUserData(SignInActivity.this, model);
+        setProgressBar(false);
 
         Intent intent = new Intent(SignInActivity.this, StoreSelectorActivity.class);
         startActivity(intent);
@@ -136,10 +158,20 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     }
 
     @Override
+    public void passwordSent(ForgotPasswordResponseModel model) {
+        if (model.Success) {
+            EnrichUtils.showLongMessage(SignInActivity.this, "We have sent you an Email and SMS with your new password. Please login with the new password.");
+        }
+    }
+
+    @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model != null) {
-            EnrichUtils.saveAuthenticationModel(this, model);
+            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
+//            EnrichUtils.saveAuthenticationModel(this, model);
+            setProgressBar(true);
             signInPresenter.getUserData(SignInActivity.this, model.userId);
+
         }
     }
 }

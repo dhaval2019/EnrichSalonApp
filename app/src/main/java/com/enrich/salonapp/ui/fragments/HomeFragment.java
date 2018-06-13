@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -105,6 +106,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
 
     @BindView(R.id.appointments_label)
     TextView appointmentsLabel;
+
+    @BindView(R.id.new_popular_service_container)
+    FrameLayout newPopularServiceContainer;
 
     ArrayList<PackageModel> packageList;
     ArrayList<OfferModel> offerList;
@@ -235,8 +239,6 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
     @Override
     public void showOfferList(OfferResponseModel model) {
         offerList = model.Offers;
-        loadingScreen.setVisibility(View.GONE);
-        mainContent.setVisibility(View.VISIBLE);
 
         OfferHomeAdapter adapter = new OfferHomeAdapter(HomeFragment.this.getActivity(), model.Offers);
         offerRecyclerView.setAdapter(adapter);
@@ -249,6 +251,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
         CategoriesHomeAdapter categoriesHomeAdapter = new CategoriesHomeAdapter(HomeFragment.this.getActivity(), model.Categories);
         categoriesRecyclerView.setAdapter(categoriesHomeAdapter);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        loadingScreen.setVisibility(View.GONE);
+        mainContent.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -267,8 +272,18 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
 
     @Override
     public void showNewAndPopularServices(NewAndPopularResponseModel model) {
-        RecommendedServicesAdapter recommendedServicesAdapter = new RecommendedServicesAdapter(this.getActivity(), model.Services);
-        recommendedServicesRecyclerView.setAdapter(recommendedServicesAdapter);
-        recommendedServicesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        if (!model.Services.isEmpty()) {
+            newPopularServiceContainer.setVisibility(View.VISIBLE);
+            RecommendedServicesAdapter recommendedServicesAdapter = new RecommendedServicesAdapter(this.getActivity(), model.Services, this);
+            recommendedServicesRecyclerView.setAdapter(recommendedServicesAdapter);
+            recommendedServicesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        } else {
+            newPopularServiceContainer.setVisibility(View.GONE);
+        }
+
+    }
+
+    public ArrayList<CategoryModel> getCategoryList() {
+        return categoryList;
     }
 }

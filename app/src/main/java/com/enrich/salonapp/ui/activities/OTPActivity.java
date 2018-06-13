@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -113,7 +114,8 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
-            EnrichUtils.saveAuthenticationModel(OTPActivity.this, model);
+            ((EnrichApplication)getApplicationContext()).setAuthenticationModel(model);
+//            EnrichUtils.saveAuthenticationModel(OTPActivity.this, model);
         }
     }
 }

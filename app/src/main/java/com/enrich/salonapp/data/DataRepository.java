@@ -22,6 +22,8 @@ import com.enrich.salonapp.data.model.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
@@ -509,6 +511,27 @@ public class DataRepository {
             remoteDataSource.cancelAppointment(url, model, new DataSource.CancelAppointmentCallBack() {
                 @Override
                 public void onSuccess(CancelResponseModel model) {
+                    callBack.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callBack.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callBack.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void forgotPassword(Context context, ForgotPasswordRequestModel model, final DataSource.ForgotPasswordCallBack callBack) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.forgotPassword(model, new DataSource.ForgotPasswordCallBack() {
+                @Override
+                public void onSuccess(ForgotPasswordResponseModel model) {
                     callBack.onSuccess(model);
                 }
 

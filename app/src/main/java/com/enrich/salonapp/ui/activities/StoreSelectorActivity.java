@@ -3,9 +3,8 @@ package com.enrich.salonapp.ui.activities;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
@@ -60,6 +60,9 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.store_progress)
+    ProgressBar storeProgress;
 
     CenterListPresenter centerListPresenter;
     DataRepository dataRepository;
@@ -110,15 +113,9 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
         centerListPresenter = new CenterListPresenter(this, dataRepository);
 
-        double latitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LATITUDE, 0.0);
-        double longitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LONGITUDE, 0.0);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("ServiceId", "");
-        map.put("latitude", "" + latitude);
-        map.put("longitude", "" + longitude);
-
-        centerListPresenter.getCenterList(this, map);
+        storeProgress.setVisibility(View.VISIBLE);
+        salonFilter.setEnabled(false);
+        getCentreList();
 
         salonFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -143,6 +140,8 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         ArrayList<CenterViewModel> list = model.Centers;
         Collections.sort(list, new DistanceComparator());
         setCategoryAdapter(list);
+        storeProgress.setVisibility(View.GONE);
+        salonFilter.setEnabled(true);
     }
 
     @Override
@@ -155,5 +154,16 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         storeRecyclerView.setAdapter(storeSelectorAdapter);
         storeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         storeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+    }
+
+    private void getCentreList() {
+        double latitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LATITUDE, 0.0);
+        double longitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LONGITUDE, 0.0);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ServiceId", "");
+        map.put("latitude", "" + latitude);
+        map.put("longitude", "" + longitude);
+        centerListPresenter.getCenterList(this, map);
     }
 }

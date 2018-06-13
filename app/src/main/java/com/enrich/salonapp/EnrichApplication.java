@@ -2,6 +2,7 @@ package com.enrich.salonapp;
 
 import android.app.Application;
 
+import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -22,6 +23,8 @@ public class EnrichApplication extends Application {
     int maxQuantityAllowed = 9;
     int maxItemsAllowed = 10;
 
+    AuthenticationModel authenticationModel = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,6 +35,14 @@ public class EnrichApplication extends Application {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
+    }
+
+    public AuthenticationModel getAuthenticationModel() {
+        return authenticationModel;
+    }
+
+    public void setAuthenticationModel(AuthenticationModel authenticationModel) {
+        this.authenticationModel = authenticationModel;
     }
 
     public void addToCart(CartItem cartItem) {
@@ -337,7 +348,6 @@ public class EnrichApplication extends Application {
             if (genericCartItem.getId() == cartItem.getId()) {
                 itemIterator.remove();
                 genericCartItem.removed();
-//                cartItem.removed();
             }
         }
     }
@@ -347,6 +357,7 @@ public class EnrichApplication extends Application {
         while (itemIterator.hasNext()) {
             GenericCartModel genericCartItem = itemIterator.next();
             if (genericCartItem.getId() == id) {
+                genericCartItem.setTherapistModel(null);
                 itemIterator.remove();
                 genericCartItem.removed();
             }

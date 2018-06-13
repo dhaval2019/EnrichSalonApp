@@ -32,7 +32,7 @@ public class AuthenticationTokenPresenter extends BasePresenter<AuthenticationTo
             public void onSuccess(AuthenticationModel model) {
                 if (view != null) {
                     view.saveAuthenticationToken(model);
-//                    view.setProgressBar(false);
+                    view.setProgressBar(false);
                 }
             }
 

@@ -25,14 +25,13 @@ public class CenterListPresenter extends BasePresenter<CenterListContract.View> 
             return;
         }
 
-        view.setProgressBar(true);
+//        view.setProgressBar(true);
 
         dataRepository.getCenterList(context, map, new DataSource.GetCenterListCallBack() {
             @Override
             public void onSuccess(CenterResponseModel model) {
                 if (view != null) {
                     view.showCenterList(model);
-                    view.setProgressBar(false);
                     view.showPlaceHolder();
                 }
             }

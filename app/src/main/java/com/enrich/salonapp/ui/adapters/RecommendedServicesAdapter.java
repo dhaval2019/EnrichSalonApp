@@ -23,6 +23,7 @@ import com.enrich.salonapp.ui.activities.CartActivity;
 import com.enrich.salonapp.ui.activities.DateSelectorActivity;
 import com.enrich.salonapp.ui.activities.ServiceListActivity;
 import com.enrich.salonapp.ui.contracts.TherapistContract;
+import com.enrich.salonapp.ui.fragments.HomeFragment;
 import com.enrich.salonapp.ui.presenters.TherapistPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -46,11 +47,13 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
     DataRepository dataRepository;
     TherapistPresenter therapistPresenter;
     int pos;
+    HomeFragment homeFragment;
 
-    public RecommendedServicesAdapter(Context context, ArrayList<ServiceViewModel> list) {
+    public RecommendedServicesAdapter(Context context, ArrayList<ServiceViewModel> list, HomeFragment homeFragment) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.homeFragment = homeFragment;
         application = (EnrichApplication) context.getApplicationContext();
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
@@ -178,7 +181,8 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                Intent intent = new Intent(context, DateSelectorActivity.class);
+                Intent intent = new Intent(context, ServiceListActivity.class);
+                intent.putExtra("CategoryList", homeFragment.getCategoryList());
                 context.startActivity(intent);
             }
         });
@@ -187,8 +191,10 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                Intent intent = new Intent(context, ServiceListActivity.class);
+                Intent intent = new Intent(context, DateSelectorActivity.class);
                 context.startActivity(intent);
+
+
             }
         });
 

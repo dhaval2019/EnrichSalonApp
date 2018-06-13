@@ -20,6 +20,8 @@ import com.enrich.salonapp.data.model.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
@@ -284,4 +286,15 @@ public abstract class DataSource {
     }
 
     public abstract void cancelAppointment(String url, CancelRequestModel model, CancelAppointmentCallBack callBack);
+
+
+    public interface ForgotPasswordCallBack {
+        void onSuccess(ForgotPasswordResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void forgotPassword(ForgotPasswordRequestModel model, ForgotPasswordCallBack callBack);
 }

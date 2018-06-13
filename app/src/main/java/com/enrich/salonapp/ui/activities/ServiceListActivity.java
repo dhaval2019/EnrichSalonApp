@@ -247,6 +247,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
         if (id == R.id.service_list_filter) {
             if (serviceListFilterContainer.getVisibility() == View.VISIBLE) {
+                serviceFilter.setText("");
                 serviceListFilterContainer.setVisibility(View.GONE);
             } else {
                 serviceListFilterContainer.setVisibility(View.VISIBLE);

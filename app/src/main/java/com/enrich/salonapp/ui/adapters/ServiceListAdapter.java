@@ -189,13 +189,11 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         return activity;
     }
 
-    private void showTherapists(ArrayList<TherapistModel> list, int parentPosition, int childPosition) {
+    private void showTherapists(ArrayList<TherapistModel> list, final int parentPosition, final int childPosition) {
         View view = inflater.inflate(R.layout.therapist_list_dialog, null);
         dialog = new BottomSheetDialog(activity);
         dialog.setContentView(view);
 
-//        dialog = new Dialog(context);
-//        dialog.setContentView(R.layout.therapist_list_dialog);
         dialog.setCancelable(false);
 
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
@@ -208,8 +206,8 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                application.clearCart();
-                notifyDataSetChanged();
+                application.removeFromCart(filteredList.get(parentPosition).ChildServices.get(childPosition));
+                notifyChildRangeChanged(parentPosition, childPosition, filteredList.get(parentPosition).ChildServices.size() - childPosition);
                 dialog.dismiss();
             }
         });
@@ -241,8 +239,7 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
         activity.updateCart();
 
-        notifyChildRangeChanged(parentPosition, childPosition, filteredList.get(parentPosition).ChildServices.size());
-//        notifyChildRangeChanged(0, list.get(parentPosition).ChildServices.size());
+        notifyChildRangeChanged(parentPosition, childPosition, filteredList.get(parentPosition).ChildServices.size() - childPosition);
         dialog.dismiss();
     }
 
