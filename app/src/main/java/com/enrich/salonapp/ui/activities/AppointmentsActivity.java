@@ -116,6 +116,7 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
             }
         });
 
+        isCurrent = true;
         appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT);
     }
 

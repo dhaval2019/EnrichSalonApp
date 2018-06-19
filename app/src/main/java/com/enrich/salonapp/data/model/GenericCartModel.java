@@ -13,7 +13,7 @@ public class GenericCartModel implements Serializable, Parcelable {
     public static final int CART_TYPE_PRODUCTS = 3;
     public static final int CART_TYPE_PACKAGE = 4;
 
-    public String Id;
+    public int Id;
     public String ServiceId;
     public int Quantity;
     public String Name;
@@ -38,11 +38,14 @@ public class GenericCartModel implements Serializable, Parcelable {
 
     public int PaymentMode;
 
+    public int PackageBundleItemCount;
+    public int PackageBundleItemType;
+
     public GenericCartModel() {
     }
 
     protected GenericCartModel(Parcel in) {
-        Id = in.readString();
+        Id = in.readInt();
         ServiceId = in.readString();
         Quantity = in.readInt();
         Name = in.readString();
@@ -57,6 +60,8 @@ public class GenericCartModel implements Serializable, Parcelable {
         CustomerAddress = in.readString();
         therapistModel = in.readParcelable(TherapistModel.class.getClassLoader());
         SlotTime = in.readString();
+        PackageBundleItemCount = in.readInt();
+        PackageBundleItemType = in.readInt();
     }
 
     public static final Creator<GenericCartModel> CREATOR = new Creator<GenericCartModel>() {
@@ -71,11 +76,11 @@ public class GenericCartModel implements Serializable, Parcelable {
         }
     };
 
-    public String getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         Id = id;
     }
 
@@ -232,6 +237,22 @@ public class GenericCartModel implements Serializable, Parcelable {
         PaymentMode = paymentMode;
     }
 
+    public int getPackageBundleItemCount() {
+        return PackageBundleItemCount;
+    }
+
+    public void setPackageBundleItemCount(int packageBundleItemCount) {
+        PackageBundleItemCount = packageBundleItemCount;
+    }
+
+    public int getPackageBundleItemType() {
+        return PackageBundleItemType;
+    }
+
+    public void setPackageBundleItemType(int packageBundleItemType) {
+        PackageBundleItemType = packageBundleItemType;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -239,7 +260,7 @@ public class GenericCartModel implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Id);
+        dest.writeInt(Id);
         dest.writeInt(Quantity);
         dest.writeString(Name);
         dest.writeDouble(Price);
@@ -253,6 +274,8 @@ public class GenericCartModel implements Serializable, Parcelable {
         dest.writeString(CustomerAddress);
         dest.writeParcelable(therapistModel, flags);
         dest.writeString(SlotTime);
+        dest.writeInt(PackageBundleItemCount);
+        dest.writeInt(PackageBundleItemType);
     }
 }
 

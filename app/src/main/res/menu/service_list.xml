@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/service_list_filter"
         android:enabled="true"
-        android:icon="@drawable/ic_filter_list_black"
-        android:title="Search"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/filter"
+        android:title="Filter"
+        app:showAsAction="always" />
 </menu>

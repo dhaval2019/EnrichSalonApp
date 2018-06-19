@@ -7,10 +7,11 @@ import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.ChangePasswordRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -144,12 +145,37 @@ public class LocalDataSource extends DataSource {
     }
 
     @Override
-    public void cancelAppointment(String url,CancelRequestModel model, CancelAppointmentCallBack callBack) {
+    public void cancelAppointment(String url, CancelRequestModel model, CancelAppointmentCallBack callBack) {
 
     }
 
     @Override
     public void forgotPassword(ForgotPasswordRequestModel model, ForgotPasswordCallBack callBack) {
+
+    }
+
+    @Override
+    public void getAllPackages(PackageListCallBack callBack) {
+
+    }
+
+    @Override
+    public void getWallet(Map<String, String> string, GetWalletCallback callback) {
+
+    }
+
+    @Override
+    public void getWalletHistory(Map<String, String> string, GetWalletHistoryCallback callback) {
+
+    }
+
+    @Override
+    public void getProductList(ProductRequestModel model, GetProductListCallback callback) {
+
+    }
+
+    @Override
+    public void getMyPackages(Map<String, String> map, GetMyPackagesCallback callback) {
 
     }
 }

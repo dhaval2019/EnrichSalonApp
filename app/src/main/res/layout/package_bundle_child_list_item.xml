@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/package_bundle_child_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="Haircut for Women"
+        android:textColor="@color/grey"
+        app:font_type="light"/>
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/package_bundle_child_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="500"
+        android:textColor="@color/red"
+        android:visibility="gone"/>
+
+</RelativeLayout>

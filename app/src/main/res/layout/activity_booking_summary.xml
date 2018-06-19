@@ -310,7 +310,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
-                    android:background="#e5e5e5" />
+                    android:background="#e5e5e5"
+                    android:visibility="gone"/>
 
                 <!-- ADDRESS -->
                 <LinearLayout
@@ -340,86 +341,130 @@
                         app:font_type="light" />
                 </LinearLayout>
 
-                <!-- PRODUCTS -->
+                <!-- PRODUCTS INFO CONTAINER-->
                 <LinearLayout
+                    android:id="@+id/product_info_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
                     android:visibility="gone">
 
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="wrap_content"
+                    <!-- DELIVERY PERIOD -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Products"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:font_type="regular" />
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
 
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/products_label"
-                        android:layout_width="wrap_content"
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery Period"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:font_type="regular" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/delivery_period"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <!-- DELIVERY INFORMATION -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hair cut, Hair coloring, Facial"
-                        android:textColor="@color/grey"
-                        android:textSize="16sp"
-                        app:font_type="light" />
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery Information"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:font_type="regular" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/delivery_information"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            app:font_type="light" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <!-- DATE AND TIME -->
+                <!-- SERVICE INFO CONTAINER -->
                 <LinearLayout
+                    android:id="@+id/service_info_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
+                    android:visibility="gone">
 
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="wrap_content"
+                    <!-- DATE AND TIME -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Date and Time"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:font_type="regular" />
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
 
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/date_time_slot"
-                        android:layout_width="wrap_content"
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date and Time"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:font_type="regular" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/date_time_slot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <!-- THERAPIST -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/grey"
-                        android:textSize="16sp"
-                        app:font_type="light" />
-                </LinearLayout>
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
 
-                <!-- THERAPIST -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Therapist"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:font_type="regular" />
 
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Therapist"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:font_type="regular" />
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/stylist_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/grey"
-                        android:textSize="16sp"
-                        app:font_type="light" />
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/stylist_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:textSize="16sp"
+                            app:font_type="light" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <com.enrich.salonapp.ui.views.CustomButton

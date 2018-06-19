@@ -6,6 +6,7 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.util.mvp.IBasePresenter;
 import com.enrich.salonapp.util.mvp.IBaseView;
 
@@ -21,6 +22,8 @@ public interface HomePageContract {
         void showAppointments(AppointmentResponseModel model);
 
         void showNewAndPopularServices(NewAndPopularResponseModel model);
+
+        void showPackage(PackageResponseModel model);
     }
 
     interface Presenter extends IBasePresenter<HomePageContract.View> {
@@ -31,5 +34,7 @@ public interface HomePageContract {
         void getAppointment(Context context, String url);
 
         void getNewAndPopularServices(Context context, Map<String, String> map);
+
+        void getAllPackages(Context context);
     }
 }

@@ -17,10 +17,10 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
@@ -29,6 +29,10 @@ import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -36,6 +40,7 @@ import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.UserExistsResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -49,8 +54,8 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-    //    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
-    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
+//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser";
 
@@ -374,6 +379,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void reserveSlot(ReserveSlotRequestModel model, final ReserveSlotCallBack callBack) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
         Call<ReserveSlotResponseModel> call = apiService.reserveSlot(model);
         call.enqueue(new Callback<ReserveSlotResponseModel>() {
             @Override
@@ -512,13 +518,91 @@ public class RemoteDataSource extends DataSource {
         call.enqueue(new Callback<ForgotPasswordResponseModel>() {
             @Override
             public void onResponse(Call<ForgotPasswordResponseModel> call, Response<ForgotPasswordResponseModel> response) {
-                if(response.isSuccessful())
+                if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
             public void onFailure(Call<ForgotPasswordResponseModel> call, Throwable t) {
                 callBack.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getAllPackages(final PackageListCallBack callBack) {
+        Call<PackageResponseModel> call = apiService.getAllPackages();
+        call.enqueue(new Callback<PackageResponseModel>() {
+            @Override
+            public void onResponse(Call<PackageResponseModel> call, Response<PackageResponseModel> response) {
+                if (response.isSuccessful())
+                    callBack.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<PackageResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callBack.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getWallet(Map<String, String> map, final GetWalletCallback callback) {
+        Call<WalletModel> call = apiService.getWallet(map);
+        call.enqueue(new Callback<WalletModel>() {
+            @Override
+            public void onResponse(Call<WalletModel> call, Response<WalletModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<WalletModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getWalletHistory(Map<String, String> string, GetWalletHistoryCallback callback) {
+
+    }
+
+    @Override
+    public void getProductList(ProductRequestModel model, final GetProductListCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
+
+        Call<ProductResponseModel> call = apiService.getProduct(model);
+        call.enqueue(new Callback<ProductResponseModel>() {
+            @Override
+            public void onResponse(Call<ProductResponseModel> call, Response<ProductResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ProductResponseModel> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getMyPackages(Map<String, String> map, final GetMyPackagesCallback callback) {
+        Call<MyPackageResponseModel> call = apiService.getMyPackages(map);
+        call.enqueue(new Callback<MyPackageResponseModel>() {
+            @Override
+            public void onResponse(Call<MyPackageResponseModel> call, Response<MyPackageResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<MyPackageResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
             }
         });
     }

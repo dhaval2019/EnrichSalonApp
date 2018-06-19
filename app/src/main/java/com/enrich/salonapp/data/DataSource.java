@@ -16,10 +16,10 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
@@ -28,12 +28,18 @@ import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
+import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
@@ -92,6 +98,7 @@ public abstract class DataSource {
 
     public abstract void checkUsername(String userName, CheckUserNameCallBack callBack);
 
+
     public interface CreateOTPCallBack {
         void onSuccess(CreateOTPResponseModel model);
 
@@ -112,6 +119,7 @@ public abstract class DataSource {
     }
 
     public abstract void registerUser(RegistrationRequestModel model, RegisterUserCallBack callBacks);
+
 
     public interface GetCenterListCallBack {
         void onSuccess(CenterResponseModel model);
@@ -155,6 +163,7 @@ public abstract class DataSource {
     }
 
     public abstract void getAppointments(String url, GetAppointmentsCallBack callBack);
+
 
     public interface UpdateUserCallBack {
         void onSuccess(GuestUpdateResponseModel model);
@@ -297,4 +306,59 @@ public abstract class DataSource {
     }
 
     public abstract void forgotPassword(ForgotPasswordRequestModel model, ForgotPasswordCallBack callBack);
+
+
+    public interface PackageListCallBack {
+        void onSuccess(PackageResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getAllPackages(PackageListCallBack callBack);
+
+
+    public interface GetWalletCallback {
+        void onSuccess(WalletModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getWallet(Map<String, String> string, GetWalletCallback callback);
+
+
+    public interface GetWalletHistoryCallback {
+        void onSuccess(WalletHistoryModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getWalletHistory(Map<String, String> string, GetWalletHistoryCallback callback);
+
+
+    public interface GetProductListCallback {
+        void onSuccess(ProductResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getProductList(ProductRequestModel model, GetProductListCallback callback);
+
+
+    public interface GetMyPackagesCallback {
+        void onSuccess(MyPackageResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getMyPackages(Map<String, String> map, GetMyPackagesCallback callback);
 }

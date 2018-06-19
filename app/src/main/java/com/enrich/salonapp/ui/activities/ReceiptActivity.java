@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
 import com.enrich.salonapp.data.model.InvoiceModel;
+import com.enrich.salonapp.data.model.PaymentSummaryModel;
 import com.enrich.salonapp.util.EnrichUtils;
 
 import java.text.ParseException;
@@ -50,7 +51,8 @@ public class ReceiptActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     ConfirmReservationResponseModel confirmReservationResponseModel;
-    InvoiceModel invoiceModel;
+    //    InvoiceModel invoiceModel;
+    PaymentSummaryModel paymentSummaryModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class ReceiptActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         confirmReservationResponseModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ConfirmReservationResponseModel"), ConfirmReservationResponseModel.class);
-        invoiceModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("InvoiceModel"), InvoiceModel.class);
+        paymentSummaryModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("InvoiceModel"), PaymentSummaryModel.class);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -86,7 +88,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
         collapsingToolbarLayout.setTitle("Receipt");
 
-        paymentConfirmOrderPurchaseAmount.setText(getResources().getString(R.string.Rs) + " " + invoiceModel.Price._final);
+        paymentConfirmOrderPurchaseAmount.setText(getResources().getString(R.string.Rs) + " " + paymentSummaryModel.getTotal());
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,7 +105,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
             paymentConfirmOrderDate.setText(dateStr);
             orderTime.setText(timeStr);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             paymentConfirmOrderDate.setText("-");
             orderTime.setText("-");

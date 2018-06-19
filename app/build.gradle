@@ -84,4 +84,7 @@ dependencies {
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:4.2.4"
     // PAGE INDICATOR VIEW
     implementation 'com.romandanylyk:pageindicatorview:1.0.0'
+
+    // STICKY FOOTER
+    implementation 'com.github.amarjain07:StickyScrollView:1.0.2'
 }

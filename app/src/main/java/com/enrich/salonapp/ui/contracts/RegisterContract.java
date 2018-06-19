@@ -3,8 +3,8 @@ package com.enrich.salonapp.ui.contracts;
 import android.content.Context;
 
 import com.enrich.salonapp.data.model.CheckUserNameResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
 import com.enrich.salonapp.util.mvp.IBasePresenter;
 import com.enrich.salonapp.util.mvp.IBaseView;
 

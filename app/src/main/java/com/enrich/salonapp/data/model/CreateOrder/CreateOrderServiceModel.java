@@ -1,15 +1,15 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.CreateOrder;
 
 public class CreateOrderServiceModel {
 
-    private String ServiceId;
+    private int ServiceId;
     private String StylistId;
 
-    public String getServiceId() {
+    public int getServiceId() {
         return ServiceId;
     }
 
-    public void setServiceId(String serviceId) {
+    public void setServiceId(int serviceId) {
         ServiceId = serviceId;
     }
 

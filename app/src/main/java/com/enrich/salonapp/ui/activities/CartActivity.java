@@ -84,38 +84,55 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ReserveSlotRequestModel reserveSlotModel = new ReserveSlotRequestModel();
-                reserveSlotModel.CenterId = EnrichUtils.getHomeStore(CartActivity.this).Id;
-                reserveSlotModel.CenterTime = cartList.get(0).SlotTime;
-                reserveSlotModel.CreateInvoice = true;
-                reserveSlotModel.ForceApplyAutomaticMembership = true;
+                if (doesCartContainServices()) {
+                    ReserveSlotRequestModel reserveSlotModel = new ReserveSlotRequestModel();
+                    reserveSlotModel.CenterId = EnrichUtils.getHomeStore(CartActivity.this).Id;
+                    reserveSlotModel.CenterTime = cartList.get(0).SlotTime;
+                    reserveSlotModel.CreateInvoice = true;
+                    reserveSlotModel.ForceApplyAutomaticMembership = true;
 
-                ArrayList<AppointmentSlotBookingsModel> slotBookingsModelArrayList = new ArrayList<>();
-                for (int i = 0; i < cartList.size(); i++) {
-                    ArrayList<AppointmentServicesModel> servicesModelArrayList = new ArrayList<>();
+                    ArrayList<AppointmentSlotBookingsModel> slotBookingsModelArrayList = new ArrayList<>();
+                    for (int i = 0; i < cartList.size(); i++) {
+                        ArrayList<AppointmentServicesModel> servicesModelArrayList = new ArrayList<>();
 
-                    AppointmentServiceModel serviceModel = new AppointmentServiceModel();
-                    serviceModel.Id = cartList.get(i).ServiceId;
+                        AppointmentServiceModel serviceModel = new AppointmentServiceModel();
+                        serviceModel.Id = cartList.get(i).ServiceId;
 
-                    AppointmentServicesModel servicesModel = new AppointmentServicesModel();
-                    servicesModel.Service = serviceModel;
+                        AppointmentServicesModel servicesModel = new AppointmentServicesModel();
+                        servicesModel.Service = serviceModel;
 
-                    servicesModelArrayList.add(servicesModel);
+                        servicesModelArrayList.add(servicesModel);
 
-                    AppointmentSlotBookingsModel slotBookingsModel = new AppointmentSlotBookingsModel();
-                    slotBookingsModel.StartTime = cartList.get(i).SlotTime;
-                    slotBookingsModel.GuestId = EnrichUtils.getUserData(CartActivity.this).Id;
-                    slotBookingsModel.Services = servicesModelArrayList;
-                    slotBookingsModel.TherapistId = cartList.get(i).getTherapistModel().Id;
-                    slotBookingsModel.Quantity = 1;
+                        AppointmentSlotBookingsModel slotBookingsModel = new AppointmentSlotBookingsModel();
+                        slotBookingsModel.StartTime = cartList.get(i).SlotTime;
+                        slotBookingsModel.GuestId = EnrichUtils.getUserData(CartActivity.this).Id;
+                        slotBookingsModel.Services = servicesModelArrayList;
+                        slotBookingsModel.TherapistId = cartList.get(i).getTherapistModel().Id;
+                        slotBookingsModel.Quantity = 1;
 
-                    slotBookingsModelArrayList.add(slotBookingsModel);
+                        slotBookingsModelArrayList.add(slotBookingsModel);
+                    }
+                    reserveSlotModel.SlotBookings = slotBookingsModelArrayList;
+
+                    switchToNextScreen(reserveSlotModel);
+                } else {
+                    Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
+                    startActivity(intent);
                 }
-                reserveSlotModel.SlotBookings = slotBookingsModelArrayList;
-
-                switchToNextScreen(reserveSlotModel);
             }
         });
+    }
+
+    private boolean doesCartContainServices() {
+        boolean itDoes = false;
+        for (int i = 0; i < application.getCartItems().size(); i++) {
+            if (application.getCartItems().get(i).getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
+                itDoes = true;
+            } else {
+                itDoes = false;
+            }
+        }
+        return itDoes;
     }
 
     public void updatePriceAndQuantityView() {

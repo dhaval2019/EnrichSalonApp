@@ -22,6 +22,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_PRODUCT;
+import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_SERVICE;
+
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
 
     Context context;
@@ -47,33 +50,61 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
         final GenericCartModel model = list.get(position);
-        holder.name.setText(model.Name);
 
-        if (model.getSlotTime() != null) {
-            try {
-                SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
+        if (model.getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
+            holder.name.setText(model.Name + " x " + list.get(position).Quantity);
+            holder.therapist.setText(model.getTherapistModel().Name);
+            if (model.getSlotTime() != null) {
+                try {
+                    SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
 
-                Date date = stringToDate.parse(model.getSlotTime());
-                Date time = stringToTime.parse(model.getSlotTime().substring(11, model.getSlotTime().length()));
+                    Date date = stringToDate.parse(model.getSlotTime());
+                    Date time = stringToTime.parse(model.getSlotTime().substring(11, model.getSlotTime().length()));
 
-                SimpleDateFormat dateToString = new SimpleDateFormat("dd MMM, yyyy");
-                SimpleDateFormat timeToString = new SimpleDateFormat("hh:mm");
+                    SimpleDateFormat dateToString = new SimpleDateFormat("dd MMM, yyyy");
+                    SimpleDateFormat timeToString = new SimpleDateFormat("hh:mm");
 
-                String dateStr = dateToString.format(date);
-                String timeStr = timeToString.format(time);
+                    String dateStr = dateToString.format(date);
+                    String timeStr = timeToString.format(time);
 
-                holder.description.setText(dateStr + " @" + timeStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                    holder.description.setText(dateStr + " @" + timeStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    holder.description.setVisibility(View.GONE);
+                }
+            } else {
                 holder.description.setVisibility(View.GONE);
             }
-        } else {
-            holder.description.setVisibility(View.GONE);
-        }
 
-        holder.price.setText(context.getResources().getString(R.string.Rs) + " " + model.getPrice());
-        holder.therapist.setText(model.getTherapistModel().Name);
+            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + model.getPrice());
+
+        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) {
+            if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_SERVICE) {
+
+                holder.name.setText(model.Name);
+                holder.therapist.setText(model.getPackageBundleItemCount() + " Service(s)");
+                holder.description.setText("Quantity: " + model.Quantity);
+                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+
+            } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_PRODUCT) {
+
+                holder.name.setText(model.Name);
+                holder.therapist.setText(model.getPackageBundleItemCount() + " Product(s)");
+                holder.description.setText("Quantity: " + model.Quantity);
+                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+
+            } else {
+                holder.therapist.setVisibility(View.GONE);
+            }
+        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_PRODUCTS) {
+            holder.name.setText(model.Name);
+            holder.therapist.setVisibility(View.GONE);
+            holder.description.setText("Quantity: " + model.Quantity);
+            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+        } else {
+            holder.therapist.setVisibility(View.GONE);
+        }
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,7 +1,9 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.CreateOrder;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.enrich.salonapp.data.model.PhoneModel;
 
 public class CreateOTPRequestModel implements Parcelable {
 

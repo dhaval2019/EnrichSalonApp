@@ -5,12 +5,9 @@ import android.content.Context;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
 import com.enrich.salonapp.data.model.CheckUserNameResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
-import com.enrich.salonapp.data.model.RegistrationRequestModel;
-import com.enrich.salonapp.data.model.RegistrationResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
 import com.enrich.salonapp.ui.contracts.RegisterContract;
-import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.Presenter {

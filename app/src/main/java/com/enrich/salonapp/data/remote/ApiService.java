@@ -16,10 +16,10 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
@@ -28,6 +28,10 @@ import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -35,6 +39,7 @@ import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.UserExistsResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletModel;
 
 import java.util.Map;
 
@@ -115,4 +120,16 @@ public interface ApiService {
 
     @POST("Catalog/Guests/ForgottenPassword")
     Call<ForgotPasswordResponseModel> forgotPassword(@Body ForgotPasswordRequestModel model);
+
+    @GET("Package/GetAllPackages")
+    Call<PackageResponseModel> getAllPackages();
+
+    @GET("")
+    Call<WalletModel> getWallet(@QueryMap Map<String, String> map);
+
+    @POST("Catalog/Products/GetAllProducts")
+    Call<ProductResponseModel> getProduct(@Body ProductRequestModel model);
+
+    @GET("GetGuestPackage")
+    Call<MyPackageResponseModel> getMyPackages(@QueryMap Map<String, String> map);
 }

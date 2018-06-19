@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/package_bundle_parent_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:id="@+id/package_bundle_details_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/quantity_toggle_container"
+        android:orientation="vertical">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/package_bundle_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Package Bundle 1"
+            android:textColor="#424242"
+            android:textSize="@dimen/dimen_14sp"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/package_bundle_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Rs. 00000"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            app:font_type="light" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/package_bundle_validity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Valid till 07/06/2019"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/view_services_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginTop="3dp"
+                android:text="View Services"
+                android:textColor="@color/red"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/quantity_toggle_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/package_bundle_remove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/minus_circle_outline" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/package_bundle_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/red"
+            android:textSize="@dimen/dimen_16sp"
+            app:font_type="regular" />
+
+        <ImageView
+            android:id="@+id/package_bundle_add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/plus_circle_outline" />
+    </LinearLayout>
+</RelativeLayout>

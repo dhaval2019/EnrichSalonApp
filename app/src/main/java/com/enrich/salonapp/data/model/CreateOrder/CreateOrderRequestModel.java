@@ -1,4 +1,4 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.CreateOrder;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ public class CreateOrderRequestModel {
 
     private Boolean ApplyCredits;
     private String PromoCode;
-    private ArrayList<CreateOrderPackageModel> PackageIds;
+    private ArrayList<CreateOrderPackageBundleModel> PackageIds;
     private ArrayList<CreateOrderServiceModel> ServiceIds;
     private ArrayList<CreateOrderProductModel> ProductIds;
     private Boolean IsCOD;
@@ -31,11 +31,11 @@ public class CreateOrderRequestModel {
         PromoCode = promoCode;
     }
 
-    public ArrayList<CreateOrderPackageModel> getPackageIds() {
+    public ArrayList<CreateOrderPackageBundleModel> getPackageIds() {
         return PackageIds;
     }
 
-    public void setPackageIds(ArrayList<CreateOrderPackageModel> packageIds) {
+    public void setPackageIds(ArrayList<CreateOrderPackageBundleModel> packageIds) {
         PackageIds = packageIds;
     }
 

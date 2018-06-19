@@ -3,7 +3,6 @@ package com.enrich.salonapp.ui.activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
@@ -21,12 +21,16 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderServiceModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderPackageBundleModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderProductModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderServiceModel;
+import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.InvoiceModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
+import com.enrich.salonapp.data.model.PaymentSummaryModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
@@ -56,8 +60,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.payumoney.core.SdkSession.paymentId;
 
 public class BookingSummaryActivity extends BaseActivity implements BookingSummaryContract.View {
 
@@ -99,6 +101,18 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.service_info_container)
+    LinearLayout serviceInfoContainer;
+
+    @BindView(R.id.product_info_container)
+    LinearLayout productInfoContainer;
+
+    @BindView(R.id.delivery_period)
+    TextView deliveryPeriod;
+
+    @BindView(R.id.delivery_information)
+    TextView deliveryInformation;
 
     BookingSummaryItemAdapter adapter;
 
@@ -170,7 +184,57 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         makePaymentOfflineBtn.setEnabled(false);
         makePaymentOnlineBtn.setEnabled(false);
 
-        bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
+        if (reserveSlotModel != null) {
+            bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
+        } else if (application.cartHasPackages()) {
+            CreateOrderRequestModel createOrderRequestModel = new CreateOrderRequestModel();
+            createOrderRequestModel.setApplyCredits(false);
+            createOrderRequestModel.setGuestId(EnrichUtils.getUserData(this).Id);
+            createOrderRequestModel.setGuestName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+            createOrderRequestModel.setPlatform(0);
+            createOrderRequestModel.setPromoCode("");
+
+            ArrayList<CreateOrderPackageBundleModel> createOrderPackageList = new ArrayList<>();
+            for (int i = 0; i < application.getCartItems().size(); i++) {
+                if (application.getCartItems().get(i).getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) {
+                    CreateOrderPackageBundleModel createOrderPackageBundleModel = new CreateOrderPackageBundleModel();
+                    createOrderPackageBundleModel.setPackageBundleId(application.getCartItem(i).packageBundleId);
+                    createOrderPackageBundleModel.setCount(application.getCartItem(i).Quantity);
+
+                    createOrderPackageList.add(createOrderPackageBundleModel);
+                }
+            }
+
+            createOrderRequestModel.setPackageIds(createOrderPackageList);
+
+            EnrichUtils.log(EnrichUtils.newGson().toJson(createOrderRequestModel));
+
+            bookingSummaryPresenter.createOrder(this, createOrderRequestModel);
+        } else if (application.cartHasProducts()) {
+            CreateOrderRequestModel createOrderRequestModel = new CreateOrderRequestModel();
+            createOrderRequestModel.setApplyCredits(false);
+            createOrderRequestModel.setGuestId(EnrichUtils.getUserData(this).Id);
+            createOrderRequestModel.setGuestName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+            createOrderRequestModel.setPlatform(0);
+            createOrderRequestModel.setPromoCode("");
+
+            ArrayList<CreateOrderProductModel> createOrderProductModels = new ArrayList<>();
+            for (int i = 0; i < application.getCartItems().size(); i++) {
+                if (application.getCartItems().get(i).getCartItemType() == GenericCartModel.CART_TYPE_PRODUCTS) {
+                    CreateOrderProductModel createOrderProductModel = new CreateOrderProductModel();
+                    createOrderProductModel.setProductId(application.getCartItem(i).getId());
+                    createOrderProductModel.setQuantity(application.getCartItem(i).Quantity);
+
+                    createOrderProductModels.add(createOrderProductModel);
+                }
+            }
+
+            createOrderRequestModel.setProductIds(createOrderProductModels);
+
+            EnrichUtils.log(EnrichUtils.newGson().toJson(createOrderRequestModel));
+
+            bookingSummaryPresenter.createOrder(this, createOrderRequestModel);
+        }
     }
 
     @Override
@@ -207,7 +271,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     public void orderCreated(CreateOrderResponseModel model) {
         if (model.getOrder() != null) {
             createOrderResponseModel = model;
-            bookingSummaryPresenter.getInvoice(this, RemoteDataSource.HOST + RemoteDataSource.GET_INVOICE + reserveSlotResponseModel.InvoiceId);
+            if (application.cartHasServices()) {
+                bookingSummaryPresenter.getInvoice(this, RemoteDataSource.HOST + RemoteDataSource.GET_INVOICE + reserveSlotResponseModel.InvoiceId);
+            } else {
+                setData(model.getPaymentSummary());
+            }
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, "Something went wrong. Please try again.");
         }
@@ -233,7 +301,9 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             confirmOrderModel.setLastName(EnrichUtils.getUserData(this).LastName);
             confirmOrderModel.setPhone(EnrichUtils.getUserData(this).MobileNumber);
             confirmOrderModel.setEmailAddress(EnrichUtils.getUserData(this).Email);
-            confirmOrderModel.setReservationId(reserveSlotResponseModel.ReservationId);
+
+            if (reserveSlotResponseModel != null)
+                confirmOrderModel.setReservationId(reserveSlotResponseModel.ReservationId);
 
             if (isOnlinePayment) { //ONLINE
                 confirmOrderModel.setTransactionId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));
@@ -264,7 +334,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         if (model.getConfirmOrder() != null) {
             Intent intent = new Intent(BookingSummaryActivity.this, ReceiptActivity.class);
             intent.putExtra("ConfirmReservationResponseModel", EnrichUtils.newGson().toJson(confirmReservationResponseModel));
-            intent.putExtra("InvoiceModel", EnrichUtils.newGson().toJson(invoiceModel));
+            intent.putExtra("InvoiceModel", EnrichUtils.newGson().toJson(createOrderResponseModel.getPaymentSummary()));
             startActivity(intent);
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, model.getError().Message);
@@ -285,9 +355,17 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             // Check which object is non-null
             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
                 if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-                    //Success Transaction; Now confirm reservation
-//                    createOrder();
-                    confirmReservation();
+                    if (application.cartHasServices()) {
+                        confirmReservation();
+                    } else if (application.cartHasPackages()) {
+                        ConfirmReservationResponseModel confirmReservationResponseModel = new ConfirmReservationResponseModel();
+                        confirmReservationResponseModel.IsConfirmed = true;
+                        reservationConfirmed(confirmReservationResponseModel);
+                    } else if (application.cartHasProducts()) {
+                        ConfirmReservationResponseModel confirmReservationResponseModel = new ConfirmReservationResponseModel();
+                        confirmReservationResponseModel.IsConfirmed = true;
+                        reservationConfirmed(confirmReservationResponseModel);
+                    }
                 } else {
                     //Failure Transaction;
                 }
@@ -325,6 +403,33 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         bookingSummaryPresenter.confirmReservation(BookingSummaryActivity.this, confirmReservationRequestModel);
     }
 
+    private void setData(PaymentSummaryModel model) {
+        totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+        grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
+        payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
+        discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
+        taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
+        dateTimeSlot.setText("-");
+        stylistLabel.setText("-");
+
+        makePaymentOfflineBtn.setEnabled(true);
+        makePaymentOnlineBtn.setEnabled(true);
+
+        if (application.cartHasServices()) {
+            serviceInfoContainer.setVisibility(View.VISIBLE);
+            productInfoContainer.setVisibility(View.GONE);
+        } else if (application.cartHasPackages()) {
+            serviceInfoContainer.setVisibility(View.GONE);
+            productInfoContainer.setVisibility(View.GONE);
+        } else if (application.cartHasProducts()) {
+            serviceInfoContainer.setVisibility(View.GONE);
+            productInfoContainer.setVisibility(View.VISIBLE);
+            deliveryPeriod.setText(application.getDeliveryPeriod());
+            deliveryInformation.setText(application.getDeliveryInformation());
+            makePaymentOfflineBtn.setText("PAY CASH");
+        }
+    }
+
     private void setData(InvoiceModel model) {
         totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
         grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.sales);
@@ -332,6 +437,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price._final);
         discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.discount);
         taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.tax);
+
+        serviceInfoContainer.setVisibility(View.VISIBLE);
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -364,12 +471,18 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         TextView cashAmount = dialog.findViewById(R.id.cod_amount);
         Button cashPaymentProceedButton = dialog.findViewById(R.id.cash_payment_proceed_button);
 
-        cashAmount.setText(getResources().getString(R.string.Rs) + " " + invoiceModel.Price._final);
+        cashAmount.setText(getResources().getString(R.string.Rs) + " " + createOrderResponseModel.getPaymentSummary().getTotal());
 
         cashPaymentProceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmReservation();
+                if (application.cartHasServices()) {
+                    confirmReservation();
+                } else {
+                    ConfirmReservationResponseModel confirmReservationResponseModel = new ConfirmReservationResponseModel();
+                    confirmReservationResponseModel.IsConfirmed = true;
+                    reservationConfirmed(confirmReservationResponseModel);
+                }
             }
         });
 
@@ -384,10 +497,12 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
 
-        double amount = invoiceModel.Price._final;
+//        double amount = invoiceModel.Price._final;
+        double amount = createOrderResponseModel.getPaymentSummary().getTotal();
         String txnId = System.currentTimeMillis() + "";
         String phone = "" + guestModel.MobileNumber;
-        String productName = "" + reserveSlotResponseModel.SlotBookings.get(0).Services.get(0).Service.name;
+//        String productName = "" + reserveSlotResponseModel.SlotBookings.get(0).Services.get(0).Service.name;
+        String productName = "" + application.getCartItemNames();
         String firstName = "" + guestModel.FirstName;
         String lastName = "" + guestModel.LastName;
         String email = "" + guestModel.Email;

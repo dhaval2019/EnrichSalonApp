@@ -93,6 +93,8 @@ public class EnrichApplication extends Application {
             genericCartModel.packageBundleId = cartItem.getPackageBundleId();
             genericCartModel.PaymentMode = cartItem.getPaymentMode();
             genericCartModel.therapistModel = cartItem.getTherapistModel();
+            genericCartModel.PackageBundleItemType = cartItem.getPackageBundleItemType();
+            genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
 
             cartList.add(genericCartModel);
 
@@ -119,6 +121,8 @@ public class EnrichApplication extends Application {
         genericCartModel.packageBundleId = cartItem.getPackageBundleId();
         genericCartModel.PaymentMode = cartItem.getPaymentMode();
         genericCartModel.therapistModel = cartItem.getTherapistModel();
+        genericCartModel.PackageBundleItemType = cartItem.getPackageBundleItemType();
+        genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
 
         cartList.add(genericCartModel);
 
@@ -239,6 +243,15 @@ public class EnrichApplication extends Application {
         return 0;
     }
 
+    public int getItemQuantity(CartItem item) {
+        for (int i = 0; i < cartList.size(); i++) {
+            if (cartList.get(i).Id == item.getId()) {
+                return cartList.get(i).getQuantity();
+            }
+        }
+        return 0;
+    }
+
     private boolean cartItemTypeAlreadyExists(CartItem cartItem) {
         for (int i = 0; i < cartList.size(); i++) {
             if (cartList.get(i).getCartItemType() == cartItem.getCartItemType()) {
@@ -248,7 +261,7 @@ public class EnrichApplication extends Application {
         return false;
     }
 
-    private boolean alreadyExist(CartItem cartItem) {
+    public boolean alreadyExist(CartItem cartItem) {
         for (int i = 0; i < cartList.size(); i++) {
             if (cartList.get(i).getId() == cartItem.getId()) {
                 return true;
@@ -352,7 +365,7 @@ public class EnrichApplication extends Application {
         }
     }
 
-    public void removeFromCartBasedOnId(String id) {
+    public void removeFromCartBasedOnId(int id) {
         Iterator<GenericCartModel> itemIterator = cartList.iterator();
         while (itemIterator.hasNext()) {
             GenericCartModel genericCartItem = itemIterator.next();
@@ -481,5 +494,38 @@ public class EnrichApplication extends Application {
         return true;
     }
 
+    public String getCartItemNames() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < cartList.size(); i++) {
+            sb.append(cartList.get(i) + ", ");
+        }
+
+        return sb.toString().substring(0, sb.toString().length() - 2);
+    }
+
+    public String getDeliveryPeriod() {
+        if (cartHasProducts()) {
+            for (int i = 0; i < cartList.size(); i++) {
+                if (cartList.get(i).CartItemType == CartItem.CART_TYPE_PRODUCTS) {
+                    return cartList.get(i).getDeliveryPeriod();
+                }
+            }
+        }
+
+        return "-";
+    }
+
+    public String getDeliveryInformation() {
+        if (cartHasProducts()) {
+            for (int i = 0; i < cartList.size(); i++) {
+                if (cartList.get(i).CartItemType == CartItem.CART_TYPE_PRODUCTS) {
+                    return cartList.get(i).getDeliveryInformation();
+                }
+            }
+        }
+
+        return "-";
+    }
 }
 

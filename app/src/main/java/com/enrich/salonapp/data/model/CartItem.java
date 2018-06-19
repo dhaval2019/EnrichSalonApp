@@ -2,6 +2,10 @@ package com.enrich.salonapp.data.model;
 
 import android.os.Parcelable;
 
+import com.enrich.salonapp.data.model.Package.BaseChildModel;
+
+import java.util.List;
+
 public abstract class CartItem implements Parcelable {
     public static final int CART_TYPE_LOOKS = 0;
     public static final int CART_TYPE_SUB_PACKAGE = 1;
@@ -12,7 +16,7 @@ public abstract class CartItem implements Parcelable {
     protected int quantity = 1;
     protected boolean addedToCart;
 
-    public abstract String getId();
+    public abstract int getId();
 
     public abstract String getServiceId();
 
@@ -64,4 +68,8 @@ public abstract class CartItem implements Parcelable {
     public abstract TherapistModel getTherapistModel();
 
     public abstract String getSlotTime();
+
+    public abstract int getPackageBundleItemCount();
+
+    public abstract int getPackageBundleItemType();
 }

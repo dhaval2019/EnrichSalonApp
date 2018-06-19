@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class AvailableTimeResponseModel implements Parcelable {
 
     public String ReservationId;
-    public SlotBookingsModel[] SlotBookings;
+//    public SlotBookingsModel[] SlotBookings;
     public ArrayList<SlotModel> OpenSlots;
     public ArrayList<SlotModel> ClosedSlots;
     public ErrorModel Error;

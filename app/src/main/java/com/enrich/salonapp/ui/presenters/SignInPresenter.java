@@ -68,7 +68,7 @@ public class SignInPresenter extends BasePresenter<SignInContract.View> implemen
             public void onSuccess(GuestModel model) {
                 if (view != null) {
                     view.saveUserDetails(model);
-//                    view.setProgressBar(false);
+                    view.setProgressBar(false);
                 }
             }
 

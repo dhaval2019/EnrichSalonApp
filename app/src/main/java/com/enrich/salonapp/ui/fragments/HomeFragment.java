@@ -23,18 +23,27 @@ import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
-import com.enrich.salonapp.data.model.PackageModel;
+import com.enrich.salonapp.data.model.Package.PackageModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.activities.AppointmentsActivity;
 import com.enrich.salonapp.ui.activities.CategoryActivity;
 import com.enrich.salonapp.ui.activities.OfferActivity;
+import com.enrich.salonapp.ui.activities.PackagesActivity;
+import com.enrich.salonapp.ui.activities.ProductActivity;
 import com.enrich.salonapp.ui.adapters.AppointmentHomeAdapter;
 import com.enrich.salonapp.ui.adapters.CategoriesHomeAdapter;
 import com.enrich.salonapp.ui.adapters.OfferHomeAdapter;
+import com.enrich.salonapp.ui.adapters.PackagesHomeAdapter;
+import com.enrich.salonapp.ui.adapters.ProductHomeAdapter;
 import com.enrich.salonapp.ui.adapters.RecommendedServicesAdapter;
 import com.enrich.salonapp.ui.contracts.HomePageContract;
+import com.enrich.salonapp.ui.contracts.ProductContract;
 import com.enrich.salonapp.ui.presenters.HomePagePresenter;
+import com.enrich.salonapp.ui.presenters.ProductPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseFragment;
@@ -49,7 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
-public class HomeFragment extends BaseFragment implements HomePageContract.View {
+public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View {
 
     static DrawerLayout mDrawer;
 
@@ -110,11 +119,15 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
     @BindView(R.id.new_popular_service_container)
     FrameLayout newPopularServiceContainer;
 
-    ArrayList<PackageModel> packageList;
+    @BindView(R.id.appointment_container)
+    LinearLayout appointmentContainer;
+
     ArrayList<OfferModel> offerList;
     ArrayList<CategoryModel> categoryList;
+    ArrayList<PackageModel> packageList;
 
     HomePagePresenter homePagePresenter;
+    ProductPresenter productPresenter;
 
     DataRepository dataRepository;
 
@@ -169,11 +182,11 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
         packagesMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (packageList != null) {
-//                    Intent intent = new Intent(HomeFragment.this.getActivity(), PackageActivity.class);
-//                    intent.putExtra("PackageList", packageList);
-//                    startActivity(intent);
-//                }
+                if (packageList != null) {
+                    Intent intent = new Intent(HomeFragment.this.getActivity(), PackagesActivity.class);
+                    intent.putExtra("PackageList", packageList);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -185,12 +198,21 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
             }
         });
 
+        productsMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
         dataRepository = Injection.provideDataRepository(this.getActivity(), mainUiThread, threadExecutor, null);
 
         homePagePresenter = new HomePagePresenter(this, dataRepository);
+        productPresenter = new ProductPresenter(this, dataRepository);
 
         // GET OFFERS
         homePagePresenter.getOffersList(this.getActivity());
@@ -201,8 +223,14 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
         // GET APPOINTMENTS
         homePagePresenter.getAppointment(this.getActivity(), RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT);
 
-        //GET NEW AND POPULAR
+        // GET NEW AND POPULAR
         getNewAndPopularServices();
+
+        // GET PACKAGES
+        homePagePresenter.getAllPackages(this.getActivity());
+
+        // GET PRODUCTS
+        productPresenter.getProducts(this.getActivity(), new ProductRequestModel());
 
         return rootView;
     }
@@ -259,12 +287,14 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
     @Override
     public void showAppointments(AppointmentResponseModel model) {
         if (model.Appointments.size() != 0) {
+            appointmentContainer.setVisibility(View.VISIBLE);
             appointmentsRecyclerView.setVisibility(View.VISIBLE);
             noAppointmentContainer.setVisibility(View.GONE);
             AppointmentHomeAdapter appointmentHomeAdapter = new AppointmentHomeAdapter(HomeFragment.this.getActivity(), model.Appointments);
             appointmentsRecyclerView.setAdapter(appointmentHomeAdapter);
             appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         } else {
+            appointmentContainer.setVisibility(View.GONE);
             appointmentsRecyclerView.setVisibility(View.GONE);
             noAppointmentContainer.setVisibility(View.VISIBLE);
         }
@@ -283,7 +313,24 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View 
 
     }
 
+    @Override
+    public void showPackage(PackageResponseModel model) {
+        packageList = model.Package;
+        PackagesHomeAdapter adapter = new PackagesHomeAdapter(this.getActivity(), model.Package);
+        packagesRecyclerView.setAdapter(adapter);
+        packagesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
     public ArrayList<CategoryModel> getCategoryList() {
         return categoryList;
+    }
+
+    @Override
+    public void showProducts(ProductResponseModel model) {
+        if (!model.Product.isEmpty()) {
+            ProductHomeAdapter adapter = new ProductHomeAdapter(this.getActivity(), model.Product);
+            productsRecyclerView.setAdapter(adapter);
+            productsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        }
     }
 }

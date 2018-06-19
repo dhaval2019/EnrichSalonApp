@@ -13,7 +13,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     public String id;
 
     @SerializedName("ServiceId")
-    public String ServiceId;
+    public int ServiceId;
 
     @SerializedName("Name")
     public String name;
@@ -86,7 +86,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     protected ServiceViewModel(Parcel in) {
 //        super(in);
         id = in.readString();
-        ServiceId = in.readString();
+        ServiceId = in.readInt();
         name = in.readString();
         description = in.readString();
         hTMLDescription = in.readString();
@@ -116,7 +116,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 //        super.writeToParcel(dest, flags);
         dest.writeString(id);
-        dest.writeString(ServiceId);
+        dest.writeInt(ServiceId);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(hTMLDescription);
@@ -160,13 +160,13 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     };
 
     @Override
-    public String getId() {
-        return id;
+    public int getId() {
+        return ServiceId;
     }
 
     @Override
     public String getServiceId() {
-        return ServiceId;
+        return id;
     }
 
     @Override
@@ -237,6 +237,16 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @Override
     public String getSlotTime() {
         return SlotTime;
+    }
+
+    @Override
+    public int getPackageBundleItemCount() {
+        return 0;
+    }
+
+    @Override
+    public int getPackageBundleItemType() {
+        return 0;
     }
 }
 

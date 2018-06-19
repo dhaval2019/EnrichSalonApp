@@ -8,6 +8,7 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.ui.contracts.HomePageContract;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
@@ -123,8 +124,39 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
         dataRepository.getNewAndPopularServices(context, map, new DataSource.NewAndPopularServicesCallBack() {
             @Override
             public void onSuccess(NewAndPopularResponseModel model) {
-                if(view!=null){
+                if (view != null) {
                     view.showNewAndPopularServices(model);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (view != null) {
+                    view.setProgressBar(false);
+                    view.showToastMessage("Something went wrong. Please try again later.");
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if (view != null) {
+                    view.setProgressBar(false);
+                    view.showToastMessage("No Network. Please try again later.");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getAllPackages(Context context) {
+        if (view == null)
+            return;
+
+        dataRepository.getAllPackages(context, new DataSource.PackageListCallBack() {
+            @Override
+            public void onSuccess(PackageResponseModel model) {
+                if (view != null) {
+                    view.showPackage(model);
                 }
             }
 

@@ -21,354 +21,397 @@
             android:id="@+id/nav_header"
             layout="@layout/nav_header_home" />
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical"
-            android:paddingLeft="20dp">
+            android:layout_height="wrap_content">
 
-            <!-- PROFILE -->
-            <RelativeLayout
-                android:id="@+id/profile_container"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:paddingLeft="20dp">
 
-                <ImageView
-                    android:id="@+id/nav_profile_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_person_36dp"
-                    android:tint="@color/white" />
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_profile_label"
-                    android:layout_width="wrap_content"
+                <!-- PROFILE -->
+                <RelativeLayout
+                    android:id="@+id/profile_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@+id/nav_profile_icon"
-                    android:text="Profile"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_profile_label"
-                    android:layout_below="@+id/nav_profile_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_profile_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_person_36dp"
+                        android:tint="@color/white" />
 
-            <!-- WALLET -->
-            <RelativeLayout
-                android:id="@+id/wallet_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding"
-                android:visibility="gone">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_profile_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/nav_profile_icon"
+                        android:text="Profile"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_wallet_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_account_balance_wallet" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_profile_label"
+                        android:layout_below="@+id/nav_profile_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_wallet_label"
-                    android:layout_width="wrap_content"
+                <!-- MY PACKAGE -->
+                <RelativeLayout
+                    android:id="@+id/my_package_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_wallet_icon"
-                    android:text="Wallet"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_wallet_label"
-                    android:layout_below="@+id/nav_wallet_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_my_package_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/package_variant"
+                        android:tint="@color/white" />
 
-            <!-- APPOINTMENTS -->
-            <RelativeLayout
-                android:id="@+id/appointment_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_my_package_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/nav_my_package_icon"
+                        android:text="My Packages"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_appointments_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_event"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_my_package_label"
+                        android:layout_below="@+id/nav_my_package_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_appointments_label"
-                    android:layout_width="wrap_content"
+                <!-- WALLET -->
+                <RelativeLayout
+                    android:id="@+id/wallet_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_appointments_icon"
-                    android:text="Appointments"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_appointments_label"
-                    android:layout_below="@+id/nav_appointments_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_wallet_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_account_balance_wallet"
+                        android:tint="@color/white" />
 
-            <!-- NOTIFICATIONS -->
-            <RelativeLayout
-                android:id="@+id/notification_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding"
-                android:visibility="gone">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_wallet_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/nav_wallet_icon"
+                        android:text="Wallet"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_notification_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_notifications" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_wallet_label"
+                        android:layout_below="@+id/nav_wallet_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_notification_label"
-                    android:layout_width="wrap_content"
+                <!-- APPOINTMENTS -->
+                <RelativeLayout
+                    android:id="@+id/appointment_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_notification_icon"
-                    android:text="Notifications"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_notification_label"
-                    android:layout_below="@+id/nav_notification_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_appointments_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_event"
+                        android:tint="@color/white" />
 
-            <!-- SHARE -->
-            <RelativeLayout
-                android:id="@+id/share_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_appointments_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_appointments_icon"
+                        android:text="Appointments"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_refer_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_share"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_appointments_label"
+                        android:layout_below="@+id/nav_appointments_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_refer_label"
-                    android:layout_width="wrap_content"
+                <!-- NOTIFICATIONS -->
+                <RelativeLayout
+                    android:id="@+id/notification_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_refer_icon"
-                    android:text="Share"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:visibility="gone">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_refer_label"
-                    android:layout_below="@+id/nav_refer_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_notification_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_notifications" />
 
-            <!-- CONTACT US -->
-            <RelativeLayout
-                android:id="@+id/contact_us_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_notification_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_notification_icon"
+                        android:text="Notifications"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_contact_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_perm_phone_msg"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_notification_label"
+                        android:layout_below="@+id/nav_notification_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_contact_label"
-                    android:layout_width="wrap_content"
+                <!-- SHARE -->
+                <RelativeLayout
+                    android:id="@+id/share_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_contact_icon"
-                    android:text="Contact Us"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_contact_label"
-                    android:layout_below="@+id/nav_contact_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_refer_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_share"
+                        android:tint="@color/white" />
 
-            <!-- RATE -->
-            <RelativeLayout
-                android:id="@+id/rate_us_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_refer_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_refer_icon"
+                        android:text="Share"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_rate_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_star"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_refer_label"
+                        android:layout_below="@+id/nav_refer_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_rate_label"
-                    android:layout_width="wrap_content"
+                <!-- CONTACT US -->
+                <RelativeLayout
+                    android:id="@+id/contact_us_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_rate_icon"
-                    android:text="Rate Us"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_rate_label"
-                    android:layout_below="@+id/nav_rate_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_contact_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_perm_phone_msg"
+                        android:tint="@color/white" />
 
-            <!-- SETTINGS -->
-            <RelativeLayout
-                android:id="@+id/settings_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_contact_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_contact_icon"
+                        android:text="Contact Us"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/nav_settings_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_settings_36dp"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_contact_label"
+                        android:layout_below="@+id/nav_contact_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/nav_settings_label"
-                    android:layout_width="wrap_content"
+                <!-- RATE -->
+                <RelativeLayout
+                    android:id="@+id/rate_us_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/nav_settings_icon"
-                    android:text="Settings"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/nav_settings_label"
-                    android:layout_below="@+id/nav_settings_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/nav_rate_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_star"
+                        android:tint="@color/white" />
 
-            <!-- LOGOUT -->
-            <RelativeLayout
-                android:id="@+id/logout_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/nav_title_container_padding"
-                android:paddingTop="@dimen/nav_title_container_padding">
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_rate_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_rate_icon"
+                        android:text="Rate Us"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
 
-                <ImageView
-                    android:id="@+id/logout_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_power_settings_new"
-                    android:tint="@color/white" />
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_rate_label"
+                        android:layout_below="@+id/nav_rate_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/logout_label"
-                    android:layout_width="wrap_content"
+                <!-- SETTINGS -->
+                <RelativeLayout
+                    android:id="@+id/settings_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/logout_icon"
-                    android:text="Logout"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/logout_label"
-                    android:layout_below="@+id/logout_icon"
-                    android:layout_marginTop="15dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/nav_settings_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_settings_36dp"
+                        android:tint="@color/white" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_settings_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/nav_settings_icon"
+                        android:text="Settings"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/nav_settings_label"
+                        android:layout_below="@+id/nav_settings_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
+
+                <!-- LOGOUT -->
+                <RelativeLayout
+                    android:id="@+id/logout_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
+                    android:paddingTop="@dimen/nav_title_container_padding">
+
+                    <ImageView
+                        android:id="@+id/logout_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_power_settings_new"
+                        android:tint="@color/white" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/logout_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/logout_icon"
+                        android:text="Logout"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/logout_label"
+                        android:layout_below="@+id/logout_icon"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 </FrameLayout>

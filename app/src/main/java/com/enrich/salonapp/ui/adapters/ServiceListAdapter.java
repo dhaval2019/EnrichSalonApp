@@ -137,7 +137,7 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
                     Map<String, String> map = new HashMap<>();
                     map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);
-                    map.put("ServiceId", model.id);
+                    map.put("ServiceId", "" + model.id);
                     map.put("forDate", "");
 
                     therapistPresenter.getTherapist(activity, map);

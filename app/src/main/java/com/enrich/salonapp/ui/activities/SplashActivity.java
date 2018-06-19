@@ -96,7 +96,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
             public void run() {
                 getAuthenticationToken();
             }
-        }, 2000);
+        }, 1000);
     }
 
     private void getAuthenticationToken() {
@@ -116,7 +116,6 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
             ((EnrichApplication)getApplicationContext()).setAuthenticationModel(model);
-//            EnrichUtils.saveAuthenticationModel(SplashActivity.this, model);
 
             if(EnrichUtils.getHomeStore(this)!=null){
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);

@@ -53,6 +53,9 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @BindView(R.id.password_container)
     LinearLayout passwordContainer;
 
+    @BindView(R.id.progress_dialog)
+    LinearLayout progressDialog;
+
     SignInPresenter signInPresenter;
     AuthenticationTokenPresenter authenticationTokenPresenter;
 
@@ -109,7 +112,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
                 model.username = userNameStr;
                 model.password = passwordStr;
 
-                authenticationTokenPresenter.getAuthenticationToken(SignInActivity.this, model, false);
+                authenticationTokenPresenter.getAuthenticationToken(SignInActivity.this, model, true);
             }
         });
 
@@ -150,7 +153,6 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         model.Password = passwordEdit.getText().toString();
 
         EnrichUtils.saveUserData(SignInActivity.this, model);
-        setProgressBar(false);
 
         Intent intent = new Intent(SignInActivity.this, StoreSelectorActivity.class);
         startActivity(intent);
@@ -161,6 +163,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     public void passwordSent(ForgotPasswordResponseModel model) {
         if (model.Success) {
             EnrichUtils.showLongMessage(SignInActivity.this, "We have sent you an Email and SMS with your new password. Please login with the new password.");
+        } else {
+            EnrichUtils.showMessage(SignInActivity.this, "" + model.Error.Message);
         }
     }
 
@@ -168,10 +172,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model != null) {
             ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
-//            EnrichUtils.saveAuthenticationModel(this, model);
-            setProgressBar(true);
+            progressDialog.setVisibility(View.VISIBLE);
             signInPresenter.getUserData(SignInActivity.this, model.userId);
-
         }
     }
 }

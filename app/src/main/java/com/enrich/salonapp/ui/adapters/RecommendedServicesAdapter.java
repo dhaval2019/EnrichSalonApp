@@ -81,7 +81,7 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
 
                 Map<String, String> map = new HashMap<>();
                 map.put("CenterId", EnrichUtils.getHomeStore(context).Id);
-                map.put("ServiceId", list.get(position).id);
+                map.put("ServiceId", "" + list.get(position).id);
                 map.put("forDate", "");
                 pos = position;
 

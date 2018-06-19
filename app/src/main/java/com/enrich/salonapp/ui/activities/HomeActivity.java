@@ -88,6 +88,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.my_package_container)
+    RelativeLayout myPackageContainer;
+
     CenterDetailModel centerDetailModel;
 
     GuestModel guestModel;
@@ -149,6 +152,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+        myPackageContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyPackageActivity.class);
+                startActivity(intent);
+            }
+        });
+
         walletContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,6 +210,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 EnrichUtils.logout(HomeActivity.this);
+                SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
                 Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

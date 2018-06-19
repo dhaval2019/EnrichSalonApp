@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/amount_date_container"
+        android:orientation="vertical">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/order_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hair Cut and Blow Dry"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/order_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Infinity II, Malad west"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:font_type="light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/amount_date_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/wallet_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginStart="10dp"
+            android:text="Rs. 235"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            app:font_type="semi_bold" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="21 Aug, 2017"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:font_type="light" />
+    </LinearLayout>
+</RelativeLayout>

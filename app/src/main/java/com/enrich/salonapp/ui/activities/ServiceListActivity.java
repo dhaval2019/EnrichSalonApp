@@ -1,8 +1,11 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -78,6 +82,27 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.male_container)
+    LinearLayout maleContainer;
+
+    @BindView(R.id.female_container)
+    LinearLayout femaleContainer;
+
+    @BindView(R.id.female_icon)
+    ImageView femaleIcon;
+
+    @BindView(R.id.female_text)
+    TextView femaleText;
+
+    @BindView(R.id.male_icon)
+    ImageView maleIcon;
+
+    @BindView(R.id.male_text)
+    TextView maleText;
+
+    @BindView(R.id.no_service_available)
+    TextView noServiceAvailable;
+
     ArrayList<ParentServiceViewModel> serviceList;
     ArrayList<CategoryModel> categoryList;
 
@@ -87,6 +112,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     DataRepository dataRepository;
     ServiceListPresenter serviceListPresenter;
+    CategoryModel categoryModel;
 
     ServiceListAdapter adapter;
 
@@ -134,8 +160,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         categoryNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CategoryModel categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
-                getServiceList(categoryModel.Id);
+                categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
+
+                String gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
+
+                changeGenderIcons(!gender.equalsIgnoreCase("male"));
+                getServiceList(categoryModel.Id, gender);
             }
 
             @Override
@@ -170,6 +200,39 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
             }
         });
+
+        maleContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeGenderIcons(false);
+                getServiceList(categoryModel.Id, "male");
+            }
+        });
+
+        femaleContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeGenderIcons(true);
+                getServiceList(categoryModel.Id, "female");
+            }
+        });
+    }
+
+    private void changeGenderIcons(boolean isFemale) {
+        if (isFemale) {
+            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+            femaleText.setTextColor(getResources().getColor(R.color.colorAccent));
+
+            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
+            maleText.setTextColor(getResources().getColor(R.color.grey));
+        } else {
+
+            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+            maleText.setTextColor(getResources().getColor(R.color.colorAccent));
+
+            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
+            femaleText.setTextColor(getResources().getColor(R.color.grey));
+        }
     }
 
     private void stCategorySpinner() {
@@ -178,7 +241,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         categoryNameSpinner.setSelection(position);
     }
 
-    private void getServiceList(String categoryId) {
+    private void getServiceList(String categoryId, String gender) {
         Map<String, String> map = new HashMap<>();
         map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
         map.put("CategoryId", categoryId);
@@ -186,7 +249,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         map.put("GuestId", EnrichUtils.getUserData(this).Id);
         map.put("length", "100");
         map.put("start", "0");
-        map.put("Tag", "");
+        map.put("Tag", gender);
 
         serviceListPresenter.getServiceList(this, map);
     }
@@ -213,13 +276,15 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             }
 
             serviceList = list;
+            noServiceAvailable.setVisibility(View.GONE);
+            serviceRecyclerView.setVisibility(View.VISIBLE);
             setExpandableServiceListAdapter(list);
         } else {
             if (model.Error != null) {
                 EnrichUtils.showMessage(ServiceListActivity.this, "" + model.Error.Message);
-            } else {
-                EnrichUtils.showMessage(ServiceListActivity.this, "Something went wrong. Please try again.");
             }
+            noServiceAvailable.setVisibility(View.VISIBLE);
+            serviceRecyclerView.setVisibility(View.GONE);
         }
     }
 

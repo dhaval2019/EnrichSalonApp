@@ -1,15 +1,15 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.CreateOrder;
 
 public class CreateOrderProductModel {
 
-    private Long ProductId;
+    private int ProductId;
     private int Quantity;
 
-    public Long getProductId() {
+    public int getProductId() {
         return ProductId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(int productId) {
         ProductId = productId;
     }
 

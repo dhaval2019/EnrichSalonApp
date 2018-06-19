@@ -18,10 +18,10 @@ import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
 import com.enrich.salonapp.data.model.ConfirmReservationRequestModel;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
-import com.enrich.salonapp.data.model.CreateOTPRequestModel;
-import com.enrich.salonapp.data.model.CreateOTPResponseModel;
-import com.enrich.salonapp.data.model.CreateOrderRequestModel;
-import com.enrich.salonapp.data.model.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
+import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
@@ -30,12 +30,17 @@ import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
 import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
+import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.util.NetworkHelper;
 
 import java.util.Map;
@@ -543,6 +548,90 @@ public class DataRepository {
                 @Override
                 public void onNetworkFailure() {
                     callBack.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getAllPackages(Context context, final DataSource.PackageListCallBack callBack) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getAllPackages(new DataSource.PackageListCallBack() {
+                @Override
+                public void onSuccess(PackageResponseModel model) {
+                    callBack.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callBack.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callBack.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getWallet(Context context, Map<String, String> map, final DataSource.GetWalletCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getWallet(map, new DataSource.GetWalletCallback() {
+                @Override
+                public void onSuccess(WalletModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getProducts(Context context, ProductRequestModel model, final DataSource.GetProductListCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getProductList(model, new DataSource.GetProductListCallback() {
+                @Override
+                public void onSuccess(ProductResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getMyPackages(Context context, Map<String, String> map, final DataSource.GetMyPackagesCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getMyPackages(map, new DataSource.GetMyPackagesCallback() {
+                @Override
+                public void onSuccess(MyPackageResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
                 }
             });
         }

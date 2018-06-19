@@ -1,4 +1,7 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.CreateOrder;
+
+import com.enrich.salonapp.data.model.OrderResponseModel;
+import com.enrich.salonapp.data.model.PaymentSummaryModel;
 
 public class CreateOrderResponseModel {
 

@@ -1,55 +1,60 @@
-package com.enrich.salonapp.data.model;
+package com.enrich.salonapp.data.model.Package;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PackageModel implements Parcelable {
+import java.util.ArrayList;
+
+public class PackageModel implements Parcelable{
 
     public int PackageId;
     public String PackageTitle;
+    public String PackageSubTitle;
     public String PackageDescription;
-    public String ValidTill;
-    public Double PackageAmount;
+    public double StartingPrice;
     public String PackageImage;
     public String PackageImageWide;
     public String Gender;
+    public String PackageFor;
+    public boolean IsActive;
+    public int PackageCategoryId;
     public String PackageImageURL;
     public String PackageImageWideURL;
+    public ArrayList<PackageBundle> PackageBundle;
 
     protected PackageModel(Parcel in) {
         PackageId = in.readInt();
         PackageTitle = in.readString();
+        PackageSubTitle = in.readString();
         PackageDescription = in.readString();
-        ValidTill = in.readString();
-        if (in.readByte() == 0) {
-            PackageAmount = null;
-        } else {
-            PackageAmount = in.readDouble();
-        }
+        StartingPrice = in.readDouble();
         PackageImage = in.readString();
         PackageImageWide = in.readString();
         Gender = in.readString();
+        PackageFor = in.readString();
+        IsActive = in.readByte() != 0;
+        PackageCategoryId = in.readInt();
         PackageImageURL = in.readString();
         PackageImageWideURL = in.readString();
+        PackageBundle = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundle.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(PackageId);
         dest.writeString(PackageTitle);
+        dest.writeString(PackageSubTitle);
         dest.writeString(PackageDescription);
-        dest.writeString(ValidTill);
-        if (PackageAmount == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(PackageAmount);
-        }
+        dest.writeDouble(StartingPrice);
         dest.writeString(PackageImage);
         dest.writeString(PackageImageWide);
         dest.writeString(Gender);
+        dest.writeString(PackageFor);
+        dest.writeByte((byte) (IsActive ? 1 : 0));
+        dest.writeInt(PackageCategoryId);
         dest.writeString(PackageImageURL);
         dest.writeString(PackageImageWideURL);
+        dest.writeTypedList(PackageBundle);
     }
 
     @Override
