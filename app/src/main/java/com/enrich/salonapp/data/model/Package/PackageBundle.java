@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.TherapistModel;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +31,25 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
     public String ValidTillDate;
     public int ValidityDays;
     public List<PackageBundleCashback> Cashbacks;
-    public List<PackageBundleService> PackageBundleService;
-    public ArrayList<PackageBundleStore> PackageBundleStore;
-    public ArrayList<PackageBundleTag> PackageBundleTag;
-    public ArrayList<PackageBundleBrand> PackageBundleBrand;
-    public ArrayList<PackageBundleProduct> PackageBundleProduct;
-    public ArrayList<PackageBundleCity> PackageBundleCity;
+    
+    @SerializedName("PackageBundleService")
+    public List<PackageBundleService> packageBundleService;
+
+    @SerializedName("PackageBundleStore")
+    public List<PackageBundleStore> packageBundleStore;
+
+    @SerializedName("PackageBundleTag")
+    public List<PackageBundleTag> packageBundleTag;
+
+    @SerializedName("PackageBundleBrand")
+    public List<PackageBundleBrand> packageBundleBrand;
+
+    @SerializedName("PackageBundleProduct")
+    public List<PackageBundleProduct> packageBundleProduct;
+    
+    @SerializedName("PackageBundleCity")
+    public List<PackageBundleCity> packageBundleCity;
+
     public int Count;
 
     protected PackageBundle(Parcel in) {
@@ -51,12 +65,12 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
         ValidTillDate = in.readString();
         ValidityDays = in.readInt();
         Cashbacks = in.createTypedArrayList(PackageBundleCashback.CREATOR);
-        PackageBundleService = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleService.CREATOR);
-        PackageBundleStore = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleStore.CREATOR);
-        PackageBundleTag = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleTag.CREATOR);
-        PackageBundleBrand = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleBrand.CREATOR);
-        PackageBundleProduct = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleProduct.CREATOR);
-        PackageBundleCity = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundleCity.CREATOR);
+        packageBundleService = in.createTypedArrayList(PackageBundleService.CREATOR);
+        packageBundleStore = in.createTypedArrayList(PackageBundleStore.CREATOR);
+        packageBundleTag = in.createTypedArrayList(PackageBundleTag.CREATOR);
+        packageBundleBrand = in.createTypedArrayList(PackageBundleBrand.CREATOR);
+        packageBundleProduct = in.createTypedArrayList(PackageBundleProduct.CREATOR);
+        packageBundleCity = in.createTypedArrayList(PackageBundleCity.CREATOR);
         Count = in.readInt();
     }
 
@@ -74,12 +88,12 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
         dest.writeString(ValidTillDate);
         dest.writeInt(ValidityDays);
         dest.writeTypedList(Cashbacks);
-        dest.writeTypedList(PackageBundleService);
-        dest.writeTypedList(PackageBundleStore);
-        dest.writeTypedList(PackageBundleTag);
-        dest.writeTypedList(PackageBundleBrand);
-        dest.writeTypedList(PackageBundleProduct);
-        dest.writeTypedList(PackageBundleCity);
+        dest.writeTypedList(packageBundleService);
+        dest.writeTypedList(packageBundleStore);
+        dest.writeTypedList(packageBundleTag);
+        dest.writeTypedList(packageBundleBrand);
+        dest.writeTypedList(packageBundleProduct);
+        dest.writeTypedList(packageBundleCity);
         dest.writeInt(Count);
     }
 
@@ -102,16 +116,16 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public List<BaseChildModel> getChildList() {
-        if (!PackageBundleService.isEmpty()) {
-            List<BaseChildModel> baseChildModels = new ArrayList<>();
-            baseChildModels.addAll(PackageBundleService);
+        if (!packageBundleService.isEmpty()) {
+            ArrayList<BaseChildModel> baseChildModels = new ArrayList<>();
+            baseChildModels.addAll(packageBundleService);
             return baseChildModels;
-        } else if (!PackageBundleProduct.isEmpty()) {
-            List<BaseChildModel> baseChildModels = new ArrayList<>();
-            baseChildModels.addAll(PackageBundleProduct);
+        } else if (!packageBundleProduct.isEmpty()) {
+            ArrayList<BaseChildModel> baseChildModels = new ArrayList<>();
+            baseChildModels.addAll(packageBundleProduct);
             return baseChildModels;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -197,10 +211,10 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public int getPackageBundleItemCount() {
-        if (!PackageBundleService.isEmpty()) {
-            return PackageBundleService.size();
-        } else if (!PackageBundleProduct.isEmpty()) {
-            return PackageBundleProduct.size();
+        if (!packageBundleService.isEmpty()) {
+            return packageBundleService.size();
+        } else if (!packageBundleProduct.isEmpty()) {
+            return packageBundleProduct.size();
         } else {
             return 0;
         }
@@ -208,9 +222,9 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public int getPackageBundleItemType() {
-        if (!PackageBundleService.isEmpty()) {
+        if (!packageBundleService.isEmpty()) {
             return BUNDLE_ITEM_TYPE_SERVICE;
-        } else if (!PackageBundleProduct.isEmpty()) {
+        } else if (!packageBundleProduct.isEmpty()) {
             return BUNDLE_ITEM_TYPE_PRODUCT;
         } else {
             return 0;

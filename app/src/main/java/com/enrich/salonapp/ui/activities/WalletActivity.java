@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -7,19 +8,30 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Wallet.WalletCenterModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
+import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
+import com.enrich.salonapp.di.Injection;
+import com.enrich.salonapp.ui.adapters.WalletAdapter;
 import com.enrich.salonapp.ui.adapters.WalletHistoryAdapter;
 import com.enrich.salonapp.ui.contracts.WalletContract;
 import com.enrich.salonapp.ui.presenters.WalletPresenter;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.threads.MainUiThread;
+import com.enrich.salonapp.util.threads.ThreadExecutor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +57,10 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     @BindView(R.id.wallet_amount_paisa)
     TextView walletAmountPaisa;
 
+    @BindView(R.id.no_cashback_available)
+    TextView noCashbackAvailable;
+
+    DataRepository dataRepository;
     WalletPresenter walletPresenter;
 
     @Override
@@ -75,51 +91,65 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
 
         collapsingToolbarLayout.setTitle("Wallet");
 
-        WalletModel walletModel = new WalletModel();
-        walletModel.Amount = 154.56;
-        walletModel.WalletValidityDate = "31/12/2018";
+        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
+        MainUiThread mainUiThread = MainUiThread.getInstance();
 
-        showWallet(walletModel);
-        showWalletHistory(new WalletHistoryModel());
+        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        walletPresenter = new WalletPresenter(this, dataRepository);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("GuestId", "ffda3d92-1867-47ee-97fa-3d4348da5a65");
+
+        walletPresenter.getWallet(this, map);
     }
 
     @Override
-    public void showWallet(WalletModel model) {
-        if (model != null) {
-            String amountStr = ""+model.Amount;
-            String[] amountSplit = amountStr.split("\\.");
+    public void showWallet(WalletResponseModel model) {
+        if (!model.Wallets.isEmpty()) {
+            walletLoader.setVisibility(View.GONE);
+            walletRecyclerView.setVisibility(View.VISIBLE);
+            noCashbackAvailable.setVisibility(View.GONE);
 
-            String rs = amountSplit[0];
-            String paisa = amountSplit[1];
+            WalletAdapter adapter = new WalletAdapter(this, model.Wallets);
+            walletRecyclerView.setAdapter(adapter);
+            walletRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+            double amount = 0;
+
+            for (int i = 0; i < model.Wallets.size(); i++) {
+                amount += model.Wallets.get(i).Amount;
+            }
+
+            String amountStr = "" + amount;
+
+            String[] amountStrSplit = amountStr.split("\\.");
+
+            String rs = amountStrSplit[0];
+            String paise = amountStrSplit[1];
 
             walletAmountRs.setText(rs);
-            walletAmountPaisa.setText(paisa);
+            walletAmountPaisa.setText("." + paise);
+        } else {
+            walletLoader.setVisibility(View.GONE);
+            walletRecyclerView.setVisibility(View.GONE);
+            noCashbackAvailable.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void showWalletHistory(WalletHistoryModel model) {
-        walletLoader.setVisibility(View.GONE);
-        walletRecyclerView.setVisibility(View.VISIBLE);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.wallet_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        WalletCenterModel walletCenterModel = new WalletCenterModel("Enrich - Tandon Mall");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        ArrayList<WalletHistoryModel> list = new ArrayList<>();
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-        list.add(new WalletHistoryModel(54.56, "07/06/2018", "HairCut by Master Stylist", walletCenterModel));
-
-        WalletHistoryAdapter adapter = new WalletHistoryAdapter(this, list);
-        walletRecyclerView.setAdapter(adapter);
-        walletRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        if (id == R.id.wallet_menu) {
+            Intent intent = new Intent(WalletActivity.this, WalletHistoryActivity.class);
+            startActivity(intent);
+        }
+        return false;
     }
 }

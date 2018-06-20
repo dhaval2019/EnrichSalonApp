@@ -4,34 +4,33 @@ import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
-import com.enrich.salonapp.data.model.Wallet.WalletModel;
-import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
-import com.enrich.salonapp.ui.contracts.WalletContract;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
+import com.enrich.salonapp.ui.contracts.WalletHistoryContract;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
 import java.util.Map;
 
-public class WalletPresenter extends BasePresenter<WalletContract.View> implements WalletContract.Presenter {
+public class WalletHistoryPresenter extends BasePresenter<WalletHistoryContract.View> implements WalletHistoryContract.Presenter {
 
     private DataRepository dataRepository;
 
-    public WalletPresenter(WalletContract.View view, DataRepository dataRepository) {
+    public WalletHistoryPresenter(WalletHistoryContract.View view, DataRepository dataRepository) {
         this.view = view;
         this.dataRepository = dataRepository;
     }
 
     @Override
-    public void getWallet(Context context, Map<String, String> map) {
+    public void getWalletHistory(Context context, Map<String, String> map) {
         if (view == null)
             return;
 
         view.setProgressBar(true);
 
-        dataRepository.getWallet(context, map, new DataSource.GetWalletCallback() {
+        dataRepository.getWalletHistory(context, map, new DataSource.GetWalletHistoryCallback() {
             @Override
-            public void onSuccess(WalletResponseModel model) {
+            public void onSuccess(WalletHistoryResponseModel model) {
                 if (view != null) {
-                    view.showWallet(model);
+                    view.showWalletHistory(model);
                     view.setProgressBar(false);
                 }
             }

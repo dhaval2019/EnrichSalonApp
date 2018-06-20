@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.Product.ProductModel;
+import com.enrich.salonapp.ui.activities.ProductActivity;
 import com.enrich.salonapp.ui.activities.ProductDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -53,9 +54,8 @@ public class ProductHomeAdapter extends RecyclerView.Adapter<ProductHomeAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("ProductDetail", list.get(position));
-                intent.putExtra("ProductList", list);
+                Intent intent = new Intent(context, ProductActivity.class);
+                intent.putExtra("Products", list);
                 context.startActivity(intent);
             }
         });

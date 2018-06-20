@@ -109,7 +109,7 @@ public class PackageDetailActivity extends AppCompatActivity {
         packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + packageModel.StartingPrice);
         Picasso.get().load(packageModel.PackageImageURL).into(packageDetailImage);
 
-        ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.PackageBundle);
+        ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);
         packageBundleRecyclerView.setAdapter(packageBundleAdapter);
         packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));

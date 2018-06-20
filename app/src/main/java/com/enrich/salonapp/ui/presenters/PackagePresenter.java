@@ -4,35 +4,29 @@ import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
-import com.enrich.salonapp.data.model.Wallet.WalletModel;
-import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
-import com.enrich.salonapp.ui.contracts.WalletContract;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.ui.contracts.PackageContract;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
-import java.util.Map;
-
-public class WalletPresenter extends BasePresenter<WalletContract.View> implements WalletContract.Presenter {
+public class PackagePresenter extends BasePresenter<PackageContract.View> implements PackageContract.Presenter {
 
     private DataRepository dataRepository;
 
-    public WalletPresenter(WalletContract.View view, DataRepository dataRepository) {
+    public PackagePresenter(PackageContract.View view, DataRepository dataRepository) {
         this.view = view;
         this.dataRepository = dataRepository;
     }
 
     @Override
-    public void getWallet(Context context, Map<String, String> map) {
+    public void getAllPackages(Context context) {
         if (view == null)
             return;
 
-        view.setProgressBar(true);
-
-        dataRepository.getWallet(context, map, new DataSource.GetWalletCallback() {
+        dataRepository.getAllPackages(context, new DataSource.PackageListCallBack() {
             @Override
-            public void onSuccess(WalletResponseModel model) {
+            public void onSuccess(PackageResponseModel model) {
                 if (view != null) {
-                    view.showWallet(model);
-                    view.setProgressBar(false);
+                    view.showPackage(model);
                 }
             }
 

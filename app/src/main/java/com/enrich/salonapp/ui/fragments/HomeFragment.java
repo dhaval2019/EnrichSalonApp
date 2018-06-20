@@ -41,8 +41,10 @@ import com.enrich.salonapp.ui.adapters.PackagesHomeAdapter;
 import com.enrich.salonapp.ui.adapters.ProductHomeAdapter;
 import com.enrich.salonapp.ui.adapters.RecommendedServicesAdapter;
 import com.enrich.salonapp.ui.contracts.HomePageContract;
+import com.enrich.salonapp.ui.contracts.PackageContract;
 import com.enrich.salonapp.ui.contracts.ProductContract;
 import com.enrich.salonapp.ui.presenters.HomePagePresenter;
+import com.enrich.salonapp.ui.presenters.PackagePresenter;
 import com.enrich.salonapp.ui.presenters.ProductPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -58,7 +60,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
-public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View {
+public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View, PackageContract.View {
 
     static DrawerLayout mDrawer;
 
@@ -128,6 +130,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     HomePagePresenter homePagePresenter;
     ProductPresenter productPresenter;
+    PackagePresenter packagePresenter;
 
     DataRepository dataRepository;
 
@@ -213,6 +216,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
         homePagePresenter = new HomePagePresenter(this, dataRepository);
         productPresenter = new ProductPresenter(this, dataRepository);
+        packagePresenter = new PackagePresenter(this, dataRepository);
 
         // GET OFFERS
         homePagePresenter.getOffersList(this.getActivity());
@@ -227,7 +231,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         getNewAndPopularServices();
 
         // GET PACKAGES
-        homePagePresenter.getAllPackages(this.getActivity());
+        packagePresenter.getAllPackages(this.getActivity());
 
         // GET PRODUCTS
         productPresenter.getProducts(this.getActivity(), new ProductRequestModel());
@@ -290,6 +294,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             appointmentContainer.setVisibility(View.VISIBLE);
             appointmentsRecyclerView.setVisibility(View.VISIBLE);
             noAppointmentContainer.setVisibility(View.GONE);
+
             AppointmentHomeAdapter appointmentHomeAdapter = new AppointmentHomeAdapter(HomeFragment.this.getActivity(), model.Appointments);
             appointmentsRecyclerView.setAdapter(appointmentHomeAdapter);
             appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));

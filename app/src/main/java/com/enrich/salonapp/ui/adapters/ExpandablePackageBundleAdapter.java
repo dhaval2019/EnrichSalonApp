@@ -64,9 +64,9 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
 
         if (!model.Cashbacks.isEmpty()) {
             parentViewHolder.viewServicesButton.setText("View Cashbacks");
-        } else if (!model.PackageBundleService.isEmpty()) {
+        } else if (!model.packageBundleService.isEmpty()) {
             parentViewHolder.viewServicesButton.setText("View Services");
-        } else if (!model.PackageBundleProduct.isEmpty()) {
+        } else if (!model.packageBundleProduct.isEmpty()) {
             parentViewHolder.viewServicesButton.setText("View Products");
         }
 

@@ -2,51 +2,56 @@ package com.enrich.salonapp.ui.activities;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
-import com.enrich.salonapp.data.model.Package.PackageModel;
-import com.enrich.salonapp.data.model.Package.PackageResponseModel;
-import com.enrich.salonapp.data.model.Product.ProductResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.di.Injection;
-import com.enrich.salonapp.ui.adapters.PackageAdapter;
-import com.enrich.salonapp.ui.contracts.PackageContract;
-import com.enrich.salonapp.ui.contracts.ProductContract;
-import com.enrich.salonapp.ui.presenters.PackagePresenter;
+import com.enrich.salonapp.ui.adapters.WalletHistoryAdapter;
+import com.enrich.salonapp.ui.contracts.WalletHistoryContract;
+import com.enrich.salonapp.ui.presenters.WalletHistoryPresenter;
+import com.enrich.salonapp.ui.presenters.WalletPresenter;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PackagesActivity extends BaseActivity implements PackageContract.View {
+public class WalletHistoryActivity extends BaseActivity implements WalletHistoryContract.View {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
-    @BindView(R.id.package_recycler_view)
-    RecyclerView packageRecyclerView;
+    @BindView(R.id.wallet_history_recycler_view)
+    RecyclerView walletHistoryRecyclerView;
 
-    @BindView(R.id.drawer_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    PackagePresenter packagePresenter;
+    @BindView(R.id.no_history_available)
+    TextView noHistoryAvailable;
 
     DataRepository dataRepository;
+    WalletHistoryPresenter walletHistoryPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_packages);
+        setContentView(R.layout.activity_wallet_history);
 
         ButterKnife.bind(this);
 
@@ -69,25 +74,32 @@ public class PackagesActivity extends BaseActivity implements PackageContract.Vi
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Packages");
+        collapsingToolbarLayout.setTitle("Wallet History");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        walletHistoryPresenter = new WalletHistoryPresenter(this, dataRepository);
 
-        packagePresenter = new PackagePresenter(this, dataRepository);
+        Map<String, String> map = new HashMap<>();
+        map.put("GuestId", "ffda3d92-1867-47ee-97fa-3d4348da5a65");
 
-        packagePresenter.getAllPackages(this);
+        walletHistoryPresenter.getWalletHistory(this, map);
     }
 
-
     @Override
-    public void showPackage(PackageResponseModel model) {
-        if(!model.Package.isEmpty()){
-            PackageAdapter adapter = new PackageAdapter(this, model.Package);
-            packageRecyclerView.setAdapter(adapter);
-            packageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    public void showWalletHistory(WalletHistoryResponseModel model) {
+        if (!model.WalletHistory.isEmpty()) {
+            noHistoryAvailable.setVisibility(View.GONE);
+            walletHistoryRecyclerView.setVisibility(View.VISIBLE);
+
+            WalletHistoryAdapter adapter = new WalletHistoryAdapter(this, model.WalletHistory);
+            walletHistoryRecyclerView.setAdapter(adapter);
+            walletHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        } else {
+            noHistoryAvailable.setVisibility(View.VISIBLE);
+            walletHistoryRecyclerView.setVisibility(View.GONE);
         }
     }
 }

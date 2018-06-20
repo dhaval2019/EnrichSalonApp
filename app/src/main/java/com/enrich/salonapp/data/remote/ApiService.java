@@ -39,7 +39,9 @@ import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.UserExistsResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
+import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 
 import java.util.Map;
 
@@ -124,8 +126,11 @@ public interface ApiService {
     @GET("Package/GetAllPackages")
     Call<PackageResponseModel> getAllPackages();
 
-    @GET("")
-    Call<WalletModel> getWallet(@QueryMap Map<String, String> map);
+    @GET("Catalog/Payments/GetWalletByGuestId")
+    Call<WalletResponseModel> getWallet(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/Payments/GetWalletHistory")
+    Call<WalletHistoryResponseModel> getWalletHistory(@QueryMap Map<String, String> map);
 
     @POST("Catalog/Products/GetAllProducts")
     Call<ProductResponseModel> getProduct(@Body ProductRequestModel model);

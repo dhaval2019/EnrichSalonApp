@@ -40,7 +40,9 @@ import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.UserExistsResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
+import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -549,16 +551,16 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getWallet(Map<String, String> map, final GetWalletCallback callback) {
-        Call<WalletModel> call = apiService.getWallet(map);
-        call.enqueue(new Callback<WalletModel>() {
+        Call<WalletResponseModel> call = apiService.getWallet(map);
+        call.enqueue(new Callback<WalletResponseModel>() {
             @Override
-            public void onResponse(Call<WalletModel> call, Response<WalletModel> response) {
+            public void onResponse(Call<WalletResponseModel> call, Response<WalletResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<WalletModel> call, Throwable t) {
+            public void onFailure(Call<WalletResponseModel> call, Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -566,8 +568,21 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getWalletHistory(Map<String, String> string, GetWalletHistoryCallback callback) {
+    public void getWalletHistory(Map<String, String> map, final GetWalletHistoryCallback callback) {
+        Call<WalletHistoryResponseModel> call = apiService.getWalletHistory(map);
+        call.enqueue(new Callback<WalletHistoryResponseModel>() {
+            @Override
+            public void onResponse(Call<WalletHistoryResponseModel> call, Response<WalletHistoryResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
 
+            @Override
+            public void onFailure(Call<WalletHistoryResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
     }
 
     @Override

@@ -118,7 +118,8 @@
             android:name=".ui.activities.MyPackageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.MyPackageDetailActivity"></activity>
+        <activity android:name=".ui.activities.MyPackageDetailActivity" />
+        <activity android:name=".ui.activities.WalletHistoryActivity"></activity>
     </application>
 
 </manifest>

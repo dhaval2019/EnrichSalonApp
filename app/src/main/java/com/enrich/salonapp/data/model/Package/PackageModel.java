@@ -3,7 +3,10 @@ package com.enrich.salonapp.data.model.Package;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class PackageModel implements Parcelable{
 
@@ -20,7 +23,9 @@ public class PackageModel implements Parcelable{
     public int PackageCategoryId;
     public String PackageImageURL;
     public String PackageImageWideURL;
-    public ArrayList<PackageBundle> PackageBundle;
+
+    @SerializedName("PackageBundle")
+    public List<PackageBundle> packageBundle;
 
     protected PackageModel(Parcel in) {
         PackageId = in.readInt();
@@ -36,7 +41,7 @@ public class PackageModel implements Parcelable{
         PackageCategoryId = in.readInt();
         PackageImageURL = in.readString();
         PackageImageWideURL = in.readString();
-        PackageBundle = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundle.CREATOR);
+        packageBundle = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundle.CREATOR);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class PackageModel implements Parcelable{
         dest.writeInt(PackageCategoryId);
         dest.writeString(PackageImageURL);
         dest.writeString(PackageImageWideURL);
-        dest.writeTypedList(PackageBundle);
+        dest.writeTypedList(packageBundle);
     }
 
     @Override

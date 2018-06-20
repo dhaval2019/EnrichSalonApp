@@ -39,7 +39,9 @@ import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
+import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
@@ -320,7 +322,7 @@ public abstract class DataSource {
 
 
     public interface GetWalletCallback {
-        void onSuccess(WalletModel model);
+        void onSuccess(WalletResponseModel model);
 
         void onFailure(Throwable t);
 
@@ -331,7 +333,7 @@ public abstract class DataSource {
 
 
     public interface GetWalletHistoryCallback {
-        void onSuccess(WalletHistoryModel model);
+        void onSuccess(WalletHistoryResponseModel model);
 
         void onFailure(Throwable t);
 

@@ -1,6 +1,7 @@
 package com.enrich.salonapp.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.Product.ProductModel;
+import com.enrich.salonapp.ui.activities.ProductDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,10 +25,10 @@ import butterknife.ButterKnife;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
 
     Context context;
-    List<ProductModel> list;
+    ArrayList<ProductModel> list;
     LayoutInflater inflater;
 
-    public ProductsAdapter(Context context, List<ProductModel> list) {
+    public ProductsAdapter(Context context, ArrayList<ProductModel> list) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,13 +42,22 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductsViewHolder holder, final int position) {
         ProductModel model = list.get(position);
 
         holder.productTitle.setText(model.ProductTitle);
         holder.productSubTitle.setText(model.ProductDescription);
 
         Picasso.get().load(model.ImageURL).into(holder.productImageSmall);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra("ProductDetail", list.get(position));
+                intent.putExtra("ProductList", list);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.enrich.salonapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class OfferModel implements Parcelable{
+public class OfferModel implements Parcelable {
 
     public int OfferId;
     public String OfferTitle;
@@ -16,9 +16,13 @@ public class OfferModel implements Parcelable{
     public int OfferValue;
     public double OfferPercentage;
     public String ApplicableFor;
-    public String StoreId;
+    public int CallToAction;
+    public int Position;
+    public int Orders;
+    public int PackageId;
+    public int ProductId;
+    public String CenterId;
     public boolean IsActive;
-    public String Message;
     public String OfferImageURL;
     public String OfferBannerURL;
 
@@ -34,9 +38,13 @@ public class OfferModel implements Parcelable{
         OfferValue = in.readInt();
         OfferPercentage = in.readDouble();
         ApplicableFor = in.readString();
-        StoreId = in.readString();
+        CallToAction = in.readInt();
+        Position = in.readInt();
+        Orders = in.readInt();
+        PackageId = in.readInt();
+        ProductId = in.readInt();
+        CenterId = in.readString();
         IsActive = in.readByte() != 0;
-        Message = in.readString();
         OfferImageURL = in.readString();
         OfferBannerURL = in.readString();
     }
@@ -54,9 +62,13 @@ public class OfferModel implements Parcelable{
         dest.writeInt(OfferValue);
         dest.writeDouble(OfferPercentage);
         dest.writeString(ApplicableFor);
-        dest.writeString(StoreId);
+        dest.writeInt(CallToAction);
+        dest.writeInt(Position);
+        dest.writeInt(Orders);
+        dest.writeInt(PackageId);
+        dest.writeInt(ProductId);
+        dest.writeString(CenterId);
         dest.writeByte((byte) (IsActive ? 1 : 0));
-        dest.writeString(Message);
         dest.writeString(OfferImageURL);
         dest.writeString(OfferBannerURL);
     }

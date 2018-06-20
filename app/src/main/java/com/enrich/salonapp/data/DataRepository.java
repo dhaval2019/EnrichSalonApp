@@ -40,7 +40,9 @@ import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
+import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
+import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.NetworkHelper;
 
 import java.util.Map;
@@ -578,7 +580,28 @@ public class DataRepository {
         if (networkHelper.isNetworkAvailable(context)) {
             remoteDataSource.getWallet(map, new DataSource.GetWalletCallback() {
                 @Override
-                public void onSuccess(WalletModel model) {
+                public void onSuccess(WalletResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getWalletHistory(Context context, Map<String, String> map, final DataSource.GetWalletHistoryCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getWalletHistory(map, new DataSource.GetWalletHistoryCallback() {
+                @Override
+                public void onSuccess(WalletHistoryResponseModel model) {
                     callback.onSuccess(model);
                 }
 

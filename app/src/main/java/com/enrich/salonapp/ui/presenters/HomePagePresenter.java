@@ -146,35 +146,4 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
             }
         });
     }
-
-    @Override
-    public void getAllPackages(Context context) {
-        if (view == null)
-            return;
-
-        dataRepository.getAllPackages(context, new DataSource.PackageListCallBack() {
-            @Override
-            public void onSuccess(PackageResponseModel model) {
-                if (view != null) {
-                    view.showPackage(model);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
-                }
-            }
-
-            @Override
-            public void onNetworkFailure() {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("No Network. Please try again later.");
-                }
-            }
-        });
-    }
 }

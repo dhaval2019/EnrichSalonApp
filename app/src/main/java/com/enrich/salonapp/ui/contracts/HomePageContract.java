@@ -22,8 +22,6 @@ public interface HomePageContract {
         void showAppointments(AppointmentResponseModel model);
 
         void showNewAndPopularServices(NewAndPopularResponseModel model);
-
-        void showPackage(PackageResponseModel model);
     }
 
     interface Presenter extends IBasePresenter<HomePageContract.View> {
@@ -34,7 +32,5 @@ public interface HomePageContract {
         void getAppointment(Context context, String url);
 
         void getNewAndPopularServices(Context context, Map<String, String> map);
-
-        void getAllPackages(Context context);
     }
 }
