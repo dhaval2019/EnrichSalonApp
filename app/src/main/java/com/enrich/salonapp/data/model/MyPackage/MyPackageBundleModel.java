@@ -9,7 +9,7 @@ import com.enrich.salonapp.data.model.Package.BaseChildModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPackageBundle implements Parcelable, Parent<BaseChildModel> {
+public class MyPackageBundleModel implements Parcelable, Parent<BaseChildModel> {
 
     public static final int BUNDLE_ITEM_TYPE_SERVICE = 1;
     public static final int BUNDLE_ITEM_TYPE_PRODUCT = 2;
@@ -31,7 +31,7 @@ public class MyPackageBundle implements Parcelable, Parent<BaseChildModel> {
     public List<com.enrich.salonapp.data.model.Package.PackageBundleService> PackageBundleService;
     public List<com.enrich.salonapp.data.model.Package.PackageBundleProduct> PackageBundleProduct;
 
-    protected MyPackageBundle(Parcel in) {
+    protected MyPackageBundleModel(Parcel in) {
         Id = in.readInt();
         Name = in.readString();
         SubTitle = in.readString();
@@ -71,15 +71,15 @@ public class MyPackageBundle implements Parcelable, Parent<BaseChildModel> {
         return 0;
     }
 
-    public static final Creator<MyPackageBundle> CREATOR = new Creator<MyPackageBundle>() {
+    public static final Creator<MyPackageBundleModel> CREATOR = new Creator<MyPackageBundleModel>() {
         @Override
-        public MyPackageBundle createFromParcel(Parcel in) {
-            return new MyPackageBundle(in);
+        public MyPackageBundleModel createFromParcel(Parcel in) {
+            return new MyPackageBundleModel(in);
         }
 
         @Override
-        public MyPackageBundle[] newArray(int size) {
-            return new MyPackageBundle[size];
+        public MyPackageBundleModel[] newArray(int size) {
+            return new MyPackageBundleModel[size];
         }
     };
 
@@ -94,7 +94,7 @@ public class MyPackageBundle implements Parcelable, Parent<BaseChildModel> {
             baseChildModels.addAll(PackageBundleProduct);
             return baseChildModels;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

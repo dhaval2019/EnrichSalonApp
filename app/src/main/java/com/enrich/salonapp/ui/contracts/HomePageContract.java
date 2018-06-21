@@ -17,8 +17,6 @@ public interface HomePageContract {
     interface View extends IBaseView {
         void showOfferList(OfferResponseModel model);
 
-        void showCategoryList(CategoryResponseModel model);
-
         void showAppointments(AppointmentResponseModel model);
 
         void showNewAndPopularServices(NewAndPopularResponseModel model);
@@ -26,8 +24,6 @@ public interface HomePageContract {
 
     interface Presenter extends IBasePresenter<HomePageContract.View> {
         void getOffersList(Context context);
-
-        void getCategoriesList(Context context, Map<String, String> map);
 
         void getAppointment(Context context, String url);
 

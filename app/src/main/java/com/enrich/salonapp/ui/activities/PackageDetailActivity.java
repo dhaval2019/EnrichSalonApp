@@ -18,16 +18,27 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Package.PackageModel;
+import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.ExpandablePackageBundleAdapter;
+import com.enrich.salonapp.ui.contracts.PackageDetailsContract;
+import com.enrich.salonapp.ui.presenters.PackageDetailsPresenter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.threads.MainUiThread;
+import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PackageDetailActivity extends AppCompatActivity {
+public class PackageDetailActivity extends BaseActivity implements PackageDetailsContract.View {
 
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -65,7 +76,10 @@ public class PackageDetailActivity extends AppCompatActivity {
     @BindView(R.id.cart_container)
     RelativeLayout cartContainer;
 
-    PackageModel packageModel;
+    int packageId;
+
+    DataRepository dataRepository;
+    PackageDetailsPresenter packageDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,25 +116,17 @@ public class PackageDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#00000000"));
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#000000"));
 
-        packageModel = getIntent().getParcelableExtra("CreateOrderPackageBundleModel");
+        packageId = getIntent().getIntExtra("CreateOrderPackageBundleModel", 0);
 
-        packageDetailName.setText(packageModel.PackageTitle);
-        packageDetailDescription.setText(packageModel.PackageDescription);
-        packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + packageModel.StartingPrice);
-        Picasso.get().load(packageModel.PackageImageURL).into(packageDetailImage);
+        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
+        MainUiThread mainUiThread = MainUiThread.getInstance();
 
-        ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);
-        packageBundleRecyclerView.setAdapter(packageBundleAdapter);
-        packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        packageDetailsPresenter = new PackageDetailsPresenter(this, dataRepository);
 
-//        cartContainer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(PackageDetailActivity.this, CartActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        Map<String, String> map = new HashMap<>();
+        map.put("packageID", "" + packageId);
+        packageDetailsPresenter.getPackageDetails(this, map);
 
         packageNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +147,24 @@ public class PackageDetailActivity extends AppCompatActivity {
             packageCartContainer.setVisibility(View.VISIBLE);
             packageTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
             packageTotalItems.setText("" + application.getCartItems().size());
+        }
+    }
+
+    @Override
+    public void showPackageDetails(PackageDetailsResponseModel model) {
+        if (model.Package != null) {
+
+            PackageModel packageModel = model.Package;
+
+            packageDetailName.setText(packageModel.PackageTitle);
+            packageDetailDescription.setText(packageModel.PackageDescription);
+            packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + packageModel.StartingPrice);
+            Picasso.get().load(packageModel.PackageImageURL).into(packageDetailImage);
+
+            ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);
+            packageBundleRecyclerView.setAdapter(packageBundleAdapter);
+            packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         }
     }
 }

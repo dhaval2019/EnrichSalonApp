@@ -32,6 +32,8 @@ import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
@@ -576,6 +578,27 @@ public class DataRepository {
         }
     }
 
+    public void getPackageDetails(Context context, Map<String, String> map, final DataSource.GetPackageDetailsCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getPackagesDetails(map, new DataSource.GetPackageDetailsCallback() {
+                @Override
+                public void onSuccess(PackageDetailsResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
     public void getWallet(Context context, Map<String, String> map, final DataSource.GetWalletCallback callback) {
         if (networkHelper.isNetworkAvailable(context)) {
             remoteDataSource.getWallet(map, new DataSource.GetWalletCallback() {
@@ -623,6 +646,27 @@ public class DataRepository {
             remoteDataSource.getProductList(model, new DataSource.GetProductListCallback() {
                 @Override
                 public void onSuccess(ProductResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getProductDetails(Context context, Map<String, String> map, final DataSource.GetProductDetailsCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getProductDetails(map, new DataSource.GetProductDetailsCallback() {
+                @Override
+                public void onSuccess(ProductDetailResponseModel model) {
                     callback.onSuccess(model);
                 }
 

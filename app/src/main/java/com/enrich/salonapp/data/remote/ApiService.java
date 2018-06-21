@@ -30,6 +30,8 @@ import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
@@ -126,6 +128,9 @@ public interface ApiService {
     @GET("Package/GetAllPackages")
     Call<PackageResponseModel> getAllPackages();
 
+    @GET("Package/GetPackageByID")
+    Call<PackageDetailsResponseModel> getPackageDetails(@QueryMap Map<String, String> map);
+
     @GET("Catalog/Payments/GetWalletByGuestId")
     Call<WalletResponseModel> getWallet(@QueryMap Map<String, String> map);
 
@@ -134,6 +139,9 @@ public interface ApiService {
 
     @POST("Catalog/Products/GetAllProducts")
     Call<ProductResponseModel> getProduct(@Body ProductRequestModel model);
+
+    @GET("Catalog/Products/GetProductByID")
+    Call<ProductDetailResponseModel> getProductDetails(@QueryMap Map<String, String> map);
 
     @GET("GetGuestPackage")
     Call<MyPackageResponseModel> getMyPackages(@QueryMap Map<String, String> map);

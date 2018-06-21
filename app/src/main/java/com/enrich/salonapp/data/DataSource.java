@@ -30,6 +30,8 @@ import com.enrich.salonapp.data.model.NewAndPopularResponseModel;
 import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
+import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
@@ -321,6 +323,16 @@ public abstract class DataSource {
     public abstract void getAllPackages(PackageListCallBack callBack);
 
 
+    public interface GetPackageDetailsCallback {
+        void onSuccess(PackageDetailsResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getPackagesDetails(Map<String, String> map, GetPackageDetailsCallback callBack);
+
     public interface GetWalletCallback {
         void onSuccess(WalletResponseModel model);
 
@@ -352,6 +364,17 @@ public abstract class DataSource {
     }
 
     public abstract void getProductList(ProductRequestModel model, GetProductListCallback callback);
+
+
+    public interface GetProductDetailsCallback {
+        void onSuccess(ProductDetailResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getProductDetails(Map<String, String> map, GetProductDetailsCallback callback);
 
 
     public interface GetMyPackagesCallback {

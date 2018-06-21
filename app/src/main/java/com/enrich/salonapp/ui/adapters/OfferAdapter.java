@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.OfferModel;
+import com.enrich.salonapp.util.OfferHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,11 +44,18 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
-        OfferModel model = list.get(position);
+        final OfferModel model = list.get(position);
 
         holder.title.setText("" + model.OfferTitle);
         holder.subTitle.setText("" + model.OfferDescription);
         Picasso.get().load(model.OfferBannerURL).into(holder.offer);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OfferHandler.handleOfferRedirection((Activity) context, model);
+            }
+        });
     }
 
     class OfferViewHolder extends RecyclerView.ViewHolder {

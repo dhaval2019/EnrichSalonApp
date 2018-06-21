@@ -40,9 +40,11 @@ import com.enrich.salonapp.ui.adapters.OfferHomeAdapter;
 import com.enrich.salonapp.ui.adapters.PackagesHomeAdapter;
 import com.enrich.salonapp.ui.adapters.ProductHomeAdapter;
 import com.enrich.salonapp.ui.adapters.RecommendedServicesAdapter;
+import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.HomePageContract;
 import com.enrich.salonapp.ui.contracts.PackageContract;
 import com.enrich.salonapp.ui.contracts.ProductContract;
+import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.ui.presenters.HomePagePresenter;
 import com.enrich.salonapp.ui.presenters.PackagePresenter;
 import com.enrich.salonapp.ui.presenters.ProductPresenter;
@@ -60,7 +62,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
-public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View, PackageContract.View {
+public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View, PackageContract.View, CategoryContract.View {
 
     static DrawerLayout mDrawer;
 
@@ -131,6 +133,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     HomePagePresenter homePagePresenter;
     ProductPresenter productPresenter;
     PackagePresenter packagePresenter;
+    CategoryPresenter categoryPresenter;
 
     DataRepository dataRepository;
 
@@ -217,6 +220,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         homePagePresenter = new HomePagePresenter(this, dataRepository);
         productPresenter = new ProductPresenter(this, dataRepository);
         packagePresenter = new PackagePresenter(this, dataRepository);
+        categoryPresenter = new CategoryPresenter(this, dataRepository);
 
         // GET OFFERS
         homePagePresenter.getOffersList(this.getActivity());
@@ -243,7 +247,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         Map<String, String> categoryMap = new HashMap<>();
         categoryMap.put("CenterId", EnrichUtils.getHomeStore(this.getActivity()).Id);
         categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
-        homePagePresenter.getCategoriesList(this.getActivity(), categoryMap);
+        categoryPresenter.getCategoriesList(this.getActivity(), categoryMap, false);
     }
 
     private void getNewAndPopularServices() {

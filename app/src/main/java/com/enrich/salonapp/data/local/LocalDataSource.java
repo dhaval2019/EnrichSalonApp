@@ -160,6 +160,11 @@ public class LocalDataSource extends DataSource {
     }
 
     @Override
+    public void getPackagesDetails(Map<String, String> map, GetPackageDetailsCallback callBack) {
+
+    }
+
+    @Override
     public void getWallet(Map<String, String> string, GetWalletCallback callback) {
 
     }
@@ -171,6 +176,11 @@ public class LocalDataSource extends DataSource {
 
     @Override
     public void getProductList(ProductRequestModel model, GetProductListCallback callback) {
+
+    }
+
+    @Override
+    public void getProductDetails(Map<String, String> map, GetProductDetailsCallback callback) {
 
     }
 

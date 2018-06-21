@@ -4,35 +4,34 @@ import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
-import com.enrich.salonapp.data.model.CategoryResponseModel;
-import com.enrich.salonapp.ui.contracts.CategoryContract;
+import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
+import com.enrich.salonapp.ui.contracts.ProductDetailsContract;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
 import java.util.Map;
 
-public class CategoryPresenter extends BasePresenter<CategoryContract.View> implements CategoryContract.Presenter {
+public class ProductDetailsPresenter extends BasePresenter<ProductDetailsContract.View> implements ProductDetailsContract.Presenter {
 
     private DataRepository dataRepository;
 
-    public CategoryPresenter(CategoryContract.View view, DataRepository dataRepository) {
+    public ProductDetailsPresenter(ProductDetailsContract.View view, DataRepository dataRepository) {
         this.view = view;
         this.dataRepository = dataRepository;
     }
 
     @Override
-    public void getCategoriesList(Context context, Map<String, String> map, final boolean showProgressBar) {
+    public void getProducts(Context context, Map<String, String> map) {
         if (view == null)
             return;
 
-        if (showProgressBar) {
-            view.setProgressBar(true);
-        }
+        view.setProgressBar(true);
 
-        dataRepository.getCategories(context, map, new DataSource.GetCategoryListCallBack() {
+        dataRepository.getProductDetails(context, map, new DataSource.GetProductDetailsCallback() {
             @Override
-            public void onSuccess(CategoryResponseModel model) {
+            public void onSuccess(ProductDetailResponseModel model) {
                 if (view != null) {
-                    view.showCategoryList(model);
+                    view.showProductDetails(model);
+                    view.setProgressBar(false);
                 }
             }
 

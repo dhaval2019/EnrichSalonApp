@@ -55,37 +55,6 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
     }
 
     @Override
-    public void getCategoriesList(Context context, Map<String, String> map) {
-        if (view == null)
-            return;
-
-        dataRepository.getCategories(context, map, new DataSource.GetCategoryListCallBack() {
-            @Override
-            public void onSuccess(CategoryResponseModel model) {
-                if (view != null) {
-                    view.showCategoryList(model);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
-                }
-            }
-
-            @Override
-            public void onNetworkFailure() {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("No Network. Please try again later.");
-                }
-            }
-        });
-    }
-
-    @Override
     public void getAppointment(Context context, String url) {
         if (view == null)
             return;

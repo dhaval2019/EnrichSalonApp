@@ -111,5 +111,8 @@ public class MyPackageDetailActivity extends AppCompatActivity {
         packageBundleRecyclerView.setAdapter(packageBundleAdapter);
         packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+
+        packageBundleRecyclerView.setFocusable(false);
+        packageBundleRecyclerView.setNestedScrollingEnabled(true);
     }
 }

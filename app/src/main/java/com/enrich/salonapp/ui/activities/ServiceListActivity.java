@@ -28,14 +28,18 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
+import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategorySpinnerAdapter;
 import com.enrich.salonapp.ui.adapters.ServiceListAdapter;
+import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
+import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -50,7 +54,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceListActivity extends BaseActivity implements ServiceListContract.View {
+public class ServiceListActivity extends BaseActivity implements ServiceListContract.View, CategoryContract.View {
 
     @BindView(R.id.category_name_spinner)
     Spinner categoryNameSpinner;
@@ -104,7 +108,6 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     TextView noServiceAvailable;
 
     ArrayList<ParentServiceViewModel> serviceList;
-    ArrayList<CategoryModel> categoryList;
 
     EnrichApplication application;
 
@@ -112,6 +115,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     DataRepository dataRepository;
     ServiceListPresenter serviceListPresenter;
+    CategoryPresenter categoryPresenter;
     CategoryModel categoryModel;
 
     ServiceListAdapter adapter;
@@ -138,7 +142,6 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
         getSupportActionBar().setTitle("");
 
-        categoryList = getIntent().getParcelableArrayListExtra("CategoryList");
         position = getIntent().getIntExtra("CategoryListPosition", 0);
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
@@ -146,9 +149,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
         serviceListPresenter = new ServiceListPresenter(this, dataRepository);
+        categoryPresenter = new CategoryPresenter(this, dataRepository);
 
-        // SET SPINNER ADAPTER
-        stCategorySpinner();
+        Map<String, String> categoryMap = new HashMap<>();
+        categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
+        categoryPresenter.getCategoriesList(this, categoryMap, true);
 
         categoryDropdownContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +171,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 String gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
 
                 changeGenderIcons(!gender.equalsIgnoreCase("male"));
-                getServiceList(categoryModel.Id, gender);
+                getServiceList(categoryModel.Id, "");
             }
 
             @Override
@@ -235,7 +241,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         }
     }
 
-    private void stCategorySpinner() {
+    private void setCategorySpinner(ArrayList<CategoryModel> categoryList) {
         CategorySpinnerAdapter categorySpinnerAdapter = new CategorySpinnerAdapter(this, categoryList);
         categoryNameSpinner.setAdapter(categorySpinnerAdapter);
         categoryNameSpinner.setSelection(position);
@@ -320,5 +326,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showCategoryList(CategoryResponseModel model) {
+        if (!model.Categories.isEmpty()) {
+            setCategorySpinner(model.Categories);
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.Package.PackageModel;
 import com.enrich.salonapp.ui.activities.PackageDetailActivity;
+import com.enrich.salonapp.ui.activities.PackagesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class PackagesHomeAdapter extends RecyclerView.Adapter<PackagesHomeAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PackageDetailActivity.class);
-                intent.putExtra("CreateOrderPackageBundleModel", model);
+                Intent intent = new Intent(context, PackagesActivity.class);
+//                intent.putExtra("CreateOrderPackageBundleModel", model.PackageId);
                 context.startActivity(intent);
             }
         });

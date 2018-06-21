@@ -32,11 +32,11 @@ public class Constants {
     public static final int OFFER_COMMAND_LOOK = 0;
     public static final int OFFER_COMMAND_PARTICULAR_LOOK = 1;
     public static final int OFFER_COMMAND_EXCLUSIVE_LOOK = 2;
-    public static final int OFFER_COMMAND_STORE_RATE_CARD = 3;
-    public static final int OFFER_COMMAND_PRODUCTS = 4;
+    public static final int OFFER_COMMAND_SERVICE_LIST = 3;
+    public static final int OFFER_COMMAND_PRODUCTS_LIST = 4;
     public static final int OFFER_COMMAND_PRODUCTS_OF_SALON = 5;
     public static final int OFFER_COMMAND_PARTICULAR_PRODUCTS = 6;
-    public static final int OFFER_COMMAND_PACKAGES = 7;
+    public static final int OFFER_COMMAND_PACKAGES_LIST = 7;
     public static final int OFFER_COMMAND_PARTICULAR_PACKAGES = 8;
     public static final int OFFER_COMMAND_STYLIST = 9;
     public static final int OFFER_COMMAND_PARTICULAR_STYLIST = 10;

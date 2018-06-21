@@ -3,8 +3,6 @@ package com.enrich.salonapp.data.model.MyPackage;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.enrich.salonapp.data.model.Package.PackageBundle;
-
 import java.util.ArrayList;
 
 public class MyPackageModel implements Parcelable {
@@ -22,7 +20,7 @@ public class MyPackageModel implements Parcelable {
     public int PackageCategoryId;
     public String PackageImageURL;
     public String PackageImageWideURL;
-    public ArrayList<MyPackageBundle> PackageBundle;
+    public ArrayList<MyPackageBundleModel> PackageBundle;
 
     protected MyPackageModel(Parcel in) {
         PackageId = in.readInt();
@@ -38,7 +36,7 @@ public class MyPackageModel implements Parcelable {
         PackageCategoryId = in.readInt();
         PackageImageURL = in.readString();
         PackageImageWideURL = in.readString();
-        PackageBundle = in.createTypedArrayList(MyPackageBundle.CREATOR);
+        PackageBundle = in.createTypedArrayList(MyPackageBundleModel.CREATOR);
     }
 
     @Override

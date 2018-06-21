@@ -46,7 +46,6 @@ public class CategoriesHomeAdapter extends RecyclerView.Adapter<CategoriesHomeAd
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ServiceListActivity.class);
-                intent.putExtra("CategoryList", list);
                 intent.putExtra("CategoryListPosition", position);
                 context.startActivity(intent);
             }

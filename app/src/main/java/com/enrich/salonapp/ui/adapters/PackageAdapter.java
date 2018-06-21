@@ -54,7 +54,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PackageDetailActivity.class);
-                intent.putExtra("CreateOrderPackageBundleModel", model);
+                intent.putExtra("CreateOrderPackageBundleModel", model.PackageId);
                 context.startActivity(intent);
             }
         });

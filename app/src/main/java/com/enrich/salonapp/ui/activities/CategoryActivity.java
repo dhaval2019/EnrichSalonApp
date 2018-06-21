@@ -10,16 +10,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
+import com.enrich.salonapp.data.model.CategoryResponseModel;
+import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategoryAdapter;
+import com.enrich.salonapp.ui.contracts.CategoryContract;
+import com.enrich.salonapp.ui.presenters.CategoryPresenter;
+import com.enrich.salonapp.util.Constants;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.threads.MainUiThread;
+import com.enrich.salonapp.util.threads.ThreadExecutor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryActivity extends BaseActivity {
+public class CategoryActivity extends BaseActivity implements CategoryContract.View {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -31,6 +42,9 @@ public class CategoryActivity extends BaseActivity {
     Toolbar toolbar;
 
     ArrayList<CategoryModel> list;
+
+    DataRepository dataRepository;
+    CategoryPresenter categoryPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +74,27 @@ public class CategoryActivity extends BaseActivity {
 
         collapsingToolbarLayout.setTitle("Categories");
 
+        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
+        MainUiThread mainUiThread = MainUiThread.getInstance();
+
+        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        categoryPresenter = new CategoryPresenter(this, dataRepository);
+
+        Map<String, String> categoryMap = new HashMap<>();
+        categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
+        categoryPresenter.getCategoriesList(this, categoryMap, true);
+
         list = getIntent().getParcelableArrayListExtra("CategoryList");
 
-        setCategoryAdapter(list);
     }
 
-    private void setCategoryAdapter(ArrayList<CategoryModel> list) {
-        CategoryAdapter categoryAdapter = new CategoryAdapter(this, list);
-        categoryRecyclerView.setAdapter(categoryAdapter);
-        categoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+    @Override
+    public void showCategoryList(CategoryResponseModel model) {
+        if (!model.Categories.isEmpty()) {
+            CategoryAdapter categoryAdapter = new CategoryAdapter(this, list);
+            categoryRecyclerView.setAdapter(categoryAdapter);
+            categoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
     }
 }

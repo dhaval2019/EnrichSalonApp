@@ -14,11 +14,10 @@ import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
-import com.enrich.salonapp.data.model.MyPackage.MyPackageBundle;
+import com.enrich.salonapp.data.model.MyPackage.MyPackageBundleModel;
 import com.enrich.salonapp.data.model.Package.BaseChildModel;
 import com.enrich.salonapp.data.model.Package.PackageBundle;
 import com.enrich.salonapp.ui.activities.MyPackageDetailActivity;
-import com.enrich.salonapp.ui.activities.PackageDetailActivity;
 import com.enrich.salonapp.util.EnrichUtils;
 
 import java.util.List;
@@ -26,14 +25,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExpandableMyPackageBundleAdapter extends ExpandableRecyclerAdapter<MyPackageBundle, BaseChildModel, ExpandableMyPackageBundleAdapter.MyPackageBundleParentViewHolder, ExpandableMyPackageBundleAdapter.MyPackageBundleChildViewHolder> {
+public class ExpandableMyPackageBundleAdapter extends ExpandableRecyclerAdapter<MyPackageBundleModel, BaseChildModel, ExpandableMyPackageBundleAdapter.MyPackageBundleParentViewHolder, ExpandableMyPackageBundleAdapter.MyPackageBundleChildViewHolder> {
 
     MyPackageDetailActivity activity;
-    List<MyPackageBundle> list;
+    List<MyPackageBundleModel> list;
     LayoutInflater inflater;
     EnrichApplication application;
 
-    public ExpandableMyPackageBundleAdapter(MyPackageDetailActivity activity, @NonNull List<MyPackageBundle> list) {
+    public ExpandableMyPackageBundleAdapter(MyPackageDetailActivity activity, @NonNull List<MyPackageBundleModel> list) {
         super(list);
         this.activity = activity;
         this.list = list;
@@ -56,8 +55,8 @@ public class ExpandableMyPackageBundleAdapter extends ExpandableRecyclerAdapter<
     }
 
     @Override
-    public void onBindParentViewHolder(@NonNull ExpandableMyPackageBundleAdapter.MyPackageBundleParentViewHolder parentViewHolder, final int parentPosition, @NonNull MyPackageBundle parent) {
-        final MyPackageBundle model = list.get(parentPosition);
+    public void onBindParentViewHolder(@NonNull ExpandableMyPackageBundleAdapter.MyPackageBundleParentViewHolder parentViewHolder, final int parentPosition, @NonNull MyPackageBundleModel parent) {
+        final MyPackageBundleModel model = list.get(parentPosition);
 
         parentViewHolder.packageBundleName.setText(model.Name);
         parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + model.Price);

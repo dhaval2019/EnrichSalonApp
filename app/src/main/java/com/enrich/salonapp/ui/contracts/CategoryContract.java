@@ -14,7 +14,7 @@ public interface CategoryContract {
         void showCategoryList(CategoryResponseModel model);
     }
 
-    interface Presenter extends IBasePresenter<HomePageContract.View> {
-        void getCategoriesList(Context context, Map<String, String> map);
+    interface Presenter extends IBasePresenter<CategoryContract.View> {
+        void getCategoriesList(Context context, Map<String, String> map, boolean showProgressBar);
     }
 }

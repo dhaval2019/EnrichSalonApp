@@ -75,6 +75,7 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         parentViewHolder.packageBundleAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                application.setMaxQuantityAllowed(model.Quantity);
                 if (application.alreadyExist(model)) {
                     application.increaseQuantity(model);
                     activity.updateCart();
