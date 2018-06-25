@@ -1,6 +1,7 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
     boolean isValidUserName;
 
+    String phoneNumberStr;
+
     CreateOTPRequestModel createOTPRequestModel;
     RegistrationRequestModel registrationRequestModel;
 
@@ -74,12 +77,21 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
         ButterKnife.bind(this);
 
+        phoneNumberStr = getIntent().getStringExtra("PhoneNumber");
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Light.otf");
+        maleRadioBtn.setTypeface(tf);
+        femaleRadioBtn.setTypeface(tf);
+
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
 
         registerPresenter = new RegisterPresenter(this, dataRepository);
+
+        phoneNumberEdit.setText(phoneNumberStr);
+        phoneNumberEdit.setEnabled(false);
 
         userNameEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

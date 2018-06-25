@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:padding="10dp"
             android:src="@drawable/ic_location_on"
             android:tint="@color/black"/>
@@ -28,14 +28,14 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:padding="10dp"
             android:src="@drawable/ic_notifications"
             android:tint="@color/red"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
@@ -44,9 +44,9 @@
 
         <ImageView
             android:id="@+id/nav_header_user_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/heart_1" />
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:src="@drawable/full_logo_white" />
 
         <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/nav_header_user_name"
@@ -55,7 +55,8 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:font_type="semi_bold"/>
+            app:font_type="semi_bold"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </FrameLayout>

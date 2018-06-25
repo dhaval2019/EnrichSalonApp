@@ -57,7 +57,7 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.SlotViewHold
             holder.slotTextView.setText(dateStr);
             holder.slotTextView.setTag(position);
             if (this.pos == position) {
-                holder.slotTextView.setBackgroundResource(R.drawable.red_bg_gradient_curved);
+                holder.slotTextView.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
                 holder.slotTextView.setTextColor(Color.parseColor("#ffffff"));
             } else {
                 holder.slotTextView.setBackgroundResource(R.drawable.grey_round_rect_border);

@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -38,6 +41,12 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.no_details_found)
+    LinearLayout noDetailsFound;
+
+    @BindView(R.id.see_packages)
+    Button seePackages;
 
     DataRepository dataRepository;
     MyPackagesPresenter myPackagesPresenter;
@@ -80,14 +89,31 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
         map.put("guestid", EnrichUtils.getUserData(this).Id);
 
         myPackagesPresenter.getMyPackages(this, map);
+
+        seePackages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPackageActivity.this, PackagesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void showMyPackages(MyPackageResponseModel model) {
         if (!model.GuestPackage.isEmpty()) {
+            noDetailsFound.setVisibility(View.VISIBLE);
+            myPackagesRecyclerView.setVisibility(View.GONE);
+
             MyPackageAdapter adapter = new MyPackageAdapter(this, model.GuestPackage);
             myPackagesRecyclerView.setAdapter(adapter);
             myPackagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
+    }
+
+    @Override
+    public void noPackagesBought() {
+        noDetailsFound.setVisibility(View.VISIBLE);
+        myPackagesRecyclerView.setVisibility(View.GONE);
     }
 }

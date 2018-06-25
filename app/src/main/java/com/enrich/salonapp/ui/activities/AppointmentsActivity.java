@@ -122,8 +122,8 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
 
     private void changeButtonState(boolean isCurrent) {
         if (isCurrent) {
-            currentAppointmentIndicator.setBackgroundColor(Color.parseColor("#F44336"));
-            currentAppointmentLabel.setTextColor(Color.parseColor("#F44336"));
+            currentAppointmentIndicator.setBackgroundColor(Color.parseColor("#d69e5c"));
+            currentAppointmentLabel.setTextColor(Color.parseColor("#d69e5c"));
 
             pastAppointmentIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
             pastAppointmentLabel.setTextColor(Color.parseColor("#9E9E9E"));
@@ -131,8 +131,8 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
             currentAppointmentIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
             currentAppointmentLabel.setTextColor(Color.parseColor("#9E9E9E"));
 
-            pastAppointmentIndicator.setBackgroundColor(Color.parseColor("#F44336"));
-            pastAppointmentLabel.setTextColor(Color.parseColor("#F44336"));
+            pastAppointmentIndicator.setBackgroundColor(Color.parseColor("#d69e5c"));
+            pastAppointmentLabel.setTextColor(Color.parseColor("#d69e5c"));
         }
     }
 

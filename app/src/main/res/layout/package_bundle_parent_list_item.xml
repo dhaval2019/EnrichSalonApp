@@ -59,7 +59,7 @@
                 android:layout_marginLeft="@dimen/dimen_5dp"
                 android:layout_marginTop="3dp"
                 android:text="View Services"
-                android:textColor="@color/red"
+                android:textColor="@color/dark_gold"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -88,7 +88,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="0"
-            android:textColor="@color/red"
+            android:textColor="@color/dark_gold"
             android:textSize="@dimen/dimen_16sp"
             app:font_type="regular" />
 

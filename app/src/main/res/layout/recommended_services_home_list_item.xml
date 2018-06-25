@@ -44,7 +44,7 @@
                     android:text="Shave or Beard Trim"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:font_type="semi_bold" />
+                    app:font_type="regular" />
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:id="@+id/service_price"
@@ -52,9 +52,9 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:text="from Rs. 2200"
-                    android:textColor="@color/red"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:font_type="extra_bold" />
+                    app:font_type="light" />
             </LinearLayout>
 
             <ImageView

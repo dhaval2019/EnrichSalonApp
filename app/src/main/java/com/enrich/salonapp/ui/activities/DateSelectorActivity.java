@@ -101,7 +101,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         picker = findViewById(R.id.datePicker);
         picker.setListener(this)
                 .setMonthAndYearTextColor(Color.parseColor("#424242"))
-                .setDateSelectedColor(Color.parseColor("#F44336"))
+                .setDateSelectedColor(Color.parseColor("#d69e5c"))
                 .setDateSelectedTextColor(Color.parseColor("#ffffff"))
                 .setUnselectedDayTextColor(Color.parseColor("#9e9e9e"))
                 .setUnselectedDayTextColor(Color.parseColor("#BDBDBD"))
@@ -211,6 +211,6 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         }
 
         timeSlotProceed.setEnabled(true);
-        timeSlotProceed.setBackgroundResource(R.drawable.red_bg_gradient_curved);
+        timeSlotProceed.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
     }
 }

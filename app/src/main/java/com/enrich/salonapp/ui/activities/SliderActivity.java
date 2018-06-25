@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.ui.fragments.TutorialFragmentFour;
+import com.enrich.salonapp.ui.fragments.TutorialFragmentOne;
+import com.enrich.salonapp.ui.fragments.TutorialFragmentThree;
+import com.enrich.salonapp.ui.fragments.TutorialFragmentTwo;
 import com.enrich.salonapp.util.EnrichUtils;
 
 import butterknife.BindView;
@@ -30,8 +37,6 @@ public class SliderActivity extends AppCompatActivity {
     @BindView(R.id.proceed_button)
     Button proceedButton;
 
-    int[] images = {R.drawable.tutorial_banner_1, R.drawable.tutorial_banner_2, R.drawable.tutorial_banner_3};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +49,7 @@ public class SliderActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(this);
-        imageSlider.setAdapter(customPagerAdapter);
+        imageSlider.setAdapter(new CustomFragmentPagerAdapter(getSupportFragmentManager()));
 
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,47 +61,30 @@ public class SliderActivity extends AppCompatActivity {
         });
     }
 
-    class CustomPagerAdapter extends PagerAdapter {
+    class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        Context mContext;
-        LayoutInflater mLayoutInflater;
+        public CustomFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-        public CustomPagerAdapter(Context context) {
-            mContext = context;
-            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return TutorialFragmentOne.getInstance();
+                case 1:
+                    return TutorialFragmentTwo.getInstance();
+                case 2:
+                    return TutorialFragmentThree.getInstance();
+                case 3:
+                    return TutorialFragmentFour.getInstance();
+            }
+            return null;
         }
 
         @Override
         public int getCount() {
-            return images.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
-
-            ImageView imageView = itemView.findViewById(R.id.imageView);
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int height = displayMetrics.heightPixels;
-            int width = displayMetrics.widthPixels;
-
-            imageView.setImageBitmap(EnrichUtils.decodeSampledBitmapFromResource(getResources(), images[position], width, height));
-
-            container.addView(itemView);
-
-            return itemView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+            return 4;
         }
     }
 }

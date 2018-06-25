@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
     public void onBindViewHolder(RecommendServiceVieHolder holder, final int position) {
         holder.name.setText(list.get(position).getName());
         holder.price.setText("From " + context.getResources().getString(R.string.Rs) + " " + list.get(position).getPrice());
-        Picasso.get().load(list.get(position).imagePaths.px200).into(holder.serviceImage);
+        Picasso.get().load(list.get(position).imagePaths.px200).placeholder(R.drawable.placeholder).into(holder.serviceImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +126,7 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
     }
 
     private void showTherapists(ArrayList<TherapistModel> list, int position) {
-        dialog = new Dialog(context);
+        dialog = new BottomSheetDialog(context);
         dialog.setContentView(R.layout.therapist_list_dialog);
         dialog.setCancelable(false);
 

@@ -39,9 +39,6 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     @BindView(R.id.phone_number_container)
     LinearLayout phoneNumberContainer;
 
-    @BindView(R.id.send_otp_btn)
-    Button sendOtpBtn;
-
     @BindView(R.id.verify_otp_btn)
     Button verifyOtpBtn;
 
@@ -114,7 +111,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
-            ((EnrichApplication)getApplicationContext()).setAuthenticationModel(model);
+            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
 //            EnrichUtils.saveAuthenticationModel(OTPActivity.this, model);
         }
     }

@@ -214,7 +214,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             cartTotalItems.setText("" + application.getCartItems().size());
             productCount.setText("" + application.getItemQuantity(productModel));
             cartNext.setEnabled(true);
-            cartNext.setBackground(getResources().getDrawable(R.drawable.red_bg_gradient_curved));
+            cartNext.setBackground(getResources().getDrawable(R.drawable.gold_bg_gradient_curved));
         }
     }
 

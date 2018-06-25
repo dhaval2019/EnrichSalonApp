@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +24,7 @@ import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.di.Injection;
+import com.enrich.salonapp.ui.adapters.TherapistListAdapter;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
 import com.enrich.salonapp.ui.contracts.SignInContract;
 import com.enrich.salonapp.ui.presenters.AuthenticationTokenPresenter;
@@ -56,6 +60,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @BindView(R.id.progress_dialog)
     LinearLayout progressDialog;
 
+    BottomSheetDialog dialog;
+
     SignInPresenter signInPresenter;
     AuthenticationTokenPresenter authenticationTokenPresenter;
 
@@ -72,9 +78,6 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
         EnrichUtils.changeStatusBarColor(getWindow());
-
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
-        forgotPasswordBtn.setTypeface(custom_font);
 
         // INIT DataRepository
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
@@ -98,7 +101,6 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setProgressBar(true);
 
                 String userNameStr = userNameEdit.getText().toString();
                 String passwordStr = passwordEdit.getText().toString();
@@ -108,6 +110,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
                     return;
                 }
 
+                setProgressBar(true);
                 AuthenticationRequestModel model = new AuthenticationRequestModel();
                 model.username = userNameStr;
                 model.password = passwordStr;
@@ -162,9 +165,13 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @Override
     public void passwordSent(ForgotPasswordResponseModel model) {
         if (model.Success) {
-            EnrichUtils.showLongMessage(SignInActivity.this, "We have sent you an Email and SMS with your new password. Please login with the new password.");
+            showForgotPasswordDialog();
+//            EnrichUtils.showLongMessage(SignInActivity.this, "We have sent you an Email and SMS with your new password. Please login with the new password.");
         } else {
-            EnrichUtils.showMessage(SignInActivity.this, "" + model.Error.Message);
+            Intent intent = new Intent(SignInActivity.this, RegisterActivity.class);
+            intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
+            startActivity(intent);
+//            EnrichUtils.showMessage(SignInActivity.this, "" + model.Error.Message);
         }
     }
 
@@ -175,5 +182,25 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
             progressDialog.setVisibility(View.VISIBLE);
             signInPresenter.getUserData(SignInActivity.this, model.userId);
         }
+    }
+
+    private void showForgotPasswordDialog() {
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(R.layout.forgot_password_success);
+
+        dialog.setCancelable(false);
+
+        TextView openMailApp = dialog.findViewById(R.id.open_mail_app);
+
+        openMailApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mailClient = new Intent(Intent.ACTION_VIEW);
+                mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+                startActivity(mailClient);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

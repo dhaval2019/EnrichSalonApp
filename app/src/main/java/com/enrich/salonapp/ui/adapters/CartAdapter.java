@@ -22,6 +22,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_CASHBACK;
 import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_PRODUCT;
 import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_SERVICE;
 
@@ -79,7 +80,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
             holder.price.setText(context.getResources().getString(R.string.Rs) + " " + model.getPrice());
 
-        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) {
+        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) { // FOR PACKAGES
             if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_SERVICE) {
 
                 holder.name.setText(model.Name);
@@ -94,6 +95,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 holder.description.setText("Quantity: " + model.Quantity);
                 holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
 
+            } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_CASHBACK) {
+                holder.name.setText(model.Name);
+                holder.therapist.setVisibility(View.GONE);
+                holder.description.setText("Quantity: " + model.Quantity);
+                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
             } else {
                 holder.therapist.setVisibility(View.GONE);
             }

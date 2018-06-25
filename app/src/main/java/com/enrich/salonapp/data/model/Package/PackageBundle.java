@@ -31,7 +31,7 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
     public String ValidTillDate;
     public int ValidityDays;
     public List<PackageBundleCashback> Cashbacks;
-    
+
     @SerializedName("PackageBundleService")
     public List<PackageBundleService> packageBundleService;
 
@@ -46,7 +46,7 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @SerializedName("PackageBundleProduct")
     public List<PackageBundleProduct> packageBundleProduct;
-    
+
     @SerializedName("PackageBundleCity")
     public List<PackageBundleCity> packageBundleCity;
 
@@ -116,7 +116,11 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public List<BaseChildModel> getChildList() {
-        if (!packageBundleService.isEmpty()) {
+        if (!Cashbacks.isEmpty()) {
+            ArrayList<BaseChildModel> baseChildModels = new ArrayList<>();
+            baseChildModels.addAll(Cashbacks);
+            return baseChildModels;
+        } else if (!packageBundleService.isEmpty()) {
             ArrayList<BaseChildModel> baseChildModels = new ArrayList<>();
             baseChildModels.addAll(packageBundleService);
             return baseChildModels;
@@ -211,7 +215,9 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public int getPackageBundleItemCount() {
-        if (!packageBundleService.isEmpty()) {
+        if (!Cashbacks.isEmpty()) {
+            return Cashbacks.size();
+        } else if (!packageBundleService.isEmpty()) {
             return packageBundleService.size();
         } else if (!packageBundleProduct.isEmpty()) {
             return packageBundleProduct.size();
@@ -222,7 +228,9 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public int getPackageBundleItemType() {
-        if (!packageBundleService.isEmpty()) {
+        if (!Cashbacks.isEmpty()) {
+            return BUNDLE_ITEM_TYPE_CASHBACK;
+        } else if (!packageBundleService.isEmpty()) {
             return BUNDLE_ITEM_TYPE_SERVICE;
         } else if (!packageBundleProduct.isEmpty()) {
             return BUNDLE_ITEM_TYPE_PRODUCT;

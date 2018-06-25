@@ -45,7 +45,7 @@
                 android:id="@+id/phone_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/red_bg_gradient_curved"
+                android:background="@drawable/gold_bg_gradient_curved"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
@@ -93,7 +93,7 @@
                 android:id="@+id/email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/red_bg_gradient_curved"
+                android:background="@drawable/gold_bg_gradient_curved"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
@@ -141,7 +141,7 @@
                 android:id="@+id/website_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/red_bg_gradient_curved"
+                android:background="@drawable/gold_bg_gradient_curved"
                 android:orientation="horizontal"
                 android:padding="15dp">
 

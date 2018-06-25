@@ -95,6 +95,7 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
             CategoryAdapter categoryAdapter = new CategoryAdapter(this, list);
             categoryRecyclerView.setAdapter(categoryAdapter);
             categoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            setProgressBar(false);
         }
     }
 }

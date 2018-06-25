@@ -58,8 +58,8 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
-//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
+    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser";
 
@@ -647,12 +647,15 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getMyPackages(Map<String, String> map, final GetMyPackagesCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
         Call<MyPackageResponseModel> call = apiService.getMyPackages(map);
         call.enqueue(new Callback<MyPackageResponseModel>() {
             @Override
             public void onResponse(Call<MyPackageResponseModel> call, Response<MyPackageResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
+                else
+                    callback.onFailure(new Throwable());
             }
 
             @Override

@@ -187,6 +187,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         if (reserveSlotModel != null) {
             bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
         } else if (application.cartHasPackages()) {
+            makePaymentOfflineBtn.setVisibility(View.GONE);
+
             CreateOrderRequestModel createOrderRequestModel = new CreateOrderRequestModel();
             createOrderRequestModel.setApplyCredits(false);
             createOrderRequestModel.setGuestId(EnrichUtils.getUserData(this).Id);

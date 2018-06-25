@@ -126,6 +126,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @BindView(R.id.appointment_container)
     LinearLayout appointmentContainer;
 
+    @BindView(R.id.product_container)
+    LinearLayout productContainer;
+
     ArrayList<OfferModel> offerList;
     ArrayList<CategoryModel> categoryList;
     ArrayList<PackageModel> packageList;
@@ -274,11 +277,13 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showOfferList(OfferResponseModel model) {
-        offerList = model.Offers;
+        if (!model.Offers.isEmpty()) {
+            offerList = model.Offers;
 
-        OfferHomeAdapter adapter = new OfferHomeAdapter(HomeFragment.this.getActivity(), model.Offers);
-        offerRecyclerView.setAdapter(adapter);
-        offerRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            OfferHomeAdapter adapter = new OfferHomeAdapter(HomeFragment.this.getActivity(), offerList);
+            offerRecyclerView.setAdapter(adapter);
+            offerRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        }
     }
 
     @Override
@@ -303,7 +308,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             appointmentsRecyclerView.setAdapter(appointmentHomeAdapter);
             appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         } else {
-            appointmentContainer.setVisibility(View.GONE);
+            appointmentContainer.setVisibility(View.VISIBLE);
             appointmentsRecyclerView.setVisibility(View.GONE);
             noAppointmentContainer.setVisibility(View.VISIBLE);
         }
@@ -324,10 +329,15 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showPackage(PackageResponseModel model) {
-        packageList = model.Package;
-        PackagesHomeAdapter adapter = new PackagesHomeAdapter(this.getActivity(), model.Package);
-        packagesRecyclerView.setAdapter(adapter);
-        packagesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        if (!model.Package.isEmpty()) {
+            packageContainer.setVisibility(View.VISIBLE);
+            packageList = model.Package;
+            PackagesHomeAdapter adapter = new PackagesHomeAdapter(this.getActivity(), model.Package);
+            packagesRecyclerView.setAdapter(adapter);
+            packagesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        } else {
+            packageContainer.setVisibility(View.GONE);
+        }
     }
 
     public ArrayList<CategoryModel> getCategoryList() {
@@ -337,9 +347,12 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @Override
     public void showProducts(ProductResponseModel model) {
         if (!model.Product.isEmpty()) {
+            productContainer.setVisibility(View.VISIBLE);
             ProductHomeAdapter adapter = new ProductHomeAdapter(this.getActivity(), model.Product);
             productsRecyclerView.setAdapter(adapter);
             productsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        } else {
+            productContainer.setVisibility(View.GONE);
         }
     }
 }

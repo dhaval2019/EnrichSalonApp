@@ -38,8 +38,9 @@ public class MyPackagesPresenter extends BasePresenter<MyPackagesContract.View> 
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.noPackagesBought();
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
+//                    view.showToastMessage("Something went wrong. Please try again later.");
                 }
             }
 

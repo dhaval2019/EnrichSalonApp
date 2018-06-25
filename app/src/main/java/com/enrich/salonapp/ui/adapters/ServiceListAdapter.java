@@ -102,6 +102,7 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         }
 
         childHolder.serviceName.setText(model.name);
+        childHolder.serviceDescription.setText(model.description);
         childHolder.mainPrice.setText(" " + new DecimalFormat("##.##").format(model.price._final));
 
         childHolder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
@@ -141,17 +142,7 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
                     map.put("forDate", "");
 
                     therapistPresenter.getTherapist(activity, map);
-//                    getTherapistList(model.id, parentPosition, childPosition);
                 }
-            }
-        });
-
-        childHolder.viewServiceDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(activity, ServiceDetailsActivity.class);
-//                intent.putExtra("ServiceId", model.id);
-//                activity.startActivity(intent);
             }
         });
 
@@ -274,14 +265,14 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         @BindView(R.id.main_price)
         TextView mainPrice;
 
-        @BindView(R.id.view_service_details)
-        TextView viewServiceDetails;
-
         @BindView(R.id.service_therapist_name)
         TextView serviceTherapistName; //, oldPrice
 
         @BindView(R.id.service_checkbox)
         CheckBox serviceCheckbox;
+
+        @BindView(R.id.service_description)
+        TextView serviceDescription;
 
         public ChildServiceVieHolder(View itemView) {
             super(itemView);

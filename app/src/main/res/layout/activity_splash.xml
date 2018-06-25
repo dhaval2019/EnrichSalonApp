@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/white"
     tools:context="ui.activities.SplashActivity">
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/new_splash_withoutlogo"
+        android:scaleType="fitStart"/>
+
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:src="@drawable/splash_enrich_logo" />
-</RelativeLayout>
+        android:src="@drawable/full_logo_black" />
+</FrameLayout>

@@ -12,6 +12,8 @@ public interface MyPackagesContract {
 
     interface View extends IBaseView {
         void showMyPackages(MyPackageResponseModel model);
+
+        void noPackagesBought();
     }
 
     interface Presenter extends IBasePresenter<MyPackagesContract.View> {

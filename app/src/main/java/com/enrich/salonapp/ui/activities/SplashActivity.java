@@ -90,13 +90,13 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     }
 
-    private void switchToNextScreen(){
+    private void switchToNextScreen() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 getAuthenticationToken();
             }
-        }, 1000);
+        }, 2000);
     }
 
     private void getAuthenticationToken() {
@@ -115,19 +115,21 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
-            ((EnrichApplication)getApplicationContext()).setAuthenticationModel(model);
+            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
 
-            if(EnrichUtils.getHomeStore(this)!=null){
+            if (EnrichUtils.getHomeStore(this) != null) {
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
-            }else{
+            } else {
                 Intent intent = new Intent(SplashActivity.this, StoreSelectorActivity.class);
                 startActivity(intent);
                 finish();
             }
         } else {
-            EnrichUtils.showMessage(this, "Please restart the app.");
+            Intent intent = new Intent(SplashActivity.this, SliderActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

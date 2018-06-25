@@ -53,7 +53,7 @@
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
                     android:text="Current"
-                    android:textColor="@color/red"
+                    android:textColor="@color/dark_gold"
                     android:textSize="20sp"
                     app:font_type="semi_bold" />
 
@@ -64,7 +64,7 @@
                     android:layout_alignLeft="@+id/current_appointment_label"
                     android:layout_alignRight="@+id/current_appointment_label"
                     android:layout_below="@+id/current_appointment_label"
-                    android:background="@color/red" />
+                    android:background="@color/dark_gold" />
             </RelativeLayout>
 
             <RelativeLayout

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.Package.PackageModel;
 import com.enrich.salonapp.ui.activities.PackageDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,8 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageV
             holder.genderImage.setImageResource(R.drawable.human_male_female);
         }
 
+        Picasso.get().load(model.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(holder.packageImage);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +78,9 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageV
 
         @BindView(R.id.desc_icon)
         ImageView genderImage;
+
+        @BindView(R.id.package_image)
+        ImageView packageImage;
 
         public PackageViewHolder(View itemView) {
             super(itemView);

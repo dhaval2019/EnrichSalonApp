@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,6 +77,12 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
     @BindView(R.id.cart_container)
     RelativeLayout cartContainer;
 
+    @BindView(R.id.no_details_found)
+    LinearLayout noDetailsFound;
+
+    @BindView(R.id.package_detail_container)
+    NestedScrollView packageDetailContainer;
+
     int packageId;
 
     DataRepository dataRepository;
@@ -88,11 +95,11 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
 
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
-        EnrichUtils.changeStatusBarColor(getWindow());
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+//        }
+//
+//        EnrichUtils.changeStatusBarColor(getWindow());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -113,7 +120,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
         collapsingToolbarLayout.setTitle("Package Details");
-        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#00000000"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#000000"));
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#000000"));
 
         packageId = getIntent().getIntExtra("CreateOrderPackageBundleModel", 0);
@@ -154,6 +161,9 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
     public void showPackageDetails(PackageDetailsResponseModel model) {
         if (model.Package != null) {
 
+            noDetailsFound.setVisibility(View.GONE);
+            packageDetailContainer.setVisibility(View.VISIBLE);
+
             PackageModel packageModel = model.Package;
 
             packageDetailName.setText(packageModel.PackageTitle);
@@ -165,6 +175,9 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageBundleRecyclerView.setAdapter(packageBundleAdapter);
             packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        } else {
+            noDetailsFound.setVisibility(View.VISIBLE);
+            packageDetailContainer.setVisibility(View.GONE);
         }
     }
 }
