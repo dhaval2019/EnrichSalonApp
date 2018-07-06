@@ -31,6 +31,8 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.joda.time.DateTime;
 
@@ -76,6 +78,8 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
     ArrayList<AppointmentSlotBookingsModel> slotBookingsModels;
     ArrayList<AppointmentServicesModel> servicesModelArrayList;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +89,11 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
         application = (EnrichApplication) getApplication();
         cartList = application.getCartItems();
+
+        // SEND ANALYTICS
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Date Time Slot List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -173,6 +182,13 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
             dateTimeSlotRecyclerView.setVisibility(View.GONE);
             EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
         }
+    }
+
+    @Override
+    public void noTimeSlot() {
+        noSlotsAvailable.setVisibility(View.VISIBLE);
+        dateTimeSlotRecyclerView.setVisibility(View.GONE);
+        EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
     }
 
     private void setSlotAdapter(ArrayList<SlotModel> list) {

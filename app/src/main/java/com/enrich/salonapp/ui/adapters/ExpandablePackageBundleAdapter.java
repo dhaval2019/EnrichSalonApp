@@ -20,7 +20,10 @@ import com.enrich.salonapp.data.model.Package.PackageBundle;
 import com.enrich.salonapp.ui.activities.PackageDetailActivity;
 import com.enrich.salonapp.util.EnrichUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,17 +63,22 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         final PackageBundle model = list.get(parentPosition);
 
         parentViewHolder.packageBundleName.setText(model.Name);
-        parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + model.Price);
 
-        if (!model.Cashbacks.isEmpty()) {
-            parentViewHolder.viewServicesButton.setText("View Cashbacks");
-        } else if (!model.packageBundleService.isEmpty()) {
-            parentViewHolder.viewServicesButton.setText("View Services");
-        } else if (!model.packageBundleProduct.isEmpty()) {
-            parentViewHolder.viewServicesButton.setText("View Products");
-        }
+        double tempValue = Double.valueOf(model.getPrice());
+        parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
 
+        parentViewHolder.viewServicesButton.setText("View Details");
         parentViewHolder.packageBundleCount.setText("" + application.getItemQuantity(model));
+
+        try {
+            SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = stringToDate.parse(model.ValidTillDate);
+
+            SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy");
+            parentViewHolder.packageBundleValidity.setText("Valid till " + dateToString.format(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         parentViewHolder.packageBundleAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +115,18 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
 
     @Override
     public void onBindChildViewHolder(@NonNull PackageBundleChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull BaseChildModel child) {
+
+        if (!list.get(parentPosition).Cashbacks.isEmpty()) {
+            childViewHolder.packageBundleChildPrice.setVisibility(View.VISIBLE);
+        } else if (!list.get(parentPosition).packageBundleService.isEmpty()) {
+            childViewHolder.packageBundleChildPrice.setVisibility(View.GONE);
+        } else if (!list.get(parentPosition).packageBundleProduct.isEmpty()) {
+            childViewHolder.packageBundleChildPrice.setVisibility(View.GONE);
+        }
         childViewHolder.packageBundleChildName.setText(child.getName());
-        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " + child.getPrice());
+
+        double tempValue = Double.valueOf(child.getPrice());
+        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
     }
 
     class PackageBundleParentViewHolder extends ParentViewHolder<PackageBundle, BaseChildModel> {

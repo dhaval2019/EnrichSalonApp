@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
@@ -22,6 +23,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +46,9 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
 
     ArrayList<CategoryModel> list;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     DataRepository dataRepository;
     CategoryPresenter categoryPresenter;
 
@@ -50,6 +56,12 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Category List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ButterKnife.bind(this);
 

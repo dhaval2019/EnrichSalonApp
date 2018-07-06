@@ -39,8 +39,8 @@ public class AuthenticationTokenPresenter extends BasePresenter<AuthenticationTo
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.createTokenError();
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
                 }
             }
 

@@ -29,6 +29,8 @@ import com.enrich.salonapp.ui.presenters.ProductDetailsPresenter;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 import java.security.PublicKey;
@@ -103,6 +105,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 //    ArrayList<ProductModel> list;
 
     EnrichApplication application;
+    Tracker mTracker;
 
     int productId;
 
@@ -115,6 +118,12 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         setContentView(R.layout.activity_product_detail);
 
         ButterKnife.bind(this);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Product Details Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         application = (EnrichApplication) getApplication();
 
@@ -182,23 +191,11 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         });
     }
 
-//    private void setSimilarProductsAdapter(ProductModel model, ArrayList<ProductModel> list) {
-//        if (!list.isEmpty()) {
-//            Iterator<ProductModel> itemIterator = list.iterator();
-//            while (itemIterator.hasNext()) {
-//                ProductModel productModel = itemIterator.next();
-//                if (productModel.ProductId == model.ProductId) {
-//                    itemIterator.remove();
-//                }
-//            }
-//
-//            ProductHomeAdapter adapter = new ProductHomeAdapter(this, list);
-//            relatedProducts.setAdapter(adapter);
-//            relatedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        } else {
-//            similarProductsContainer.setVisibility(View.GONE);
-//        }
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCart();
+    }
 
     @SuppressLint("SetTextI18n")
     public void updateCart() {

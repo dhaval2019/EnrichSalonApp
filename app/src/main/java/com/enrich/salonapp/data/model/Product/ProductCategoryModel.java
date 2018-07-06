@@ -3,19 +3,22 @@ package com.enrich.salonapp.data.model.Product;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ProductCategoryModel implements Parcelable{
+public class ProductCategoryModel implements Parcelable {
     public int Id;
     public String Name;
+    public ProductCategoryModel ProductCategory;
 
     protected ProductCategoryModel(Parcel in) {
         Id = in.readInt();
         Name = in.readString();
+        ProductCategory = in.readParcelable(ProductCategoryModel.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(Id);
         dest.writeString(Name);
+        dest.writeParcelable(ProductCategory, flags);
     }
 
     @Override

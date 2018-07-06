@@ -11,6 +11,8 @@ public interface AuthenticationTokenContract {
 
     interface View extends IBaseView {
         void saveAuthenticationToken(AuthenticationModel model);
+
+        void createTokenError();
     }
 
     interface Presenter extends IBasePresenter<AuthenticationTokenContract.View> {

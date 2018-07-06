@@ -37,8 +37,8 @@ public class TimeSlotPresenter extends BasePresenter<TimeSlotContract.View> impl
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.noTimeSlot();
                     view.setProgressBar(false);
-                    view.showToastMessage("User doesn't exist. Please Sign Up.");
                 }
             }
 

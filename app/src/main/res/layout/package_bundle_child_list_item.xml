@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:text="500"
-        android:textColor="@color/red"
-        android:visibility="gone"/>
+        android:textColor="@color/red" />
 
 </RelativeLayout>

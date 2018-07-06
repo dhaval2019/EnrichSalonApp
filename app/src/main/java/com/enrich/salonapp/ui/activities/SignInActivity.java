@@ -23,6 +23,7 @@ import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.TherapistListAdapter;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
@@ -137,17 +138,29 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     }
 
     @Override
-    public void showPasswordField(int responseCode) {
-        if (responseCode == 200) {
+    public void showPasswordField(IsUserRegisteredResponseModel model) {
+        if (model.Error.StatusCode == 200) {
             passwordContainer.setVisibility(View.VISIBLE);
-        } else if (responseCode == 403) {
+        } else if (model.Error.StatusCode == 403) {
             EnrichUtils.showMessage(SignInActivity.this, "Invalid Number");
-        } else if (responseCode == 404) {
+        } else if (model.Error.StatusCode == 404) {
 //             Redirect to Registration screen
             Intent intent = new Intent(SignInActivity.this, RegisterActivity.class);
             intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
             startActivity(intent);
+        } else if (model.Error.StatusCode == 410) {// NO EMAIL
+            passwordContainer.setVisibility(View.VISIBLE);
+        } else if (model.Error.StatusCode == 409) {// NO USERNAME
+            Intent intent = new Intent(SignInActivity.this, RegisterActivity.class);
+            intent.putExtra("GuestData", model.Guest);
+            startActivity(intent);
         }
+    }
+
+    @Override
+    public void createTokenError() {
+        progressDialog.setVisibility(View.GONE);
+        showToastMessage("User doesn't exist. Please Sign Up.");
     }
 
     @Override
@@ -166,21 +179,20 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     public void passwordSent(ForgotPasswordResponseModel model) {
         if (model.Success) {
             showForgotPasswordDialog();
-//            EnrichUtils.showLongMessage(SignInActivity.this, "We have sent you an Email and SMS with your new password. Please login with the new password.");
         } else {
-            Intent intent = new Intent(SignInActivity.this, RegisterActivity.class);
-            intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
-            startActivity(intent);
-//            EnrichUtils.showMessage(SignInActivity.this, "" + model.Error.Message);
+            EnrichUtils.showMessage(SignInActivity.this, "" + model.Error.Message);
         }
     }
 
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
-        if (model != null) {
+        if (model.accessToken != null) {
             ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
             progressDialog.setVisibility(View.VISIBLE);
             signInPresenter.getUserData(SignInActivity.this, model.userId);
+        } else {
+            progressDialog.setVisibility(View.GONE);
+            showToastMessage("Invalid Credentials");
         }
     }
 

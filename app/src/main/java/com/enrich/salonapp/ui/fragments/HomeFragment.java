@@ -53,6 +53,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseFragment;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,6 +143,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     DataRepository dataRepository;
 
     EnrichApplication application;
+    Tracker mTracker;
 
     public static HomeFragment getInstance(DrawerLayout drawer) {
         HomeFragment fragment = new HomeFragment();
@@ -151,7 +154,11 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // SEND ANALYTICS
         application = (EnrichApplication) getActivity().getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Home Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Nullable

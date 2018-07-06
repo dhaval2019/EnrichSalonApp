@@ -13,6 +13,9 @@ public class ErrorModel implements Parcelable {
     public String Message;
     public String InternalMessage;
 
+    public ErrorModel() {
+    }
+
     protected ErrorModel(Parcel in) {
         StatusCode = in.readInt();
         Message = in.readString();

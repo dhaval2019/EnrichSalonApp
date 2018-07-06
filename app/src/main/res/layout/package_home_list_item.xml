@@ -62,7 +62,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/human_male"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                android:visibility="gone"/>
         </RelativeLayout>
     </FrameLayout>
 </android.support.v7.widget.CardView>

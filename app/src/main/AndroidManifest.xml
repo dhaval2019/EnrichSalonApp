@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.enrich.salonapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".EnrichApplication"
         android:allowBackup="true"
@@ -129,9 +133,16 @@
         <activity
             android:name=".ui.activities.SampleActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        </activity>
+        <activity
+            android:name=".ui.activities.ProductFilterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0f35cab090557f840d17e1621755f2983baa97f4" />
     </application>
 
 </manifest>

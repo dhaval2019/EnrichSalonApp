@@ -31,18 +31,23 @@ import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.BrandResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
-import com.enrich.salonapp.data.model.UserExistsResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
-import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 
 import java.util.Map;
@@ -57,7 +62,7 @@ import retrofit2.http.Url;
 public interface ApiService {
 
     @GET()
-    Call<UserExistsResponseModel> isUserRegistered(@Url String url, @QueryMap Map<String, String> map);
+    Call<IsUserRegisteredResponseModel> isUserRegistered(@Url String url, @QueryMap Map<String, String> map);
 
     @POST("Catalog/Guests/CreateToken")
     Call<AuthenticationModel> getAuthenticationToken(@Body AuthenticationRequestModel model);
@@ -145,4 +150,22 @@ public interface ApiService {
 
     @GET("GetGuestPackage")
     Call<MyPackageResponseModel> getMyPackages(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/Products/GetBrands")
+    Call<BrandResponseModel> getBrandsList();
+
+    @GET("Catalog/Products/GetProductCategories")
+    Call<ProductCategoryResponseModel> getProductCategoryList();
+
+    @GET("Catalog/Products/GetProductSubCategories")
+    Call<ProductSubCategoryResponseModel> getProductSubCategoryList();
+
+    @GET("Catalog/Services/GetSubCategories")
+    Call<SubCategoryResponseModel> getSubCategoryList(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/Services/GetParentAndNormalServiceList")
+    Call<ParentAndNormalServiceListResponseModel> getParentAndNormalServiceList(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/Services/ServiceVariants")
+    Call<ServiceVariantResponseModel> getServiceVariantList(@QueryMap Map<String, String> map);
 }

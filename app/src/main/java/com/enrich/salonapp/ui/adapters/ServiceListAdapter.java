@@ -34,6 +34,8 @@ import com.enrich.salonapp.ui.presenters.TherapistPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
     private BottomSheetDialog dialog;
     private int parentPos, childPos;
     private TherapistPresenter therapistPresenter;
+
+    Tracker mTracker;
 
     public ServiceListAdapter(@NonNull ArrayList<ParentServiceViewModel> parentList, ServiceListActivity activity) {
         super(parentList);
@@ -97,13 +101,15 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
         if (model.IsAdded || application.hasThisItem(model)) { //cartHostActivity.hasThisItem(model.getId())
             childHolder.serviceCheckbox.setChecked(true);
+            model.therapist = application.getServiceById(model.ServiceId).therapistModel;
         } else {
             childHolder.serviceCheckbox.setChecked(false);
+            model.therapist = null;
         }
 
         childHolder.serviceName.setText(model.name);
         childHolder.serviceDescription.setText(model.description);
-        childHolder.mainPrice.setText(" " + new DecimalFormat("##.##").format(model.price._final));
+        childHolder.mainPrice.setText(" " + model.price.sales);
 
         childHolder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +192,11 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         dialog.setContentView(view);
 
         dialog.setCancelable(false);
+
+        // SEND ANALYTICS
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Therapist List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
         RecyclerView therapistRecyclerView = dialog.findViewById(R.id.therapist_list_recycler_view);

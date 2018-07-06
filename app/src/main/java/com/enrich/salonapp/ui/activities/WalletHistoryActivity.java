@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
@@ -24,6 +25,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,12 +51,21 @@ public class WalletHistoryActivity extends BaseActivity implements WalletHistory
     DataRepository dataRepository;
     WalletHistoryPresenter walletHistoryPresenter;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_history);
 
         ButterKnife.bind(this);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Wallet History Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

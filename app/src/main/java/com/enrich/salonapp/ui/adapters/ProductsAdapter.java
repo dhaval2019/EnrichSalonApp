@@ -46,7 +46,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         ProductModel model = list.get(position);
 
         holder.productTitle.setText(model.ProductTitle);
-        holder.productSubTitle.setText(model.ProductDescription);
+
+        holder.productSubTitle.setText(context.getString(R.string.rs_symbol) + " " + model.ProductAmount);
+//        holder.productSubTitle.setText(model.ProductDescription);
 
         Picasso.get().load(model.ImageURL).placeholder(R.drawable.placeholder).into(holder.productImageSmall);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,9 +79,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         @BindView(R.id.product_sub_title)
         TextView productSubTitle;
-
-        @BindView(R.id.product_desc_icon)
-        ImageView productDescIcon;
 
         public ProductsViewHolder(View itemView) {
             super(itemView);

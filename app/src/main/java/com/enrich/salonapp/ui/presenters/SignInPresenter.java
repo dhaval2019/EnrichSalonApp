@@ -7,7 +7,7 @@ import com.enrich.salonapp.data.DataSource;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
-import com.enrich.salonapp.data.model.UserExistsResponseModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.ui.contracts.SignInContract;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
@@ -30,9 +30,9 @@ public class SignInPresenter extends BasePresenter<SignInContract.View> implemen
 
         dataRepository.isUserRegistered(context, phoneNumber, new DataSource.GetIsUserRegisteredCallBack() {
             @Override
-            public void onSuccess(int responseCode) {
+            public void onSuccess(IsUserRegisteredResponseModel model) {
                 if (view != null) {
-                    view.showPasswordField(responseCode);
+                    view.showPasswordField(model);
                     view.setProgressBar(false);
                 }
             }
@@ -41,7 +41,6 @@ public class SignInPresenter extends BasePresenter<SignInContract.View> implemen
             public void onFailure(Throwable t) {
                 if (view != null) {
                     view.setProgressBar(false);
-                    view.showToastMessage("User doesn't exist. Please Sign Up.");
                 }
             }
 

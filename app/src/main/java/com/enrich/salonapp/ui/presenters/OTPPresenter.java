@@ -39,8 +39,8 @@ public class OTPPresenter extends BasePresenter<OTPContract.RegisterView> implem
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.registerFailed();
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
                 }
             }
 

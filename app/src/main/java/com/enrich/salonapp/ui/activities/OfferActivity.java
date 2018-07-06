@@ -10,9 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.ui.adapters.OfferAdapter;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
@@ -32,10 +35,19 @@ public class OfferActivity extends AppCompatActivity {
 
     ArrayList<OfferModel> offerList;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Offers List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ButterKnife.bind(this);
 

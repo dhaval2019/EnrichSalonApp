@@ -48,9 +48,7 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    public static final int REQUEST_CHECK_SETTINGS = 7;
 
     @BindView(R.id.profile_container)
     RelativeLayout profileContainer;
@@ -234,101 +232,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         fragmentTransaction.replace(R.id.home_frame_layout, fragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!checkPermissions()) {
-            requestPermissions();
-        } else {
-            EnrichUtils.displayLocationSettingsRequest(this, REQUEST_CHECK_SETTINGS);
-        }
-    }
-
-    private boolean checkPermissions() {
-        int permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void startLocationPermissionRequest() {
-        ActivityCompat.requestPermissions(HomeActivity.this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-    }
-
-    private void requestPermissions() {
-        boolean shouldProvideRationale =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
-        if (shouldProvideRationale) {
-            EnrichUtils.log("Displaying permission rationale to provide additional context.");
-
-            showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Request permission
-                            startLocationPermissionRequest();
-                        }
-                    });
-
-        } else {
-            EnrichUtils.log("Requesting permission");
-            startLocationPermissionRequest();
-        }
-    }
-
-    private void showSnackbar(final int mainTextStringId, final int actionStringId,
-                              View.OnClickListener listener) {
-        Snackbar.make(findViewById(android.R.id.content),
-                getString(mainTextStringId),
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(actionStringId), listener).show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        EnrichUtils.log("onRequestPermissionResult");
-        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length <= 0) {
-                // If user interaction was interrupted, the permission request is cancelled and you
-                // receive empty arrays.
-                EnrichUtils.log("User interaction was cancelled.");
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted.
-                EnrichUtils.displayLocationSettingsRequest(this, REQUEST_CHECK_SETTINGS);
-            } else {
-                // Permission denied.
-                showSnackbar(R.string.permission_denied_explanation, R.string.settings,
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        });
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
-            // location not switched on
-        } else if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
-            // location switched on
-        }
     }
 
     @Override

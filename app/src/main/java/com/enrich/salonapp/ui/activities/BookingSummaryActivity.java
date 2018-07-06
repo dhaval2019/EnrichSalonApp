@@ -39,10 +39,13 @@ import com.enrich.salonapp.ui.adapters.BookingSummaryItemAdapter;
 import com.enrich.salonapp.ui.contracts.BookingSummaryContract;
 import com.enrich.salonapp.ui.presenters.BookingSummaryPresenter;
 import com.enrich.salonapp.util.AppEnvironment;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
@@ -117,6 +120,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     BookingSummaryItemAdapter adapter;
 
     EnrichApplication application;
+    Tracker mTracker;
 
     ReserveSlotResponseModel reserveSlotResponseModel;
     InvoiceModel invoiceModel;
@@ -141,6 +145,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         application = (EnrichApplication) getApplication();
         reserveSlotModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ReserveSlotModel"), ReserveSlotRequestModel.class);
+
+        // SEND ANALYTICS
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Checkout Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -213,6 +222,14 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
             bookingSummaryPresenter.createOrder(this, createOrderRequestModel);
         } else if (application.cartHasProducts()) {
+            if (application.getCartItem(0).getPaymentMode() == Constants.PAYMENT_MODE_CASH) {
+                makePaymentOfflineBtn.setVisibility(View.VISIBLE);
+                makePaymentOnlineBtn.setVisibility(View.GONE);
+            } else if (application.getCartItem(0).getPaymentMode() == Constants.PAYMENT_MODE_ONLINE) {
+                makePaymentOfflineBtn.setVisibility(View.GONE);
+                makePaymentOnlineBtn.setVisibility(View.VISIBLE);
+            }
+
             CreateOrderRequestModel createOrderRequestModel = new CreateOrderRequestModel();
             createOrderRequestModel.setApplyCredits(false);
             createOrderRequestModel.setGuestId(EnrichUtils.getUserData(this).Id);
@@ -232,8 +249,6 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             }
 
             createOrderRequestModel.setProductIds(createOrderProductModels);
-
-            EnrichUtils.log(EnrichUtils.newGson().toJson(createOrderRequestModel));
 
             bookingSummaryPresenter.createOrder(this, createOrderRequestModel);
         }
@@ -325,6 +340,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
             confirmReservationResponseModel = model;
 
+            EnrichUtils.log(EnrichUtils.newGson().toJson(confirmOrderRequestModel));
             bookingSummaryPresenter.confirmOrder(BookingSummaryActivity.this, confirmOrderRequestModel);
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, "" + model.Error.Message);
@@ -519,7 +535,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         builder.setAmount(amount)
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -554,23 +570,24 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         }
     }
 
-    private PayUmoneySdkInitializer.PaymentParam calculateServerSideHashAndInitiatePayment1(final PayUmoneySdkInitializer.PaymentParam paymentParam) {
+    private PayUmoneySdkInitializer.PaymentParam calculateServerSideHashAndInitiatePayment1(
+            final PayUmoneySdkInitializer.PaymentParam paymentParam) {
 
         StringBuilder stringBuilder = new StringBuilder();
         HashMap<String, String> params = paymentParam.getParams();
-        stringBuilder.append(params.get(PayUmoneyConstants.KEY) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.TXNID) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.AMOUNT) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.PRODUCT_INFO) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.FIRSTNAME) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.EMAIL) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.UDF1) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.UDF2) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.UDF3) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.UDF4) + "|");
-        stringBuilder.append(params.get(PayUmoneyConstants.UDF5) + "||||||");
+        stringBuilder.append(params.get(PayUmoneyConstants.KEY)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.TXNID)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.AMOUNT)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.PRODUCT_INFO)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.FIRSTNAME)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.EMAIL)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF1)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF2)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF3)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());

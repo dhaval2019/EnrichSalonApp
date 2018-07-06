@@ -41,4 +41,8 @@ public class Constants {
     public static final int OFFER_COMMAND_STYLIST = 9;
     public static final int OFFER_COMMAND_PARTICULAR_STYLIST = 10;
     public static final int OFFER_COMMAND_NO_ACTION = 11;
+
+    public static final int PAYMENT_MODE_CASH = 0;
+    public static final int PAYMENT_MODE_ONLINE = 1;
+    public static final int PAYMENT_MODE_BOTH = 2;
 }

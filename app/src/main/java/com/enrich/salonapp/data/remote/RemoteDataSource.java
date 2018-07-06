@@ -21,6 +21,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
+import com.enrich.salonapp.data.model.ErrorModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
@@ -32,23 +33,32 @@ import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.BrandResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
-import com.enrich.salonapp.data.model.UserExistsResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
-import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +68,10 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
+    //    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
     public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
-    public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser";
+    public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
     public static final String GET_INVOICE = "Catalog/Invoices/";
 
@@ -93,15 +103,37 @@ public class RemoteDataSource extends DataSource {
         Map<String, String> map = new HashMap<>();
         map.put("MobileNumber", phoneNumber);
 
-        Call<UserExistsResponseModel> call = apiService.isUserRegistered(HOST + IS_USER_REGISTERED, map);
-        call.enqueue(new Callback<UserExistsResponseModel>() {
+        Call<IsUserRegisteredResponseModel> call = apiService.isUserRegistered(HOST + IS_USER_REGISTERED, map);
+        call.enqueue(new Callback<IsUserRegisteredResponseModel>() {
             @Override
-            public void onResponse(Call<UserExistsResponseModel> call, Response<UserExistsResponseModel> response) {
-                callBack.onSuccess(response.code());
+            public void onResponse(Call<IsUserRegisteredResponseModel> call, Response<IsUserRegisteredResponseModel> response) {
+                if (response.isSuccessful()) {
+                    ErrorModel errorModel = new ErrorModel();
+                    errorModel.StatusCode = response.code();
+
+                    IsUserRegisteredResponseModel isUserRegisteredResponseModel = new IsUserRegisteredResponseModel();
+                    isUserRegisteredResponseModel.Error = errorModel;
+
+                    callBack.onSuccess(isUserRegisteredResponseModel);
+                } else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+
+                        EnrichUtils.log(EnrichUtils.newGson().toJson(response.errorBody().toString()));
+
+                        IsUserRegisteredResponseModel model = EnrichUtils.newGson().fromJson(jObjError.toString(), IsUserRegisteredResponseModel.class);
+
+                        callBack.onSuccess(model);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<UserExistsResponseModel> call, Throwable t) {
+            public void onFailure(Call<IsUserRegisteredResponseModel> call, Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -194,12 +226,16 @@ public class RemoteDataSource extends DataSource {
     @Override
     public void registerUser(RegistrationRequestModel model, final RegisterUserCallBack callBack) {
 
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
+
         Call<RegistrationResponseModel> call = apiService.register(model);
         call.enqueue(new Callback<RegistrationResponseModel>() {
             @Override
             public void onResponse(Call<RegistrationResponseModel> call, Response<RegistrationResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
+                else
+                    callBack.onFailure(new Throwable());
             }
 
             @Override
@@ -371,6 +407,8 @@ public class RemoteDataSource extends DataSource {
             public void onResponse(Call<AvailableTimeResponseModel> call, Response<AvailableTimeResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
+                else
+                    callBack.onFailure(new Throwable());
             }
 
             @Override
@@ -466,6 +504,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void confirmOrder(final ConfirmOrderRequestModel model, final ConfirmOrderCallBack callBack) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
         Call<ConfirmOrderResponseModel> call = apiService.confirmOrder(model);
         call.enqueue(new Callback<ConfirmOrderResponseModel>() {
             @Override
@@ -573,6 +612,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getWallet(Map<String, String> map, final GetWalletCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
         Call<WalletResponseModel> call = apiService.getWallet(map);
         call.enqueue(new Callback<WalletResponseModel>() {
             @Override
@@ -660,6 +700,114 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(Call<MyPackageResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getBrandsList(final GetBrandsListCallback callback) {
+        Call<BrandResponseModel> call = apiService.getBrandsList();
+        call.enqueue(new Callback<BrandResponseModel>() {
+            @Override
+            public void onResponse(Call<BrandResponseModel> call, Response<BrandResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BrandResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getProductCategoryList(final GetProductsCategoryListCallback callback) {
+        Call<ProductCategoryResponseModel> call = apiService.getProductCategoryList();
+        call.enqueue(new Callback<ProductCategoryResponseModel>() {
+            @Override
+            public void onResponse(Call<ProductCategoryResponseModel> call, Response<ProductCategoryResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ProductCategoryResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getProductSubCategoryList(final GetProductsSubCategoryListCallback callback) {
+        Call<ProductSubCategoryResponseModel> call = apiService.getProductSubCategoryList();
+        call.enqueue(new Callback<ProductSubCategoryResponseModel>() {
+            @Override
+            public void onResponse(Call<ProductSubCategoryResponseModel> call, Response<ProductSubCategoryResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ProductSubCategoryResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getServiceSubCategories(Map<String, String> map, final GetServiceSubCategoryCallback callback) {
+        Call<SubCategoryResponseModel> call = apiService.getSubCategoryList(map);
+        call.enqueue(new Callback<SubCategoryResponseModel>() {
+            @Override
+            public void onResponse(Call<SubCategoryResponseModel> call, Response<SubCategoryResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<SubCategoryResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getParentAndNormalServiceList(Map<String, String> map, final GetParentAndNormalServiceListCallback callback) {
+        Call<ParentAndNormalServiceListResponseModel> call = apiService.getParentAndNormalServiceList(map);
+        call.enqueue(new Callback<ParentAndNormalServiceListResponseModel>() {
+            @Override
+            public void onResponse(Call<ParentAndNormalServiceListResponseModel> call, Response<ParentAndNormalServiceListResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ParentAndNormalServiceListResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getServiceVariantsList(Map<String, String> map, final GetServiceVariantsCallback callback) {
+        Call<ServiceVariantResponseModel> call = apiService.getServiceVariantList(map);
+        call.enqueue(new Callback<ServiceVariantResponseModel>() {
+            @Override
+            public void onResponse(Call<ServiceVariantResponseModel> call, Response<ServiceVariantResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ServiceVariantResponseModel> call, Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }

@@ -15,11 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.MyPackage.MyPackageModel;
 import com.enrich.salonapp.ui.adapters.ExpandableMyPackageBundleAdapter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -65,6 +68,9 @@ public class MyPackageDetailActivity extends AppCompatActivity {
 
     MyPackageModel packageModel;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +78,11 @@ public class MyPackageDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
-        EnrichUtils.changeStatusBarColor(getWindow());
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("My Package Detail Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
@@ -23,6 +24,8 @@ import com.enrich.salonapp.ui.presenters.AppointmentPresenter;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,10 +67,19 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
 
     boolean isCurrent;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Appointment List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ButterKnife.bind(this);
 

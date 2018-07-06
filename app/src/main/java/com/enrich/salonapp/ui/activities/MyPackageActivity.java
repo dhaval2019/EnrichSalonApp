@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
@@ -24,6 +25,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +54,21 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
     DataRepository dataRepository;
     MyPackagesPresenter myPackagesPresenter;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_package);
 
         ButterKnife.bind(this);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("My Packages List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

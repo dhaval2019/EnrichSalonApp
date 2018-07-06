@@ -10,6 +10,8 @@ import com.enrich.salonapp.util.ObjectSerializer;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.handlers.NotificationOpenedHandler;
 import com.enrich.salonapp.util.handlers.NotificationReceivedHandler;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.onesignal.OneSignal;
 
 import java.io.IOException;
@@ -25,6 +27,9 @@ public class EnrichApplication extends Application {
 
     AuthenticationModel authenticationModel = null;
 
+    private static GoogleAnalytics sAnalytics;
+    private static Tracker sTracker;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,7 +40,23 @@ public class EnrichApplication extends Application {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
+        sAnalytics = GoogleAnalytics.getInstance(this);
     }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     *
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+        if (sTracker == null) {
+            sTracker = sAnalytics.newTracker(R.xml.global_tracker);
+        }
+
+        return sTracker;
+    }
+
 
     public AuthenticationModel getAuthenticationModel() {
         return authenticationModel;
@@ -526,6 +547,17 @@ public class EnrichApplication extends Application {
         }
 
         return "-";
+    }
+
+    public GenericCartModel getServiceById(int id) {
+        if(cartHasServices()){
+            for (int i=0;i<cartList.size();i++){
+                if(id == cartList.get(i).Id){
+                    return cartList.get(i);
+                }
+            }
+        }
+        return null;
     }
 }
 

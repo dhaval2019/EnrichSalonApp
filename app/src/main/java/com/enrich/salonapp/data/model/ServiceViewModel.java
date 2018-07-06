@@ -63,6 +63,9 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @SerializedName("Price")
     public PriceModel price;
 
+    @SerializedName("ServiceType")
+    public String ServiceType;
+
     public boolean IsAdded;
 
     public String SlotTime;
@@ -82,6 +85,8 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @SerializedName("ServiceTag")
     public ArrayList<ServiceTagModel> ServiceTag;
 
+    @SerializedName("ChildServices")
+    public ArrayList<ServiceViewModel> ChildServices;
 
     protected ServiceViewModel(Parcel in) {
 //        super(in);
@@ -103,6 +108,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         recoveryTime = in.readInt();
         code = in.readString();
         price = in.readParcelable(PriceModel.class.getClassLoader());
+        ServiceType = in.readString();
         IsAdded = in.readByte() != 0;
         SlotTime = in.readString();
         therapist = in.readParcelable(TherapistModel.class.getClassLoader());
@@ -110,6 +116,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         CategoryId = in.readString();
         CategoryName = in.readString();
         ServiceTag = in.createTypedArrayList(ServiceTagModel.CREATOR);
+        ChildServices = in.createTypedArrayList(ServiceViewModel.CREATOR);
     }
 
     @Override
@@ -133,6 +140,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         dest.writeInt(recoveryTime);
         dest.writeString(code);
         dest.writeParcelable(price, flags);
+        dest.writeString(ServiceType);
         dest.writeByte((byte) (IsAdded ? 1 : 0));
         dest.writeString(SlotTime);
         dest.writeParcelable(therapist, flags);
@@ -140,6 +148,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         dest.writeString(CategoryId);
         dest.writeString(CategoryName);
         dest.writeTypedList(ServiceTag);
+        dest.writeTypedList(ChildServices);
     }
 
     @Override
@@ -176,7 +185,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
 
     @Override
     public double getPrice() {
-        return price._final;
+        return price.sales;
     }
 
     @Override

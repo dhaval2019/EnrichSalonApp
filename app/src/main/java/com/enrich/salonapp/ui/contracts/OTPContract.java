@@ -11,6 +11,8 @@ public interface OTPContract {
 
     interface RegisterView extends IBaseView {
         void userRegistered(RegistrationResponseModel model);
+
+        void registerFailed();
     }
 
     interface RegisterPresenter extends IBasePresenter<OTPContract.RegisterView> {

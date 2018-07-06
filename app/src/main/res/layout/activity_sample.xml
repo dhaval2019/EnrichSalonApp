@@ -1,136 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.SampleActivity">
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.ui.activities.OfferActivity">
 
-    <ImageView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/wood_bg_blur"
-        android:tint="#20ffffff" />
+        android:layout_height="120dp"
+        android:background="#ffffff">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/drawer_collapse_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dimen_30dp"
-            android:layout_marginRight="@dimen/dimen_30dp"
-            app:cardCornerRadius="7dp"
-            app:cardElevation="@dimen/dimen_10dp">
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <LinearLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/midnight_city"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen_20sp">
+                android:padding="@dimen/dimen_15dp">
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Login"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_22sp"
-                    app:font_type="semi_bold" />
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="If your mobile number is registered, kindly sign in with your password."
-                    android:textColor="#e5e5e5"
-                    android:textSize="11sp"
-                    app:font_type="light" />
+                <ImageView
+                    android:id="@+id/parent_logo_container"
+                    android:layout_width="@dimen/dimen_50dp"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:src="@drawable/loreal_logo"
+                    android:background="@drawable/gold_border"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_20sp"
-                    android:background="@color/white">
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_toEndOf="@+id/parent_logo_container"
+                    android:orientation="vertical">
 
-                    <ImageView
+                    <com.enrich.salonapp.ui.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="3dp"
-                        android:src="@drawable/ic_phone" />
-
-                    <View
-                        android:layout_width="@dimen/dimen_1dp"
-                        android:layout_height="match_parent"
-                        android:background="#e5e5e5"
-                        android:layout_margin="@dimen/dimen_5dp"/>
-
-                    <com.enrich.salonapp.ui.views.CustomEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="Mobile Number"
-                        android:padding="@dimen/dimen_10dp"
+                        android:text="Loreal Hair Color"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/dimen_16sp"
-                        app:font_type="light" />
+                        app:font_type="regular" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@color/white">
-
-                    <ImageView
+                    <com.enrich.salonapp.ui.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="3dp"
-                        android:src="@drawable/lock_reset" />
-
-                    <View
-                        android:layout_width="@dimen/dimen_1dp"
-                        android:layout_height="match_parent"
-                        android:background="#e5e5e5"
-                        android:layout_margin="@dimen/dimen_5dp"/>
-
-                    <com.enrich.salonapp.ui.views.CustomEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="Password"
-                        android:padding="@dimen/dimen_10dp"
-                        android:textSize="@dimen/dimen_16sp"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/dimen_12sp"
                         app:font_type="light" />
                 </LinearLayout>
+            </RelativeLayout>
 
-
-                <com.enrich.salonapp.ui.views.CustomButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_20sp"
-                    android:background="@drawable/light_orange"
-                    android:text="Sign in"
-                    android:textColor="@color/white"
-                    app:font_type="semi_bold"/>
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Forgot Password"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    app:font_type="regular"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</FrameLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/variant_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

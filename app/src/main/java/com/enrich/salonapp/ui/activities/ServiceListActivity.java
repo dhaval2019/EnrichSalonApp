@@ -44,6 +44,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +122,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     ServiceListAdapter adapter;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +131,11 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
         ButterKnife.bind(this);
 
+        // SEND ANALYTICS
         application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Service List Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -171,7 +179,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 String gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
 
                 changeGenderIcons(!gender.equalsIgnoreCase("male"));
-                getServiceList(categoryModel.Id, "");
+                getServiceList(categoryModel.Id, gender);
             }
 
             @Override

@@ -11,6 +11,8 @@ public interface TimeSlotContract {
 
     interface View extends IBaseView {
         void setTimeSlot(AvailableTimeResponseModel model);
+
+        void noTimeSlot();
     }
 
     interface Presenter extends IBasePresenter<TimeSlotContract.View> {

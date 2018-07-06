@@ -31,18 +31,23 @@ import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.BrandResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
-import com.enrich.salonapp.data.model.Wallet.WalletHistoryModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
-import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -60,7 +65,7 @@ public abstract class DataSource {
     }
 
     public interface GetIsUserRegisteredCallBack {
-        void onSuccess(int responseCode);
+        void onSuccess(IsUserRegisteredResponseModel model);
 
         void onFailure(Throwable t);
 
@@ -386,4 +391,70 @@ public abstract class DataSource {
     }
 
     public abstract void getMyPackages(Map<String, String> map, GetMyPackagesCallback callback);
+
+
+    public interface GetBrandsListCallback {
+        void onSuccess(BrandResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getBrandsList(GetBrandsListCallback callback);
+
+
+    public interface GetProductsCategoryListCallback {
+        void onSuccess(ProductCategoryResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getProductCategoryList(GetProductsCategoryListCallback callback);
+
+
+    public interface GetProductsSubCategoryListCallback {
+        void onSuccess(ProductSubCategoryResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getProductSubCategoryList(GetProductsSubCategoryListCallback callback);
+
+
+    public interface GetServiceSubCategoryCallback {
+        void onSuccess(SubCategoryResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getServiceSubCategories(Map<String, String> map, GetServiceSubCategoryCallback callback);
+
+
+    public interface GetParentAndNormalServiceListCallback {
+        void onSuccess(ParentAndNormalServiceListResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getParentAndNormalServiceList(Map<String, String> map, GetParentAndNormalServiceListCallback callback);
+
+
+    public interface GetServiceVariantsCallback {
+        void onSuccess(ServiceVariantResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getServiceVariantsList(Map<String, String> map, GetServiceVariantsCallback callback);
 }

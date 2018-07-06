@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Wallet.WalletCenterModel;
@@ -28,6 +29,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,12 +66,21 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     DataRepository dataRepository;
     WalletPresenter walletPresenter;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
 
         ButterKnife.bind(this);
+
+        // SEND ANALYTICS
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Wallet Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
 
@@ -98,7 +110,7 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
         walletPresenter = new WalletPresenter(this, dataRepository);
 
         Map<String, String> map = new HashMap<>();
-        map.put("GuestId", "ffda3d92-1867-47ee-97fa-3d4348da5a65");
+        map.put("GuestId", EnrichUtils.getUserData(this).Id);
 
         walletPresenter.getWallet(this, map);
     }

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class CategoryModel implements Parcelable {
 
     public String Id;
+    public String CategoryId;
     public String CategoryOrganizationId;
     public String Name;
     public String ParentCategoryId;
@@ -16,6 +17,7 @@ public class CategoryModel implements Parcelable {
 
     protected CategoryModel(Parcel in) {
         Id = in.readString();
+        CategoryId = in.readString();
         CategoryOrganizationId = in.readString();
         Name = in.readString();
         ParentCategoryId = in.readString();
@@ -28,6 +30,7 @@ public class CategoryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(Id);
+        dest.writeString(CategoryId);
         dest.writeString(CategoryOrganizationId);
         dest.writeString(Name);
         dest.writeString(ParentCategoryId);

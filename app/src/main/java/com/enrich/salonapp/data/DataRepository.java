@@ -33,14 +33,21 @@ import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.BrandResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
+import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
@@ -77,8 +84,8 @@ public class DataRepository {
         if (networkHelper.isNetworkAvailable(context)) {
             remoteDataSource.isUserRegistered(phoneNumber, new DataSource.GetIsUserRegisteredCallBack() {
                 @Override
-                public void onSuccess(int responseCode) {
-                    callBack.onSuccess(responseCode);
+                public void onSuccess(IsUserRegisteredResponseModel model) {
+                    callBack.onSuccess(model);
                 }
 
                 @Override
@@ -688,6 +695,132 @@ public class DataRepository {
             remoteDataSource.getMyPackages(map, new DataSource.GetMyPackagesCallback() {
                 @Override
                 public void onSuccess(MyPackageResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getBrands(Context context, final DataSource.GetBrandsListCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getBrandsList(new DataSource.GetBrandsListCallback() {
+                @Override
+                public void onSuccess(BrandResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getProductsCategoryList(Context context, final DataSource.GetProductsCategoryListCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getProductCategoryList(new DataSource.GetProductsCategoryListCallback() {
+                @Override
+                public void onSuccess(ProductCategoryResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getProductsSubCategoryList(Context context, final DataSource.GetProductsSubCategoryListCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getProductSubCategoryList(new DataSource.GetProductsSubCategoryListCallback() {
+                @Override
+                public void onSuccess(ProductSubCategoryResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getSubCategoryList(Context context, Map<String, String> map, final DataSource.GetServiceSubCategoryCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getServiceSubCategories(map, new DataSource.GetServiceSubCategoryCallback() {
+                @Override
+                public void onSuccess(SubCategoryResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getParentAndNormalServiceList(Context context, Map<String, String> map, final DataSource.GetParentAndNormalServiceListCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getParentAndNormalServiceList(map, new DataSource.GetParentAndNormalServiceListCallback() {
+                @Override
+                public void onSuccess(ParentAndNormalServiceListResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getServiceVariants(Context context, Map<String, String> map, final DataSource.GetServiceVariantsCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getServiceVariantsList(map, new DataSource.GetServiceVariantsCallback() {
+                @Override
+                public void onSuccess(ServiceVariantResponseModel model) {
                     callback.onSuccess(model);
                 }
 

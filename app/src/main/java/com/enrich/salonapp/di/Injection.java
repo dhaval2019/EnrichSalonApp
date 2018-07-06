@@ -7,11 +7,9 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.local.LocalDataSource;
 import com.enrich.salonapp.data.remote.ApiService;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
-import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.NetworkHelper;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 
 import java.io.IOException;
@@ -59,7 +57,6 @@ public class Injection {
                 new OkHttpClient.Builder()
                         .readTimeout(60, TimeUnit.SECONDS)
                         .connectTimeout(60, TimeUnit.SECONDS)
-                        .addNetworkInterceptor(new StethoInterceptor())
                         .addInterceptor(interceptor)
                         .build();
 

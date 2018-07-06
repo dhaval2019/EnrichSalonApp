@@ -20,6 +20,8 @@ import com.enrich.salonapp.data.model.AppointmentModels.AppointmentSlotBookingsM
 import com.enrich.salonapp.ui.adapters.CartAdapter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,7 @@ public class CartActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     EnrichApplication application;
+    Tracker mTracker;
 
     CartAdapter adapter;
 
@@ -58,6 +61,11 @@ public class CartActivity extends AppCompatActivity {
 
         application = (EnrichApplication) getApplication();
         cartList = application.getCartItems();
+
+        // SEND ANALYTICS
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Cart Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

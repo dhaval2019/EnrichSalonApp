@@ -16,6 +16,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.PhoneModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
+import com.enrich.salonapp.data.model.SignIn.SignInGuestModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.RegisterContract;
 import com.enrich.salonapp.ui.presenters.RegisterPresenter;
@@ -70,6 +71,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
     DataRepository dataRepository;
 
+    SignInGuestModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +81,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         ButterKnife.bind(this);
 
         phoneNumberStr = getIntent().getStringExtra("PhoneNumber");
+        model = getIntent().getParcelableExtra("GuestData");
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Light.otf");
         maleRadioBtn.setTypeface(tf);
@@ -90,14 +94,24 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
         registerPresenter = new RegisterPresenter(this, dataRepository);
 
-        phoneNumberEdit.setText(phoneNumberStr);
-        phoneNumberEdit.setEnabled(false);
+        if (phoneNumberStr == null) {
+            firstNameEdit.setText(model.FirstName);
+            lastNameEdit.setText(model.LastName);
+            emailEdit.setText(model.Email);
+            emailEdit.setEnabled(false);
+            phoneNumberEdit.setText("" + model.MobileNumber);
+            phoneNumberEdit.setEnabled(false);
+        } else {
+            phoneNumberEdit.setText(phoneNumberStr);
+            phoneNumberEdit.setEnabled(false);
+        }
 
         userNameEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    registerPresenter.checkUsername(RegisterActivity.this, userNameEdit.getText().toString());
+                    if (!userNameEdit.getText().toString().isEmpty())
+                        registerPresenter.checkUsername(RegisterActivity.this, userNameEdit.getText().toString());
                 }
             }
         });

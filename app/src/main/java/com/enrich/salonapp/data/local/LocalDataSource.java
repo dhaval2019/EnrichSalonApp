@@ -188,4 +188,34 @@ public class LocalDataSource extends DataSource {
     public void getMyPackages(Map<String, String> map, GetMyPackagesCallback callback) {
 
     }
+
+    @Override
+    public void getBrandsList(GetBrandsListCallback callback) {
+
+    }
+
+    @Override
+    public void getProductCategoryList(GetProductsCategoryListCallback callback) {
+
+    }
+
+    @Override
+    public void getProductSubCategoryList(GetProductsSubCategoryListCallback callback) {
+
+    }
+
+    @Override
+    public void getServiceSubCategories(Map<String, String> map, GetServiceSubCategoryCallback callback) {
+
+    }
+
+    @Override
+    public void getParentAndNormalServiceList(Map<String, String> map, GetParentAndNormalServiceListCallback callback) {
+
+    }
+
+    @Override
+    public void getServiceVariantsList(Map<String, String> map, GetServiceVariantsCallback callback) {
+
+    }
 }

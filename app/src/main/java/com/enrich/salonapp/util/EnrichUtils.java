@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Base64;
@@ -15,9 +17,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.ui.views.BadgeDrawable;
 import com.enrich.salonapp.ui.views.LoadingDialogBox;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -376,5 +380,36 @@ public class EnrichUtils {
 
     public static CenterDetailModel getHomeStore(Context context) {
         return newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.HOME_STORE, ""), CenterDetailModel.class);
+    }
+
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
+
+    public static void removeBadge(Context context, LayerDrawable icon){
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.removeBadge(context);
     }
 }
