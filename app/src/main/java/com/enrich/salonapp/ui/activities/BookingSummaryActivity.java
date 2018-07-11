@@ -290,6 +290,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             createOrderResponseModel = model;
             if (application.cartHasServices()) {
                 bookingSummaryPresenter.getInvoice(this, RemoteDataSource.HOST + RemoteDataSource.GET_INVOICE + reserveSlotResponseModel.InvoiceId);
+                setData(model.getPaymentSummary());
             } else {
                 setData(model.getPaymentSummary());
             }
@@ -422,14 +423,6 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     }
 
     private void setData(PaymentSummaryModel model) {
-        totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
-        grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
-        payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
-        discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
-        taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
-        dateTimeSlot.setText("-");
-        stylistLabel.setText("-");
-
         makePaymentOfflineBtn.setEnabled(true);
         makePaymentOnlineBtn.setEnabled(true);
 
@@ -437,9 +430,25 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             serviceInfoContainer.setVisibility(View.VISIBLE);
             productInfoContainer.setVisibility(View.GONE);
         } else if (application.cartHasPackages()) {
+            totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+            grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
+            payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
+            discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
+            taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
+            dateTimeSlot.setText("-");
+            stylistLabel.setText("-");
+
             serviceInfoContainer.setVisibility(View.GONE);
             productInfoContainer.setVisibility(View.GONE);
         } else if (application.cartHasProducts()) {
+            totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+            grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
+            payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
+            discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
+            taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
+            dateTimeSlot.setText("-");
+            stylistLabel.setText("-");
+
             serviceInfoContainer.setVisibility(View.GONE);
             productInfoContainer.setVisibility(View.VISIBLE);
             deliveryPeriod.setText(application.getDeliveryPeriod());

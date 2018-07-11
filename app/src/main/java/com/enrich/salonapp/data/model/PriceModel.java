@@ -28,7 +28,7 @@ public class PriceModel implements Parcelable {
 
     protected PriceModel(Parcel in) {
         currencyId = in.readInt();
-        sales = in.readInt();
+        sales = in.readDouble();
         tax = in.readInt();
         _final = in.readInt();
         final1 = in.readInt();

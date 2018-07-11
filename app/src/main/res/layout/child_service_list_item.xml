@@ -40,10 +40,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
+                android:maxLines="2"
                 android:text="Bridal make up (Make Up, Hair do and Saree Draping)"
                 android:textColor="@color/dark_gold"
                 android:textSize="11sp"
-                android:maxLines="2"
                 app:font_type="light" />
 
             <com.enrich.salonapp.ui.views.CustomTextView
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_toStartOf="@+id/service_checkbox">
+            android:layout_toStartOf="@+id/service_checkbox_container">
 
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:text="@string/Rs"
                 android:textColor="@color/red"
                 android:textSize="13sp"
-                app:font_type="regular"/>
+                app:font_type="regular" />
 
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/main_price"
@@ -87,12 +87,25 @@
                 app:font_type="regular" />
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/service_checkbox"
+        <FrameLayout
+            android:id="@+id/service_checkbox_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true">
+
+            <CheckBox
+                android:id="@+id/service_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/parent_arrow"
+                android:layout_width="@dimen/dimen_30dp"
+                android:layout_height="@dimen/dimen_30dp"
+                android:src="@drawable/chevron_right"/>
+        </FrameLayout>
     </RelativeLayout>
 
     <View

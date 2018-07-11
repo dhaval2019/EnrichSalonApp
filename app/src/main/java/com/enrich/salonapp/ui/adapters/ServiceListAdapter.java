@@ -201,9 +201,9 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
         RecyclerView therapistRecyclerView = dialog.findViewById(R.id.therapist_list_recycler_view);
 
-        TherapistListAdapter adapter = new TherapistListAdapter(activity, list, parentPosition, childPosition, this, dialog);
-        therapistRecyclerView.setAdapter(adapter);
-        therapistRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+//        TherapistListAdapter adapter = new TherapistListAdapter(activity, list, parentPosition, childPosition, this, dialog);
+//        therapistRecyclerView.setAdapter(adapter);
+//        therapistRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

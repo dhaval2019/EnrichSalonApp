@@ -361,7 +361,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_margin="20dp"
             android:background="@drawable/gold_bg_gradient_curved"
-            android:text="View Transactions"
+            android:text="GO BACK HOME"
             android:textColor="@color/white"
             android:textSize="18sp"/>
     </LinearLayout>

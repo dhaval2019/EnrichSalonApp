@@ -98,11 +98,11 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Appointment");
+        collapsingToolbarLayout.setTitle("APPOINTMENT");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();

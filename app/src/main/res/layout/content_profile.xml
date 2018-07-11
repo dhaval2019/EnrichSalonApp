@@ -48,7 +48,7 @@
                         android:text="Name"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/name"
@@ -61,7 +61,7 @@
                         android:text="Varun Barve"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
                 </LinearLayout>
 
                 <View
@@ -102,7 +102,7 @@
                         android:text="Email"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/email"
@@ -115,7 +115,7 @@
                         android:text="varun7691@gmail.com"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
                 </LinearLayout>
 
                 <View
@@ -156,7 +156,7 @@
                         android:text="Phone"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/phone"
@@ -169,7 +169,7 @@
                         android:text="9730363383"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
                 </LinearLayout>
 
                 <View
@@ -186,7 +186,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp">
+                android:padding="15dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/address_icon"
@@ -211,7 +212,7 @@
                         android:text="Home"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_home"
@@ -224,7 +225,7 @@
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
 
                     <!-- WORK -->
                     <com.enrich.salonapp.ui.views.CustomTextView
@@ -234,7 +235,7 @@
                         android:text="Work"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_work"
@@ -247,7 +248,7 @@
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
 
                     <!-- OTHER -->
                     <com.enrich.salonapp.ui.views.CustomTextView
@@ -257,7 +258,7 @@
                         android:text="Other"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
-                        app:font_type="light" />
+                        app:font_type="ultra_light" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_other"
@@ -270,7 +271,7 @@
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:font_type="regular" />
+                        app:font_type="light" />
                 </LinearLayout>
 
                 <View

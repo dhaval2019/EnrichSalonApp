@@ -89,7 +89,7 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("My Packages");
+        collapsingToolbarLayout.setTitle("MY PACKAGES");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
@@ -114,8 +114,8 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
     @Override
     public void showMyPackages(MyPackageResponseModel model) {
         if (!model.GuestPackage.isEmpty()) {
-            noDetailsFound.setVisibility(View.VISIBLE);
-            myPackagesRecyclerView.setVisibility(View.GONE);
+            noDetailsFound.setVisibility(View.GONE);
+            myPackagesRecyclerView.setVisibility(View.VISIBLE);
 
             MyPackageAdapter adapter = new MyPackageAdapter(this, model.GuestPackage);
             myPackagesRecyclerView.setAdapter(adapter);

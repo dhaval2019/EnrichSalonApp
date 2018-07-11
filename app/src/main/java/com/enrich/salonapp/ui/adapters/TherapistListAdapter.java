@@ -23,17 +23,27 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
     ArrayList<TherapistModel> list;
     LayoutInflater inflater;
     int childPos, parentPos;
-    ServiceListAdapter serviceListAdapterNew;
+    NewServiceListAdapter serviceListAdapterNew;
     RecommendedServicesAdapter recommendedServicesAdapter;
+    VariantRecyclerViewAdapter variantRecyclerViewAdapter;
     Dialog dialog;
 
-    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int parentPosition, int childPosition, ServiceListAdapter serviceListAdapterNew, Dialog dialog) {
+    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int parentPosition, int childPosition, NewServiceListAdapter serviceListAdapterNew, Dialog dialog) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.childPos = childPosition;
         this.parentPos = parentPosition;
         this.serviceListAdapterNew = serviceListAdapterNew;
+        this.dialog = dialog;
+    }
+
+    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int position, VariantRecyclerViewAdapter variantRecyclerViewAdapter, Dialog dialog) {
+        this.context = context;
+        this.list = list;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.parentPos = position;
+        this.variantRecyclerViewAdapter = variantRecyclerViewAdapter;
         this.dialog = dialog;
     }
 
@@ -66,6 +76,9 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
 
                 if (recommendedServicesAdapter != null)
                     recommendedServicesAdapter.setTherapist(model, childPos);
+
+                if(variantRecyclerViewAdapter!=null)
+                    variantRecyclerViewAdapter.setTherapist(model, parentPos);
                 dialog.cancel();
             }
         });
@@ -73,7 +86,14 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
         holder.therapistRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                serviceListAdapterNew.setTherapist(model, parentPos, childPos);
+                if (serviceListAdapterNew != null)
+                    serviceListAdapterNew.setTherapist(model, parentPos, childPos);
+
+                if (recommendedServicesAdapter != null)
+                    recommendedServicesAdapter.setTherapist(model, childPos);
+
+                if(variantRecyclerViewAdapter!=null)
+                    variantRecyclerViewAdapter.setTherapist(model, parentPos);
                 dialog.cancel();
             }
         });

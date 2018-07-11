@@ -21,6 +21,7 @@ import com.enrich.salonapp.ui.adapters.WalletHistoryAdapter;
 import com.enrich.salonapp.ui.contracts.WalletHistoryContract;
 import com.enrich.salonapp.ui.presenters.WalletHistoryPresenter;
 import com.enrich.salonapp.ui.presenters.WalletPresenter;
+import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -82,11 +83,11 @@ public class WalletHistoryActivity extends BaseActivity implements WalletHistory
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Wallet History");
+        collapsingToolbarLayout.setTitle("WALLET HISTORY");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
@@ -95,7 +96,7 @@ public class WalletHistoryActivity extends BaseActivity implements WalletHistory
         walletHistoryPresenter = new WalletHistoryPresenter(this, dataRepository);
 
         Map<String, String> map = new HashMap<>();
-        map.put("GuestId", "ffda3d92-1867-47ee-97fa-3d4348da5a65");
+        map.put("GuestId", EnrichUtils.getUserData(this).Id);
 
         walletHistoryPresenter.getWalletHistory(this, map);
     }
@@ -109,6 +110,7 @@ public class WalletHistoryActivity extends BaseActivity implements WalletHistory
             WalletHistoryAdapter adapter = new WalletHistoryAdapter(this, model.WalletHistory);
             walletHistoryRecyclerView.setAdapter(adapter);
             walletHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            walletHistoryRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         } else {
             noHistoryAvailable.setVisibility(View.VISIBLE);
             walletHistoryRecyclerView.setVisibility(View.GONE);

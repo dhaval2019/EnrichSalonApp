@@ -3,7 +3,7 @@ package com.enrich.salonapp.data.model.SignIn;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SignInGuestModel implements Parcelable{
+public class SignInGuestModel implements Parcelable {
 
     public String Id;
     public String FirstName;
@@ -12,6 +12,12 @@ public class SignInGuestModel implements Parcelable{
     public String Email;
     public int Gender;
     public String UserName;
+    public String CreationDate;
+    public String CenterId;
+    public String Password;
+
+    public SignInGuestModel() {
+    }
 
     protected SignInGuestModel(Parcel in) {
         Id = in.readString();
@@ -21,6 +27,9 @@ public class SignInGuestModel implements Parcelable{
         Email = in.readString();
         Gender = in.readInt();
         UserName = in.readString();
+        CreationDate = in.readString();
+        CenterId = in.readString();
+        Password = in.readString();
     }
 
     @Override
@@ -32,6 +41,9 @@ public class SignInGuestModel implements Parcelable{
         dest.writeString(Email);
         dest.writeInt(Gender);
         dest.writeString(UserName);
+        dest.writeString(CreationDate);
+        dest.writeString(CenterId);
+        dest.writeString(Password);
     }
 
     @Override

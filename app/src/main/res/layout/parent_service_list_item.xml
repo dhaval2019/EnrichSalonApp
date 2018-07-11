@@ -19,12 +19,21 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_15dp"
             android:layout_marginRight="@dimen/dimen_15dp"
-            android:layout_toLeftOf="@+id/list_item_parent_service_arrow"
+            android:layout_toStartOf="@+id/service_progress"
             android:gravity="center_vertical"
             android:text="Bridal make up"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:font_type="regular" />
+
+        <ProgressBar
+            android:id="@+id/service_progress"
+            android:layout_width="@dimen/dimen_25dp"
+            android:layout_height="@dimen/dimen_25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:layout_toStartOf="@+id/list_item_parent_service_arrow"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/list_item_parent_service_arrow"

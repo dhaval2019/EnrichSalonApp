@@ -134,7 +134,6 @@
             android:name=".ui.activities.SampleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.activities.ProductFilterActivity"
             android:screenOrientation="portrait"
@@ -143,6 +142,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="0f35cab090557f840d17e1621755f2983baa97f4" />
+
+        <activity
+            android:name=".ui.activities.ServiceVariantActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

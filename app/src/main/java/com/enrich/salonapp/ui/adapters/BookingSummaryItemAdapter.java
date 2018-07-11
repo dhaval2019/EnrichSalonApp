@@ -42,7 +42,7 @@ public class BookingSummaryItemAdapter extends RecyclerView.Adapter<BookingSumma
     public void onBindViewHolder (BookingSummaryViewHolder holder, int position) {
         GenericCartModel model = list.get(position);
         holder.item.setText(model.Name);
-        holder.price.setText(context.getResources().getString(R.string.Rs) + " " + model.Price);
+        holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (int)model.Price);
     }
 
     class BookingSummaryViewHolder extends RecyclerView.ViewHolder {

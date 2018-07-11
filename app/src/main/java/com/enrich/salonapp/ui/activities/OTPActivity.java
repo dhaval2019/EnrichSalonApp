@@ -14,6 +14,7 @@ import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
+import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.VerifyOTPRequestModel;
@@ -93,7 +94,19 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     @Override
     public void userRegistered(RegistrationResponseModel model) {
         if (model.Success) {
-            EnrichUtils.saveUserData(OTPActivity.this, registrationRequestModel.Guest);
+            GuestModel guestModel = new GuestModel();
+            guestModel.CenterId = registrationRequestModel.Guest.CenterId;
+            guestModel.Id = registrationRequestModel.Guest.Id;
+            guestModel.CreationDate = registrationRequestModel.Guest.CreationDate;
+            guestModel.Email = registrationRequestModel.Guest.Email;
+            guestModel.FirstName = registrationRequestModel.Guest.FirstName;
+            guestModel.LastName = registrationRequestModel.Guest.LastName;
+            guestModel.UserName = registrationRequestModel.Guest.UserName;
+            guestModel.MobileNumber = registrationRequestModel.Guest.MobileNumber;
+            guestModel.Password = registrationRequestModel.Guest.Password;
+            guestModel.Gender = registrationRequestModel.Guest.Gender == 1 ? "Male" : "Female";
+
+            EnrichUtils.saveUserData(OTPActivity.this, guestModel);
 
             AuthenticationRequestModel authenticationRequestModel = new AuthenticationRequestModel();
             authenticationRequestModel.username = registrationRequestModel.Guest.UserName;

@@ -112,7 +112,8 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey"
-            app:font_type="regular" />
+            app:font_type="light"
+            android:textSize="@dimen/dimen_14sp"/>
 
         <View
             android:layout_width="match_parent"

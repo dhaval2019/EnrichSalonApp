@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.enrich.salonapp.ui.activities.ServiceVariantActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ToolbarColoredBackArrow">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:id="@+id/service_filter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:layout_marginRight="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:visibility="gone"
+            android:background="@drawable/grey_round_rect_bg">
+
+            <com.enrich.salonapp.ui.views.CustomEditText
+                android:id="@+id/service_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/service_filter_close"
+                android:background="@android:color/transparent"
+                android:hint="Enter name of service"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:textSize="14sp"
+                app:font_type="regular" />
+
+            <ImageView
+                android:id="@+id/service_filter_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/service_filter"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/service_filter"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:src="@drawable/ic_close"
+                android:tint="@color/black"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/parent_service_details_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service_filter_container"
+            android:padding="@dimen/dimen_15dp">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/parent_service_logo_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="3dp">
+
+                <ImageView
+                    android:id="@+id/parent_service_logo"
+                    android:layout_width="@dimen/dimen_50dp"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:background="@drawable/gold_border"
+                    android:src="@drawable/placeholder" />
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_toEndOf="@+id/parent_service_logo_container"
+                android:orientation="vertical">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/parent_service_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loreal Hair Color"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:font_type="regular" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/parent_service_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/dimen_12sp"
+                    app:font_type="light" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/service_cart_container"
+            android:layout_below="@+id/parent_service_details_container">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/no_service_available"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="No Services Available"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_20sp"
+                app:font_type="light" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/service_variant_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- CART CONTAINER -->
+        <LinearLayout
+            android:id="@+id/service_cart_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_shopping_cart" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/service_total_items"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/gold_circle_bg"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="9"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="#e5e5e5" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="15dp">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/service_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Rs. 2500"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:font_type="regular" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/service_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/gold_bg_gradient_curved"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp"
+                    android:text="NEXT"
+                    android:textColor="@color/white"
+                    app:font_type="regular" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

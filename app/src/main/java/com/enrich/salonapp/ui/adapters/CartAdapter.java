@@ -78,7 +78,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 holder.description.setVisibility(View.GONE);
             }
 
-            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + model.getPrice());
+            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (int) model.getPrice());
 
         } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) { // FOR PACKAGES
             if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_SERVICE) {

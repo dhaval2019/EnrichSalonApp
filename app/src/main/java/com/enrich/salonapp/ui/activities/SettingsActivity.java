@@ -1,7 +1,9 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.ChangePasswordRequestModel;
 import com.enrich.salonapp.data.model.ChangePasswordResponseModel;
+import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
+import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.di.Injection;
+import com.enrich.salonapp.ui.contracts.ForgotPasswordContract;
 import com.enrich.salonapp.ui.contracts.SettingsContract;
+import com.enrich.salonapp.ui.presenters.ForgotPasswordPresenter;
 import com.enrich.salonapp.ui.presenters.SettingsPresenter;
 import com.enrich.salonapp.util.Animations;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -28,7 +35,7 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends BaseActivity implements SettingsContract.View {
+public class SettingsActivity extends BaseActivity implements SettingsContract.View, ForgotPasswordContract.View {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -60,10 +67,19 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.forgot_password_click_here)
+    TextView forgotPasswordClickHere;
+
+    @BindView(R.id.forgot_password_more)
+    ImageView forgotPasswordMore;
+
     String oldPasswordStr, newPasswordStr, confirmPasswordStr;
 
     SettingsPresenter changePassword;
     DataRepository dataRepository;
+    ForgotPasswordPresenter forgotPasswordPresenter;
+
+    BottomSheetDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +103,18 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Settings");
+        collapsingToolbarLayout.setTitle("SETTINGS");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
         changePassword = new SettingsPresenter(this, dataRepository);
+        forgotPasswordPresenter = new ForgotPasswordPresenter(this, dataRepository);
 
         changePasswordMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +165,27 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 changePassword.changePassword(SettingsActivity.this, body);
             }
         });
+
+        forgotPasswordMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (forgotPasswordClickHere.getVisibility() == View.GONE) {
+                    Animations.expand(forgotPasswordClickHere, 400);
+                } else {
+                    Animations.collapse(forgotPasswordClickHere, 400);
+                }
+            }
+        });
+
+        forgotPasswordClickHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForgotPasswordRequestModel forgotPasswordRequestModel = new ForgotPasswordRequestModel();
+                forgotPasswordRequestModel.UserName = "" + EnrichUtils.getHomeStore(SettingsActivity.this).Phone;
+
+                forgotPasswordPresenter.forgotPassword(SettingsActivity.this, forgotPasswordRequestModel);
+            }
+        });
     }
 
     @Override
@@ -156,5 +194,34 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             Animations.collapse(changePasswordEditContainer, 400);
         }
         EnrichUtils.showMessage(SettingsActivity.this, "Password changed successfully");
+    }
+
+    @Override
+    public void passwordSent(ForgotPasswordResponseModel model) {
+        if (model.Success) {
+            showForgotPasswordDialog();
+        } else {
+            EnrichUtils.showMessage(SettingsActivity.this, "" + model.Error.Message);
+        }
+    }
+
+    private void showForgotPasswordDialog() {
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(R.layout.forgot_password_success);
+
+        dialog.setCancelable(false);
+
+        TextView openMailApp = dialog.findViewById(R.id.open_mail_app);
+
+        openMailApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mailClient = new Intent(Intent.ACTION_VIEW);
+                mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+                startActivity(mailClient);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

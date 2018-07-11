@@ -344,13 +344,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/wallet_recycler_view"
+                <LinearLayout
+                    android:id="@+id/wallet_recycler_view_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:padding="10dp"
-                    android:visibility="gone" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#eeeeee"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:paddingStart="@dimen/dimen_15dp"
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:text="Details"
+                        android:textColor="@color/dark_gold"
+                        app:font_type="light" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/wallet_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:padding="10dp" />
+                </LinearLayout>
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:id="@+id/no_cashback_available"
@@ -358,9 +376,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:paddingTop="@dimen/dimen_50dp"
+                    android:text="No Cashback Available"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/dimen_18sp"
-                    android:text="No Cashback Available" />
+                    android:textSize="@dimen/dimen_18sp" />
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>

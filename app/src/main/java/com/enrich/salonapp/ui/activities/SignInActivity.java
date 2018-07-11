@@ -27,8 +27,10 @@ import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.TherapistListAdapter;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
+import com.enrich.salonapp.ui.contracts.ForgotPasswordContract;
 import com.enrich.salonapp.ui.contracts.SignInContract;
 import com.enrich.salonapp.ui.presenters.AuthenticationTokenPresenter;
+import com.enrich.salonapp.ui.presenters.ForgotPasswordPresenter;
 import com.enrich.salonapp.ui.presenters.SignInPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
@@ -38,7 +40,7 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SignInActivity extends BaseActivity implements SignInContract.View, AuthenticationTokenContract.View {
+public class SignInActivity extends BaseActivity implements SignInContract.View, AuthenticationTokenContract.View, ForgotPasswordContract.View {
 
     @BindView(R.id.user_name_edit)
     EditText userNameEdit;
@@ -64,6 +66,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     BottomSheetDialog dialog;
 
     SignInPresenter signInPresenter;
+    ForgotPasswordPresenter forgotPasswordPresenter;
     AuthenticationTokenPresenter authenticationTokenPresenter;
 
     DataRepository dataRepository;
@@ -87,6 +90,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
 
         signInPresenter = new SignInPresenter(this, dataRepository);
+        forgotPasswordPresenter = new ForgotPasswordPresenter(this, dataRepository);
         authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
 
         userNameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -131,7 +135,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
                     ForgotPasswordRequestModel forgotPasswordRequestModel = new ForgotPasswordRequestModel();
                     forgotPasswordRequestModel.UserName = "" + phoneNumber;
 
-                    signInPresenter.forgotPassword(SignInActivity.this, forgotPasswordRequestModel);
+                    forgotPasswordPresenter.forgotPassword(SignInActivity.this, forgotPasswordRequestModel);
                 }
             }
         });

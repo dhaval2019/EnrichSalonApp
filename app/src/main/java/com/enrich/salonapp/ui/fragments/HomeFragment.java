@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ import com.enrich.salonapp.ui.activities.CategoryActivity;
 import com.enrich.salonapp.ui.activities.OfferActivity;
 import com.enrich.salonapp.ui.activities.PackagesActivity;
 import com.enrich.salonapp.ui.activities.ProductActivity;
+import com.enrich.salonapp.ui.activities.ServiceListActivity;
 import com.enrich.salonapp.ui.adapters.AppointmentHomeAdapter;
 import com.enrich.salonapp.ui.adapters.CategoriesHomeAdapter;
 import com.enrich.salonapp.ui.adapters.OfferHomeAdapter;
@@ -131,6 +133,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @BindView(R.id.product_container)
     LinearLayout productContainer;
 
+    @BindView(R.id.no_appointment_book_now)
+    TextView noAppointmentBookNow;
+
     ArrayList<OfferModel> offerList;
     ArrayList<CategoryModel> categoryList;
     ArrayList<PackageModel> packageList;
@@ -218,6 +223,14 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        noAppointmentBookNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeFragment.this.getActivity(), ServiceListActivity.class);
                 startActivity(intent);
             }
         });

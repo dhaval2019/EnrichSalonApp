@@ -86,7 +86,7 @@ public class ReceiptActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Receipt");
+        collapsingToolbarLayout.setTitle("RECEIPT");
 
         paymentConfirmOrderPurchaseAmount.setText(getResources().getString(R.string.Rs) + " " + paymentSummaryModel.getTotal());
 

@@ -6,13 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,17 +28,18 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
-import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategorySpinnerAdapter;
-import com.enrich.salonapp.ui.adapters.ServiceListAdapter;
+import com.enrich.salonapp.ui.adapters.NewServiceListAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
 import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.SubCategoryComparator;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -48,9 +47,8 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -120,9 +118,11 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     CategoryPresenter categoryPresenter;
     CategoryModel categoryModel;
 
-    ServiceListAdapter adapter;
+    NewServiceListAdapter adapter;
 
     Tracker mTracker;
+
+    String gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,15 +176,16 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
 
-                String gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
+                if (gender == null) {
+                    gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
+                }
 
                 changeGenderIcons(!gender.equalsIgnoreCase("male"));
-                getServiceList(categoryModel.Id, gender);
+                getServiceList(categoryModel.CategoryId, gender);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -219,7 +220,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             @Override
             public void onClick(View view) {
                 changeGenderIcons(false);
-                getServiceList(categoryModel.Id, "male");
+                getServiceList(categoryModel.CategoryId, "male");
             }
         });
 
@@ -227,9 +228,15 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             @Override
             public void onClick(View view) {
                 changeGenderIcons(true);
-                getServiceList(categoryModel.Id, "female");
+                getServiceList(categoryModel.CategoryId, "female");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCart();
     }
 
     private void changeGenderIcons(boolean isFemale) {
@@ -256,16 +263,21 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     }
 
     private void getServiceList(String categoryId, String gender) {
+        this.gender = gender;
         Map<String, String> map = new HashMap<>();
-        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
         map.put("CategoryId", categoryId);
-        map.put("size", "500");
-        map.put("GuestId", EnrichUtils.getUserData(this).Id);
-        map.put("length", "100");
-        map.put("start", "0");
-        map.put("Tag", gender);
+        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
 
-        serviceListPresenter.getServiceList(this, map);
+        if (gender.equalsIgnoreCase("male")) {
+            map.put("gender", "1");
+        } else if (gender.equalsIgnoreCase("female")) {
+            map.put("gender", "2");
+        } else {
+            map.put("gender", "0");
+        }
+
+//        serviceListPresenter.getServiceList(this, map);
+        serviceListPresenter.getSubCategories(this, map);
     }
 
     public void updateCart() {
@@ -274,7 +286,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
             serviceTotalItems.setText("" + application.getCartItems().size());
         }
     }
@@ -292,7 +304,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             serviceList = list;
             noServiceAvailable.setVisibility(View.GONE);
             serviceRecyclerView.setVisibility(View.VISIBLE);
-            setExpandableServiceListAdapter(list);
+//            setExpandableServiceListAdapter(list);
         } else {
             if (model.Error != null) {
                 EnrichUtils.showMessage(ServiceListActivity.this, "" + model.Error.Message);
@@ -302,11 +314,32 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         }
     }
 
-    private void setExpandableServiceListAdapter(ArrayList<ParentServiceViewModel> list) {
-        adapter = new ServiceListAdapter(list, this);
-        serviceRecyclerView.setAdapter(adapter);
-        serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    @Override
+    public void showSubCategories(SubCategoryResponseModel model) {
+        if (!model.SubCategories.isEmpty()) {
+            noServiceAvailable.setVisibility(View.GONE);
+            serviceRecyclerView.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < model.SubCategories.size(); i++) {
+                model.SubCategories.get(i).ChildServices = new ArrayList<>();
+            }
+
+            Collections.sort(model.SubCategories, new SubCategoryComparator());
+
+            adapter = new NewServiceListAdapter(this, model.SubCategories, gender);
+            serviceRecyclerView.setAdapter(adapter);
+            serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        } else {
+            noServiceAvailable.setVisibility(View.VISIBLE);
+            serviceRecyclerView.setVisibility(View.GONE);
+        }
     }
+
+//    private void setExpandableServiceListAdapter(ArrayList<ParentServiceViewModel> list) {
+//        adapter = new ServiceListAdapter(list, this);
+//        serviceRecyclerView.setAdapter(adapter);
+//        serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//    }
 
     @Override
     public void onBackPressed() {

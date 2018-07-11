@@ -68,8 +68,9 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-    //    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING
-    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
+//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
@@ -297,6 +298,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(Call<CategoryResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
         });
@@ -762,6 +764,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getServiceSubCategories(Map<String, String> map, final GetServiceSubCategoryCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
         Call<SubCategoryResponseModel> call = apiService.getSubCategoryList(map);
         call.enqueue(new Callback<SubCategoryResponseModel>() {
             @Override
@@ -780,6 +783,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getParentAndNormalServiceList(Map<String, String> map, final GetParentAndNormalServiceListCallback callback) {
+        EnrichUtils.log("P.A.N. REQ: " + EnrichUtils.newGson().toJson(map));
         Call<ParentAndNormalServiceListResponseModel> call = apiService.getParentAndNormalServiceList(map);
         call.enqueue(new Callback<ParentAndNormalServiceListResponseModel>() {
             @Override
@@ -798,6 +802,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getServiceVariantsList(Map<String, String> map, final GetServiceVariantsCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
         Call<ServiceVariantResponseModel> call = apiService.getServiceVariantList(map);
         call.enqueue(new Callback<ServiceVariantResponseModel>() {
             @Override

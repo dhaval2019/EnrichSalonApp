@@ -78,7 +78,7 @@ public class CartActivity extends AppCompatActivity {
         });
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
-        getSupportActionBar().setTitle("Cart");
+        getSupportActionBar().setTitle("CART");
 
         if (application != null)
             updatePriceAndQuantityView();
@@ -145,7 +145,7 @@ public class CartActivity extends AppCompatActivity {
 
     public void updatePriceAndQuantityView() {
         cartTotalItems.setText("" + application.getCartItems().size());
-        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
     }
 
     private void switchToNextScreen(ReserveSlotRequestModel reserveSlotModel) {

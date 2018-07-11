@@ -3,9 +3,11 @@ package com.enrich.salonapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceViewModel extends CartItem implements Parcelable {
 
@@ -85,9 +87,6 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @SerializedName("ServiceTag")
     public ArrayList<ServiceTagModel> ServiceTag;
 
-    @SerializedName("ChildServices")
-    public ArrayList<ServiceViewModel> ChildServices;
-
     protected ServiceViewModel(Parcel in) {
 //        super(in);
         id = in.readString();
@@ -116,7 +115,6 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         CategoryId = in.readString();
         CategoryName = in.readString();
         ServiceTag = in.createTypedArrayList(ServiceTagModel.CREATOR);
-        ChildServices = in.createTypedArrayList(ServiceViewModel.CREATOR);
     }
 
     @Override
@@ -148,7 +146,6 @@ public class ServiceViewModel extends CartItem implements Parcelable {
         dest.writeString(CategoryId);
         dest.writeString(CategoryName);
         dest.writeTypedList(ServiceTag);
-        dest.writeTypedList(ChildServices);
     }
 
     @Override

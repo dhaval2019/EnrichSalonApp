@@ -3,12 +3,14 @@ package com.enrich.salonapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.enrich.salonapp.data.model.SignIn.SignInGuestModel;
+
 public class RegistrationRequestModel implements Parcelable {
 
     public String VerificationId;
     public String OTP;
     public String CenterId;
-    public GuestModel Guest;
+    public SignInGuestModel Guest;
 
     public RegistrationRequestModel() {
     }
@@ -17,7 +19,7 @@ public class RegistrationRequestModel implements Parcelable {
         VerificationId = in.readString();
         OTP = in.readString();
         CenterId = in.readString();
-        Guest = in.readParcelable(GuestModel.class.getClassLoader());
+        Guest = in.readParcelable(SignInGuestModel.class.getClassLoader());
     }
 
     @Override

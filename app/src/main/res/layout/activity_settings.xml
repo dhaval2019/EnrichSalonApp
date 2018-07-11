@@ -40,19 +40,19 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/change_password_label_container"
+                android:id="@+id/forgot_password_label_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_toLeftOf="@+id/change_password_more">
+                android:layout_toStartOf="@+id/forgot_password_more"
+                android:orientation="vertical">
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Change Password"
+                    android:text="Forgot Password"
                     android:textColor="#000000"
-                    android:textSize="@dimen/dimen_18sp"
-                    app:font_type="regular" />
+                    android:textSize="@dimen/dimen_16sp"
+                    app:font_type="light" />
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:layout_width="wrap_content"
@@ -61,6 +61,68 @@
                     android:text="If you have done forgot password please check your mail for the old password"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
+                    android:visibility="gone"
+                    app:font_type="light" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/forgot_password_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/forgot_password_label_container"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/forgot_password_label_container"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_more_vert_black_24dp" />
+        </RelativeLayout>
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/forgot_password_click_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:text="Click Here"
+            android:textColor="@color/dark_gold"
+            android:textSize="@dimen/dimen_14sp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginBottom="@dimen/dimen_15dp"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:background="#E0E0E0" />
+
+        <!-- CHANGE PASSWORD -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/change_password_label_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/change_password_more"
+                android:orientation="vertical">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Password"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:font_type="light" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="If you have done forgot password please check your mail for the old password"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/dimen_14sp"
+                    android:visibility="gone"
                     app:font_type="light" />
             </LinearLayout>
 
@@ -68,12 +130,12 @@
                 android:id="@+id/change_password_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_more_vert_black_24dp"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:paddingRight="@dimen/dimen_10dp"
+                android:layout_alignBottom="@+id/change_password_label_container"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/change_password_label_container"
-                android:layout_alignBottom="@+id/change_password_label_container"/>
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_more_vert_black_24dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -98,6 +160,7 @@
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
+                    android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
 
                 <View
@@ -121,6 +184,7 @@
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
+                    android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
 
                 <View
@@ -144,6 +208,7 @@
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
+                    android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
 
                 <View
@@ -167,6 +232,7 @@
                     android:background="@drawable/gold_broder_curved"
                     android:text="Cancel"
                     android:textColor="@color/dark_gold"
+                    android:textSize="@dimen/dimen_14sp"
                     app:font_type="regular" />
 
                 <View
@@ -181,6 +247,7 @@
                     android:background="@drawable/gold_bg_gradient_curved"
                     android:text="SAVE"
                     android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_14sp"
                     app:font_type="regular" />
             </LinearLayout>
         </LinearLayout>

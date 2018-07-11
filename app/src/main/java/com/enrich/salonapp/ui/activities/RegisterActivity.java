@@ -98,7 +98,6 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             firstNameEdit.setText(model.FirstName);
             lastNameEdit.setText(model.LastName);
             emailEdit.setText(model.Email);
-            emailEdit.setEnabled(false);
             phoneNumberEdit.setText("" + model.MobileNumber);
             phoneNumberEdit.setEnabled(false);
         } else {
@@ -150,14 +149,14 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
                 registrationRequestModel = new RegistrationRequestModel();
                 registrationRequestModel.CenterId = Constants.CENTER_ID;
-                registrationRequestModel.Guest = new GuestModel();
+                registrationRequestModel.Guest = new SignInGuestModel();
                 registrationRequestModel.Guest.CenterId = Constants.CENTER_ID;
                 registrationRequestModel.Guest.CreationDate = new Date().toString();
                 registrationRequestModel.Guest.FirstName = firstNameStr;
                 registrationRequestModel.Guest.LastName = lastNameStr;
                 registrationRequestModel.Guest.Email = emailStr;
                 registrationRequestModel.Guest.MobileNumber = phoneNumberStr;
-                registrationRequestModel.Guest.Gender = "" + gender;
+                registrationRequestModel.Guest.Gender = gender;
                 registrationRequestModel.Guest.Password = passwordStr;
                 registrationRequestModel.Guest.UserName = userNameStr;
 

@@ -59,7 +59,7 @@ public class ContactUsActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Contact Us");
+        collapsingToolbarLayout.setTitle("CONTACT US");
 
         phoneContainer.setOnClickListener(new View.OnClickListener() {
             @Override

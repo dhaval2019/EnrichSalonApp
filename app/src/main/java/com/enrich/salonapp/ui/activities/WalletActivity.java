@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
@@ -25,6 +26,7 @@ import com.enrich.salonapp.ui.adapters.WalletAdapter;
 import com.enrich.salonapp.ui.adapters.WalletHistoryAdapter;
 import com.enrich.salonapp.ui.contracts.WalletContract;
 import com.enrich.salonapp.ui.presenters.WalletPresenter;
+import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -63,6 +65,9 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     @BindView(R.id.no_cashback_available)
     TextView noCashbackAvailable;
 
+    @BindView(R.id.wallet_recycler_view_container)
+    LinearLayout walletRecyclerViewContainer;
+
     DataRepository dataRepository;
     WalletPresenter walletPresenter;
 
@@ -97,11 +102,11 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Wallet");
+        collapsingToolbarLayout.setTitle("WALLET");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
@@ -119,12 +124,13 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
     public void showWallet(WalletResponseModel model) {
         if (!model.Wallets.isEmpty()) {
             walletLoader.setVisibility(View.GONE);
-            walletRecyclerView.setVisibility(View.VISIBLE);
+            walletRecyclerViewContainer.setVisibility(View.VISIBLE);
             noCashbackAvailable.setVisibility(View.GONE);
 
             WalletAdapter adapter = new WalletAdapter(this, model.Wallets);
             walletRecyclerView.setAdapter(adapter);
             walletRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            walletRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
             double amount = 0;
 
@@ -143,7 +149,7 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
             walletAmountPaisa.setText("." + paise);
         } else {
             walletLoader.setVisibility(View.GONE);
-            walletRecyclerView.setVisibility(View.GONE);
+            walletRecyclerViewContainer.setVisibility(View.GONE);
             noCashbackAvailable.setVisibility(View.VISIBLE);
         }
     }

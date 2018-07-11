@@ -88,13 +88,13 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Edit Profile");
+        collapsingToolbarLayout.setTitle("EDIT PROFILE");
 
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Light.otf");
         editGenderMale.setTypeface(custom_font);
         editGenderFemale.setTypeface(custom_font);
 
@@ -103,6 +103,7 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
         lastName.setText(model.LastName);
         email.setText(model.Email);
         phone.setText(model.MobileNumber);
+
         if (model.Gender.equals("Male")) {
             editGenderMale.setChecked(true);
             editGenderFemale.setChecked(false);

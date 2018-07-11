@@ -43,6 +43,9 @@ public class GuestModel implements Parcelable {
     @SerializedName("CountryName")
     public String Country;
 
+    @SerializedName("IsMember")
+    public int IsMember;
+
     public String UserName;
     public String Password;
 
@@ -62,6 +65,7 @@ public class GuestModel implements Parcelable {
         City = in.readString();
         State = in.readString();
         Country = in.readString();
+        IsMember = in.readInt();
         UserName = in.readString();
         Password = in.readString();
     }
@@ -80,6 +84,7 @@ public class GuestModel implements Parcelable {
         dest.writeString(City);
         dest.writeString(State);
         dest.writeString(Country);
+        dest.writeInt(IsMember);
         dest.writeString(UserName);
         dest.writeString(Password);
     }

@@ -15,15 +15,11 @@ public interface SignInContract {
         void showPasswordField(IsUserRegisteredResponseModel model);
 
         void saveUserDetails(GuestModel model);
-
-        void passwordSent(ForgotPasswordResponseModel model);
     }
 
     interface Presenter extends IBasePresenter<View> {
         void isUserRegistered(Context context, String phoneNumber);
 
         void getUserData(Context context, String guestId);
-
-        void forgotPassword(Context context, ForgotPasswordRequestModel model);
     }
 }

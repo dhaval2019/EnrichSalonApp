@@ -94,18 +94,18 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         });
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
-        getSupportActionBar().setTitle("Store Selector");
+//        getSupportActionBar().setTitle("Store Selector");
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBarWhite);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#000000"));
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#000000"));
 
-        collapsingToolbarLayout.setTitle("Store Selector");
+        collapsingToolbarLayout.setTitle("STORES LIST");
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();

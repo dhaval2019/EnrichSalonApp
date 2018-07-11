@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.ui.contracts.RegisterContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
@@ -40,6 +42,39 @@ public class ServiceListPresenter extends BasePresenter<ServiceListContract.View
             public void onFailure(Throwable t) {
                 if (view != null) {
                     view.showToastMessage("Something went wrong. Please try again later.");
+                    view.setProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if (view != null) {
+                    view.showToastMessage("No Network. Please try again later.");
+                    view.setProgressBar(false);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getSubCategories(Context context, Map<String, String> map) {
+        if (view == null)
+            return;
+
+        view.setProgressBar(true);
+
+        dataRepository.getSubCategoryList(context, map, new DataSource.GetServiceSubCategoryCallback() {
+            @Override
+            public void onSuccess(SubCategoryResponseModel model) {
+                if (view != null) {
+                    view.showSubCategories(model);
+                    view.setProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (view != null) {
                     view.setProgressBar(false);
                 }
             }

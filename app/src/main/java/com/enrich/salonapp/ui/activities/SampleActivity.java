@@ -66,9 +66,5 @@ public class SampleActivity extends AppCompatActivity {
         list.add("Variant Service 4");
         list.add("Variant Service 5");
         list.add("Variant Service 6");
-
-        VariantRecyclerViewAdapter adapter = new VariantRecyclerViewAdapter(this, list);
-        variantRecyclerView.setAdapter(adapter);
-        variantRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 }

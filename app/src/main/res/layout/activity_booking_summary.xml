@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:text="Booking Summary"
+                    android:text="BOOKING SUMMARY"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:font_type="regular" />

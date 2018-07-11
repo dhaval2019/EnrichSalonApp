@@ -61,11 +61,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         assert collapsingToolbarLayout != null;
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Regular.ttf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
-        collapsingToolbarLayout.setTitle("Profile");
+        collapsingToolbarLayout.setTitle("PROFILE");
 
         GuestModel guestModel = EnrichUtils.getUserData(this);
         name.setText(guestModel.FirstName + " " + guestModel.LastName);

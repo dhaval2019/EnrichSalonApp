@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         return list.size();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
         final OfferModel model = list.get(position);

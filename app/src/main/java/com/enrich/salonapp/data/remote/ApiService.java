@@ -85,7 +85,7 @@ public interface ApiService {
     @GET("Catalog/Payments/GetAllOffers")
     Call<OfferResponseModel> getAllOffers();
 
-    @GET("Catalog/Services/Categories")
+    @GET("Catalog/Services/GetCategories")
     Call<CategoryResponseModel> getAllCategories(@QueryMap Map<String, String> map);
 
     @GET

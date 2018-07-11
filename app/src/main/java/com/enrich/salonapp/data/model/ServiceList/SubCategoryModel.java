@@ -3,9 +3,14 @@ package com.enrich.salonapp.data.model.ServiceList;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bignerdranch.expandablerecyclerview.model.Parent;
+import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.google.gson.annotations.SerializedName;
 
-public class SubCategoryModel implements Parcelable {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
 
     public int Id;
     @SerializedName("CategoryId")
@@ -19,6 +24,21 @@ public class SubCategoryModel implements Parcelable {
     public int SortOrder;
     public String Code;
     public int Gender;
+    public ArrayList<ServiceViewModel> ChildServices = new ArrayList<>();
+
+    public SubCategoryModel(int id, String subCategoryId, String subCategoryOrganizationId, String imageUrl, String name, String parentCategoryId, String description, int sortOrder, String code, int gender, ArrayList<ServiceViewModel> childServices) {
+        Id = id;
+        SubCategoryId = subCategoryId;
+        SubCategoryOrganizationId = subCategoryOrganizationId;
+        ImageUrl = imageUrl;
+        Name = name;
+        ParentCategoryId = parentCategoryId;
+        Description = description;
+        SortOrder = sortOrder;
+        Code = code;
+        Gender = gender;
+        ChildServices = childServices;
+    }
 
     protected SubCategoryModel(Parcel in) {
         Id = in.readInt();
@@ -31,6 +51,7 @@ public class SubCategoryModel implements Parcelable {
         SortOrder = in.readInt();
         Code = in.readString();
         Gender = in.readInt();
+        ChildServices = in.createTypedArrayList(ServiceViewModel.CREATOR);
     }
 
     @Override
@@ -45,6 +66,7 @@ public class SubCategoryModel implements Parcelable {
         dest.writeInt(SortOrder);
         dest.writeString(Code);
         dest.writeInt(Gender);
+        dest.writeTypedList(ChildServices);
     }
 
     @Override
@@ -63,4 +85,14 @@ public class SubCategoryModel implements Parcelable {
             return new SubCategoryModel[size];
         }
     };
+
+    @Override
+    public List<ServiceViewModel> getChildList() {
+        return ChildServices;
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
+    }
 }
