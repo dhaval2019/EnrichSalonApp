@@ -43,7 +43,6 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategoryModel> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.category_spinner_list_item, parent, false);
         }

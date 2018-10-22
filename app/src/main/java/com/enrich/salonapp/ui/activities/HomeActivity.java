@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -32,9 +33,11 @@ import com.enrich.salonapp.BuildConfig;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.ui.fragments.HomeFragment;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.OfferHandler;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.google.android.gms.common.ConnectionResult;
@@ -98,12 +101,24 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     double latitude;
     double longitude;
 
+    BottomSheetDialog dialog;
+
+    private int callToAction;
+    private OfferModel offerModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
+
+        callToAction = Integer.parseInt(getIntent().getStringExtra("CallToAction") == null ? "-1" : getIntent().getStringExtra("CallToAction"));
+        offerModel = getIntent().getParcelableExtra("OfferModelFromNotification");
+
+        if (callToAction != -1 && offerModel != null) {
+            OfferHandler.handleOfferRedirection(this, offerModel);
+        }
 
         googleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(10 * 100).setFastestInterval(1 * 100);
@@ -207,12 +222,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         logoutContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EnrichUtils.logout(HomeActivity.this);
-                SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
-                Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+                logoutDialog();
+//                EnrichUtils.logout(HomeActivity.this);
+//                SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
+//                Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
             }
         });
 
@@ -225,6 +241,37 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         addFragment(HomeFragment.getInstance(drawer));
+    }
+
+    private void logoutDialog() {
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(R.layout.logout_dialog);
+
+        dialog.setCancelable(true);
+
+        TextView logoutOk = dialog.findViewById(R.id.logout_ok);
+        TextView logoutCancel = dialog.findViewById(R.id.logout_cancel);
+
+        logoutOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EnrichUtils.logout(HomeActivity.this);
+                SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
+                Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        logoutCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public void addFragment(Fragment fragment) {

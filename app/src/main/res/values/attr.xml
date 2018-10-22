@@ -29,5 +29,7 @@
         <enum name="semi_bold" value="6" />
 
         <enum name="ultra_light" value="7" />
+
+        <enum name="italic" value="8" />
     </attr>
 </resources>

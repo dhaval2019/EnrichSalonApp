@@ -24,11 +24,11 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
     }
 
     @Override
-    public void getOffersList(Context context) {
+    public void getOffersList(Context context, Map<String, String> map) {
         if (view == null)
             return;
 
-        dataRepository.getOffersList(context, new DataSource.GetOfferListCallBack() {
+        dataRepository.getOffersList(context, map, new DataSource.GetOfferListCallBack() {
             @Override
             public void onSuccess(OfferResponseModel model) {
                 if (view != null) {

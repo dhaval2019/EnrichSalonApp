@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
+import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Product.BrandResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
@@ -99,6 +100,40 @@ public class ProductFilterPresenter extends BasePresenter<ProductFilterContract.
             public void onSuccess(ProductSubCategoryResponseModel model) {
                 if (view != null) {
                     view.showProductSubCategories(model);
+                    view.setProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (view != null) {
+                    view.setProgressBar(true);
+                    view.showToastMessage("Something went wrong. Please try again later.");
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if (view != null) {
+                    view.setProgressBar(false);
+                    view.showToastMessage("No Network. Please try again later.");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getProductOffers(Context context) {
+        if (view == null)
+            return;
+
+        view.setProgressBar(false);
+
+        dataRepository.getProductOffers(context, new DataSource.GetProductOffersCallback() {
+            @Override
+            public void onSuccess(OfferResponseModel model) {
+                if (view != null) {
+                    view.showProductOffers(model);
                     view.setProgressBar(false);
                 }
             }

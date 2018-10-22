@@ -434,13 +434,28 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                 ArrayList<ServiceViewModel> tempChildFilteredList = new ArrayList<>();
 
                 for (SubCategoryModel parentServiceViewModel : list) {
-                    for (ServiceViewModel serviceViewModel : parentServiceViewModel.ChildServices) {
-                        if (serviceViewModel.name.toLowerCase().contains(filterString.toLowerCase())) {
-                            tempChildFilteredList.add(serviceViewModel);
+                    if (!parentServiceViewModel.ChildServices.isEmpty()) {
+                        for (ServiceViewModel serviceViewModel : parentServiceViewModel.ChildServices) {
+                            if (serviceViewModel.name.toLowerCase().contains(filterString.toLowerCase())) {
+                                tempChildFilteredList.add(serviceViewModel);
+                            }
+                        }
+
+                        if (!tempChildFilteredList.isEmpty())
+                            tempParentFilteredList.add(new SubCategoryModel(parentServiceViewModel.Id, parentServiceViewModel.SubCategoryId, parentServiceViewModel.SubCategoryOrganizationId, parentServiceViewModel.ImageUrl, parentServiceViewModel.Name, parentServiceViewModel.ParentCategoryId, parentServiceViewModel.Description, parentServiceViewModel.SortOrder, parentServiceViewModel.Code, parentServiceViewModel.Gender, tempChildFilteredList));
+                    } else {
+                        if (parentServiceViewModel.Name.toLowerCase().contains(filterString.toLowerCase())) {
+                            tempParentFilteredList.add(parentServiceViewModel);
                         }
                     }
-                    if (!tempChildFilteredList.isEmpty())
-                        tempParentFilteredList.add(new SubCategoryModel(parentServiceViewModel.Id, parentServiceViewModel.SubCategoryId, parentServiceViewModel.SubCategoryOrganizationId, parentServiceViewModel.ImageUrl, parentServiceViewModel.Name, parentServiceViewModel.ParentCategoryId, parentServiceViewModel.Description, parentServiceViewModel.SortOrder, parentServiceViewModel.Code, parentServiceViewModel.Gender, tempChildFilteredList));
+//                    for (ServiceViewModel serviceViewModel : parentServiceViewModel.ChildServices) {
+//                    if (parentServiceViewModel.Name.toLowerCase().contains(filterString.toLowerCase())) {
+//                        tempParentFilteredList.add(parentServiceViewModel);
+//                        tempChildFilteredList.add(serviceViewModel);
+//                    }
+//                    }
+//                    if (!tempChildFilteredList.isEmpty())
+//                        tempParentFilteredList.add(new SubCategoryModel(parentServiceViewModel.Id, parentServiceViewModel.SubCategoryId, parentServiceViewModel.SubCategoryOrganizationId, parentServiceViewModel.ImageUrl, parentServiceViewModel.Name, parentServiceViewModel.ParentCategoryId, parentServiceViewModel.Description, parentServiceViewModel.SortOrder, parentServiceViewModel.Code, parentServiceViewModel.Gender, tempChildFilteredList));
                 }
 
                 filteredList = tempParentFilteredList;

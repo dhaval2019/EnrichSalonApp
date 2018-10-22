@@ -1,6 +1,7 @@
 package com.enrich.salonapp.data.local;
 
 import com.enrich.salonapp.data.DataSource;
+import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
@@ -12,6 +13,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -75,7 +77,7 @@ public class LocalDataSource extends DataSource {
     }
 
     @Override
-    public void getOffers(GetOfferListCallBack callBack) {
+    public void getOffers(Map<String, String> map, GetOfferListCallBack callBack) {
 
     }
 
@@ -216,6 +218,26 @@ public class LocalDataSource extends DataSource {
 
     @Override
     public void getServiceVariantsList(Map<String, String> map, GetServiceVariantsCallback callback) {
+
+    }
+
+    @Override
+    public void getProductOffers(GetProductOffersCallback callback) {
+
+    }
+
+    @Override
+    public void addAddress(AddressModel model, AddAddressCallback callback) {
+
+    }
+
+    @Override
+    public void getAppUpdate(Map<String, String> map, GetAppUpdateCallback callback) {
+
+    }
+
+    @Override
+    public void registerFCM(RegisterFCMRequestModel model, RegisterFCMCallback callback) {
 
     }
 }

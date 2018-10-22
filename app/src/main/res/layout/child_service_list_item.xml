@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp">
 
         <LinearLayout
+            android:id="@+id/service_name_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_20dp"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/price_container"
             android:orientation="vertical"
@@ -43,8 +44,8 @@
                 android:maxLines="2"
                 android:text="Bridal make up (Make Up, Hair do and Saree Draping)"
                 android:textColor="@color/dark_gold"
-                android:textSize="11sp"
-                app:font_type="light" />
+                android:textSize="12sp"
+                app:font_type="italic" />
 
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/service_therapist_name"
@@ -98,13 +99,13 @@
                 android:id="@+id/service_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/parent_arrow"
                 android:layout_width="@dimen/dimen_30dp"
                 android:layout_height="@dimen/dimen_30dp"
-                android:src="@drawable/chevron_right"/>
+                android:src="@drawable/chevron_right" />
         </FrameLayout>
     </RelativeLayout>
 

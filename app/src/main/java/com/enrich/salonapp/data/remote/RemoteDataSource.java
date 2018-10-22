@@ -1,6 +1,9 @@
 package com.enrich.salonapp.data.remote;
 
 import com.enrich.salonapp.data.DataSource;
+import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.AddressResponseModel;
+import com.enrich.salonapp.data.model.AppUpdateResponseModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -39,6 +42,8 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -59,6 +64,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,8 +74,8 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
-    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
+            public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+//    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
 //    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
@@ -167,13 +173,19 @@ public class RemoteDataSource extends DataSource {
 
         Map<String, String> map = new HashMap<>();
         map.put("GuestId", guestId);
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
 
         Call<GuestResponseModel> call = apiService.getUserData(map);
         call.enqueue(new Callback<GuestResponseModel>() {
             @Override
             public void onResponse(Call<GuestResponseModel> call, Response<GuestResponseModel> response) {
-                if (response.isSuccessful())
-                    callBack.onSuccess(response.body().Guest);
+                if (response.isSuccessful()) {
+                    if (response.body().Guest != null) {
+                        callBack.onSuccess(response.body().Guest);
+                    } else {
+                        callBack.onFailure(new Throwable());
+                    }
+                }
             }
 
             @Override
@@ -267,9 +279,11 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getOffers(final GetOfferListCallBack callBack) {
+    public void getOffers(Map<String, String> map, final GetOfferListCallBack callBack) {
 
-        Call<OfferResponseModel> call = apiService.getAllOffers();
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
+
+        Call<OfferResponseModel> call = apiService.getAllOffers(map);
         call.enqueue(new Callback<OfferResponseModel>() {
             @Override
             public void onResponse(Call<OfferResponseModel> call, Response<OfferResponseModel> response) {
@@ -383,6 +397,8 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getTherapist(final Map<String, String> map, final GetTherapistCallBack callBack) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
+
         Call<TherapistResponseModel> call = apiService.getTherapistList(map);
         call.enqueue(new Callback<TherapistResponseModel>() {
             @Override
@@ -582,8 +598,11 @@ public class RemoteDataSource extends DataSource {
         call.enqueue(new Callback<PackageResponseModel>() {
             @Override
             public void onResponse(Call<PackageResponseModel> call, Response<PackageResponseModel> response) {
-                if (response.isSuccessful())
+                if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
+                } else {
+                    callBack.onFailure(new Throwable());
+                }
             }
 
             @Override
@@ -814,6 +833,86 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onFailure(Call<ServiceVariantResponseModel> call, Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getProductOffers(final GetProductOffersCallback callback) {
+        Call<OfferResponseModel> call = apiService.getProductOffers();
+        call.enqueue(new Callback<OfferResponseModel>() {
+            @Override
+            public void onResponse(Call<OfferResponseModel> call, Response<OfferResponseModel> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OfferResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void addAddress(AddressModel model, final AddAddressCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
+        Call<AddressResponseModel> call = apiService.addAddress(model);
+        call.enqueue(new Callback<AddressResponseModel>() {
+            @Override
+            public void onResponse(Call<AddressResponseModel> call, Response<AddressResponseModel> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+
+    }
+
+    @Override
+    public void getAppUpdate(final Map<String, String> map, final GetAppUpdateCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
+        Call<AppUpdateResponseModel> call = apiService.getAppUpdate(map);
+        call.enqueue(new Callback<AppUpdateResponseModel>() {
+            @Override
+            public void onResponse(Call<AppUpdateResponseModel> call, Response<AppUpdateResponseModel> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AppUpdateResponseModel> call, Throwable t) {
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void registerFCM(RegisterFCMRequestModel model, final RegisterFCMCallback callback) {
+        Call<RegisterFCMResponseModel> call = apiService.registerFCM(model);
+        call.enqueue(new Callback<RegisterFCMResponseModel>() {
+            @Override
+            public void onResponse(Call<RegisterFCMResponseModel> call, Response<RegisterFCMResponseModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<RegisterFCMResponseModel> call, Throwable t) {
                 callback.onFailure(t);
             }
         });

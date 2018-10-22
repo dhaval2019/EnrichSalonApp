@@ -1,5 +1,8 @@
 package com.enrich.salonapp.data;
 
+import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.AddressResponseModel;
+import com.enrich.salonapp.data.model.AppUpdateResponseModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -37,6 +40,8 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -52,6 +57,7 @@ import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class DataSource {
@@ -149,7 +155,7 @@ public abstract class DataSource {
         void onNetworkFailure();
     }
 
-    public abstract void getOffers(GetOfferListCallBack callBack);
+    public abstract void getOffers(Map<String, String> map, GetOfferListCallBack callBack);
 
 
     public interface GetCategoryListCallBack {
@@ -457,4 +463,48 @@ public abstract class DataSource {
     }
 
     public abstract void getServiceVariantsList(Map<String, String> map, GetServiceVariantsCallback callback);
+
+
+    public interface GetProductOffersCallback {
+        void onSuccess(OfferResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getProductOffers(GetProductOffersCallback callback);
+
+
+    public interface AddAddressCallback {
+        void onSuccess(AddressResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void addAddress(AddressModel model, AddAddressCallback callback);
+
+
+    public interface GetAppUpdateCallback {
+        void onSuccess(AppUpdateResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getAppUpdate(Map<String, String> map, GetAppUpdateCallback callback);
+
+
+    public interface RegisterFCMCallback {
+        void onSuccess(RegisterFCMResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void registerFCM(RegisterFCMRequestModel model, RegisterFCMCallback callback);
 }

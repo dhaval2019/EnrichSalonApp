@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class GuestResponseModel implements Parcelable{
 
-    @SerializedName("Guest")
+    @SerializedName("Guests")
     public GuestModel Guest;
 
     @SerializedName("Error")

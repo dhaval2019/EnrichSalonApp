@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,6 +70,9 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
     @BindView(R.id.no_service_available)
     TextView noServiceAvailable;
+
+    @BindView(R.id.parent_service_logo)
+    ImageView parentServiceLogo;
 
     ServiceViewModel serviceViewModel;
     String subCategoryId;
@@ -121,6 +126,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
         parentServiceName.setText(serviceViewModel.name);
         parentServiceDescription.setText(serviceViewModel.description);
+        Picasso.get().load(serviceViewModel.imagePaths.px100).placeholder(R.drawable.placeholder).into(parentServiceLogo);
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();

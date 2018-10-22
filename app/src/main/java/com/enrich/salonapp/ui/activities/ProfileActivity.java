@@ -13,9 +13,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.ImageModel;
 import com.enrich.salonapp.util.EnrichUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +39,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.gender)
+    TextView gender;
+
+    @BindView(R.id.address_home)
+    TextView addressHome;
+
+    @BindView(R.id.address_work)
+    TextView addressWork;
+
+    @BindView(R.id.address_other)
+    TextView addressOther;
 
     ImageModel model;
 
@@ -71,6 +86,24 @@ public class ProfileActivity extends AppCompatActivity {
         name.setText(guestModel.FirstName + " " + guestModel.LastName);
         email.setText(guestModel.Email);
         phone.setText("" + guestModel.MobileNumber);
+        gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
+        setAddressData(guestModel.GuestAddress);
+    }
+
+    private void setAddressData(ArrayList<AddressModel> list) {
+        for (int i = 0; i < list.size(); i++) {
+            switch (list.get(i).AddressType) {
+                case "S":
+                    addressHome.setText(list.get(i).Location);
+                    break;
+                case "W":
+                    addressWork.setText(list.get(i).Location);
+                    break;
+                case "O":
+                    addressOther.setText(list.get(i).Location);
+                    break;
+            }
+        }
     }
 
     @Override

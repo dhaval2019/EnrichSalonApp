@@ -3,6 +3,7 @@ package com.enrich.salonapp.ui.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -80,6 +81,8 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
     Tracker mTracker;
 
+    BottomSheetDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +139,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         timeSlotPresenter = new TimeSlotPresenter(this, dataRepository);
     }
 
+
     @Override
     public void onDateSelected(DateTime dateSelected) {
         if (dateSelected.isBefore(new DateTime()))
@@ -175,12 +179,16 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
     @Override
     public void setTimeSlot(AvailableTimeResponseModel model) {
-        if (model.OpenSlots.size() != 0) {
-            setSlotAdapter(model.OpenSlots);
+        if (model.Error == null) {
+            if (model.OpenSlots.size() != 0) {
+                setSlotAdapter(model.OpenSlots);
+            } else {
+                noSlotsAvailable.setVisibility(View.VISIBLE);
+                dateTimeSlotRecyclerView.setVisibility(View.GONE);
+                EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
+            }
         } else {
-            noSlotsAvailable.setVisibility(View.VISIBLE);
-            dateTimeSlotRecyclerView.setVisibility(View.GONE);
-            EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
+            showErrorDialog(model.Error.InternalMessage);
         }
     }
 
@@ -208,13 +216,13 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         }
 
 
-        if(tempList.size()!=0){
+        if (tempList.size() != 0) {
             noSlotsAvailable.setVisibility(View.GONE);
             dateTimeSlotRecyclerView.setVisibility(View.VISIBLE);
             SlotsAdapter slotsAdapter = new SlotsAdapter(DateSelectorActivity.this, tempList, DateSelectorActivity.this);
             dateTimeSlotRecyclerView.setAdapter(slotsAdapter);
             dateTimeSlotRecyclerView.setLayoutManager(new GridLayoutManager(DateSelectorActivity.this, 4));
-        }else{
+        } else {
             noSlotsAvailable.setVisibility(View.VISIBLE);
             dateTimeSlotRecyclerView.setVisibility(View.GONE);
             EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
@@ -228,5 +236,29 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
         timeSlotProceed.setEnabled(true);
         timeSlotProceed.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
+    }
+
+    private void showErrorDialog(String message) {
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(R.layout.forgot_password_success);
+
+        dialog.setCancelable(true);
+
+        TextView therapistDialogTitle = dialog.findViewById(R.id.therapist_dialog_title);
+        TextView dialogText = dialog.findViewById(R.id.dialog_text);
+        TextView openMailApp = dialog.findViewById(R.id.open_mail_app);
+
+        therapistDialogTitle.setText("Error");
+        dialogText.setText(message);
+        openMailApp.setText("OK");
+
+        openMailApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

@@ -3,8 +3,17 @@ package com.enrich.salonapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.enrich.salonapp.data.model.Product.OfferProductBrandTagsModel;
+import com.enrich.salonapp.data.model.Product.OfferProductCategoryTagsModel;
+import com.enrich.salonapp.data.model.Product.OfferProductSubCategoryTagsModel;
+
+import java.util.ArrayList;
+
 public class OfferModel implements Parcelable {
 
+    public ArrayList<OfferProductCategoryTagsModel> OfferProductCategoryTags;
+    public ArrayList<OfferProductSubCategoryTagsModel> OfferProductSubCategoryTags;
+    public ArrayList<OfferProductBrandTagsModel> OfferProductBrandTags;
     public int OfferId;
     public String OfferTitle;
     public String OfferDescription;
@@ -26,7 +35,13 @@ public class OfferModel implements Parcelable {
     public String OfferImageURL;
     public String OfferBannerURL;
 
+    public OfferModel() {
+    }
+
     protected OfferModel(Parcel in) {
+        OfferProductCategoryTags = in.createTypedArrayList(OfferProductCategoryTagsModel.CREATOR);
+        OfferProductSubCategoryTags = in.createTypedArrayList(OfferProductSubCategoryTagsModel.CREATOR);
+        OfferProductBrandTags = in.createTypedArrayList(OfferProductBrandTagsModel.CREATOR);
         OfferId = in.readInt();
         OfferTitle = in.readString();
         OfferDescription = in.readString();
@@ -51,6 +66,9 @@ public class OfferModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(OfferProductCategoryTags);
+        dest.writeTypedList(OfferProductSubCategoryTags);
+        dest.writeTypedList(OfferProductBrandTags);
         dest.writeInt(OfferId);
         dest.writeString(OfferTitle);
         dest.writeString(OfferDescription);

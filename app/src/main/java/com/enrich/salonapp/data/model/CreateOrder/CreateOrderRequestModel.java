@@ -1,5 +1,7 @@
 package com.enrich.salonapp.data.model.CreateOrder;
 
+import com.enrich.salonapp.data.model.AddressModel;
+
 import java.util.ArrayList;
 
 public class CreateOrderRequestModel {
@@ -14,6 +16,7 @@ public class CreateOrderRequestModel {
     private String GuestName;
     private int platform;
     private String SlotBookdate;
+    private AddressModel GuestAddress;
 
     public Boolean getApplyCredits() {
         return ApplyCredits;
@@ -93,5 +96,13 @@ public class CreateOrderRequestModel {
 
     public void setSlotBookdate(String slotBookdate) {
         SlotBookdate = slotBookdate;
+    }
+
+    public AddressModel getGuestAddress() {
+        return GuestAddress;
+    }
+
+    public void setGuestAddress(AddressModel guestAddress) {
+        GuestAddress = guestAddress;
     }
 }

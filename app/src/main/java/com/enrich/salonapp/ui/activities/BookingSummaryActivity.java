@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.ConfirmOrderModel;
 import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
@@ -63,6 +64,8 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.enrich.salonapp.util.Constants.PLATFORM_ANDROID;
 
 public class BookingSummaryActivity extends BaseActivity implements BookingSummaryContract.View {
 
@@ -136,6 +139,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
     boolean isOnlinePayment;
 
+    AddressModel selectedAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +150,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         application = (EnrichApplication) getApplication();
         reserveSlotModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ReserveSlotModel"), ReserveSlotRequestModel.class);
+        selectedAddress = getIntent().getParcelableExtra("SelectedAddress");
 
         // SEND ANALYTICS
         mTracker = application.getDefaultTracker();
@@ -236,6 +242,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             createOrderRequestModel.setGuestName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
             createOrderRequestModel.setPlatform(0);
             createOrderRequestModel.setPromoCode("");
+            createOrderRequestModel.setGuestAddress(selectedAddress);
 
             ArrayList<CreateOrderProductModel> createOrderProductModels = new ArrayList<>();
             for (int i = 0; i < application.getCartItems().size(); i++) {
@@ -275,6 +282,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             createOrderRequestModel.setGuestId(EnrichUtils.getUserData(this).Id);
             createOrderRequestModel.setGuestName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
             createOrderRequestModel.setSlotBookdate(reserveSlotResponseModel.SlotBookings.get(0).Services.get(0).StartTime);
+            createOrderRequestModel.setPlatform(PLATFORM_ANDROID);
 
             EnrichUtils.log(EnrichUtils.newGson().toJson(createOrderRequestModel));
 
@@ -320,8 +328,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             confirmOrderModel.setPhone(EnrichUtils.getUserData(this).MobileNumber);
             confirmOrderModel.setEmailAddress(EnrichUtils.getUserData(this).Email);
 
-            if (reserveSlotResponseModel != null)
-                confirmOrderModel.setReservationId(reserveSlotResponseModel.ReservationId);
+            if (invoiceModel != null)
+                confirmOrderModel.setReservationId(invoiceModel.AppointmentGroupId);
 
             if (isOnlinePayment) { //ONLINE
                 confirmOrderModel.setTransactionId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));

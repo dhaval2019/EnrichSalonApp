@@ -26,6 +26,8 @@
 
     <color name="outline_card">#d4d4d4</color>
 
+    <color name="app_icon_bg">#edd6b5</color>
+
     <!-- dots inactive colors -->
     <color name="dot_dark_screen1">#e5e5e5</color>
 

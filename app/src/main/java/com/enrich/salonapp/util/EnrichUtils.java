@@ -18,9 +18,12 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.AddressResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.ui.activities.AddressSelectorActivity;
 import com.enrich.salonapp.ui.views.BadgeDrawable;
 import com.enrich.salonapp.ui.views.LoadingDialogBox;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +43,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -372,6 +376,49 @@ public class EnrichUtils {
         return model == null ? null : model;
     }
 
+    public static boolean doesUserHasAddresses(Context context) {
+        return getHomeAddress(context) != null || getWorkAddress(context) != null || getOtherAddress(context) != null;
+    }
+
+    public static AddressModel getHomeAddress(Context context) {
+        AddressModel model = null;
+        if (getUserData(context).GuestAddress == null)
+            return model;
+
+        for (int i = 0; i < getUserData(context).GuestAddress.size(); i++) {
+            if (getUserData(context).GuestAddress.get(i).AddressType.equals("S")) {
+                model = getUserData(context).GuestAddress.get(i);
+            }
+        }
+        return model;
+    }
+
+    public static AddressModel getWorkAddress(Context context) {
+        AddressModel model = null;
+        if (getUserData(context).GuestAddress == null)
+            return model;
+
+        for (int i = 0; i < getUserData(context).GuestAddress.size(); i++) {
+            if (getUserData(context).GuestAddress.get(i).AddressType.equals("W")) {
+                model = getUserData(context).GuestAddress.get(i);
+            }
+        }
+        return model;
+    }
+
+    public static AddressModel getOtherAddress(Context context) {
+        AddressModel model = null;
+        if (getUserData(context).GuestAddress == null)
+            return model;
+
+        for (int i = 0; i < getUserData(context).GuestAddress.size(); i++) {
+            if (getUserData(context).GuestAddress.get(i).AddressType.equals("O")) {
+                model = getUserData(context).GuestAddress.get(i);
+            }
+        }
+        return model;
+    }
+
     public static void saveHomeStore(Context context, String modelStr) {
         if (modelStr != null) {
             SharedPreferenceStore.storeValue(context, Constants.HOME_STORE, modelStr);
@@ -399,7 +446,7 @@ public class EnrichUtils {
         icon.setDrawableByLayerId(R.id.ic_badge, badge);
     }
 
-    public static void removeBadge(Context context, LayerDrawable icon){
+    public static void removeBadge(Context context, LayerDrawable icon) {
         BadgeDrawable badge;
 
         // Reuse drawable if possible

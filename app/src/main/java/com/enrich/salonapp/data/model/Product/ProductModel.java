@@ -12,7 +12,7 @@ public class ProductModel extends CartItem implements Parcelable {
     public String ProductTitle;
     public String SubTitle;
     public String ProductDescription;
-    public int ProductAmount;
+    public double ProductAmount;
     public int SaleLimit;
     public ProductCashback ProductCashBacks;
     public int PaymentMode;
@@ -32,7 +32,7 @@ public class ProductModel extends CartItem implements Parcelable {
         ProductTitle = in.readString();
         SubTitle = in.readString();
         ProductDescription = in.readString();
-        ProductAmount = in.readInt();
+        ProductAmount = in.readDouble();
         SaleLimit = in.readInt();
         ProductCashBacks = in.readParcelable(ProductCashback.class.getClassLoader());
         PaymentMode = in.readInt();
@@ -54,7 +54,7 @@ public class ProductModel extends CartItem implements Parcelable {
         dest.writeString(ProductTitle);
         dest.writeString(SubTitle);
         dest.writeString(ProductDescription);
-        dest.writeInt(ProductAmount);
+        dest.writeDouble(ProductAmount);
         dest.writeInt(SaleLimit);
         dest.writeParcelable(ProductCashBacks, flags);
         dest.writeInt(PaymentMode);

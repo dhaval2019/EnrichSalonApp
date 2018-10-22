@@ -25,7 +25,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/salon_services_collage"
                 android:tint="#40d69e5c"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/drawer_toolbar"
@@ -41,12 +41,33 @@
         android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/product_recycler_view"
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/no_products_available"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" />
+            android:gravity="center"
+            android:text="No Products Available Yet."
+            android:textColor="@color/grey"
+            android:textSize="@dimen/dimen_16sp"
+            app:font_type="light" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/product_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp" />
+        </FrameLayout>
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

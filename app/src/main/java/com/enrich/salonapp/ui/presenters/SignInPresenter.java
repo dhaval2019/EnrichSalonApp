@@ -53,39 +53,4 @@ public class SignInPresenter extends BasePresenter<SignInContract.View> implemen
             }
         });
     }
-
-    @Override
-    public void getUserData(Context context, String guestId) {
-        if (view == null) {
-            return;
-        }
-
-        view.setProgressBar(true);
-
-        dataRepository.getUserData(context, guestId, new DataSource.GetGuestDataCallBack() {
-            @Override
-            public void onSuccess(GuestModel model) {
-                if (view != null) {
-                    view.saveUserDetails(model);
-                    view.setProgressBar(false);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("User doesn't exist. Please Sign Up.");
-                }
-            }
-
-            @Override
-            public void onNetworkFailure() {
-                if (view != null) {
-                    view.setProgressBar(false);
-                    view.showToastMessage("No Network. Please try again later.");
-                }
-            }
-        });
-    }
 }

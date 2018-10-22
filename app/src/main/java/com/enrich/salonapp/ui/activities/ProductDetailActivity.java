@@ -194,7 +194,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     @Override
     protected void onResume() {
         super.onResume();
-        updateCart();
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -202,12 +202,13 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         EnrichApplication application = (EnrichApplication) getApplication();
         if (application.getCartItems().size() == 0) {
             cartTotalPrice.setText("");
-            cartTotalItems.setText(" ");
+            cartTotalItems.setVisibility(View.GONE);
             cartNext.setEnabled(false);
             cartNext.setBackground(getResources().getDrawable(R.drawable.grey_gradient_curve_bg));
         } else {
             productModel.setQuantity(application.getItemQuantity(productModel));
             cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+            cartTotalItems.setVisibility(View.VISIBLE);
             cartTotalItems.setText("" + application.getCartItems().size());
             productCount.setText("" + application.getItemQuantity(productModel));
             cartNext.setEnabled(true);
@@ -220,6 +221,14 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     public void showProductDetails(ProductDetailResponseModel model) {
         if (model.Product != null) {
             productModel = model.Product;
+
+            if (productModel.OriginalPrice == productModel.ProductAmount) {
+                productOldPrice.setVisibility(View.GONE);
+            } else if (productModel.OriginalPrice < productModel.ProductAmount) {
+                productOldPrice.setVisibility(View.GONE);
+            }else {
+                productOldPrice.setVisibility(View.VISIBLE);
+            }
 
             productName.setText(productModel.ProductTitle);
             productDescription.setText(productModel.ProductDescription);

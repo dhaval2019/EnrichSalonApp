@@ -10,7 +10,7 @@ public class InvoiceModel implements Parcelable {
     public String AppointmentGroupId;
     public String InvoiceId;
     public boolean IsRebooking;
-    public GuestModel Guest;
+//    public GuestModel Guest;
     public boolean IsNoShowChargeToBeApplied;
     public boolean IsCancellationChargeToBeApplied;
     public boolean IsPaymentOrRedemptionApplied;
@@ -21,7 +21,7 @@ public class InvoiceModel implements Parcelable {
         AppointmentGroupId = in.readString();
         InvoiceId = in.readString();
         IsRebooking = in.readByte() != 0;
-        Guest = in.readParcelable(GuestModel.class.getClassLoader());
+//        Guest = in.readParcelable(GuestModel.class.getClassLoader());
         IsNoShowChargeToBeApplied = in.readByte() != 0;
         IsCancellationChargeToBeApplied = in.readByte() != 0;
         IsPaymentOrRedemptionApplied = in.readByte() != 0;
@@ -34,7 +34,7 @@ public class InvoiceModel implements Parcelable {
         dest.writeString(AppointmentGroupId);
         dest.writeString(InvoiceId);
         dest.writeByte((byte) (IsRebooking ? 1 : 0));
-        dest.writeParcelable(Guest, flags);
+//        dest.writeParcelable(Guest, flags);
         dest.writeByte((byte) (IsNoShowChargeToBeApplied ? 1 : 0));
         dest.writeByte((byte) (IsCancellationChargeToBeApplied ? 1 : 0));
         dest.writeByte((byte) (IsPaymentOrRedemptionApplied ? 1 : 0));

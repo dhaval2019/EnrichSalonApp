@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:text="Bridal make up"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="15sp"
             app:font_type="regular" />
 
         <ProgressBar

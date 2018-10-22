@@ -12,15 +12,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
+import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.MyPackageAdapter;
 import com.enrich.salonapp.ui.contracts.MyPackagesContract;
+import com.enrich.salonapp.ui.contracts.PackageContract;
 import com.enrich.salonapp.ui.presenters.MyPackagesPresenter;
+import com.enrich.salonapp.ui.presenters.PackagePresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -34,7 +38,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyPackageActivity extends BaseActivity implements MyPackagesContract.View {
+public class MyPackageActivity extends BaseActivity implements MyPackagesContract.View, PackageContract.View {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -51,8 +55,12 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
     @BindView(R.id.see_packages)
     Button seePackages;
 
+    @BindView(R.id.no_my_packages)
+    TextView noMyPackages;
+
     DataRepository dataRepository;
     MyPackagesPresenter myPackagesPresenter;
+    PackagePresenter packagePresenter;
 
     EnrichApplication application;
     Tracker mTracker;
@@ -96,6 +104,7 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
 
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
         myPackagesPresenter = new MyPackagesPresenter(this, dataRepository);
+        packagePresenter = new PackagePresenter(this, dataRepository);
 
         Map<String, String> map = new HashMap<>();
         map.put("guestid", EnrichUtils.getUserData(this).Id);
@@ -125,7 +134,27 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
 
     @Override
     public void noPackagesBought() {
-        noDetailsFound.setVisibility(View.VISIBLE);
+        packagePresenter.getAllPackages(this);
+    }
+
+    @Override
+    public void showPackage(PackageResponseModel model) {
+        if (model.Package.isEmpty()) {
+            noMyPackages.setText("You have not purchased any packages yet");
+            seePackages.setVisibility(View.GONE);
+            myPackagesRecyclerView.setVisibility(View.GONE);
+        } else {
+            noMyPackages.setText("No packages bought as yet?");
+            noDetailsFound.setVisibility(View.VISIBLE);
+            seePackages.setVisibility(View.VISIBLE);
+            myPackagesRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void noPackageAvailable() {
+        noMyPackages.setText("You have not purchased any packages yet");
+        seePackages.setVisibility(View.GONE);
         myPackagesRecyclerView.setVisibility(View.GONE);
     }
 }

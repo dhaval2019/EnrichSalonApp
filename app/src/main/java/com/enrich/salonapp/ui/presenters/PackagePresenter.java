@@ -33,8 +33,9 @@ public class PackagePresenter extends BasePresenter<PackageContract.View> implem
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.noPackageAvailable();
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong. Please try again later.");
+//                    view.showToastMessage("Something went wrong. Please try again later.");
                 }
             }
 

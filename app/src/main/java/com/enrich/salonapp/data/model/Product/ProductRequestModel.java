@@ -19,12 +19,16 @@ public class ProductRequestModel implements Parcelable {
     public ProductRequestModel() {
     }
 
+
     protected ProductRequestModel(Parcel in) {
         Index = in.readInt();
         Sort = in.readInt();
         MinAmount = in.readDouble();
         MaxAmount = in.readDouble();
         Gender = in.readInt();
+        ProductCategoryIds = (ArrayList<Integer>) in.readSerializable();
+        BrandIds = (ArrayList<Integer>) in.readSerializable();
+        ProductSubCategoryIds = (ArrayList<Integer>) in.readSerializable();
     }
 
     @Override
@@ -34,6 +38,9 @@ public class ProductRequestModel implements Parcelable {
         dest.writeDouble(MinAmount);
         dest.writeDouble(MaxAmount);
         dest.writeInt(Gender);
+        dest.writeSerializable(ProductCategoryIds);
+        dest.writeSerializable(BrandIds);
+        dest.writeSerializable(ProductSubCategoryIds);
     }
 
     @Override

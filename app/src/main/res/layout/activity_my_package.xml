@@ -48,12 +48,12 @@
                 android:tint="@color/grey" />
 
             <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/no_my_packages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:gravity="center_horizontal"
-                android:text="You have not bought any packages"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/dimen_18sp"
                 app:font_type="ultra_light" />
@@ -62,14 +62,15 @@
                 android:id="@+id/see_packages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_40dp"
                 android:background="@drawable/gold_bg_gradient_curved"
                 android:paddingLeft="@dimen/dimen_15dp"
                 android:paddingRight="@dimen/dimen_15dp"
-                android:layout_marginBottom="@dimen/dimen_20dp"
                 android:text="Buy Packages"
                 android:textColor="@color/white"
-                app:font_type="regular"/>
+                android:visibility="gone"
+                app:font_type="regular" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

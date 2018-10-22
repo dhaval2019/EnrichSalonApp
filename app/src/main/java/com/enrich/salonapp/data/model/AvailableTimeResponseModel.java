@@ -9,7 +9,7 @@ public class AvailableTimeResponseModel implements Parcelable {
 
     public String ReservationId;
 //    public SlotBookingsModel[] SlotBookings;
-    public ArrayList<SlotModel> OpenSlots;
+    public ArrayList<SlotModel> OpenSlots = new ArrayList<>();
     public ArrayList<SlotModel> ClosedSlots;
     public ErrorModel Error;
 

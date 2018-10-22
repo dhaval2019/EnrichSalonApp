@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GenericCartModel;
+import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServiceModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServicesModel;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -123,6 +128,14 @@ public class CartActivity extends AppCompatActivity {
                     reserveSlotModel.SlotBookings = slotBookingsModelArrayList;
 
                     switchToNextScreen(reserveSlotModel);
+                } else if (doesCartContainProducts()) {
+                    if (EnrichUtils.doesUserHasAddresses(CartActivity.this)) {
+                        Intent intent = new Intent(CartActivity.this, AddressSelectorActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(CartActivity.this, AddAddressActivity.class);
+                        startActivity(intent);
+                    }
                 } else {
                     Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
                     startActivity(intent);
@@ -143,6 +156,18 @@ public class CartActivity extends AppCompatActivity {
         return itDoes;
     }
 
+    private boolean doesCartContainProducts() {
+        boolean itDoes = false;
+        for (int i = 0; i < application.getCartItems().size(); i++) {
+            if (application.getCartItems().get(i).getCartItemType() == GenericCartModel.CART_TYPE_PRODUCTS) {
+                itDoes = true;
+            } else {
+                itDoes = false;
+            }
+        }
+        return itDoes;
+    }
+
     public void updatePriceAndQuantityView() {
         cartTotalItems.setText("" + application.getCartItems().size());
         cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
@@ -151,6 +176,32 @@ public class CartActivity extends AppCompatActivity {
     private void switchToNextScreen(ReserveSlotRequestModel reserveSlotModel) {
         Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
         intent.putExtra("ReserveSlotModel", EnrichUtils.newGson().toJson(reserveSlotModel));
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_ADDRESS) {
+            if (resultCode == Activity.RESULT_OK) {
+                GuestModel guestModel = data.getParcelableExtra("GuestData");
+                String addressType = data.getStringExtra("AddressType");
+                AddressModel model = null;
+                for (int i = 0; i < guestModel.GuestAddress.size(); i++) {
+                    if (guestModel.GuestAddress.get(i).AddressType.equalsIgnoreCase(addressType)) {
+                        model = guestModel.GuestAddress.get(i);
+                    }
+                }
+
+                redirectScreen(model);
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+    private void redirectScreen(AddressModel model) {
+        Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
+        intent.putExtra("SelectedAddress", model);
         startActivity(intent);
     }
 }

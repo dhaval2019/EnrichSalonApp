@@ -102,4 +102,9 @@ public class PackagesActivity extends BaseActivity implements PackageContract.Vi
             packageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
     }
+
+    @Override
+    public void noPackageAvailable() {
+
+    }
 }

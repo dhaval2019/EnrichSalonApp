@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Product.BrandResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
@@ -237,5 +238,10 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
             filterRecyclerView.setAdapter(productSubCategoryAdapter);
             filterRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
+    }
+
+    @Override
+    public void showProductOffers(OfferResponseModel model) {
+
     }
 }

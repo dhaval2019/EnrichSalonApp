@@ -10,6 +10,8 @@ public interface PackageContract {
 
     interface View extends IBaseView {
         void showPackage(PackageResponseModel model);
+
+        void noPackageAvailable();
     }
 
     interface Presenter extends IBasePresenter<PackageContract.View> {

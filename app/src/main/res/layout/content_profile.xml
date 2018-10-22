@@ -44,7 +44,7 @@
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
                         android:text="Name"
                         android:textColor="@color/dark_gold"
                         android:textSize="14sp"
@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
                         android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
                         android:paddingTop="10dp"
                         android:text="Varun Barve"
                         android:textColor="@color/black"
@@ -182,12 +182,133 @@
                     android:background="#e5e5e5" />
             </RelativeLayout>
 
-            <!-- ADDRESS -->
+            <!-- GENDER -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/gender_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/gender_male_female"
+                    android:tint="@color/dark_gold" />
+
+                <LinearLayout
+                    android:id="@+id/gender_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/gender_icon"
+                    android:orientation="vertical">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="Gender"
+                        android:textColor="@color/dark_gold"
+                        android:textSize="14sp"
+                        app:font_type="ultra_light" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Male"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/gender_container"
+                    android:layout_below="@+id/gender_container"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#e5e5e5" />
+            </RelativeLayout>
+
+            <!-- MEMBERSHIP -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/membership_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/gender_male_female"
+                    android:tint="@color/dark_gold" />
+
+                <LinearLayout
+                    android:id="@+id/membership_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/membership_icon"
+                    android:orientation="vertical">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="Membership"
+                        android:textColor="@color/dark_gold"
+                        android:textSize="14sp"
+                        app:font_type="ultra_light" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/membership"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:paddingBottom="2.5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:text="You First Club Membership"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/membership_end_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2.5dp"
+                        android:text="Ends on - 25/07/2018"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="light" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/membership_container"
+                    android:layout_below="@+id/membership_container"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#e5e5e5" />
+            </RelativeLayout>
+
+            <!-- ADDRESS -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
 
                 <ImageView
                     android:id="@+id/address_icon"

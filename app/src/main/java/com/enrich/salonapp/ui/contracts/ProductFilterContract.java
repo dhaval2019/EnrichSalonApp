@@ -2,6 +2,7 @@ package com.enrich.salonapp.ui.contracts;
 
 import android.content.Context;
 
+import com.enrich.salonapp.data.model.OfferResponseModel;
 import com.enrich.salonapp.data.model.Product.BrandResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
@@ -16,6 +17,8 @@ public interface ProductFilterContract {
         void showProductCategories(ProductCategoryResponseModel model);
 
         void showProductSubCategories(ProductSubCategoryResponseModel model);
+
+        void showProductOffers(OfferResponseModel model);
     }
 
     interface Presenter extends IBasePresenter<ProductFilterContract.View> {
@@ -24,5 +27,7 @@ public interface ProductFilterContract {
         void getProductCategoriesList(Context context);
 
         void getProductSubCategoriesList(Context context);
+
+        void getProductOffers(Context context);
     }
 }

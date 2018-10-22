@@ -56,13 +56,13 @@ public class AuthenticationModel implements Parcelable {
     @SerializedName("AppId")
     @Expose
     public String appId;
-    @SerializedName(".refresh")
+    @SerializedName("refresh")
     @Expose
     public String refresh;
-    @SerializedName(".issued")
+    @SerializedName("issued")
     @Expose
     public String issued;
-    @SerializedName(".expires")
+    @SerializedName("expires")
     @Expose
     public String expires;
 

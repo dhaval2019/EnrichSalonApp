@@ -2,6 +2,9 @@ package com.enrich.salonapp.data;
 
 import android.content.Context;
 
+import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.AddressResponseModel;
+import com.enrich.salonapp.data.model.AppUpdateResponseModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -39,6 +42,8 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -54,6 +59,7 @@ import com.enrich.salonapp.data.model.Wallet.WalletModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.NetworkHelper;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DataRepository {
@@ -228,9 +234,9 @@ public class DataRepository {
         }
     }
 
-    public void getOffersList(Context context, final DataSource.GetOfferListCallBack callBack) {
+    public void getOffersList(Context context, Map<String, String> map, final DataSource.GetOfferListCallBack callBack) {
         if (networkHelper.isNetworkAvailable(context)) {
-            remoteDataSource.getOffers(new DataSource.GetOfferListCallBack() {
+            remoteDataSource.getOffers(map, new DataSource.GetOfferListCallBack() {
                 @Override
                 public void onSuccess(OfferResponseModel model) {
                     callBack.onSuccess(model);
@@ -821,6 +827,90 @@ public class DataRepository {
             remoteDataSource.getServiceVariantsList(map, new DataSource.GetServiceVariantsCallback() {
                 @Override
                 public void onSuccess(ServiceVariantResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getProductOffers(Context context, final DataSource.GetProductOffersCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getProductOffers(new DataSource.GetProductOffersCallback() {
+                @Override
+                public void onSuccess(OfferResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void addAddress(Context context, AddressModel model, final DataSource.AddAddressCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.addAddress(model, new DataSource.AddAddressCallback() {
+                @Override
+                public void onSuccess(AddressResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getAppUpdate(Context context, Map<String, String> map, final DataSource.GetAppUpdateCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getAppUpdate(map, new DataSource.GetAppUpdateCallback() {
+                @Override
+                public void onSuccess(AppUpdateResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void registerFCM(Context context, RegisterFCMRequestModel model, final DataSource.RegisterFCMCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.registerFCM(model, new DataSource.RegisterFCMCallback() {
+                @Override
+                public void onSuccess(RegisterFCMResponseModel model) {
                     callback.onSuccess(model);
                 }
 

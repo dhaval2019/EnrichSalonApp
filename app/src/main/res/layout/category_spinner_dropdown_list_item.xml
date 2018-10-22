@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:textColor="@color/grey"
-    android:textSize="14sp"
+    android:textSize="13sp"
     android:padding="10dp"
     app:font_type="regular" />

@@ -21,16 +21,17 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#90424242" />
+            android:background="#BB424242" />
 
         <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/cat_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Hair Salon"
+            android:padding="@dimen/dimen_15dp"
+            android:text="COSMETOLOGY"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:font_type="bold" />
 
     </FrameLayout>

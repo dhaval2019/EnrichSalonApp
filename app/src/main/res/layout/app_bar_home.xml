@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:text="ENRICH"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/toolbar_title_size"
                         app:font_type="regular"/>
 
                     <com.enrich.salonapp.ui.views.CustomTextView

@@ -15,24 +15,31 @@ import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOTPRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOTPResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.VerifyOTPRequestModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
 import com.enrich.salonapp.ui.contracts.OTPContract;
+import com.enrich.salonapp.ui.contracts.RegisterFCMContract;
 import com.enrich.salonapp.ui.presenters.AuthenticationTokenPresenter;
 import com.enrich.salonapp.ui.presenters.OTPPresenter;
+import com.enrich.salonapp.ui.presenters.RegisterFCMPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OTPActivity extends BaseActivity implements OTPContract.RegisterView, AuthenticationTokenContract.View {
+public class OTPActivity extends BaseActivity implements OTPContract.RegisterView, AuthenticationTokenContract.View, RegisterFCMContract.View {
 
     @BindView(R.id.otp_container)
     LinearLayout otpContainer;
@@ -49,6 +56,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
 
     OTPPresenter otpPresenter;
     AuthenticationTokenPresenter authenticationTokenPresenter;
+    RegisterFCMPresenter registerFCMPresenter;
     DataRepository dataRepository;
 
     @Override
@@ -74,6 +82,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
 
         otpPresenter = new OTPPresenter(this, dataRepository);
         authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
+        registerFCMPresenter = new RegisterFCMPresenter(this, dataRepository);
 
         verifyOtpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +113,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
             guestModel.UserName = registrationRequestModel.Guest.UserName;
             guestModel.MobileNumber = registrationRequestModel.Guest.MobileNumber;
             guestModel.Password = registrationRequestModel.Guest.Password;
-            guestModel.Gender = registrationRequestModel.Guest.Gender == 1 ? "Male" : "Female";
+            guestModel.Gender = registrationRequestModel.Guest.Gender;
 
             EnrichUtils.saveUserData(OTPActivity.this, guestModel);
 
@@ -112,6 +121,18 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
             authenticationRequestModel.username = registrationRequestModel.Guest.UserName;
             authenticationRequestModel.password = registrationRequestModel.Guest.Password;
             authenticationTokenPresenter.getAuthenticationToken(OTPActivity.this, authenticationRequestModel, true);
+
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(OTPActivity.this, new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    RegisterFCMRequestModel fcmModel = new RegisterFCMRequestModel();
+                    fcmModel.GuestId = registrationRequestModel.Guest.Id;
+                    fcmModel.Platform = Constants.PLATFORM_ANDROID;
+                    fcmModel.Token = instanceIdResult.getToken();
+
+                    registerFCMPresenter.registerFCM(OTPActivity.this, fcmModel);
+                }
+            });
         }
     }
 
@@ -124,12 +145,17 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
             ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
-//            EnrichUtils.saveAuthenticationModel(OTPActivity.this, model);
         }
     }
 
     @Override
     public void createTokenError() {
 
+    }
+
+    @Override
+    public void FCMRegistered(RegisterFCMResponseModel model) {
+        if (model.Error != null)
+            EnrichUtils.log("FCM REGISTER: " + model.Error.StatusCode);
     }
 }

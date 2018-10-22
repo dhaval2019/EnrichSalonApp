@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -107,6 +108,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @BindView(R.id.no_service_available)
     TextView noServiceAvailable;
 
+    @BindView(R.id.recycler_view_container)
+    NestedScrollView recyclerViewContainer;
+
+    @BindView(R.id.member_text)
+    TextView memberText;
+
     ArrayList<ParentServiceViewModel> serviceList;
 
     EnrichApplication application;
@@ -176,9 +183,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
 
-                if (gender == null) {
-                    gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender.toLowerCase();
-                }
+                if (gender == null)
+                    gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
 
                 changeGenderIcons(!gender.equalsIgnoreCase("male"));
                 getServiceList(categoryModel.CategoryId, gender);
@@ -303,14 +309,14 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
             serviceList = list;
             noServiceAvailable.setVisibility(View.GONE);
-            serviceRecyclerView.setVisibility(View.VISIBLE);
+            recyclerViewContainer.setVisibility(View.VISIBLE);
 //            setExpandableServiceListAdapter(list);
         } else {
             if (model.Error != null) {
                 EnrichUtils.showMessage(ServiceListActivity.this, "" + model.Error.Message);
             }
             noServiceAvailable.setVisibility(View.VISIBLE);
-            serviceRecyclerView.setVisibility(View.GONE);
+            recyclerViewContainer.setVisibility(View.GONE);
         }
     }
 
@@ -318,7 +324,13 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     public void showSubCategories(SubCategoryResponseModel model) {
         if (!model.SubCategories.isEmpty()) {
             noServiceAvailable.setVisibility(View.GONE);
-            serviceRecyclerView.setVisibility(View.VISIBLE);
+            recyclerViewContainer.setVisibility(View.VISIBLE);
+
+            if (EnrichUtils.getUserData(this).IsMember == 1) { // is a member
+                memberText.setVisibility(View.VISIBLE);
+            } else {
+                memberText.setVisibility(View.GONE);
+            }
 
             for (int i = 0; i < model.SubCategories.size(); i++) {
                 model.SubCategories.get(i).ChildServices = new ArrayList<>();
@@ -330,8 +342,11 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             serviceRecyclerView.setAdapter(adapter);
             serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         } else {
+            if (model.Category.Name.equalsIgnoreCase("BODY")) {
+                noServiceAvailable.setText("This category is limited to women only.");
+            }
             noServiceAvailable.setVisibility(View.VISIBLE);
-            serviceRecyclerView.setVisibility(View.GONE);
+            recyclerViewContainer.setVisibility(View.GONE);
         }
     }
 

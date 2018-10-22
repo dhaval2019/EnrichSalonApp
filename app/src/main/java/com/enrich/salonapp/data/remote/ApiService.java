@@ -1,5 +1,8 @@
 package com.enrich.salonapp.data.remote;
 
+import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.AddressResponseModel;
+import com.enrich.salonapp.data.model.AppUpdateResponseModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -37,6 +40,8 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -83,7 +88,7 @@ public interface ApiService {
     Call<CenterResponseModel> getCenter(@QueryMap Map<String, String> map);
 
     @GET("Catalog/Payments/GetAllOffers")
-    Call<OfferResponseModel> getAllOffers();
+    Call<OfferResponseModel> getAllOffers(@QueryMap Map<String, String> map);
 
     @GET("Catalog/Services/GetCategories")
     Call<CategoryResponseModel> getAllCategories(@QueryMap Map<String, String> map);
@@ -168,4 +173,16 @@ public interface ApiService {
 
     @GET("Catalog/Services/ServiceVariants")
     Call<ServiceVariantResponseModel> getServiceVariantList(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/Products/GetProductOffers")
+    Call<OfferResponseModel> getProductOffers();
+
+    @POST("Catalog/Guests/AddGuestAddress")
+    Call<AddressResponseModel> addAddress(@Body AddressModel model);
+
+    @GET("Catalog/Guests/GetAppUpdate")
+    Call<AppUpdateResponseModel> getAppUpdate(@QueryMap Map<String, String> map);
+
+    @POST("Catalog/Guests/RegisterGuestDevice")
+    Call<RegisterFCMResponseModel> registerFCM(@Body RegisterFCMRequestModel model);
 }

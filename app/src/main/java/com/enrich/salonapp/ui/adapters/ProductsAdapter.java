@@ -16,28 +16,38 @@ import com.enrich.salonapp.data.model.Product.ProductModel;
 import com.enrich.salonapp.ui.activities.ProductDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
 
+    public static final int FULL = 7;
+    public static final int COMPACT = 9;
+
     Context context;
     ArrayList<ProductModel> list;
     LayoutInflater inflater;
+    int viewType;
 
-    public ProductsAdapter(Context context, ArrayList<ProductModel> list) {
+    public ProductsAdapter(Context context, ArrayList<ProductModel> list, int viewType) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.viewType = viewType;
     }
 
     @NonNull
     @Override
     public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.product_list_item, parent, false);
+        View view;
+        if (this.viewType == FULL) {
+            view = inflater.inflate(R.layout.product_list_item, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.product_list_item_compact, parent, false);
+        }
         return new ProductsViewHolder(view);
     }
 
@@ -47,7 +57,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         holder.productTitle.setText(model.ProductTitle);
 
-        holder.productSubTitle.setText(context.getString(R.string.rs_symbol) + " " + model.ProductAmount);
+        DecimalFormat format = new DecimalFormat("#,###.##");
+        holder.productSubTitle.setText(context.getString(R.string.rs_symbol) + " " + format.format(model.ProductAmount));
 //        holder.productSubTitle.setText(model.ProductDescription);
 
         Picasso.get().load(model.ImageURL).placeholder(R.drawable.placeholder).into(holder.productImageSmall);
@@ -64,6 +75,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void updateList(ArrayList<ProductModel> productList) {
+        this.list.addAll(productList);
+        notifyDataSetChanged();
     }
 
     class ProductsViewHolder extends RecyclerView.ViewHolder {

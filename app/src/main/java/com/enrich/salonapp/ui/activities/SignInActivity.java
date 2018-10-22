@@ -1,12 +1,10 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -23,24 +20,33 @@ import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
+import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
 import com.enrich.salonapp.di.Injection;
-import com.enrich.salonapp.ui.adapters.TherapistListAdapter;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
 import com.enrich.salonapp.ui.contracts.ForgotPasswordContract;
+import com.enrich.salonapp.ui.contracts.GuestsContact;
+import com.enrich.salonapp.ui.contracts.RegisterFCMContract;
 import com.enrich.salonapp.ui.contracts.SignInContract;
 import com.enrich.salonapp.ui.presenters.AuthenticationTokenPresenter;
 import com.enrich.salonapp.ui.presenters.ForgotPasswordPresenter;
+import com.enrich.salonapp.ui.presenters.GuestPresenter;
+import com.enrich.salonapp.ui.presenters.RegisterFCMPresenter;
 import com.enrich.salonapp.ui.presenters.SignInPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SignInActivity extends BaseActivity implements SignInContract.View, AuthenticationTokenContract.View, ForgotPasswordContract.View {
+public class SignInActivity extends BaseActivity implements SignInContract.View, AuthenticationTokenContract.View, ForgotPasswordContract.View, GuestsContact.View, RegisterFCMContract.View {
 
     @BindView(R.id.user_name_edit)
     EditText userNameEdit;
@@ -66,11 +72,14 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     BottomSheetDialog dialog;
 
     SignInPresenter signInPresenter;
+    GuestPresenter guestPresenter;
     ForgotPasswordPresenter forgotPasswordPresenter;
     AuthenticationTokenPresenter authenticationTokenPresenter;
+    RegisterFCMPresenter registerFCMPresenter;
 
     DataRepository dataRepository;
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +101,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         signInPresenter = new SignInPresenter(this, dataRepository);
         forgotPasswordPresenter = new ForgotPasswordPresenter(this, dataRepository);
         authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
+        guestPresenter = new GuestPresenter(this, dataRepository);
+        registerFCMPresenter = new RegisterFCMPresenter(this, dataRepository);
 
         userNameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -164,19 +175,35 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @Override
     public void createTokenError() {
         progressDialog.setVisibility(View.GONE);
-        showToastMessage("User doesn't exist. Please Sign Up.");
+        showToastMessage("Invalid Credentials. Please try again or Sign up.");
     }
 
     @Override
-    public void saveUserDetails(GuestModel model) {
+    public void saveUserDetails(final GuestModel model) {
         model.UserName = userNameEdit.getText().toString();
         model.Password = passwordEdit.getText().toString();
 
         EnrichUtils.saveUserData(SignInActivity.this, model);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SignInActivity.this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                RegisterFCMRequestModel fcmModel = new RegisterFCMRequestModel();
+                fcmModel.GuestId = model.Id;
+                fcmModel.Platform = Constants.PLATFORM_ANDROID;
+                fcmModel.Token = instanceIdResult.getToken();
+
+                registerFCMPresenter.registerFCM(SignInActivity.this, fcmModel);
+            }
+        });
 
         Intent intent = new Intent(SignInActivity.this, StoreSelectorActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void dataNotFound() {
+        progressDialog.setVisibility(View.GONE);
     }
 
     @Override
@@ -191,9 +218,10 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
-            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
+            EnrichUtils.saveAuthenticationModel(this, model);
+//            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
             progressDialog.setVisibility(View.VISIBLE);
-            signInPresenter.getUserData(SignInActivity.this, model.userId);
+            guestPresenter.getUserData(SignInActivity.this, model.userId, true);
         } else {
             progressDialog.setVisibility(View.GONE);
             showToastMessage("Invalid Credentials");
@@ -204,7 +232,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         dialog = new BottomSheetDialog(this);
         dialog.setContentView(R.layout.forgot_password_success);
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         TextView openMailApp = dialog.findViewById(R.id.open_mail_app);
 
@@ -218,5 +246,11 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void FCMRegistered(RegisterFCMResponseModel model) {
+        if (model.Error != null)
+            EnrichUtils.log("FCM REGISTER: " + model.Error.StatusCode);
     }
 }

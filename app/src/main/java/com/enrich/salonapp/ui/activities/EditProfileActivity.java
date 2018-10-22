@@ -1,20 +1,23 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
-import com.enrich.salonapp.data.model.GuestUpdateModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.di.Injection;
@@ -25,10 +28,13 @@ import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
 
 public class EditProfileActivity extends BaseActivity implements UpdateGuestContract.View {
 
@@ -59,12 +65,36 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    String firstNameStr, lastNameStr, emailStr, phoneStr, genderStr;
+    @BindView(R.id.edit_address_home)
+    TextView editAddressHome;
+
+    @BindView(R.id.edit_address_work)
+    TextView editAddressWork;
+
+    @BindView(R.id.edit_address_other)
+    TextView editAddressOther;
+
+    @BindView(R.id.address_other_container)
+    RelativeLayout addressOtherContainer;
+
+    @BindView(R.id.address_work_container)
+    RelativeLayout addressWorkContainer;
+
+    @BindView(R.id.address_home_container)
+    RelativeLayout addressHomeContainer;
+
+    String firstNameStr, lastNameStr, emailStr, phoneStr;
+
+    int gender = -1;
 
     GuestUpdateRequestModel guestUpdateRequestModel;
 
     UpdateGuestPresenter updateGuestPresenter;
     DataRepository dataRepository;
+
+    private ArrayList<AddressModel> list;
+
+    GuestModel guestModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,19 +128,24 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
         editGenderMale.setTypeface(custom_font);
         editGenderFemale.setTypeface(custom_font);
 
-        GuestModel model = EnrichUtils.getUserData(this);
-        firstName.setText(model.FirstName);
-        lastName.setText(model.LastName);
-        email.setText(model.Email);
-        phone.setText(model.MobileNumber);
+        guestModel = EnrichUtils.getUserData(this);
+        firstName.setText(guestModel.FirstName);
+        lastName.setText(guestModel.LastName);
+        email.setText(guestModel.Email);
+        phone.setText(guestModel.MobileNumber);
 
-        if (model.Gender.equals("Male")) {
+        if (guestModel.Gender == 1) {
             editGenderMale.setChecked(true);
             editGenderFemale.setChecked(false);
-        } else {
+        } else if (guestModel.Gender == 2) {
             editGenderMale.setChecked(false);
             editGenderFemale.setChecked(true);
+        } else {
+            editGenderMale.setChecked(false);
+            editGenderFemale.setChecked(false);
         }
+
+        setAddressData(guestModel.GuestAddress);
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
@@ -126,38 +161,97 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
                 emailStr = email.getText().toString();
                 phoneStr = phone.getText().toString();
 
-                if (editGenderMale.isChecked()) {
-                    genderStr = "Male";
-                } else if (editGenderFemale.isChecked()) {
-                    genderStr = "Female";
+                if (!EnrichUtils.isValidEmailId(emailStr)) {
+                    EnrichUtils.showMessage(EditProfileActivity.this, "Please enter valid email.");
+                    return;
                 }
 
-                GuestUpdateModel guestUpdateModel = new GuestUpdateModel();
-                guestUpdateModel.Email = emailStr;
-                guestUpdateModel.GuestFName = firstNameStr;
-                guestUpdateModel.GuestLName = lastNameStr;
-                guestUpdateModel.GuestPhone = phoneStr;
-                guestUpdateModel.id = EnrichUtils.getUserData(EditProfileActivity.this).Id;
                 if (editGenderMale.isChecked()) {
-                    guestUpdateModel.Gender = "Male";
+                    gender = 1;
                 } else if (editGenderFemale.isChecked()) {
-                    guestUpdateModel.Gender = "Female";
+                    gender = 2;
                 }
 
-                guestUpdateRequestModel = new GuestUpdateRequestModel();
-                guestUpdateRequestModel.CenterId = EnrichUtils.getUserData(EditProfileActivity.this).CenterId;
-                guestUpdateRequestModel.Guest = guestUpdateModel;
-
-                EnrichUtils.log(EnrichUtils.newGson().toJson(guestUpdateRequestModel));
-
-                if (firstNameStr.isEmpty() || lastNameStr.isEmpty() || genderStr.isEmpty()) {
+                if (firstNameStr.isEmpty() || lastNameStr.isEmpty() || gender == -1) {
                     EnrichUtils.showMessage(EditProfileActivity.this, "All fields are mandatory.");
                     return;
                 }
 
+                GuestModel model = new GuestModel();
+                model.FirstName = firstNameStr;
+                model.LastName = lastNameStr;
+                model.MobileNumber = phoneStr;
+                model.Id = EnrichUtils.getUserData(EditProfileActivity.this).Id;
+                model.Email = emailStr;
+                model.Gender = gender;
+
+//                GuestUpdateModel guestUpdateModel = new GuestUpdateModel();
+//                guestUpdateModel.Email = emailStr;
+//                guestUpdateModel.GuestFName = firstNameStr;
+//                guestUpdateModel.GuestLName = lastNameStr;
+//                guestUpdateModel.GuestPhone = phoneStr;
+//                guestUpdateModel.id = EnrichUtils.getUserData(EditProfileActivity.this).Id;
+//                if (editGenderMale.isChecked()) {
+//                    guestUpdateModel.Gender = "Male";
+//                } else if (editGenderFemale.isChecked()) {
+//                    guestUpdateModel.Gender = "Female";
+//                }
+
+                guestUpdateRequestModel = new GuestUpdateRequestModel();
+                guestUpdateRequestModel.CenterId = EnrichUtils.getUserData(EditProfileActivity.this).CenterId;
+                guestUpdateRequestModel.Guest = model;
+
+                EnrichUtils.log(EnrichUtils.newGson().toJson(guestUpdateRequestModel));
+
                 updateGuestPresenter.updateGuest(EditProfileActivity.this, guestUpdateRequestModel);
             }
         });
+
+        addressHomeContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, AddAddressActivity.class);
+                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_HOME);
+                intent.putExtra("Address", EnrichUtils.getHomeAddress(EditProfileActivity.this));
+                startActivityForResult(intent, ADD_ADDRESS);
+            }
+        });
+
+        addressWorkContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, AddAddressActivity.class);
+                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_WORK);
+                intent.putExtra("Address", EnrichUtils.getWorkAddress(EditProfileActivity.this));
+                startActivityForResult(intent, ADD_ADDRESS);
+            }
+        });
+
+        addressOtherContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, AddAddressActivity.class);
+                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_OTHER);
+                intent.putExtra("Address", EnrichUtils.getOtherAddress(EditProfileActivity.this));
+                startActivityForResult(intent, ADD_ADDRESS);
+            }
+        });
+    }
+
+    private void setAddressData(ArrayList<AddressModel> list) {
+        for (int i = 0; i < list.size(); i++) {
+            switch (list.get(i).AddressType) {
+                case AddAddressActivity.ADDRESS_HOME:
+                    editAddressHome.setText(list.get(i).Location);
+                    break;
+                case AddAddressActivity.ADDRESS_WORK:
+                    editAddressWork.setText(list.get(i).Location);
+                    break;
+                case AddAddressActivity.ADDRESS_OTHER:
+                    editAddressOther.setText(list.get(i).Location);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -166,7 +260,7 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
             updateUser(guestUpdateRequestModel.Guest);
     }
 
-    private void updateUser(GuestUpdateModel guestUpdateModel) {
+    private void updateUser(GuestModel guestUpdateModel) {
         GuestModel model = EnrichUtils.getUserData(this);
 
         model.Id = Objects.requireNonNull(EnrichUtils.getUserData(this)).Id;
@@ -174,12 +268,24 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
         model.UserName = Objects.requireNonNull(EnrichUtils.getUserData(this)).UserName;
         model.Password = Objects.requireNonNull(EnrichUtils.getUserData(this)).Password;
 
-        model.FirstName = guestUpdateModel.GuestFName;
-        model.LastName = guestUpdateModel.GuestLName;
+        model.FirstName = guestUpdateModel.FirstName;
+        model.LastName = guestUpdateModel.LastName;
         model.Email = guestUpdateModel.Email;
-        model.MobileNumber = guestUpdateModel.GuestPhone;
+        model.MobileNumber = guestUpdateModel.MobileNumber;
         model.Gender = guestUpdateModel.Gender;
 
         EnrichUtils.saveUserData(this, model);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_ADDRESS) {
+            if (resultCode == Activity.RESULT_OK) {
+                GuestModel guestModel = data.getParcelableExtra("GuestData");
+                setAddressData(guestModel.GuestAddress);
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }

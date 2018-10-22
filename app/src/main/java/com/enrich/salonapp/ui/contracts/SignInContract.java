@@ -13,13 +13,9 @@ public interface SignInContract {
 
     interface View extends IBaseView {
         void showPasswordField(IsUserRegisteredResponseModel model);
-
-        void saveUserDetails(GuestModel model);
     }
 
     interface Presenter extends IBasePresenter<View> {
         void isUserRegistered(Context context, String phoneNumber);
-
-        void getUserData(Context context, String guestId);
     }
 }

@@ -33,7 +33,7 @@
                     android:gravity="center"
                     android:text="CART"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/toolbar_title_size"
                     app:font_type="regular"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>

@@ -59,7 +59,7 @@ public class EnrichApplication extends Application {
 
 
     public AuthenticationModel getAuthenticationModel() {
-        return authenticationModel;
+        return EnrichUtils.getAuthenticationModel(getApplicationContext());
     }
 
     public void setAuthenticationModel(AuthenticationModel authenticationModel) {
@@ -550,9 +550,9 @@ public class EnrichApplication extends Application {
     }
 
     public GenericCartModel getServiceById(int id) {
-        if(cartHasServices()){
-            for (int i=0;i<cartList.size();i++){
-                if(id == cartList.get(i).Id){
+        if (cartHasServices()) {
+            for (int i = 0; i < cartList.size(); i++) {
+                if (id == cartList.get(i).Id) {
                     return cartList.get(i);
                 }
             }

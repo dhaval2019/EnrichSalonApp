@@ -17,4 +17,5 @@
     <dimen name="small_med_margin">5dp</dimen>
     <dimen name="nav_title_container_padding">5dp</dimen>
     <dimen name="badge_text_size">8sp</dimen>
+    <dimen name="toolbar_title_size">16sp</dimen>
 </resources>

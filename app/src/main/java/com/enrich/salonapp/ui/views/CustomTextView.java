@@ -23,13 +23,14 @@ public class CustomTextView extends AppCompatTextView {
     public static Typeface REGULAR_TTF;
     public static Typeface SEMI_BOLD_TTF;
     public static Typeface ULTRA_LIGHT_TTF;
+    public static Typeface ITALIC_TTF;
 
-    public CustomTextView (Context context) {
+    public CustomTextView(Context context) {
         super(context);
         setCustomTypeFace(context, 6);
     }
 
-    public CustomTextView (Context context, AttributeSet attr) {
+    public CustomTextView(Context context, AttributeSet attr) {
         super(context, attr);
         TypedArray a = context.obtainStyledAttributes(attr, R.styleable.CustomTextView);
         if (a.hasValue(R.styleable.CustomTextView_font_type)) {
@@ -42,7 +43,7 @@ public class CustomTextView extends AppCompatTextView {
         }
     }
 
-    public int setCustomTypeFace (Context context, int isBold) {
+    public int setCustomTypeFace(Context context, int isBold) {
         try {
             if (!isInEditMode()) {
                 if (isBold == 1)
@@ -59,6 +60,8 @@ public class CustomTextView extends AppCompatTextView {
                     setTypeface(getSemiBoldTtf(context), Typeface.NORMAL);
                 else if (isBold == 7)
                     setTypeface(getUltraLightTtf(context), Typeface.NORMAL);
+                else if (isBold == 8)
+                    setTypeface(getItalicTtf(context), Typeface.NORMAL);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,52 +69,59 @@ public class CustomTextView extends AppCompatTextView {
         return isBold;
     }
 
-    public static Typeface getBlackTtf (Context context) {
+    public static Typeface getBlackTtf(Context context) {
         if (BLACK_TTF == null)
             BLACK_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.BLACK_FONT);
         return BLACK_TTF;
     }
 
-    public static Typeface getBoldTtf (Context context) {
+    public static Typeface getBoldTtf(Context context) {
         if (BOLD_TTF == null)
             BOLD_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.BOLD_FONT);
         return BOLD_TTF;
     }
 
-    public static Typeface getExtraBoldTtf (Context context) {
+    public static Typeface getExtraBoldTtf(Context context) {
         if (EXTRA_BOLD_TTF == null)
             EXTRA_BOLD_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.EXTRA_BOLD_FONT);
         return EXTRA_BOLD_TTF;
     }
 
-    public static Typeface getLightTtf (Context context) {
+    public static Typeface getLightTtf(Context context) {
         if (LIGHT_TTF == null)
             LIGHT_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.LIGHT_FONT);
         return LIGHT_TTF;
     }
 
-    public static Typeface getRegularTtf (Context context) {
+    public static Typeface getRegularTtf(Context context) {
         if (REGULAR_TTF == null)
             REGULAR_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.REGULAR_FONT);
         return REGULAR_TTF;
     }
 
-    public static Typeface getSemiBoldTtf (Context context) {
+    public static Typeface getSemiBoldTtf(Context context) {
         if (SEMI_BOLD_TTF == null)
             SEMI_BOLD_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.SEMI_BOLD_FONT);
         return SEMI_BOLD_TTF;
     }
 
-    public static Typeface getUltraLightTtf (Context context) {
+    public static Typeface getUltraLightTtf(Context context) {
         if (ULTRA_LIGHT_TTF == null)
             ULTRA_LIGHT_TTF = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + Constants.ULTRA_LIGHT_FONT);
+        return ULTRA_LIGHT_TTF;
+    }
+
+    public static Typeface getItalicTtf(Context context) {
+        if (ULTRA_LIGHT_TTF == null)
+            ULTRA_LIGHT_TTF = Typeface.createFromAsset(context.getAssets(),
+                    "fonts/" + Constants.ITALIC_FONT);
         return ULTRA_LIGHT_TTF;
     }
 }

@@ -1,15 +1,21 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,10 +34,18 @@ import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.DistanceComparator;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.GpsTracker;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.PlaceFilter;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,7 +129,8 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
 
         storeProgress.setVisibility(View.VISIBLE);
         salonFilter.setEnabled(false);
-        getCentreList();
+//        getCentreList();
+        getCurrentPlace();
 
         salonFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -156,14 +171,45 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         storeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
     }
 
-    private void getCentreList() {
-        double latitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LATITUDE, 0.0);
-        double longitude = SharedPreferenceStore.getValue(this, Constants.CURRENT_LONGITUDE, 0.0);
+    private void getCentreList(double latitude, double longitude) {
+        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LATITUDE, latitude);
+        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LONGITUDE, longitude);
 
         Map<String, String> map = new HashMap<>();
         map.put("ServiceId", "");
         map.put("latitude", "" + latitude);
         map.put("longitude", "" + longitude);
         centerListPresenter.getCenterList(this, map);
+    }
+
+    private void getCurrentPlace() {
+        PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(new PlaceFilter());
+        placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
+                try {
+                    PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+                    for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                        EnrichUtils.log(String.format("Place '%s' has likelihood: %g", placeLikelihood.getPlace().getName(), placeLikelihood.getLikelihood()));
+                        if (placeLikelihood.getLikelihood() <= 0.0) {
+                            getCentreList(placeLikelihood.getPlace().getLatLng().latitude, placeLikelihood.getPlace().getLatLng().longitude);
+                            return;
+                        }
+                    }
+                    likelyPlaces.release();
+                } catch (Exception e) {
+                    double latitude = SharedPreferenceStore.getValue(StoreSelectorActivity.this, Constants.CURRENT_LATITUDE, 0.0);
+                    double longitude = SharedPreferenceStore.getValue(StoreSelectorActivity.this, Constants.CURRENT_LONGITUDE, 0.0);
+                    getCentreList(latitude, longitude);
+                    Log.e("ERROR TAG: ", e.getLocalizedMessage());
+                }
+            }
+        });
+
     }
 }

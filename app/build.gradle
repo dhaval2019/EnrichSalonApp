@@ -15,6 +15,9 @@ repositories {
 // ANDROID
 apply plugin: 'com.android.application'
 
+// FIREBASE PERFORMANCE
+apply plugin: 'com.google.firebase.firebase-perf'
+
 // FABRIC
 apply plugin: 'io.fabric'
 repositories {
@@ -27,8 +30,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 130
-        versionName '1.3.0'
+        versionCode 137
+        versionName '1.3.7'
         manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
@@ -48,9 +51,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     // BUTTERKNIFE (View Binding)
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // RETROFIT
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -69,13 +72,15 @@ dependencies {
     // PAY U MONEY SDK
     implementation 'com.payumoney.sdkui:plug-n-play:1.1.0'
     implementation 'com.payumoney.core:payumoney-sdk:7.1.0'
-    // GOOGLE SERVICES (MAPS, LOCATIONS, ANALYTICS)
+    // GOOGLE SERVICES (MAPS, LOCATIONS, ANALYTICS, PLACES)
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
-    // FIREBASE (CORE, MESSAGING)
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.3'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+    // FIREBASE (CORE, MESSAGING, PERFORMANCE)
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.1'
+    implementation 'com.google.firebase:firebase-perf:16.1.0'
     // CRASHLYTICS
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true
@@ -100,3 +105,6 @@ dependencies {
     // EASY PERMISSIONS
     implementation 'pub.devrel:easypermissions:1.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
+

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:background="@color/white"
     tools:context="ui.activities.SplashActivity">
@@ -19,4 +20,15 @@
         android:layout_gravity="center"
         android:padding="10dp"
         android:src="@drawable/full_logo_black" />
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/progress_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Getting Locations..."
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/dimen_40dp"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/dimen_16sp"
+        app:font_type="light"/>
 </FrameLayout>

@@ -6,14 +6,14 @@ import android.os.Parcelable;
 public class GuestUpdateRequestModel implements Parcelable {
 
     public String CenterId;
-    public GuestUpdateModel Guest;
+    public GuestModel Guest;
 
     public GuestUpdateRequestModel() {
     }
 
     protected GuestUpdateRequestModel(Parcel in) {
         CenterId = in.readString();
-        Guest = in.readParcelable(GuestUpdateModel.class.getClassLoader());
+        Guest = in.readParcelable(GuestModel.class.getClassLoader());
     }
 
     @Override

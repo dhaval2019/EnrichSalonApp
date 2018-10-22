@@ -58,10 +58,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_5dp"
-                    android:text="If you have done forgot password please check your mail for the old password"
+                    android:text="Get a new password sent to you via email and SMS"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
-                    android:visibility="gone"
                     app:font_type="light" />
             </LinearLayout>
 
@@ -86,13 +85,14 @@
             android:text="Click Here"
             android:textColor="@color/dark_gold"
             android:textSize="@dimen/dimen_14sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:font_type="regular"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
             android:layout_marginBottom="@dimen/dimen_15dp"
-            android:layout_marginTop="@dimen/dimen_5dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
             android:background="#E0E0E0" />
 
         <!-- CHANGE PASSWORD -->
@@ -119,10 +119,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_5dp"
-                    android:text="If you have done forgot password please check your mail for the old password"
+                    android:text="Enter your old password along with the new one and confirm to change your password"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
-                    android:visibility="gone"
                     app:font_type="light" />
             </LinearLayout>
 
