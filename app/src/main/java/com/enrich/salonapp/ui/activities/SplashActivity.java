@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,7 +58,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
@@ -118,8 +121,9 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     Tracker mTracker;
 
     private PlaceDetectionClient mPlaceDetectionClient;
-    private GeoDataClient mGeoDataClient;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    LocationCallback locationCallback;
+    private FusedLocationProviderClient fusedLocationClient;
 
 //    private int callToAction;
 //    private OfferModel offerModel;
@@ -156,6 +160,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         guestPresenter = new GuestPresenter(this, dataRepository);
         appUpdatePresenter = new AppUpdatePresenter(this, dataRepository);
         registerFCMPresenter = new RegisterFCMPresenter(this, dataRepository);
+
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Construct a PlaceDetectionClient.
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
@@ -252,6 +258,14 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
             locationRequest.setInterval(10000);
             locationRequest.setFastestInterval(10000 / 2);
 
+//            locationCallback = new LocationCallback() {
+//                @Override
+//                public void onLocationResult(LocationResult locationResult) {
+//                    Location currentLocation = locationResult.getLocations().get(0);
+//                    saveLocation(currentLocation.getLatitude(), currentLocation.getLongitude());
+//                }
+//            };
+
             LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 //            builder.setAlwaysShow(true);
 
@@ -286,8 +300,23 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     }
 
     int count = 0;
+
     private void getCurrentPlace() {
-        updateProgressStatus("Getting Your Location...", true);
+//        if (count < 1) {
+            updateProgressStatus("Getting Your Location...", true);
+//            LocationRequest locationRequest = new LocationRequest();
+//            locationRequest.setInterval(2000);
+//            locationRequest.setFastestInterval(1000);
+//            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//
+//            ++count;
+//        }
+
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -427,15 +456,15 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
 //        EnrichUtils.saveUserData(this, model);
 //        if (callToAction == -1) {
-            if (EnrichUtils.getHomeStore(this) != null) {
-                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Intent intent = new Intent(SplashActivity.this, StoreSelectorActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        if (EnrichUtils.getHomeStore(this) != null) {
+            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(SplashActivity.this, StoreSelectorActivity.class);
+            startActivity(intent);
+            finish();
+        }
 //        } else {
 //            OfferHandler.handleOfferRedirection(this, offerModel);
 //        }

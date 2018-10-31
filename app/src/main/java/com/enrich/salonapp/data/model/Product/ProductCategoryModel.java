@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class ProductCategoryModel implements Parcelable {
     public int Id;
     public String Name;
+    public int Order;
     public String ProductCategoryImage;
     public String ProductCategoryImageUrl;
     public ProductCategoryModel ProductCategory;
@@ -13,6 +14,7 @@ public class ProductCategoryModel implements Parcelable {
     protected ProductCategoryModel(Parcel in) {
         Id = in.readInt();
         Name = in.readString();
+        Order = in.readInt();
         ProductCategoryImage = in.readString();
         ProductCategoryImageUrl = in.readString();
         ProductCategory = in.readParcelable(ProductCategoryModel.class.getClassLoader());
@@ -22,6 +24,7 @@ public class ProductCategoryModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(Id);
         dest.writeString(Name);
+        dest.writeInt(Order);
         dest.writeString(ProductCategoryImage);
         dest.writeString(ProductCategoryImageUrl);
         dest.writeParcelable(ProductCategory, flags);

@@ -9,6 +9,8 @@ public class ProductCategoryResponseModel implements Parcelable{
 
     public ArrayList<ProductCategoryModel> ProductCategory;
 
+    public ProductCategoryResponseModel() {
+    }
 
     protected ProductCategoryResponseModel(Parcel in) {
         ProductCategory = in.createTypedArrayList(ProductCategoryModel.CREATOR);

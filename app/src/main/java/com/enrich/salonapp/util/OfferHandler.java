@@ -10,8 +10,11 @@ import com.enrich.salonapp.ui.activities.PackagesActivity;
 import com.enrich.salonapp.ui.activities.ProductActivity;
 import com.enrich.salonapp.ui.activities.ProductDetailActivity;
 import com.enrich.salonapp.ui.activities.ServiceListActivity;
+import com.enrich.salonapp.ui.activities.WebActivity;
 
 import java.util.ArrayList;
+
+import static com.enrich.salonapp.util.Constants.OFFER_COMMAND_WEB;
 
 public class OfferHandler {
 
@@ -49,6 +52,9 @@ public class OfferHandler {
                 break;
             case Constants.OFFER_COMMAND_PARTICULAR_PRODUCT_BRAND:
                 launchProductList(activity, model);
+                break;
+            case OFFER_COMMAND_WEB:
+                launchWebPage(activity, model.BlogRedirectURL);
                 break;
         }
     }
@@ -104,6 +110,12 @@ public class OfferHandler {
     private static void launchParticularProduct(Activity activity, OfferModel model) {
         Intent intent = new Intent(activity, ProductDetailActivity.class);
         intent.putExtra("ProductId", model.ProductId);
+        activity.startActivity(intent);
+    }
+
+    private static void launchWebPage(Activity activity, String url) {
+        Intent intent = new Intent(activity, WebActivity.class);
+        intent.putExtra("URL", url);
         activity.startActivity(intent);
     }
 }

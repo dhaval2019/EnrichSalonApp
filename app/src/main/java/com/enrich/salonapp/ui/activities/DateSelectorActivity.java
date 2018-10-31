@@ -83,12 +83,16 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
     BottomSheetDialog dialog;
 
+    boolean isHomeSelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_selector);
 
         ButterKnife.bind(this);
+
+        isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
 
         application = (EnrichApplication) getApplication();
         cartList = application.getCartItems();
@@ -128,6 +132,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DateSelectorActivity.this, CartActivity.class);
+                intent.putExtra("isHomeSelected", isHomeSelected);
                 startActivity(intent);
             }
         });
@@ -138,7 +143,6 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
         timeSlotPresenter = new TimeSlotPresenter(this, dataRepository);
     }
-
 
     @Override
     public void onDateSelected(DateTime dateSelected) {

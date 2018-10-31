@@ -98,7 +98,7 @@ public class EnrichUtils {
 
     public static void cancelCurrentDialog(Activity activity) {
         if (pDialog != null && activity != null) {
-            new Handler().postDelayed(cancelDialog, 150);
+            new Handler().postDelayed(cancelDialog, 0);
         }
     }
 
@@ -373,7 +373,7 @@ public class EnrichUtils {
      */
     public static GuestModel getUserData(Context context) {
         GuestModel model = newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.KEY_USER_DATA, ""), GuestModel.class);
-        return model == null ? null : model;
+        return model;
     }
 
     public static boolean doesUserHasAddresses(Context context) {

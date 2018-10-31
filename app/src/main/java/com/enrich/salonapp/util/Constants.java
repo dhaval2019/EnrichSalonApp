@@ -17,6 +17,7 @@ public class Constants {
 
     public static String CENTER_ID = "fe62cba7-f099-4f71-88f4-058c94e70655";
     public static String PARENT_CATEGORY_ID = "41AC7424-8BDE-461C-9C88-8E794C9EC77B";
+    public static String HOME_CATEGORY_ID = "a980c048-71f3-45a7-90cd-fbf2edc9bb54";
 
     public static final String KEY_USER_DATA = "GuestsDataKey";
     public static final String KEY_USER_ADDRESS = "GuestsAddress";
@@ -51,8 +52,11 @@ public class Constants {
     public static final int OFFER_COMMAND_PARTICULAR_PRODUCT_SUBCATEGORY = 15;
     public static final int OFFER_COMMAND_PRODUCT_BRAND_LIST = 16;
     public static final int OFFER_COMMAND_PARTICULAR_PRODUCT_BRAND = 17;
+    public static final int OFFER_COMMAND_WEB = 18;
 
     public static final int PAYMENT_MODE_CASH = 0;
     public static final int PAYMENT_MODE_ONLINE = 1;
     public static final int PAYMENT_MODE_BOTH = 2;
+
+    public static final int PAYMENT_SUCCESS= 1;
 }

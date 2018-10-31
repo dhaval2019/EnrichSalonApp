@@ -65,6 +65,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.enrich.salonapp.util.Constants.PAYMENT_MODE_CASH;
+import static com.enrich.salonapp.util.Constants.PAYMENT_MODE_ONLINE;
+import static com.enrich.salonapp.util.Constants.PAYMENT_SUCCESS;
 import static com.enrich.salonapp.util.Constants.PLATFORM_ANDROID;
 
 public class BookingSummaryActivity extends BaseActivity implements BookingSummaryContract.View {
@@ -199,7 +202,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         makePaymentOfflineBtn.setEnabled(false);
         makePaymentOnlineBtn.setEnabled(false);
 
-        if (reserveSlotModel != null) {
+        if (reserveSlotModel.SlotBookings != null) {
             bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
         } else if (application.cartHasPackages()) {
             makePaymentOfflineBtn.setVisibility(View.GONE);
@@ -231,7 +234,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             if (application.getCartItem(0).getPaymentMode() == Constants.PAYMENT_MODE_CASH) {
                 makePaymentOfflineBtn.setVisibility(View.VISIBLE);
                 makePaymentOnlineBtn.setVisibility(View.GONE);
-            } else if (application.getCartItem(0).getPaymentMode() == Constants.PAYMENT_MODE_ONLINE) {
+            } else if (application.getCartItem(0).getPaymentMode() == PAYMENT_MODE_ONLINE) {
                 makePaymentOfflineBtn.setVisibility(View.GONE);
                 makePaymentOnlineBtn.setVisibility(View.VISIBLE);
             }
@@ -334,13 +337,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             if (isOnlinePayment) { //ONLINE
                 confirmOrderModel.setTransactionId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));
                 confirmOrderModel.setPaymentId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));
-                confirmOrderModel.setModeOfPayment(1);
-                confirmOrderModel.setPaymentStatus(1);
+                confirmOrderModel.setModeOfPayment(PAYMENT_MODE_ONLINE);
+                confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
             } else { // CASH
                 confirmOrderModel.setTransactionId(System.currentTimeMillis() + "");
                 confirmOrderModel.setPaymentId(System.currentTimeMillis() + "");
-                confirmOrderModel.setModeOfPayment(2);
-                confirmOrderModel.setPaymentStatus(1);
+                confirmOrderModel.setModeOfPayment(PAYMENT_MODE_CASH);
+                confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
             }
 
             ConfirmOrderRequestModel confirmOrderRequestModel = new ConfirmOrderRequestModel();

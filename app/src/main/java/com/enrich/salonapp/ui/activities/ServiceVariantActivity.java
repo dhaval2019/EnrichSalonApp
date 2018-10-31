@@ -85,18 +85,22 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
     String gender;
 
+    boolean isHomeSelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_variant);
+
+        ButterKnife.bind(this);
+
+        isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
 
         // SEND ANALYTICS
         application = (EnrichApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Service Variant List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
-        ButterKnife.bind(this);
 
         serviceViewModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ServiceViewModel"), ServiceViewModel.class);
         subCategoryId = getIntent().getStringExtra("SubCategoryId");
@@ -115,14 +119,6 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
         });
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
-
-//        assert collapsingToolbarLayout != null;
-//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-//        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
-//        collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
-//        collapsingToolbarLayout.setExpandedTitleTypeface(tf);
-//
-//        collapsingToolbarLayout.setTitle(serviceViewModel.name);
 
         parentServiceName.setText(serviceViewModel.name);
         parentServiceDescription.setText(serviceViewModel.description);
@@ -161,7 +157,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
             Collections.sort(model.ServiceVariants, new ParentAndNormalServiceComparator());
 
-            VariantRecyclerViewAdapter variantRecyclerViewAdapter = new VariantRecyclerViewAdapter(this, model.ServiceVariants);
+            VariantRecyclerViewAdapter variantRecyclerViewAdapter = new VariantRecyclerViewAdapter(this, model.ServiceVariants, isHomeSelected);
             variantRecyclerView.setAdapter(variantRecyclerViewAdapter);
             variantRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             variantRecyclerView.setNestedScrollingEnabled(false);

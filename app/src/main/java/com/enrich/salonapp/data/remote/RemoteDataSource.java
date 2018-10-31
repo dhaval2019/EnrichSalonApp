@@ -37,6 +37,7 @@ import com.enrich.salonapp.data.model.Package.MyPackageResponseModel;
 import com.enrich.salonapp.data.model.Package.PackageResponseModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
 import com.enrich.salonapp.data.model.Product.BrandResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductCategoryModel;
 import com.enrich.salonapp.data.model.Product.ProductCategoryResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
@@ -57,6 +58,7 @@ import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.ProductCategoryComparator;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
@@ -65,6 +67,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,9 +77,9 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-            public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
 //    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
-//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
@@ -301,6 +304,8 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getCategoryList(Map<String, String> map, final GetCategoryListCallBack callBack) {
+
+        EnrichUtils.log(EnrichUtils.newGson().toJson(map));
 
         Call<CategoryResponseModel> call = apiService.getAllCategories(map);
         call.enqueue(new Callback<CategoryResponseModel>() {
@@ -751,8 +756,13 @@ public class RemoteDataSource extends DataSource {
         call.enqueue(new Callback<ProductCategoryResponseModel>() {
             @Override
             public void onResponse(Call<ProductCategoryResponseModel> call, Response<ProductCategoryResponseModel> response) {
-                if (response.isSuccessful())
-                    callback.onSuccess(response.body());
+                if (response.isSuccessful()) {
+                    ArrayList<ProductCategoryModel> list = response.body().ProductCategory;
+                    Collections.sort(list, new ProductCategoryComparator());
+                    ProductCategoryResponseModel productCategoryResponseModel = new ProductCategoryResponseModel();
+                    productCategoryResponseModel.ProductCategory = list;
+                    callback.onSuccess(productCategoryResponseModel);
+                }
             }
 
             @Override
@@ -790,6 +800,8 @@ public class RemoteDataSource extends DataSource {
             public void onResponse(Call<SubCategoryResponseModel> call, Response<SubCategoryResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
+                else
+                    callback.onFailure(new Throwable());
             }
 
             @Override

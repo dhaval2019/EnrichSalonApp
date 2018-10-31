@@ -75,6 +75,8 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
     Tracker mTracker;
 
+    boolean isHomeSelected;
+
     /**
      * Primary constructor. Sets up {@link #mParentList} and {@link #mFlatItemList}.
      * <p>
@@ -91,7 +93,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
      * @param parentList List of all parents to be displayed in the RecyclerView that this
      *                   adapter is linked to
      */
-    public NewServiceListAdapter(Activity activity, @NonNull ArrayList<SubCategoryModel> parentList, String gender) {
+    public NewServiceListAdapter(Activity activity, @NonNull ArrayList<SubCategoryModel> parentList, String gender, boolean isHomeSelected) {
         super(parentList);
         this.activity = activity;
         this.list = parentList;
@@ -99,11 +101,9 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         application = (EnrichApplication) activity.getApplicationContext();
         this.gender = gender;
+        this.isHomeSelected = isHomeSelected;
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        DataRepository dataRepository = Injection.provideDataRepository(activity, mainUiThread, threadExecutor, null);
+        DataRepository dataRepository = Injection.provideDataRepository(activity, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         therapistPresenter = new TherapistPresenter(this, dataRepository);
         parentsAndNormalServiceListPresenter = new ParentsAndNormalServiceListPresenter(this, dataRepository);
     }
@@ -220,6 +220,9 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                         map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);
                         map.put("ServiceId", "" + model.id);
                         map.put("forDate", "");
+                        if (isHomeSelected) {
+                            map.put("IsHome", "true");
+                        }
 
                         therapistPresenter.getTherapist(activity, map);
                     }
@@ -239,6 +242,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                     intent.putExtra("Gender", gender);
                     intent.putExtra("ServiceViewModel", EnrichUtils.newGson().toJson(model));
                     intent.putExtra("SubCategoryId", filteredList.get(parentPosition).SubCategoryId);
+                    intent.putExtra("isHomeSelected", isHomeSelected);
                     activity.startActivity(intent);
                 }
             });
@@ -448,14 +452,6 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                             tempParentFilteredList.add(parentServiceViewModel);
                         }
                     }
-//                    for (ServiceViewModel serviceViewModel : parentServiceViewModel.ChildServices) {
-//                    if (parentServiceViewModel.Name.toLowerCase().contains(filterString.toLowerCase())) {
-//                        tempParentFilteredList.add(parentServiceViewModel);
-//                        tempChildFilteredList.add(serviceViewModel);
-//                    }
-//                    }
-//                    if (!tempChildFilteredList.isEmpty())
-//                        tempParentFilteredList.add(new SubCategoryModel(parentServiceViewModel.Id, parentServiceViewModel.SubCategoryId, parentServiceViewModel.SubCategoryOrganizationId, parentServiceViewModel.ImageUrl, parentServiceViewModel.Name, parentServiceViewModel.ParentCategoryId, parentServiceViewModel.Description, parentServiceViewModel.SortOrder, parentServiceViewModel.Code, parentServiceViewModel.Gender, tempChildFilteredList));
                 }
 
                 filteredList = tempParentFilteredList;

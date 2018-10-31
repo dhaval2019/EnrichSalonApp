@@ -161,7 +161,6 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
 
         collapsingToolbarLayout.setTitle("ADD ADDRESS");
 
-
         locationContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

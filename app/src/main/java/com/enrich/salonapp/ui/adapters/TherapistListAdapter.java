@@ -26,6 +26,7 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
     NewServiceListAdapter serviceListAdapterNew;
     RecommendedServicesAdapter recommendedServicesAdapter;
     VariantRecyclerViewAdapter variantRecyclerViewAdapter;
+    HomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter;
     Dialog dialog;
 
     public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int parentPosition, int childPosition, NewServiceListAdapter serviceListAdapterNew, Dialog dialog) {
@@ -56,6 +57,15 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
         this.dialog = dialog;
     }
 
+    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int position, HomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter, Dialog dialog) {
+        this.context = context;
+        this.list = list;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.childPos = position;
+        this.homeParentAndNormalServiceAdapter = homeParentAndNormalServiceAdapter;
+        this.dialog = dialog;
+    }
+
     @Override
     public TherapistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.therapist_list_item, parent, false);
@@ -77,8 +87,12 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
                 if (recommendedServicesAdapter != null)
                     recommendedServicesAdapter.setTherapist(model, childPos);
 
-                if(variantRecyclerViewAdapter!=null)
+                if (variantRecyclerViewAdapter != null)
                     variantRecyclerViewAdapter.setTherapist(model, parentPos);
+
+                if (homeParentAndNormalServiceAdapter != null)
+                    homeParentAndNormalServiceAdapter.setTherapist(model, parentPos);
+
                 dialog.cancel();
             }
         });
@@ -92,7 +106,7 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
                 if (recommendedServicesAdapter != null)
                     recommendedServicesAdapter.setTherapist(model, childPos);
 
-                if(variantRecyclerViewAdapter!=null)
+                if (variantRecyclerViewAdapter != null)
                     variantRecyclerViewAdapter.setTherapist(model, parentPos);
                 dialog.cancel();
             }

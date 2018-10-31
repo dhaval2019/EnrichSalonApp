@@ -16,6 +16,8 @@ public interface ServiceListContract {
         void showServiceList(ServiceListResponseModel model);
 
         void showSubCategories(SubCategoryResponseModel model);
+
+        void noSubCategories();
     }
 
     interface Presenter extends IBasePresenter<ServiceListContract.View> {

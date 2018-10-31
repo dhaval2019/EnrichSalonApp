@@ -37,14 +37,14 @@ public class ParentsAndNormalServiceListPresenter extends BasePresenter<ParentsA
 
             @Override
             public void onFailure(Throwable t) {
-                if(view!=null){
+                if (view != null) {
                     view.setProgressBar(false);
                 }
             }
 
             @Override
             public void onNetworkFailure() {
-                if (view!=null){
+                if (view != null) {
                     view.setProgressBar(false);
                     view.showToastMessage("No Network. Please try again later.");
                 }

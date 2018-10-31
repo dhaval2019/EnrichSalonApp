@@ -98,7 +98,6 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
         categoryPresenter.getCategoriesList(this, categoryMap, true);
 
         list = getIntent().getParcelableArrayListExtra("CategoryList");
-
     }
 
     @Override

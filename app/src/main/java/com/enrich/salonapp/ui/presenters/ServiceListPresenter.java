@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.presenters;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.enrich.salonapp.data.DataRepository;
@@ -9,6 +10,7 @@ import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.ui.contracts.RegisterContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
 import java.util.Map;
@@ -57,7 +59,7 @@ public class ServiceListPresenter extends BasePresenter<ServiceListContract.View
     }
 
     @Override
-    public void getSubCategories(Context context, Map<String, String> map) {
+    public void getSubCategories(final Context context, Map<String, String> map) {
         if (view == null)
             return;
 
@@ -76,6 +78,7 @@ public class ServiceListPresenter extends BasePresenter<ServiceListContract.View
             public void onFailure(Throwable t) {
                 if (view != null) {
                     view.setProgressBar(false);
+                    view.noSubCategories();
                 }
             }
 

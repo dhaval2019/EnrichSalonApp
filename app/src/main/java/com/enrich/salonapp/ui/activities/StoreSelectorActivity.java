@@ -130,7 +130,15 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
         storeProgress.setVisibility(View.VISIBLE);
         salonFilter.setEnabled(false);
 //        getCentreList();
-        getCurrentPlace();
+
+
+        double latitude = SharedPreferenceStore.getValue(StoreSelectorActivity.this, Constants.CURRENT_LATITUDE, 0.0);
+        double longitude = SharedPreferenceStore.getValue(StoreSelectorActivity.this, Constants.CURRENT_LONGITUDE, 0.0);
+        if (latitude == 0.0 && longitude == 0.0) {
+            getCurrentPlace();
+        } else {
+            getCentreList(latitude, longitude);
+        }
 
         salonFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -148,38 +156,6 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
 
             }
         });
-    }
-
-    @Override
-    public void showCenterList(CenterResponseModel model) {
-        ArrayList<CenterViewModel> list = model.Centers;
-        Collections.sort(list, new DistanceComparator());
-        setCategoryAdapter(list);
-        storeProgress.setVisibility(View.GONE);
-        salonFilter.setEnabled(true);
-    }
-
-    @Override
-    public void showPlaceHolder() {
-
-    }
-
-    private void setCategoryAdapter(ArrayList<CenterViewModel> list) {
-        storeSelectorAdapter = new StoreSelectorAdapter(this, list, this);
-        storeRecyclerView.setAdapter(storeSelectorAdapter);
-        storeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        storeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-    }
-
-    private void getCentreList(double latitude, double longitude) {
-        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LATITUDE, latitude);
-        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LONGITUDE, longitude);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("ServiceId", "");
-        map.put("latitude", "" + latitude);
-        map.put("longitude", "" + longitude);
-        centerListPresenter.getCenterList(this, map);
     }
 
     private void getCurrentPlace() {
@@ -210,6 +186,37 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
                 }
             }
         });
+    }
 
+    private void getCentreList(double latitude, double longitude) {
+        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LATITUDE, latitude);
+        SharedPreferenceStore.storeValue(this, Constants.CURRENT_LONGITUDE, longitude);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("ServiceId", "");
+        map.put("latitude", "" + latitude);
+        map.put("longitude", "" + longitude);
+        centerListPresenter.getCenterList(this, map);
+    }
+
+    @Override
+    public void showCenterList(CenterResponseModel model) {
+        ArrayList<CenterViewModel> list = model.Centers;
+        Collections.sort(list, new DistanceComparator());
+        setCategoryAdapter(list);
+        storeProgress.setVisibility(View.GONE);
+        salonFilter.setEnabled(true);
+    }
+
+    @Override
+    public void showPlaceHolder() {
+
+    }
+
+    private void setCategoryAdapter(ArrayList<CenterViewModel> list) {
+        storeSelectorAdapter = new StoreSelectorAdapter(this, list, this);
+        storeRecyclerView.setAdapter(storeSelectorAdapter);
+        storeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        storeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
     }
 }

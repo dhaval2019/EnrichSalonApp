@@ -36,8 +36,7 @@
             <io.supercharge.shimmerlayout.ShimmerLayout
                 android:id="@+id/loading_screen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,7 +136,8 @@
                 android:id="@+id/main_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <!-- SALON & HOME -->
                 <LinearLayout
@@ -146,6 +146,7 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
+                    <!-- SALON -->
                     <RelativeLayout
                         android:id="@+id/salon_container"
                         android:layout_width="0dp"
@@ -176,6 +177,7 @@
                             android:background="@color/dark_gold" />
                     </RelativeLayout>
 
+                    <!-- HOME -->
                     <RelativeLayout
                         android:id="@+id/home_container"
                         android:layout_width="0dp"
@@ -216,6 +218,7 @@
 
                     <!-- OFFERS -->
                     <LinearLayout
+                        android:id="@+id/salon_offer_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -319,6 +322,7 @@
 
                     <!-- OFFERS -->
                     <LinearLayout
+                        android:id="@+id/home_offer_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">

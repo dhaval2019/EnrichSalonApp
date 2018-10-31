@@ -29,14 +29,20 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
+import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategorySpinnerAdapter;
+import com.enrich.salonapp.ui.adapters.HomeParentAndNormalServiceAdapter;
+import com.enrich.salonapp.ui.adapters.HomeSubCategorySpinnerAdapter;
 import com.enrich.salonapp.ui.adapters.NewServiceListAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
+import com.enrich.salonapp.ui.contracts.ParentsAndNormalServiceListContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
 import com.enrich.salonapp.ui.presenters.CategoryPresenter;
+import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -51,11 +57,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceListActivity extends BaseActivity implements ServiceListContract.View, CategoryContract.View {
+public class ServiceListActivity extends BaseActivity implements ServiceListContract.View, CategoryContract.View, ParentsAndNormalServiceListContract.View {
 
     @BindView(R.id.category_name_spinner)
     Spinner categoryNameSpinner;
@@ -120,16 +127,21 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     int position;
 
-    DataRepository dataRepository;
-    ServiceListPresenter serviceListPresenter;
-    CategoryPresenter categoryPresenter;
+    private DataRepository dataRepository;
+    private ServiceListPresenter serviceListPresenter;
+    private CategoryPresenter categoryPresenter;
+    private ParentsAndNormalServiceListPresenter parentsAndNormalServiceListPresenter;
+
     CategoryModel categoryModel;
+    SubCategoryModel subCategoryModel;
 
     NewServiceListAdapter adapter;
 
     Tracker mTracker;
 
     String gender;
+
+    boolean isHomeSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,18 +170,27 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         getSupportActionBar().setTitle("");
 
         position = getIntent().getIntExtra("CategoryListPosition", 0);
+        isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         serviceListPresenter = new ServiceListPresenter(this, dataRepository);
         categoryPresenter = new CategoryPresenter(this, dataRepository);
+        parentsAndNormalServiceListPresenter = new ParentsAndNormalServiceListPresenter(this, dataRepository);
 
-        Map<String, String> categoryMap = new HashMap<>();
-        categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
-        categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
-        categoryPresenter.getCategoriesList(this, categoryMap, true);
+        if (isHomeSelected) {
+            maleContainer.setVisibility(View.GONE);
+            gender = "Female";
+            changeGenderIcons(true);
+            getServiceList(Constants.HOME_CATEGORY_ID, gender);
+        } else {
+            Map<String, String> categoryMap = new HashMap<>();
+            categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+            categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
+            if (isHomeSelected) {
+                categoryMap.put("HomeCategory", "home");
+            }
+            categoryPresenter.getCategoriesList(this, categoryMap, true);
+        }
 
         categoryDropdownContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,13 +202,23 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         categoryNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
+                if (isHomeSelected) {
+                    subCategoryModel = (SubCategoryModel) parent.getAdapter().getItem(position);
+                    getServiceListForHome();
+                } else {
+                    categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
 
-                if (gender == null)
-                    gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
+                    if (gender == null) {
+                        if (isHomeSelected) {
+                            gender = "Female";
+                        } else {
+                            gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
+                        }
+                    }
 
-                changeGenderIcons(!gender.equalsIgnoreCase("male"));
-                getServiceList(categoryModel.CategoryId, gender);
+                    changeGenderIcons(!gender.equalsIgnoreCase("male"));
+                    getServiceList(categoryModel.CategoryId, gender);
+                }
             }
 
             @Override
@@ -200,6 +231,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onClick(View v) {
                 if (!application.isCartEmpty()) {
                     Intent intent = new Intent(ServiceListActivity.this, DateSelectorActivity.class);
+                    intent.putExtra("isHomeSelected", isHomeSelected);
                     startActivity(intent);
                 }
             }
@@ -245,58 +277,6 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         updateCart();
     }
 
-    private void changeGenderIcons(boolean isFemale) {
-        if (isFemale) {
-            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
-            femaleText.setTextColor(getResources().getColor(R.color.colorAccent));
-
-            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-            maleText.setTextColor(getResources().getColor(R.color.grey));
-        } else {
-
-            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
-            maleText.setTextColor(getResources().getColor(R.color.colorAccent));
-
-            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
-            femaleText.setTextColor(getResources().getColor(R.color.grey));
-        }
-    }
-
-    private void setCategorySpinner(ArrayList<CategoryModel> categoryList) {
-        CategorySpinnerAdapter categorySpinnerAdapter = new CategorySpinnerAdapter(this, categoryList);
-        categoryNameSpinner.setAdapter(categorySpinnerAdapter);
-        categoryNameSpinner.setSelection(position);
-    }
-
-    private void getServiceList(String categoryId, String gender) {
-        this.gender = gender;
-        Map<String, String> map = new HashMap<>();
-        map.put("CategoryId", categoryId);
-        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
-
-        if (gender.equalsIgnoreCase("male")) {
-            map.put("gender", "1");
-        } else if (gender.equalsIgnoreCase("female")) {
-            map.put("gender", "2");
-        } else {
-            map.put("gender", "0");
-        }
-
-//        serviceListPresenter.getServiceList(this, map);
-        serviceListPresenter.getSubCategories(this, map);
-    }
-
-    public void updateCart() {
-        EnrichApplication application = (EnrichApplication) getApplication();
-        if (application.getCartItems().size() == 0) {
-            serviceCartContainer.setVisibility(View.GONE);
-        } else {
-            serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
-            serviceTotalItems.setText("" + application.getCartItems().size());
-        }
-    }
-
     @Override
     public void showServiceList(ServiceListResponseModel model) {
         if (model.Services.size() != 0) {
@@ -322,39 +302,42 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     @Override
     public void showSubCategories(SubCategoryResponseModel model) {
-        if (!model.SubCategories.isEmpty()) {
-            noServiceAvailable.setVisibility(View.GONE);
-            recyclerViewContainer.setVisibility(View.VISIBLE);
-
-            if (EnrichUtils.getUserData(this).IsMember == 1) { // is a member
-                memberText.setVisibility(View.VISIBLE);
-            } else {
-                memberText.setVisibility(View.GONE);
-            }
-
-            for (int i = 0; i < model.SubCategories.size(); i++) {
-                model.SubCategories.get(i).ChildServices = new ArrayList<>();
-            }
-
-            Collections.sort(model.SubCategories, new SubCategoryComparator());
-
-            adapter = new NewServiceListAdapter(this, model.SubCategories, gender);
-            serviceRecyclerView.setAdapter(adapter);
-            serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        if (isHomeSelected) {
+            setHomeSubCategorySpinner(model.SubCategories);
         } else {
-            if (model.Category.Name.equalsIgnoreCase("BODY")) {
-                noServiceAvailable.setText("This category is limited to women only.");
+            if (!model.SubCategories.isEmpty()) {
+                noServiceAvailable.setVisibility(View.GONE);
+                recyclerViewContainer.setVisibility(View.VISIBLE);
+
+                if (EnrichUtils.getUserData(this).IsMember == 1) { //is a member
+                    memberText.setVisibility(View.VISIBLE);
+                } else {
+                    memberText.setVisibility(View.GONE);
+                }
+
+                for (int i = 0; i < model.SubCategories.size(); i++) {
+                    model.SubCategories.get(i).ChildServices = new ArrayList<>();
+                }
+
+                Collections.sort(model.SubCategories, new SubCategoryComparator());
+
+                adapter = new NewServiceListAdapter(this, model.SubCategories, gender, isHomeSelected);
+                serviceRecyclerView.setAdapter(adapter);
+                serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            } else {
+                if (model.Category.Name.equalsIgnoreCase("BODY")) {
+                    noServiceAvailable.setText("This category is limited to women only.");
+                }
+                noServiceAvailable.setVisibility(View.VISIBLE);
+                recyclerViewContainer.setVisibility(View.GONE);
             }
-            noServiceAvailable.setVisibility(View.VISIBLE);
-            recyclerViewContainer.setVisibility(View.GONE);
         }
     }
 
-//    private void setExpandableServiceListAdapter(ArrayList<ParentServiceViewModel> list) {
-//        adapter = new ServiceListAdapter(list, this);
-//        serviceRecyclerView.setAdapter(adapter);
-//        serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-//    }
+    @Override
+    public void noSubCategories() {
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -388,6 +371,87 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     public void showCategoryList(CategoryResponseModel model) {
         if (!model.Categories.isEmpty()) {
             setCategorySpinner(model.Categories);
+        }
+    }
+
+    private void changeGenderIcons(boolean isFemale) {
+        if (isFemale) {
+            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+            femaleText.setTextColor(getResources().getColor(R.color.colorAccent));
+
+            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
+            maleText.setTextColor(getResources().getColor(R.color.grey));
+        } else {
+
+            ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+            maleText.setTextColor(getResources().getColor(R.color.colorAccent));
+
+            ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
+            femaleText.setTextColor(getResources().getColor(R.color.grey));
+        }
+    }
+
+    private void setCategorySpinner(ArrayList<CategoryModel> categoryList) {
+        CategorySpinnerAdapter categorySpinnerAdapter = new CategorySpinnerAdapter(this, categoryList);
+        categoryNameSpinner.setAdapter(categorySpinnerAdapter);
+        categoryNameSpinner.setSelection(position);
+    }
+
+    private void setHomeSubCategorySpinner(ArrayList<SubCategoryModel> list) {
+        HomeSubCategorySpinnerAdapter adapter = new HomeSubCategorySpinnerAdapter(this, list);
+        categoryNameSpinner.setAdapter(adapter);
+        categoryNameSpinner.setSelection(position);
+    }
+
+    private void getServiceList(String categoryId, String gender) {
+        this.gender = gender;
+        Map<String, String> map = new HashMap<>();
+        map.put("CategoryId", categoryId);
+        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+
+        if (gender.equalsIgnoreCase("male")) {
+            map.put("gender", "1");
+        } else if (gender.equalsIgnoreCase("female")) {
+            map.put("gender", "2");
+        } else {
+            map.put("gender", "0");
+        }
+
+//        serviceListPresenter.getServiceList(this, map);
+        serviceListPresenter.getSubCategories(this, map);
+    }
+
+    private void getServiceListForHome() {
+        Map<String, String> map = new HashMap<>();
+        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        map.put("SubCategoryId", subCategoryModel.SubCategoryId);
+        map.put("GuestId", EnrichUtils.getUserData(this).Id);
+        map.put("Tag", gender);
+        parentsAndNormalServiceListPresenter.getParentAndNormalServiceList(this, map);
+    }
+
+    public void updateCart() {
+        EnrichApplication application = (EnrichApplication) getApplication();
+        if (application.getCartItems().size() == 0) {
+            serviceCartContainer.setVisibility(View.GONE);
+        } else {
+            serviceCartContainer.setVisibility(View.VISIBLE);
+            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
+            serviceTotalItems.setText("" + application.getCartItems().size());
+        }
+    }
+
+    @Override
+    public void showParentAndNormalServiceList(ParentAndNormalServiceListResponseModel model) {
+        if (!model.ParentAndNormalServiceList.isEmpty()) {
+            EnrichUtils.log("ParentAndNormalServiceList: " + model.ParentAndNormalServiceList.size());
+
+            noServiceAvailable.setVisibility(View.GONE);
+            recyclerViewContainer.setVisibility(View.VISIBLE);
+
+            HomeParentAndNormalServiceAdapter adapter = new HomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, gender, subCategoryModel);
+            serviceRecyclerView.setAdapter(adapter);
+            serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
     }
 }

@@ -52,11 +52,13 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
     VariantViewHolder holder;
 
     Tracker mTracker;
+    boolean isHomeSelected;
 
-    public VariantRecyclerViewAdapter(Activity activity, ArrayList<ServiceViewModel> list) {
+    public VariantRecyclerViewAdapter(Activity activity, ArrayList<ServiceViewModel> list, boolean isHomeSelected) {
         this.activity = activity;
         this.variantList = list;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.isHomeSelected = isHomeSelected;
         application = (EnrichApplication) activity.getApplicationContext();
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
@@ -129,6 +131,9 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
                     map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);
                     map.put("ServiceId", "" + model.id);
                     map.put("forDate", "");
+                    if (isHomeSelected) {
+                        map.put("IsHome", "true");
+                    }
 
                     therapistPresenter.getTherapist(activity, map);
                 }

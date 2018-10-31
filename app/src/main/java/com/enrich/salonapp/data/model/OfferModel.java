@@ -32,6 +32,8 @@ public class OfferModel implements Parcelable {
     public int ProductId;
     public String CenterId;
     public boolean IsActive;
+    public boolean IsHome;
+    public String BlogRedirectURL;
     public String OfferImageURL;
     public String OfferBannerURL;
 
@@ -60,6 +62,8 @@ public class OfferModel implements Parcelable {
         ProductId = in.readInt();
         CenterId = in.readString();
         IsActive = in.readByte() != 0;
+        IsHome = in.readByte() != 0;
+        BlogRedirectURL = in.readString();
         OfferImageURL = in.readString();
         OfferBannerURL = in.readString();
     }
@@ -87,6 +91,8 @@ public class OfferModel implements Parcelable {
         dest.writeInt(ProductId);
         dest.writeString(CenterId);
         dest.writeByte((byte) (IsActive ? 1 : 0));
+        dest.writeByte((byte) (IsHome ? 1 : 0));
+        dest.writeString(BlogRedirectURL);
         dest.writeString(OfferImageURL);
         dest.writeString(OfferBannerURL);
     }

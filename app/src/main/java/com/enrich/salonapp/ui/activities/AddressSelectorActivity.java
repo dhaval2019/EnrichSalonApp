@@ -30,6 +30,8 @@ import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
 
 public class AddressSelectorActivity extends AppCompatActivity {
 
+    public static final int SELECT_ADDRESS = 18670;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -110,7 +112,6 @@ public class AddressSelectorActivity extends AppCompatActivity {
         addHomeAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
                 intent.putExtra("AddressType", AddAddressActivity.ADDRESS_HOME);
                 intent.putExtra("Address", EnrichUtils.getHomeAddress(AddressSelectorActivity.this));
@@ -163,9 +164,10 @@ public class AddressSelectorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (selectedAddress != null) {
-                    Intent intent = new Intent(AddressSelectorActivity.this, BookingSummaryActivity.class);
-                    intent.putExtra("SelectedAddress", selectedAddress);
-                    startActivity(intent);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("SelectedAddress", selectedAddress);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
                 }
             }
         });

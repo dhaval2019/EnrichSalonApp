@@ -24,11 +24,13 @@ public class CategoriesHomeAdapter extends RecyclerView.Adapter<CategoriesHomeAd
     Context context;
     LayoutInflater inflater;
     ArrayList<CategoryModel> list;
+    boolean isHomeSelected;
 
-    public CategoriesHomeAdapter(Context context, ArrayList<CategoryModel> list) {
+    public CategoriesHomeAdapter(Context context, ArrayList<CategoryModel> list, boolean isHomeSelected) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.isHomeSelected = isHomeSelected;
     }
 
     @Override
@@ -53,6 +55,7 @@ public class CategoriesHomeAdapter extends RecyclerView.Adapter<CategoriesHomeAd
             public void onClick(View view) {
                 Intent intent = new Intent(context, ServiceListActivity.class);
                 intent.putExtra("CategoryListPosition", position);
+                intent.putExtra("isHomeSelected", isHomeSelected);
                 context.startActivity(intent);
             }
         });

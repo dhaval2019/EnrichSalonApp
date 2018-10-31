@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.bignerdranch.expandablerecyclerview.model.Parent;
+import com.enrich.salonapp.data.model.ImageModel;
+import com.enrich.salonapp.data.model.ImagePathsModel;
 import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,7 +19,7 @@ public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
     public String SubCategoryId;
     @SerializedName("CategoryOrganizationId")
     public String SubCategoryOrganizationId;
-    public String ImageUrl;
+    public ImagePathsModel ImageUrl;
     public String Name;
     public String ParentCategoryId;
     public String Description;
@@ -26,7 +28,7 @@ public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
     public int Gender;
     public ArrayList<ServiceViewModel> ChildServices = new ArrayList<>();
 
-    public SubCategoryModel(int id, String subCategoryId, String subCategoryOrganizationId, String imageUrl, String name, String parentCategoryId, String description, int sortOrder, String code, int gender, ArrayList<ServiceViewModel> childServices) {
+    public SubCategoryModel(int id, String subCategoryId, String subCategoryOrganizationId, ImagePathsModel imageUrl, String name, String parentCategoryId, String description, int sortOrder, String code, int gender, ArrayList<ServiceViewModel> childServices) {
         Id = id;
         SubCategoryId = subCategoryId;
         SubCategoryOrganizationId = subCategoryOrganizationId;
@@ -44,7 +46,7 @@ public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
         Id = in.readInt();
         SubCategoryId = in.readString();
         SubCategoryOrganizationId = in.readString();
-        ImageUrl = in.readString();
+        ImageUrl = in.readParcelable(ImagePathsModel.class.getClassLoader());
         Name = in.readString();
         ParentCategoryId = in.readString();
         Description = in.readString();
@@ -59,7 +61,7 @@ public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
         dest.writeInt(Id);
         dest.writeString(SubCategoryId);
         dest.writeString(SubCategoryOrganizationId);
-        dest.writeString(ImageUrl);
+        dest.writeParcelable(ImageUrl, flags);
         dest.writeString(Name);
         dest.writeString(ParentCategoryId);
         dest.writeString(Description);

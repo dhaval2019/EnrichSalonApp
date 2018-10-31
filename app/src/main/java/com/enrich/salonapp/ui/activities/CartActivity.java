@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
+import static com.enrich.salonapp.ui.activities.AddressSelectorActivity.SELECT_ADDRESS;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -57,12 +58,18 @@ public class CartActivity extends AppCompatActivity {
 
     ArrayList<GenericCartModel> cartList;
 
+    boolean isHomeSelected;
+
+    ReserveSlotRequestModel reserveSlotModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
         ButterKnife.bind(this);
+
+        isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
 
         application = (EnrichApplication) getApplication();
         cartList = application.getCartItems();
@@ -96,9 +103,9 @@ public class CartActivity extends AppCompatActivity {
         cartProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reserveSlotModel = new ReserveSlotRequestModel();
 
                 if (doesCartContainServices()) {
-                    ReserveSlotRequestModel reserveSlotModel = new ReserveSlotRequestModel();
                     reserveSlotModel.CenterId = EnrichUtils.getHomeStore(CartActivity.this).Id;
                     reserveSlotModel.CenterTime = cartList.get(0).SlotTime;
                     reserveSlotModel.CreateInvoice = true;
@@ -131,7 +138,7 @@ public class CartActivity extends AppCompatActivity {
                 } else if (doesCartContainProducts()) {
                     if (EnrichUtils.doesUserHasAddresses(CartActivity.this)) {
                         Intent intent = new Intent(CartActivity.this, AddressSelectorActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, SELECT_ADDRESS);
                     } else {
                         Intent intent = new Intent(CartActivity.this, AddAddressActivity.class);
                         startActivity(intent);
@@ -174,9 +181,19 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void switchToNextScreen(ReserveSlotRequestModel reserveSlotModel) {
-        Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
-        intent.putExtra("ReserveSlotModel", EnrichUtils.newGson().toJson(reserveSlotModel));
-        startActivity(intent);
+        if (isHomeSelected) {
+            if (EnrichUtils.doesUserHasAddresses(CartActivity.this)) {
+                Intent intent = new Intent(CartActivity.this, AddressSelectorActivity.class);
+                startActivityForResult(intent, SELECT_ADDRESS);
+            } else {
+                Intent intent = new Intent(CartActivity.this, AddAddressActivity.class);
+                startActivity(intent);
+            }
+        } else {
+            Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
+            intent.putExtra("ReserveSlotModel", EnrichUtils.newGson().toJson(reserveSlotModel));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -191,10 +208,17 @@ public class CartActivity extends AppCompatActivity {
                         model = guestModel.GuestAddress.get(i);
                     }
                 }
-
                 redirectScreen(model);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
+            }
+        } else if (requestCode == SELECT_ADDRESS) {
+            if (resultCode == Activity.RESULT_OK) {
+                AddressModel model = data.getParcelableExtra("SelectedAddress");
+
+                redirectScreen(model);
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+
             }
         }
     }
@@ -202,6 +226,7 @@ public class CartActivity extends AppCompatActivity {
     private void redirectScreen(AddressModel model) {
         Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
         intent.putExtra("SelectedAddress", model);
+        intent.putExtra("ReserveSlotModel", EnrichUtils.newGson().toJson(reserveSlotModel));
         startActivity(intent);
     }
 }
