@@ -17,6 +17,7 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AddressModel;
+import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.ConfirmOrderModel;
 import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
@@ -45,6 +46,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.payumoney.core.PayUmoneyConfig;
@@ -54,13 +57,16 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -144,6 +150,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
     AddressModel selectedAddress;
 
+    ConfirmOrderModel confirmOrderModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,10 +181,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         bookingSummaryPresenter = new BookingSummaryPresenter(this, dataRepository);
 
         adapter = new BookingSummaryItemAdapter(this, application.getCartItems());
@@ -202,8 +207,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         makePaymentOfflineBtn.setEnabled(false);
         makePaymentOnlineBtn.setEnabled(false);
 
-        if (reserveSlotModel.SlotBookings != null) {
-            bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
+
+        if (application.cartHasServices()) {
+            if (reserveSlotModel.SlotBookings != null) {
+                bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
+            }
         } else if (application.cartHasPackages()) {
             makePaymentOfflineBtn.setVisibility(View.GONE);
 
@@ -273,7 +281,9 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             for (int i = 0; i < application.getCartItems().size(); i++) {
                 CreateOrderServiceModel createOrderServiceModel = new CreateOrderServiceModel();
                 createOrderServiceModel.setServiceId(application.getCartItems().get(i).Id);
-                createOrderServiceModel.setStylistId(application.getCartItems().get(i).therapistModel.Id);
+
+                if (application.getCartItems().get(i).therapistModel != null)
+                    createOrderServiceModel.setStylistId(application.getCartItems().get(i).therapistModel.Id);
 
                 createOrderServiceModels.add(createOrderServiceModel);
             }
@@ -292,6 +302,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             bookingSummaryPresenter.createOrder(BookingSummaryActivity.this, createOrderRequestModel);
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, "" + model.Error.Message);
+            setProgressBar(false);
+            onBackPressed();
         }
     }
 
@@ -362,6 +374,16 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     @Override
     public void orderConfirmed(ConfirmOrderResponseModel model) {
         if (model.getConfirmOrder() != null) {
+            EnrichUtils.log(EnrichUtils.newGson().toJson(model));
+            confirmOrderModel = model.getConfirmOrder().getConfirmOrder();
+//            logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
+
+            if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
+                logPurchaseOnlineEvent(model.getConfirmOrder().getConfirmOrder());
+            } else if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_CASH) {
+                logPurchaseOfflineEvent(model.getConfirmOrder().getConfirmOrder());
+            }
+
             Intent intent = new Intent(BookingSummaryActivity.this, ReceiptActivity.class);
             intent.putExtra("ConfirmReservationResponseModel", EnrichUtils.newGson().toJson(confirmReservationResponseModel));
             intent.putExtra("InvoiceModel", EnrichUtils.newGson().toJson(createOrderResponseModel.getPaymentSummary()));
@@ -369,6 +391,30 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, model.getError().Message);
         }
+    }
+
+//    public void logAppointmentBooked(ConfirmOrderModel model) {
+//        Bundle params = new Bundle();
+//        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
+//        AppEventsLogger.newLogger(this).logPurchase(BigDecimal.valueOf(model.getAmount()), Currency.getInstance("INR"), params);
+//    }
+
+    public void logPurchaseOnlineEvent(ConfirmOrderModel model) {
+        Bundle params = new Bundle();
+        params.putString("Amount", "" + model.getAmount());
+        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
+        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
+        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+        AppEventsLogger.newLogger(this).logEvent("PurchaseOnline", model.getAmount(), params);
+    }
+
+    public void logPurchaseOfflineEvent(ConfirmOrderModel model) {
+        Bundle params = new Bundle();
+        params.putString("Amount", "" + model.getAmount());
+        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
+        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
+        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+        AppEventsLogger.newLogger(this).logEvent("PurchaseOffline", model.getAmount(), params);
     }
 
     @Override
@@ -499,6 +545,24 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         makePaymentOfflineBtn.setEnabled(true);
         makePaymentOnlineBtn.setEnabled(true);
+
+        logInitiatedCheckoutEvent(model);
+    }
+
+    public void logInitiatedCheckoutEvent(InvoiceModel model) {
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, model.AppointmentGroupId);
+        if (application.cartHasServices()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Service");
+        } else if (application.cartHasProducts()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Products");
+        } else if (application.cartHasPackages()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Package");
+        }
+        params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.getHomeStore(this).Name);
+        params.putInt(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, application.getItemCount());
+        params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "INR");
+        AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT, model.Price._final, params);
     }
 
     private void showCashDialog() {
@@ -509,7 +573,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         TextView cashAmount = dialog.findViewById(R.id.cod_amount);
         Button cashPaymentProceedButton = dialog.findViewById(R.id.cash_payment_proceed_button);
 
-        cashAmount.setText(getResources().getString(R.string.Rs) + " " + createOrderResponseModel.getPaymentSummary().getTotal());
+        cashAmount.setText(getResources().getString(R.string.Rs) + " " + invoiceModel.Price._final);
 
         cashPaymentProceedButton.setOnClickListener(new View.OnClickListener() {
             @Override

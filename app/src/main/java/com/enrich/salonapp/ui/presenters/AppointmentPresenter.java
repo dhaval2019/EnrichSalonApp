@@ -8,6 +8,8 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.ui.contracts.AppointmentContracts;
 import com.enrich.salonapp.util.mvp.BasePresenter;
 
+import java.util.Map;
+
 public class AppointmentPresenter extends BasePresenter<AppointmentContracts.View> implements AppointmentContracts.Presenter {
 
     private DataRepository dataRepository;
@@ -18,13 +20,13 @@ public class AppointmentPresenter extends BasePresenter<AppointmentContracts.Vie
     }
 
     @Override
-    public void getAppointments(Context context, String url) {
+    public void getAppointments(Context context, String url, Map<String, String> map) {
         if (view == null)
             return;
 
         view.setProgressBar(true);
 
-        dataRepository.getAppointment(context, url, new DataSource.GetAppointmentsCallBack() {
+        dataRepository.getAppointment(context, url, map, new DataSource.GetAppointmentsCallBack() {
             @Override
             public void onSuccess(AppointmentResponseModel model) {
                 if (view != null) {

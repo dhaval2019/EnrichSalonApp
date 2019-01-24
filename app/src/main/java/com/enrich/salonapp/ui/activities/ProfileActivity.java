@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +17,13 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.ImageModel;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +56,15 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.address_other)
     TextView addressOther;
+
+    @BindView(R.id.membership_cardview)
+    CardView membershipCardview;
+
+    @BindView(R.id.membership_name)
+    TextView membershipName;
+
+    @BindView(R.id.membership_expiry_date)
+    TextView membershipExpiryDate;
 
     ImageModel model;
 
@@ -88,20 +102,54 @@ public class ProfileActivity extends AppCompatActivity {
         phone.setText("" + guestModel.MobileNumber);
         gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
         setAddressData(guestModel.GuestAddress);
+        if (guestModel.IsMember == 1) {
+            membershipCardview.setVisibility(View.VISIBLE);
+            membershipName.setText("" + guestModel.MembershipModel.get(0).MembershipName);
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date stringToDate = sdf.parse(guestModel.MembershipModel.get(0).ExpiryDate.substring(0, 10));
+
+                SimpleDateFormat dateToStringFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String expiryDate = dateToStringFormat.format(stringToDate);
+
+                membershipExpiryDate.setText("Expires on " + expiryDate);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                membershipExpiryDate.setVisibility(View.GONE);
+            }
+        } else {
+            membershipCardview.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (name != null || email != null || phone != null || gender != null) {
+            GuestModel guestModel = EnrichUtils.getUserData(this);
+            name.setText(guestModel.FirstName + " " + guestModel.LastName);
+            email.setText(guestModel.Email);
+            phone.setText("" + guestModel.MobileNumber);
+            gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
+            setAddressData(guestModel.GuestAddress);
+        }
     }
 
     private void setAddressData(ArrayList<AddressModel> list) {
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).AddressType) {
-                case "S":
-                    addressHome.setText(list.get(i).Location);
-                    break;
-                case "W":
-                    addressWork.setText(list.get(i).Location);
-                    break;
-                case "O":
-                    addressOther.setText(list.get(i).Location);
-                    break;
+        if (list != null || !list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                switch (list.get(i).AddressType) {
+                    case "S":
+                        addressHome.setText(list.get(i).Location);
+                        break;
+                    case "W":
+                        addressWork.setText(list.get(i).Location);
+                        break;
+                    case "O":
+                        addressOther.setText(list.get(i).Location);
+                        break;
+                }
             }
         }
     }

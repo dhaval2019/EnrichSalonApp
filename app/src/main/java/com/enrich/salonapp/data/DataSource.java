@@ -8,6 +8,8 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
+import com.enrich.salonapp.data.model.BeautyAndBlingResponseModel;
+import com.enrich.salonapp.data.model.CampaignRewardResponseModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
@@ -26,6 +28,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
@@ -51,6 +54,7 @@ import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
+import com.enrich.salonapp.data.model.SpinPriceModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
@@ -177,7 +181,7 @@ public abstract class DataSource {
         void onNetworkFailure();
     }
 
-    public abstract void getAppointments(String url, GetAppointmentsCallBack callBack);
+    public abstract void getAppointments(String url, Map<String, String> map, GetAppointmentsCallBack callBack);
 
 
     public interface UpdateUserCallBack {
@@ -232,7 +236,7 @@ public abstract class DataSource {
         void onNetworkFailure();
     }
 
-    public abstract void getTimeSlots(AppointmentRequestModel model, GetTimeSlotsCallBack callBack);
+    public abstract void getTimeSlots(String url, AppointmentRequestModel model, GetTimeSlotsCallBack callBack);
 
 
     public interface ReserveSlotCallBack {
@@ -507,4 +511,48 @@ public abstract class DataSource {
     }
 
     public abstract void registerFCM(RegisterFCMRequestModel model, RegisterFCMCallback callback);
+
+
+    public interface GetBeautyAndBlingCallback {
+        void onSuccess(BeautyAndBlingResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getBeautyAndBling(GetBeautyAndBlingCallback callback);
+
+
+    public interface GetGuestSpinCountCallback {
+        void onSuccess(GuestSpinCountResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getGuestSpinCount(Map<String, String> map, GetGuestSpinCountCallback callback);
+
+
+    public interface GetSpinPriceCallback {
+        void onSuccess(SpinPriceModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getSpinPrice(Map<String, String> map, GetSpinPriceCallback callback);
+
+
+    public interface GetCampaignRewards {
+        void onSuccess(CampaignRewardResponseModel model);
+
+        void onFailure(Throwable t);
+
+        void onNetworkFailure();
+    }
+
+    public abstract void getCampaignRewards(Map<String, String> map, GetCampaignRewards callback);
 }

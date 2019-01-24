@@ -11,6 +11,8 @@ public class PriceModel implements Parcelable {
     public double currencyId;
     @SerializedName("Sales")
     public double sales;
+    @SerializedName("MembershipPrice")
+    public double membershipPrice;
     @SerializedName("Tax")
     public double tax;
     @SerializedName("Final")
@@ -29,6 +31,7 @@ public class PriceModel implements Parcelable {
     protected PriceModel(Parcel in) {
         currencyId = in.readInt();
         sales = in.readDouble();
+        membershipPrice = in.readDouble();
         tax = in.readInt();
         _final = in.readInt();
         final1 = in.readInt();
@@ -42,6 +45,7 @@ public class PriceModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeDouble(currencyId);
         dest.writeDouble(sales);
+        dest.writeDouble(membershipPrice);
         dest.writeDouble(tax);
         dest.writeDouble(_final);
         dest.writeDouble(final1);

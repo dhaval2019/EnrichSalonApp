@@ -74,20 +74,76 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:clipToPadding="false"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp" />
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/no_slots_available"
+            <LinearLayout
+                android:id="@+id/no_slots_available_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:gravity="center"
-                android:text="No Slots Available"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_20sp"
-                android:visibility="gone"
-                app:font_type="bold" />
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingEnd="@dimen/dimen_40dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_40dp"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/calendar_remove"
+                        android:tint="@color/light_gold" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:text="Booking slot is not available for selected date. Please check for another date."
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/dimen_16sp"
+                        app:font_type="light" />
+                </LinearLayout>
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_20dp"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:text="OR"
+                    android:textColor="#424242" />
+
+                <LinearLayout
+                    android:id="@+id/no_slots_phone_number_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/dimen_40dp"
+                    android:paddingEnd="@dimen/dimen_40dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_40dp"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_phone"
+                        android:tint="@color/light_gold" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/store_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/dimen_16sp"
+                        app:font_type="light" />
+                </LinearLayout>
+            </LinearLayout>
         </FrameLayout>
 
         <LinearLayout
@@ -130,10 +186,10 @@
                 android:id="@+id/time_slot_proceed"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/grey_gradient_curve_bg"
                 android:enabled="false"
                 android:text="Proceed"

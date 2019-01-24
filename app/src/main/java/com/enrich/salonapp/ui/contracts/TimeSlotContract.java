@@ -16,6 +16,6 @@ public interface TimeSlotContract {
     }
 
     interface Presenter extends IBasePresenter<TimeSlotContract.View> {
-        void getTimeSlots(Context context, AppointmentRequestModel model);
+        void getTimeSlots(Context context, String url, AppointmentRequestModel model);
     }
 }

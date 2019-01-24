@@ -26,34 +26,41 @@
                 android:orientation="vertical"
                 android:padding="12dp">
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/appointment_date"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20-09-2017"
-                    android:textColor="@color/dark_gold"
-                    android:textSize="11sp"
-                    app:font_type="light" />
+                    android:orientation="horizontal">
 
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/appointment_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gold_bg_gradient"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="7dp"
-                    android:paddingRight="7dp"
-                    android:paddingTop="2dp"
-                    android:text="10 AM"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:font_type="regular" />
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/appointment_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20-09-2017"
+                        android:textColor="@color/dark_gold"
+                        android:textSize="11sp"
+                        app:font_type="light" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/appointment_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/gold_bg_gradient"
+                        android:paddingLeft="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="2dp"
+                        android:text="10 AM"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        app:font_type="regular"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:id="@+id/appointment_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:maxLines="2"
                     android:text="Haircut by Master Stylist"
                     android:textColor="@color/black"
@@ -64,10 +71,10 @@
                     android:id="@+id/appointment_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:text="Rs. 2500/-"
                     android:textColor="@color/red"
                     android:textSize="11sp"
-                    android:layout_marginTop="@dimen/dimen_5dp"
                     app:font_type="regular" />
 
                 <com.enrich.salonapp.ui.views.CustomTextView
@@ -104,8 +111,8 @@
         <View
             android:layout_width="1.5dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="#e5e5e5" />
 
         <LinearLayout
@@ -124,8 +131,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/gold_border"
                 android:gravity="center"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="CANCEL"
                 android:textColor="@color/dark_gold"
                 android:textSize="13dp"
@@ -138,8 +145,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/gold_bg_gradient"
                 android:gravity="center"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="RESCHEDULE"
                 android:textColor="@color/white"
                 android:textSize="13dp"

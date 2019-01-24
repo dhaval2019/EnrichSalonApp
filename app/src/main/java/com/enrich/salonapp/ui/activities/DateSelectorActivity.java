@@ -2,11 +2,13 @@ package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,12 +18,15 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestModel;
-import com.enrich.salonapp.data.model.AppointmentModels.AppointmentSlotBookingsModel;
-import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
-import com.enrich.salonapp.data.model.GenericCartModel;
+import com.enrich.salonapp.data.model.AppointmentModels.AppointmentRequestedTherapistModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServiceModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServicesModel;
+import com.enrich.salonapp.data.model.AppointmentModels.AppointmentSlotBookingsModel;
+import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
+import com.enrich.salonapp.data.model.CenterDetailModel;
+import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.data.model.SlotModel;
+import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.SlotsAdapter;
 import com.enrich.salonapp.ui.contracts.TimeSlotContract;
@@ -62,8 +67,17 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.no_slots_available)
-    TextView noSlotsAvailable;
+//    @BindView(R.id.no_slots_available)
+//    TextView noSlotsAvailable;
+
+    @BindView(R.id.store_phone_number)
+    TextView storePhoneNumber;
+
+    @BindView(R.id.no_slots_available_container)
+    LinearLayout noSlotsAvailableContainer;
+
+    @BindView(R.id.no_slots_phone_number_container)
+    LinearLayout noSlotsPhoneNumberContainer;
 
     ArrayList<GenericCartModel> cartList;
 
@@ -79,11 +93,14 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
     ArrayList<AppointmentSlotBookingsModel> slotBookingsModels;
     ArrayList<AppointmentServicesModel> servicesModelArrayList;
 
+    CenterDetailModel centerDetailModel;
+
     Tracker mTracker;
 
     BottomSheetDialog dialog;
 
     boolean isHomeSelected;
+    boolean isRebook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +110,16 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         ButterKnife.bind(this);
 
         isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
+        isRebook = getIntent().getBooleanExtra("isRebook", false);
 
         application = (EnrichApplication) getApplication();
         cartList = application.getCartItems();
+
+        if (isRebook) {
+            centerDetailModel = EnrichUtils.getHomeStoreForRebook(this);
+        } else {
+            centerDetailModel = EnrichUtils.getHomeStore(this);
+        }
 
         // SEND ANALYTICS
         mTracker = application.getDefaultTracker();
@@ -137,11 +161,28 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
             }
         });
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         timeSlotPresenter = new TimeSlotPresenter(this, dataRepository);
+
+//        if (centerDetailModel.Phone != null) {
+//            noSlotsPhoneNumberContainer.setVisibility(View.VISIBLE);
+        storePhoneNumber.setText("Call " + centerDetailModel.Name + " on " + centerDetailModel.Phone + " to check and book your appointment");
+        Linkify.addLinks(storePhoneNumber, Linkify.ALL);
+//        } else {
+//            noSlotsPhoneNumberContainer.setVisibility(View.GONE);
+//        }
+
+        storePhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumber = centerDetailModel.Phone;
+
+                //call phone
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + phoneNumber));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -152,33 +193,46 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         selectedDate = dateSelected;
 
         slotBookingsModels = new ArrayList<>();
+        AppointmentSlotBookingsModel slotBookingsModel = new AppointmentSlotBookingsModel();
+
+        servicesModelArrayList = new ArrayList<>();
+        AppointmentServicesModel servicesModel = new AppointmentServicesModel();
 
         for (int i = 0; i < cartList.size(); i++) {
-            servicesModelArrayList = new ArrayList<>();
 
             AppointmentServiceModel serviceModel = new AppointmentServiceModel();
             serviceModel.Id = cartList.get(i).ServiceId;
 
-            AppointmentServicesModel servicesModel = new AppointmentServicesModel();
             servicesModel.Service = serviceModel;
+
+            if (cartList.get(i).therapistModel != null) {
+                AppointmentRequestedTherapistModel requestedTherapistModel = new AppointmentRequestedTherapistModel();
+                requestedTherapistModel.Id = cartList.get(i).therapistModel.Id;
+                servicesModel.RequestedTherapist = requestedTherapistModel;
+            }
 
             servicesModelArrayList.add(servicesModel);
 
-            AppointmentSlotBookingsModel slotBookingsModel = new AppointmentSlotBookingsModel();
             slotBookingsModel.Services = servicesModelArrayList;
             slotBookingsModel.Quantity = 1;
-            slotBookingsModel.TherapistId = cartList.get(i).therapistModel.Id;
-
-            slotBookingsModels.add(slotBookingsModel);
+//            slotBookingsModel.TherapistId = cartList.get(i).therapistModel.Id;
         }
+
+        slotBookingsModels.add(slotBookingsModel);
 
         appointmentRequestModel = new AppointmentRequestModel();
         appointmentRequestModel.CenterDate = selectedDate.toString();
-        appointmentRequestModel.CenterId = EnrichUtils.getHomeStore(this).Id;
+        appointmentRequestModel.CenterId = centerDetailModel.Id;
         appointmentRequestModel.RequiredSlotsCount = 100;
         appointmentRequestModel.SlotBookings = slotBookingsModels;
 
-        timeSlotPresenter.getTimeSlots(this, appointmentRequestModel);
+        EnrichUtils.log(EnrichUtils.newGson().toJson(appointmentRequestModel));
+
+        if (isHomeSelected) {
+            timeSlotPresenter.getTimeSlots(this, RemoteDataSource.HOST + RemoteDataSource.GET_HOME_DATE_TME_SLOTS, appointmentRequestModel);
+        } else {
+            timeSlotPresenter.getTimeSlots(this, RemoteDataSource.HOST + RemoteDataSource.GET_SALON_DATE_TME_SLOTS, appointmentRequestModel);
+        }
     }
 
     @Override
@@ -187,7 +241,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
             if (model.OpenSlots.size() != 0) {
                 setSlotAdapter(model.OpenSlots);
             } else {
-                noSlotsAvailable.setVisibility(View.VISIBLE);
+                noSlotsAvailableContainer.setVisibility(View.VISIBLE);
                 dateTimeSlotRecyclerView.setVisibility(View.GONE);
                 EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
             }
@@ -198,7 +252,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
 
     @Override
     public void noTimeSlot() {
-        noSlotsAvailable.setVisibility(View.VISIBLE);
+        noSlotsAvailableContainer.setVisibility(View.VISIBLE);
         dateTimeSlotRecyclerView.setVisibility(View.GONE);
         EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
     }
@@ -219,15 +273,14 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
             }
         }
 
-
         if (tempList.size() != 0) {
-            noSlotsAvailable.setVisibility(View.GONE);
+            noSlotsAvailableContainer.setVisibility(View.GONE);
             dateTimeSlotRecyclerView.setVisibility(View.VISIBLE);
             SlotsAdapter slotsAdapter = new SlotsAdapter(DateSelectorActivity.this, tempList, DateSelectorActivity.this);
             dateTimeSlotRecyclerView.setAdapter(slotsAdapter);
             dateTimeSlotRecyclerView.setLayoutManager(new GridLayoutManager(DateSelectorActivity.this, 4));
         } else {
-            noSlotsAvailable.setVisibility(View.VISIBLE);
+            noSlotsAvailableContainer.setVisibility(View.VISIBLE);
             dateTimeSlotRecyclerView.setVisibility(View.GONE);
             EnrichUtils.showMessage(DateSelectorActivity.this, "No slots available");
         }

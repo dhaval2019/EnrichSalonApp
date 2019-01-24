@@ -1,15 +1,19 @@
 package com.enrich.salonapp;
 
 import android.app.Application;
+import android.os.Bundle;
 
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
+import com.enrich.salonapp.data.model.SpinModel;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.ObjectSerializer;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.handlers.NotificationOpenedHandler;
 import com.enrich.salonapp.util.handlers.NotificationReceivedHandler;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.onesignal.OneSignal;
@@ -29,6 +33,8 @@ public class EnrichApplication extends Application {
 
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
+
+    static ArrayList<SpinModel> spinList;
 
     @Override
     public void onCreate() {
@@ -57,6 +63,17 @@ public class EnrichApplication extends Application {
         return sTracker;
     }
 
+    public static ArrayList<SpinModel> getSpinList() {
+        return spinList;
+    }
+
+    public static void setSpinList(ArrayList<SpinModel> spinListTemp) {
+        spinList = spinListTemp;
+    }
+
+    public static void clearSpinList() {
+        spinList = null;
+    }
 
     public AuthenticationModel getAuthenticationModel() {
         return EnrichUtils.getAuthenticationModel(getApplicationContext());
@@ -118,6 +135,7 @@ public class EnrichApplication extends Application {
             genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
 
             cartList.add(genericCartModel);
+            logAddedToCartEvent(genericCartModel);
 
             EnrichUtils.showMessage(getApplicationContext(), "Added to Cart!");
             return;
@@ -146,10 +164,27 @@ public class EnrichApplication extends Application {
         genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
 
         cartList.add(genericCartModel);
+        logAddedToCartEvent(genericCartModel);
 
         EnrichUtils.showMessage(getApplicationContext(), "Added to Cart!");
 //        commitCart();
+    }
 
+    public void logAddedToCartEvent(GenericCartModel cartItem) {
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, cartItem.Name);
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, "" + cartItem.Id);
+        if (cartItem.CartItemType == CartItem.CART_TYPE_SERVICES) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Service");
+        } else if (cartItem.CartItemType == CartItem.CART_TYPE_PRODUCTS) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Products");
+        } else if (cartItem.CartItemType == CartItem.CART_TYPE_PACKAGE) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Package");
+        }
+        params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "INR");
+        params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.getHomeStore(this).Name);
+        params.putString(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, "" + cartItem.getQuantity());
+        AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_ADDED_TO_CART, cartItem.Price, params);
     }
 
     public void updateCartItem(CartItem cartItem) {
@@ -331,16 +366,6 @@ public class EnrichApplication extends Application {
             removeFromCart(cartItem);
             toggleStatus = 0;
         } else {
-
-//            if (isCartFull()) {
-//                toggleStatus = -2;
-//            }
-
-//            if (isCartEmpty()) {
-//                addToCart(cartItem);
-//                toggleStatus = 1;
-//            }
-
             if (cartItem.getCartItemType() == CartItem.CART_TYPE_SERVICES) {
                 if (isSameStore(cartItem.getStoreId())) {
                     addToCart(cartItem);

@@ -17,6 +17,9 @@ public class TherapistModel implements Parcelable {
     public String BaseCenterId;
     public ImagePathsModel ImagePaths;
 
+    public TherapistModel() {
+    }
+
     protected TherapistModel(Parcel in) {
         Id = in.readString();
         Name = in.readString();

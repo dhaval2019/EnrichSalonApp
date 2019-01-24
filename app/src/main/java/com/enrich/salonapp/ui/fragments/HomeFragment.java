@@ -196,6 +196,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @BindView(R.id.salon_offer_container)
     LinearLayout salonOfferContainer;
 
+    @BindView(R.id.salon_home_tab_container)
+    LinearLayout salonHomeTabContainer;
+
     ArrayList<OfferModel> offerList;
     ArrayList<CategoryModel> categoryList;
     ArrayList<SubCategoryModel> subCategoryList;
@@ -246,6 +249,19 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         ButterKnife.bind(this, rootView);
+
+        if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_BOTH) {
+            salonHomeTabContainer.setVisibility(View.VISIBLE);
+            salonComponentsContainer.setVisibility(View.VISIBLE);
+        } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_SALON) {
+            salonHomeTabContainer.setVisibility(View.GONE);
+            salonComponentsContainer.setVisibility(View.VISIBLE);
+            homeComponentsContainer.setVisibility(View.GONE);
+        } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_HOME) {
+            salonHomeTabContainer.setVisibility(View.GONE);
+            salonComponentsContainer.setVisibility(View.GONE);
+            homeComponentsContainer.setVisibility(View.VISIBLE);
+        }
 
         salonLabel.setText("@Salon");
         homeLabel.setText("@Home");
@@ -362,7 +378,10 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         getCategories();
 
         // GET APPOINTMENTS
-        homePagePresenter.getAppointment(context, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT);
+        Map<String, String> map = new HashMap<>();
+        map.put("Page", "" + 0);
+        map.put("Size", "9");
+        homePagePresenter.getAppointment(context, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
 
         // GET NEW AND POPULAR
         getNewAndPopularServices();

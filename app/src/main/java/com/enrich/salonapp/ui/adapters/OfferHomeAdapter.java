@@ -7,16 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.OfferModel;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.OfferHandler;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.iwgang.countdownview.CountdownView;
 
 public class OfferHomeAdapter extends RecyclerView.Adapter<OfferHomeAdapter.OfferHomeViewHolder> {
 
@@ -48,6 +54,27 @@ public class OfferHomeAdapter extends RecyclerView.Adapter<OfferHomeAdapter.Offe
                 OfferHandler.handleOfferRedirection((Activity) context, model);
             }
         });
+
+        if (model.IsTimerEnable) {
+            holder.offerCountDownContainer.setVisibility(View.VISIBLE);
+
+            try {
+                String dateStr = "28/02/2019 00:00:00";
+                SimpleDateFormat stringToDate = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                Date date = stringToDate.parse(dateStr);
+
+                long[] numberOfDays = EnrichUtils.printDifference(new Date(), date);
+
+                long numberOfDaysInMilliseconds = numberOfDays[0] * 86400000;
+
+                holder.offerEndDayCountDown.start(numberOfDaysInMilliseconds);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                holder.offerCountDownContainer.setVisibility(View.GONE);
+            }
+        } else {
+            holder.offerCountDownContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -59,6 +86,12 @@ public class OfferHomeAdapter extends RecyclerView.Adapter<OfferHomeAdapter.Offe
 
         @BindView(R.id.offer_image)
         ImageView offer;
+
+        @BindView(R.id.offer_count_down_container)
+        RelativeLayout offerCountDownContainer;
+
+        @BindView(R.id.offer_end_day_count_down)
+        CountdownView offerEndDayCountDown;
 
         public OfferHomeViewHolder(View itemView) {
             super(itemView);

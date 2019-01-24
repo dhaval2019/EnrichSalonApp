@@ -28,6 +28,7 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
+import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
@@ -38,6 +39,7 @@ import com.enrich.salonapp.ui.adapters.CategorySpinnerAdapter;
 import com.enrich.salonapp.ui.adapters.HomeParentAndNormalServiceAdapter;
 import com.enrich.salonapp.ui.adapters.HomeSubCategorySpinnerAdapter;
 import com.enrich.salonapp.ui.adapters.NewServiceListAdapter;
+import com.enrich.salonapp.ui.adapters.SampleHomeParentAndNormalServiceAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.ParentsAndNormalServiceListContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
@@ -57,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,14 +135,17 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     CategoryModel categoryModel;
     SubCategoryModel subCategoryModel;
+    CenterDetailModel centerDetailModel;
 
     NewServiceListAdapter adapter;
+    HomeParentAndNormalServiceAdapter parentAndNormalServiceAdapter;
 
     Tracker mTracker;
 
     String gender;
 
     boolean isHomeSelected;
+    boolean isRebook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +175,13 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
         position = getIntent().getIntExtra("CategoryListPosition", 0);
         isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
+        isRebook = getIntent().getBooleanExtra("isRebook", false);
+
+        if (isRebook) {
+            centerDetailModel = EnrichUtils.getHomeStoreForRebook(this);
+        } else {
+            centerDetailModel = EnrichUtils.getHomeStore(this);
+        }
 
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         serviceListPresenter = new ServiceListPresenter(this, dataRepository);
@@ -184,7 +195,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             getServiceList(Constants.HOME_CATEGORY_ID, gender);
         } else {
             Map<String, String> categoryMap = new HashMap<>();
-            categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+            categoryMap.put("CenterId", centerDetailModel.Id);
             categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
             if (isHomeSelected) {
                 categoryMap.put("HomeCategory", "home");
@@ -245,7 +256,11 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
+                if (isHomeSelected) {
+//                    parentAndNormalServiceAdapter.getFilter().filter(s);
+                } else {
+                    adapter.getFilter().filter(s);
+                }
             }
 
             @Override
@@ -302,6 +317,13 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     @Override
     public void showSubCategories(SubCategoryResponseModel model) {
+
+        if (EnrichUtils.getUserData(this).IsMember == 1) { //is a member
+            memberText.setVisibility(View.VISIBLE);
+        } else {
+            memberText.setVisibility(View.GONE);
+        }
+
         if (isHomeSelected) {
             setHomeSubCategorySpinner(model.SubCategories);
         } else {
@@ -309,19 +331,13 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 noServiceAvailable.setVisibility(View.GONE);
                 recyclerViewContainer.setVisibility(View.VISIBLE);
 
-                if (EnrichUtils.getUserData(this).IsMember == 1) { //is a member
-                    memberText.setVisibility(View.VISIBLE);
-                } else {
-                    memberText.setVisibility(View.GONE);
-                }
-
                 for (int i = 0; i < model.SubCategories.size(); i++) {
                     model.SubCategories.get(i).ChildServices = new ArrayList<>();
                 }
 
                 Collections.sort(model.SubCategories, new SubCategoryComparator());
 
-                adapter = new NewServiceListAdapter(this, model.SubCategories, gender, isHomeSelected);
+                adapter = new NewServiceListAdapter(this, model.SubCategories, gender, isHomeSelected, centerDetailModel);
                 serviceRecyclerView.setAdapter(adapter);
                 serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             } else {
@@ -347,7 +363,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.service_list, menu);
+        if (!isHomeSelected)
+            getMenuInflater().inflate(R.menu.service_list, menu);
         return true;
     }
 
@@ -407,7 +424,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         this.gender = gender;
         Map<String, String> map = new HashMap<>();
         map.put("CategoryId", categoryId);
-        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        map.put("CenterId", centerDetailModel.Id);
 
         if (gender.equalsIgnoreCase("male")) {
             map.put("gender", "1");
@@ -416,14 +433,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         } else {
             map.put("gender", "0");
         }
-
-//        serviceListPresenter.getServiceList(this, map);
         serviceListPresenter.getSubCategories(this, map);
     }
 
     private void getServiceListForHome() {
         Map<String, String> map = new HashMap<>();
-        map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        map.put("CenterId", centerDetailModel.Id);
         map.put("SubCategoryId", subCategoryModel.SubCategoryId);
         map.put("GuestId", EnrichUtils.getUserData(this).Id);
         map.put("Tag", gender);
@@ -444,14 +459,36 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @Override
     public void showParentAndNormalServiceList(ParentAndNormalServiceListResponseModel model) {
         if (!model.ParentAndNormalServiceList.isEmpty()) {
-            EnrichUtils.log("ParentAndNormalServiceList: " + model.ParentAndNormalServiceList.size());
+//            EnrichUtils.log("ParentAndNormalServiceList: " + model.ParentAndNormalServiceList.size());
 
             noServiceAvailable.setVisibility(View.GONE);
             recyclerViewContainer.setVisibility(View.VISIBLE);
+            serviceRecyclerView.setVisibility(View.VISIBLE);
 
-            HomeParentAndNormalServiceAdapter adapter = new HomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, gender, subCategoryModel);
-            serviceRecyclerView.setAdapter(adapter);
+//            ArrayList<String> list = new ArrayList<>();
+//            list.add("Jan");
+//            list.add("Feb");
+//            list.add("Mar");
+//            list.add("Apr");
+//            list.add("Jun");
+//            list.add("Jul");
+//            list.add("Aug");
+//            list.add("Sep");
+//            list.add("Oct");
+//            list.add("Nov");
+//            list.add("Dec");
+
+            SampleHomeParentAndNormalServiceAdapter adapter = new SampleHomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, gender, subCategoryModel, isHomeSelected);
             serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            serviceRecyclerView.setHasFixedSize(true);
+            serviceRecyclerView.setAdapter(adapter);
+
+            //            parentAndNormalServiceAdapter.setData(model.ParentAndNormalServiceList);
+
+//            parentAndNormalServiceAdapter = new HomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, gender, subCategoryModel);
+//            serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//            serviceRecyclerView.setHasFixedSize(true);
+//            serviceRecyclerView.setAdapter(adapter);
         }
     }
 }

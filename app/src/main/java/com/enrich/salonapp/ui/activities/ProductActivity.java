@@ -91,6 +91,8 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(ProductActivity.this, ProductHomePageActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/therapist_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select a stylist"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:font_type="semi_bold" />
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/more_services_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do you want to add more services?"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_16sp"
+        app:font_type="regular" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/more_services_label"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="NO"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="YES"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+    </LinearLayout>
+</RelativeLayout>

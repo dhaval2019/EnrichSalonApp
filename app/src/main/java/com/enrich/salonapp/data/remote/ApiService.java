@@ -8,6 +8,8 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
+import com.enrich.salonapp.data.model.BeautyAndBlingResponseModel;
+import com.enrich.salonapp.data.model.CampaignRewardResponseModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
@@ -26,6 +28,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
+import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
@@ -51,6 +54,7 @@ import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
+import com.enrich.salonapp.data.model.SpinPriceModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
@@ -94,7 +98,7 @@ public interface ApiService {
     Call<CategoryResponseModel> getAllCategories(@QueryMap Map<String, String> map);
 
     @GET
-    Call<AppointmentResponseModel> getAppointmentsList(@Url String url);
+    Call<AppointmentResponseModel> getAppointmentsList(@Url String url, @QueryMap Map<String, String> map);
 
     @POST("Catalog/Guests/Update")
     Call<GuestUpdateResponseModel> updateGuest(@Body GuestUpdateRequestModel body);
@@ -108,8 +112,8 @@ public interface ApiService {
     @GET("Catalog/Therapists")
     Call<TherapistResponseModel> getTherapistList(@QueryMap Map<String, String> map);
 
-    @POST("Catalog/Appointments/AvailableTimes")
-    Call<AvailableTimeResponseModel> getTimeSlots(@Body AppointmentRequestModel body);
+    @POST()
+    Call<AvailableTimeResponseModel> getTimeSlots(@Url String url, @Body AppointmentRequestModel body);
 
     @POST("Catalog/Appointments/ReserveSlots")
     Call<ReserveSlotResponseModel> reserveSlot(@Body ReserveSlotRequestModel model);
@@ -185,4 +189,16 @@ public interface ApiService {
 
     @POST("Catalog/Guests/RegisterGuestDevice")
     Call<RegisterFCMResponseModel> registerFCM(@Body RegisterFCMRequestModel model);
+
+    @GET("Catalog/Guests/GetBeautyAndBling")
+    Call<BeautyAndBlingResponseModel> getBeautyAndBling();
+
+    @GET("Catalog/Guests/BeautyAndBling/GetGuestSpinCount")
+    Call<GuestSpinCountResponseModel> getGuestSpinCount(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/BeautyNBling/SpinWheel")
+    Call<SpinPriceModel> getSpinPrice(@QueryMap Map<String, String> map);
+
+    @GET("Catalog/BeautyNBling/GetCampaign")
+    Call<CampaignRewardResponseModel> getCampaignRewards(@QueryMap Map<String, String> map);
 }

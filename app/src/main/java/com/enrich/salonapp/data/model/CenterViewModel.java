@@ -28,6 +28,7 @@ public class CenterViewModel implements Parcelable {
     public String CST;
     public String CanBook;
     public String CenterCode;
+    public int CenterType;
     public ArrayList<WorkingHoursModel> working_hours;
 
     protected CenterViewModel(Parcel in) {
@@ -52,6 +53,7 @@ public class CenterViewModel implements Parcelable {
         CST = in.readString();
         CanBook = in.readString();
         CenterCode = in.readString();
+        CenterType = in.readInt();
         working_hours = in.createTypedArrayList(WorkingHoursModel.CREATOR);
     }
 
@@ -78,6 +80,7 @@ public class CenterViewModel implements Parcelable {
         dest.writeString(CST);
         dest.writeString(CanBook);
         dest.writeString(CenterCode);
+        dest.writeInt(CenterType);
         dest.writeTypedList(working_hours);
     }
 

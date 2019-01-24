@@ -1,5 +1,7 @@
 package com.enrich.salonapp.data.remote;
 
+import android.support.annotation.NonNull;
+
 import com.enrich.salonapp.data.DataSource;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.AddressResponseModel;
@@ -9,6 +11,8 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
+import com.enrich.salonapp.data.model.BeautyAndBlingResponseModel;
+import com.enrich.salonapp.data.model.CampaignRewardResponseModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
@@ -28,6 +32,7 @@ import com.enrich.salonapp.data.model.ErrorModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
+import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
@@ -54,6 +59,7 @@ import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
+import com.enrich.salonapp.data.model.SpinPriceModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletResponseModel;
@@ -77,17 +83,20 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+        public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
 //    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
-    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
-    public static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
+    private static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
     public static final String GET_INVOICE = "Catalog/Invoices/";
 
-    public static final String GET_UPCOMING_APPOINTMENT = "Catalog/Guests/UpcomingAppointments?Page=0&Size=100";
+    public static final String GET_UPCOMING_APPOINTMENT = "Catalog/Guests/UpcomingAppointments";
 
-    public static final String GET_PAST_APPOINTMENT = "Catalog/Guests/PastAppointments?Page=0&Size=100";
+    public static final String GET_PAST_APPOINTMENT = "Catalog/Guests/PastAppointments";
+
+    public static final String GET_SALON_DATE_TME_SLOTS = "Catalog/Appointments/AvailableTimes";
+    public static final String GET_HOME_DATE_TME_SLOTS = "Catalog/Appointments/AvailableTimesForHomeService";
 
     private static RemoteDataSource remoteDataSource;
 
@@ -116,7 +125,7 @@ public class RemoteDataSource extends DataSource {
         Call<IsUserRegisteredResponseModel> call = apiService.isUserRegistered(HOST + IS_USER_REGISTERED, map);
         call.enqueue(new Callback<IsUserRegisteredResponseModel>() {
             @Override
-            public void onResponse(Call<IsUserRegisteredResponseModel> call, Response<IsUserRegisteredResponseModel> response) {
+            public void onResponse(@NonNull Call<IsUserRegisteredResponseModel> call, @NonNull Response<IsUserRegisteredResponseModel> response) {
                 if (response.isSuccessful()) {
                     ErrorModel errorModel = new ErrorModel();
                     errorModel.StatusCode = response.code();
@@ -127,6 +136,7 @@ public class RemoteDataSource extends DataSource {
                     callBack.onSuccess(isUserRegisteredResponseModel);
                 } else {
                     try {
+                        assert response.errorBody() != null;
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
 
                         EnrichUtils.log(EnrichUtils.newGson().toJson(response.errorBody().toString()));
@@ -134,16 +144,14 @@ public class RemoteDataSource extends DataSource {
                         IsUserRegisteredResponseModel model = EnrichUtils.newGson().fromJson(jObjError.toString(), IsUserRegisteredResponseModel.class);
 
                         callBack.onSuccess(model);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<IsUserRegisteredResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<IsUserRegisteredResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -156,7 +164,7 @@ public class RemoteDataSource extends DataSource {
         Call<AuthenticationModel> call = apiService.getAuthenticationToken(model);
         call.enqueue(new Callback<AuthenticationModel>() {
             @Override
-            public void onResponse(Call<AuthenticationModel> call, Response<AuthenticationModel> response) {
+            public void onResponse(@NonNull Call<AuthenticationModel> call, @NonNull Response<AuthenticationModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
                 else
@@ -164,7 +172,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<AuthenticationModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<AuthenticationModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -181,8 +189,9 @@ public class RemoteDataSource extends DataSource {
         Call<GuestResponseModel> call = apiService.getUserData(map);
         call.enqueue(new Callback<GuestResponseModel>() {
             @Override
-            public void onResponse(Call<GuestResponseModel> call, Response<GuestResponseModel> response) {
+            public void onResponse(@NonNull Call<GuestResponseModel> call, @NonNull Response<GuestResponseModel> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     if (response.body().Guest != null) {
                         callBack.onSuccess(response.body().Guest);
                     } else {
@@ -192,7 +201,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<GuestResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<GuestResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -208,12 +217,12 @@ public class RemoteDataSource extends DataSource {
         Call<CheckUserNameResponseModel> call = apiService.checkForUserName(map);
         call.enqueue(new Callback<CheckUserNameResponseModel>() {
             @Override
-            public void onResponse(Call<CheckUserNameResponseModel> call, Response<CheckUserNameResponseModel> response) {
+            public void onResponse(@NonNull Call<CheckUserNameResponseModel> call, @NonNull Response<CheckUserNameResponseModel> response) {
                 callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<CheckUserNameResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CheckUserNameResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -226,13 +235,13 @@ public class RemoteDataSource extends DataSource {
         Call<CreateOTPResponseModel> call = apiService.createOTP(model);
         call.enqueue(new Callback<CreateOTPResponseModel>() {
             @Override
-            public void onResponse(Call<CreateOTPResponseModel> call, Response<CreateOTPResponseModel> response) {
+            public void onResponse(@NonNull Call<CreateOTPResponseModel> call, @NonNull Response<CreateOTPResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<CreateOTPResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CreateOTPResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -247,7 +256,7 @@ public class RemoteDataSource extends DataSource {
         Call<RegistrationResponseModel> call = apiService.register(model);
         call.enqueue(new Callback<RegistrationResponseModel>() {
             @Override
-            public void onResponse(Call<RegistrationResponseModel> call, Response<RegistrationResponseModel> response) {
+            public void onResponse(@NonNull Call<RegistrationResponseModel> call, @NonNull Response<RegistrationResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
                 else
@@ -255,7 +264,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<RegistrationResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<RegistrationResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -268,13 +277,13 @@ public class RemoteDataSource extends DataSource {
         Call<CenterResponseModel> call = apiService.getCenter(map);
         call.enqueue(new Callback<CenterResponseModel>() {
             @Override
-            public void onResponse(Call<CenterResponseModel> call, Response<CenterResponseModel> response) {
+            public void onResponse(@NonNull Call<CenterResponseModel> call, @NonNull Response<CenterResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<CenterResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CenterResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -289,13 +298,13 @@ public class RemoteDataSource extends DataSource {
         Call<OfferResponseModel> call = apiService.getAllOffers(map);
         call.enqueue(new Callback<OfferResponseModel>() {
             @Override
-            public void onResponse(Call<OfferResponseModel> call, Response<OfferResponseModel> response) {
+            public void onResponse(@NonNull Call<OfferResponseModel> call, @NonNull Response<OfferResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<OfferResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<OfferResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -310,13 +319,13 @@ public class RemoteDataSource extends DataSource {
         Call<CategoryResponseModel> call = apiService.getAllCategories(map);
         call.enqueue(new Callback<CategoryResponseModel>() {
             @Override
-            public void onResponse(Call<CategoryResponseModel> call, Response<CategoryResponseModel> response) {
+            public void onResponse(@NonNull Call<CategoryResponseModel> call, @NonNull Response<CategoryResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<CategoryResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CategoryResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -324,18 +333,20 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getAppointments(String url, final GetAppointmentsCallBack callBack) {
+    public void getAppointments(String url, Map<String, String> map, final GetAppointmentsCallBack callBack) {
 
-        Call<AppointmentResponseModel> call = apiService.getAppointmentsList(url);
+        EnrichUtils.log(url + EnrichUtils.newGson().toJson(map));
+
+        Call<AppointmentResponseModel> call = apiService.getAppointmentsList(url, map);
         call.enqueue(new Callback<AppointmentResponseModel>() {
             @Override
-            public void onResponse(Call<AppointmentResponseModel> call, Response<AppointmentResponseModel> response) {
+            public void onResponse(@NonNull Call<AppointmentResponseModel> call, @NonNull Response<AppointmentResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<AppointmentResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<AppointmentResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -348,14 +359,14 @@ public class RemoteDataSource extends DataSource {
         Call<GuestUpdateResponseModel> call = apiService.updateGuest(model);
         call.enqueue(new Callback<GuestUpdateResponseModel>() {
             @Override
-            public void onResponse(Call<GuestUpdateResponseModel> call, Response<GuestUpdateResponseModel> response) {
+            public void onResponse(@NonNull Call<GuestUpdateResponseModel> call, @NonNull Response<GuestUpdateResponseModel> response) {
                 if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<GuestUpdateResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<GuestUpdateResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -368,13 +379,13 @@ public class RemoteDataSource extends DataSource {
         Call<ChangePasswordResponseModel> call = apiService.changePassword(model);
         call.enqueue(new Callback<ChangePasswordResponseModel>() {
             @Override
-            public void onResponse(Call<ChangePasswordResponseModel> call, Response<ChangePasswordResponseModel> response) {
+            public void onResponse(@NonNull Call<ChangePasswordResponseModel> call, @NonNull Response<ChangePasswordResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ChangePasswordResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ChangePasswordResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -387,13 +398,13 @@ public class RemoteDataSource extends DataSource {
         Call<ServiceListResponseModel> call = apiService.getServicesByCategories(map);
         call.enqueue(new Callback<ServiceListResponseModel>() {
             @Override
-            public void onResponse(Call<ServiceListResponseModel> call, Response<ServiceListResponseModel> response) {
+            public void onResponse(@NonNull Call<ServiceListResponseModel> call, @NonNull Response<ServiceListResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ServiceListResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ServiceListResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -407,13 +418,13 @@ public class RemoteDataSource extends DataSource {
         Call<TherapistResponseModel> call = apiService.getTherapistList(map);
         call.enqueue(new Callback<TherapistResponseModel>() {
             @Override
-            public void onResponse(Call<TherapistResponseModel> call, Response<TherapistResponseModel> response) {
+            public void onResponse(@NonNull Call<TherapistResponseModel> call, @NonNull Response<TherapistResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<TherapistResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<TherapistResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -421,13 +432,13 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getTimeSlots(AppointmentRequestModel model, final GetTimeSlotsCallBack callBack) {
+    public void getTimeSlots(String url, AppointmentRequestModel model, final GetTimeSlotsCallBack callBack) {
         EnrichUtils.log(EnrichUtils.newGson().toJson(model));
 
-        Call<AvailableTimeResponseModel> call = apiService.getTimeSlots(model);
+        Call<AvailableTimeResponseModel> call = apiService.getTimeSlots(url, model);
         call.enqueue(new Callback<AvailableTimeResponseModel>() {
             @Override
-            public void onResponse(Call<AvailableTimeResponseModel> call, Response<AvailableTimeResponseModel> response) {
+            public void onResponse(@NonNull Call<AvailableTimeResponseModel> call, @NonNull Response<AvailableTimeResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
                 else
@@ -435,7 +446,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<AvailableTimeResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<AvailableTimeResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -448,13 +459,13 @@ public class RemoteDataSource extends DataSource {
         Call<ReserveSlotResponseModel> call = apiService.reserveSlot(model);
         call.enqueue(new Callback<ReserveSlotResponseModel>() {
             @Override
-            public void onResponse(Call<ReserveSlotResponseModel> call, Response<ReserveSlotResponseModel> response) {
+            public void onResponse(@NonNull Call<ReserveSlotResponseModel> call, @NonNull Response<ReserveSlotResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ReserveSlotResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ReserveSlotResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -468,7 +479,7 @@ public class RemoteDataSource extends DataSource {
         Call<CreateOrderResponseModel> call = apiService.createOrder(model);
         call.enqueue(new Callback<CreateOrderResponseModel>() {
             @Override
-            public void onResponse(Call<CreateOrderResponseModel> call, Response<CreateOrderResponseModel> response) {
+            public void onResponse(@NonNull Call<CreateOrderResponseModel> call, @NonNull Response<CreateOrderResponseModel> response) {
                 if (response.isSuccessful()) {
                     EnrichUtils.log(EnrichUtils.newGson().toJson(response.body()));
                     callBack.onSuccess(response.body());
@@ -478,7 +489,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<CreateOrderResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CreateOrderResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -492,13 +503,13 @@ public class RemoteDataSource extends DataSource {
         Call<InvoiceResponseModel> call = apiService.getInvoice(url);
         call.enqueue(new Callback<InvoiceResponseModel>() {
             @Override
-            public void onResponse(Call<InvoiceResponseModel> call, Response<InvoiceResponseModel> response) {
+            public void onResponse(@NonNull Call<InvoiceResponseModel> call, @NonNull Response<InvoiceResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<InvoiceResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<InvoiceResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -512,13 +523,13 @@ public class RemoteDataSource extends DataSource {
         Call<ConfirmReservationResponseModel> call = apiService.confirmReservation(model);
         call.enqueue(new Callback<ConfirmReservationResponseModel>() {
             @Override
-            public void onResponse(Call<ConfirmReservationResponseModel> call, Response<ConfirmReservationResponseModel> response) {
+            public void onResponse(@NonNull Call<ConfirmReservationResponseModel> call, @NonNull Response<ConfirmReservationResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ConfirmReservationResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ConfirmReservationResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -531,13 +542,13 @@ public class RemoteDataSource extends DataSource {
         Call<ConfirmOrderResponseModel> call = apiService.confirmOrder(model);
         call.enqueue(new Callback<ConfirmOrderResponseModel>() {
             @Override
-            public void onResponse(Call<ConfirmOrderResponseModel> call, Response<ConfirmOrderResponseModel> response) {
+            public void onResponse(@NonNull Call<ConfirmOrderResponseModel> call, @NonNull Response<ConfirmOrderResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ConfirmOrderResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ConfirmOrderResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -549,13 +560,13 @@ public class RemoteDataSource extends DataSource {
         Call<NewAndPopularResponseModel> call = apiService.getNewAndPopularService(map);
         call.enqueue(new Callback<NewAndPopularResponseModel>() {
             @Override
-            public void onResponse(Call<NewAndPopularResponseModel> call, Response<NewAndPopularResponseModel> response) {
+            public void onResponse(@NonNull Call<NewAndPopularResponseModel> call, @NonNull Response<NewAndPopularResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<NewAndPopularResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<NewAndPopularResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -567,13 +578,13 @@ public class RemoteDataSource extends DataSource {
         Call<CancelResponseModel> call = apiService.cancelAppointment(url, model);
         call.enqueue(new Callback<CancelResponseModel>() {
             @Override
-            public void onResponse(Call<CancelResponseModel> call, Response<CancelResponseModel> response) {
+            public void onResponse(@NonNull Call<CancelResponseModel> call, @NonNull Response<CancelResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<CancelResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<CancelResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -585,13 +596,13 @@ public class RemoteDataSource extends DataSource {
         Call<ForgotPasswordResponseModel> call = apiService.forgotPassword(model);
         call.enqueue(new Callback<ForgotPasswordResponseModel>() {
             @Override
-            public void onResponse(Call<ForgotPasswordResponseModel> call, Response<ForgotPasswordResponseModel> response) {
+            public void onResponse(@NonNull Call<ForgotPasswordResponseModel> call, @NonNull Response<ForgotPasswordResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ForgotPasswordResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ForgotPasswordResponseModel> call, @NonNull Throwable t) {
                 callBack.onFailure(t);
             }
         });
@@ -602,7 +613,7 @@ public class RemoteDataSource extends DataSource {
         Call<PackageResponseModel> call = apiService.getAllPackages();
         call.enqueue(new Callback<PackageResponseModel>() {
             @Override
-            public void onResponse(Call<PackageResponseModel> call, Response<PackageResponseModel> response) {
+            public void onResponse(@NonNull Call<PackageResponseModel> call, @NonNull Response<PackageResponseModel> response) {
                 if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
                 } else {
@@ -611,7 +622,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<PackageResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<PackageResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -623,13 +634,13 @@ public class RemoteDataSource extends DataSource {
         Call<PackageDetailsResponseModel> call = apiService.getPackageDetails(map);
         call.enqueue(new Callback<PackageDetailsResponseModel>() {
             @Override
-            public void onResponse(Call<PackageDetailsResponseModel> call, Response<PackageDetailsResponseModel> response) {
+            public void onResponse(@NonNull Call<PackageDetailsResponseModel> call, @NonNull Response<PackageDetailsResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<PackageDetailsResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<PackageDetailsResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -642,13 +653,13 @@ public class RemoteDataSource extends DataSource {
         Call<WalletResponseModel> call = apiService.getWallet(map);
         call.enqueue(new Callback<WalletResponseModel>() {
             @Override
-            public void onResponse(Call<WalletResponseModel> call, Response<WalletResponseModel> response) {
+            public void onResponse(@NonNull Call<WalletResponseModel> call, @NonNull Response<WalletResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<WalletResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<WalletResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -660,13 +671,13 @@ public class RemoteDataSource extends DataSource {
         Call<WalletHistoryResponseModel> call = apiService.getWalletHistory(map);
         call.enqueue(new Callback<WalletHistoryResponseModel>() {
             @Override
-            public void onResponse(Call<WalletHistoryResponseModel> call, Response<WalletHistoryResponseModel> response) {
+            public void onResponse(@NonNull Call<WalletHistoryResponseModel> call, @NonNull Response<WalletHistoryResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<WalletHistoryResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<WalletHistoryResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -680,13 +691,13 @@ public class RemoteDataSource extends DataSource {
         Call<ProductResponseModel> call = apiService.getProduct(model);
         call.enqueue(new Callback<ProductResponseModel>() {
             @Override
-            public void onResponse(Call<ProductResponseModel> call, Response<ProductResponseModel> response) {
+            public void onResponse(@NonNull Call<ProductResponseModel> call, @NonNull Response<ProductResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ProductResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ProductResponseModel> call, @NonNull Throwable t) {
                 callback.onFailure(t);
             }
         });
@@ -697,13 +708,13 @@ public class RemoteDataSource extends DataSource {
         Call<ProductDetailResponseModel> call = apiService.getProductDetails(map);
         call.enqueue(new Callback<ProductDetailResponseModel>() {
             @Override
-            public void onResponse(Call<ProductDetailResponseModel> call, Response<ProductDetailResponseModel> response) {
+            public void onResponse(@NonNull Call<ProductDetailResponseModel> call, @NonNull Response<ProductDetailResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ProductDetailResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ProductDetailResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -717,7 +728,7 @@ public class RemoteDataSource extends DataSource {
         Call<MyPackageResponseModel> call = apiService.getMyPackages(map);
         call.enqueue(new Callback<MyPackageResponseModel>() {
             @Override
-            public void onResponse(Call<MyPackageResponseModel> call, Response<MyPackageResponseModel> response) {
+            public void onResponse(@NonNull Call<MyPackageResponseModel> call, @NonNull Response<MyPackageResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
                 else
@@ -725,7 +736,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<MyPackageResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<MyPackageResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -737,13 +748,13 @@ public class RemoteDataSource extends DataSource {
         Call<BrandResponseModel> call = apiService.getBrandsList();
         call.enqueue(new Callback<BrandResponseModel>() {
             @Override
-            public void onResponse(Call<BrandResponseModel> call, Response<BrandResponseModel> response) {
+            public void onResponse(@NonNull Call<BrandResponseModel> call, @NonNull Response<BrandResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<BrandResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<BrandResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -755,8 +766,9 @@ public class RemoteDataSource extends DataSource {
         Call<ProductCategoryResponseModel> call = apiService.getProductCategoryList();
         call.enqueue(new Callback<ProductCategoryResponseModel>() {
             @Override
-            public void onResponse(Call<ProductCategoryResponseModel> call, Response<ProductCategoryResponseModel> response) {
+            public void onResponse(@NonNull Call<ProductCategoryResponseModel> call, @NonNull Response<ProductCategoryResponseModel> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     ArrayList<ProductCategoryModel> list = response.body().ProductCategory;
                     Collections.sort(list, new ProductCategoryComparator());
                     ProductCategoryResponseModel productCategoryResponseModel = new ProductCategoryResponseModel();
@@ -766,7 +778,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<ProductCategoryResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ProductCategoryResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -778,13 +790,13 @@ public class RemoteDataSource extends DataSource {
         Call<ProductSubCategoryResponseModel> call = apiService.getProductSubCategoryList();
         call.enqueue(new Callback<ProductSubCategoryResponseModel>() {
             @Override
-            public void onResponse(Call<ProductSubCategoryResponseModel> call, Response<ProductSubCategoryResponseModel> response) {
+            public void onResponse(@NonNull Call<ProductSubCategoryResponseModel> call, @NonNull Response<ProductSubCategoryResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ProductSubCategoryResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ProductSubCategoryResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -797,7 +809,7 @@ public class RemoteDataSource extends DataSource {
         Call<SubCategoryResponseModel> call = apiService.getSubCategoryList(map);
         call.enqueue(new Callback<SubCategoryResponseModel>() {
             @Override
-            public void onResponse(Call<SubCategoryResponseModel> call, Response<SubCategoryResponseModel> response) {
+            public void onResponse(@NonNull Call<SubCategoryResponseModel> call, @NonNull Response<SubCategoryResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
                 else
@@ -805,7 +817,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<SubCategoryResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<SubCategoryResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -818,13 +830,13 @@ public class RemoteDataSource extends DataSource {
         Call<ParentAndNormalServiceListResponseModel> call = apiService.getParentAndNormalServiceList(map);
         call.enqueue(new Callback<ParentAndNormalServiceListResponseModel>() {
             @Override
-            public void onResponse(Call<ParentAndNormalServiceListResponseModel> call, Response<ParentAndNormalServiceListResponseModel> response) {
+            public void onResponse(@NonNull Call<ParentAndNormalServiceListResponseModel> call, @NonNull Response<ParentAndNormalServiceListResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ParentAndNormalServiceListResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ParentAndNormalServiceListResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -837,13 +849,13 @@ public class RemoteDataSource extends DataSource {
         Call<ServiceVariantResponseModel> call = apiService.getServiceVariantList(map);
         call.enqueue(new Callback<ServiceVariantResponseModel>() {
             @Override
-            public void onResponse(Call<ServiceVariantResponseModel> call, Response<ServiceVariantResponseModel> response) {
+            public void onResponse(@NonNull Call<ServiceVariantResponseModel> call, @NonNull Response<ServiceVariantResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Call<ServiceVariantResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ServiceVariantResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -855,14 +867,14 @@ public class RemoteDataSource extends DataSource {
         Call<OfferResponseModel> call = apiService.getProductOffers();
         call.enqueue(new Callback<OfferResponseModel>() {
             @Override
-            public void onResponse(Call<OfferResponseModel> call, Response<OfferResponseModel> response) {
+            public void onResponse(@NonNull Call<OfferResponseModel> call, @NonNull Response<OfferResponseModel> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<OfferResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<OfferResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -875,7 +887,7 @@ public class RemoteDataSource extends DataSource {
         Call<AddressResponseModel> call = apiService.addAddress(model);
         call.enqueue(new Callback<AddressResponseModel>() {
             @Override
-            public void onResponse(Call<AddressResponseModel> call, Response<AddressResponseModel> response) {
+            public void onResponse(@NonNull Call<AddressResponseModel> call, @NonNull Response<AddressResponseModel> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
@@ -884,7 +896,7 @@ public class RemoteDataSource extends DataSource {
             }
 
             @Override
-            public void onFailure(Call<AddressResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<AddressResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -898,14 +910,14 @@ public class RemoteDataSource extends DataSource {
         Call<AppUpdateResponseModel> call = apiService.getAppUpdate(map);
         call.enqueue(new Callback<AppUpdateResponseModel>() {
             @Override
-            public void onResponse(Call<AppUpdateResponseModel> call, Response<AppUpdateResponseModel> response) {
+            public void onResponse(@NonNull Call<AppUpdateResponseModel> call, @NonNull Response<AppUpdateResponseModel> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<AppUpdateResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<AppUpdateResponseModel> call, @NonNull Throwable t) {
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -917,15 +929,82 @@ public class RemoteDataSource extends DataSource {
         Call<RegisterFCMResponseModel> call = apiService.registerFCM(model);
         call.enqueue(new Callback<RegisterFCMResponseModel>() {
             @Override
-            public void onResponse(Call<RegisterFCMResponseModel> call, Response<RegisterFCMResponseModel> response) {
+            public void onResponse(@NonNull Call<RegisterFCMResponseModel> call, @NonNull Response<RegisterFCMResponseModel> response) {
                 if (response.isSuccessful())
                     callback.onSuccess(response.body());
 
             }
 
             @Override
-            public void onFailure(Call<RegisterFCMResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<RegisterFCMResponseModel> call, @NonNull Throwable t) {
                 callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getBeautyAndBling(final GetBeautyAndBlingCallback callback) {
+        Call<BeautyAndBlingResponseModel> call = apiService.getBeautyAndBling();
+        call.enqueue(new Callback<BeautyAndBlingResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<BeautyAndBlingResponseModel> call, @NonNull Response<BeautyAndBlingResponseModel> response) {
+                callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BeautyAndBlingResponseModel> call, @NonNull Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getGuestSpinCount(Map<String, String> map, final GetGuestSpinCountCallback callback) {
+        Call<GuestSpinCountResponseModel> call = apiService.getGuestSpinCount(map);
+        call.enqueue(new Callback<GuestSpinCountResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<GuestSpinCountResponseModel> call, @NonNull Response<GuestSpinCountResponseModel> response) {
+                callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GuestSpinCountResponseModel> call, @NonNull Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getSpinPrice(Map<String, String> map, final GetSpinPriceCallback callback) {
+        Call<SpinPriceModel> call = apiService.getSpinPrice(map);
+        call.enqueue(new Callback<SpinPriceModel>() {
+            @Override
+            public void onResponse(@NonNull Call<SpinPriceModel> call, @NonNull Response<SpinPriceModel> response) {
+                if (response.isSuccessful())
+                    callback.onSuccess(response.body());
+                else
+                    callback.onFailure(new Throwable());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SpinPriceModel> call, @NonNull Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getCampaignRewards(Map<String, String> map, final GetCampaignRewards callback) {
+        Call<CampaignRewardResponseModel> call = apiService.getCampaignRewards(map);
+        call.enqueue(new Callback<CampaignRewardResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<CampaignRewardResponseModel> call, @NonNull Response<CampaignRewardResponseModel> response) {
+                callback.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CampaignRewardResponseModel> call, @NonNull Throwable t) {
+                callback.onNetworkFailure();
             }
         });
     }

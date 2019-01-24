@@ -4,10 +4,10 @@
     android:id="@+id/package_bundle_parent_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
     android:paddingLeft="15dp"
+    android:paddingTop="10dp"
     android:paddingRight="15dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="10dp">
 
     <LinearLayout
         android:id="@+id/package_bundle_details_container"
@@ -28,6 +28,15 @@
             app:font_type="regular" />
 
         <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/package_bundle_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get 20% more on the value of Rs. 2,500"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            app:font_type="light" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/package_bundle_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +46,16 @@
             android:textSize="12sp"
             app:font_type="light" />
 
-        <LinearLayout
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/package_bundle_usage_validity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usage Validity"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            app:font_type="light" />
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -52,16 +70,66 @@
                 android:textSize="12sp"
                 app:font_type="light" />
 
+            <View
+                android:id="@+id/package_bundle_validity_divider"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/package_bundle_validity"
+                android:layout_alignBottom="@id/package_bundle_validity"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_5dp"
+                android:layout_toEndOf="@+id/package_bundle_validity"
+                android:background="@color/grey"
+                android:textColor="@color/grey" />
+
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/view_services_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_5dp"
                 android:layout_marginTop="3dp"
+                android:layout_toRightOf="@+id/package_bundle_validity_divider"
                 android:text="View Services"
                 android:textColor="@color/dark_gold"
                 android:textSize="12sp" />
-        </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp">
+
+            <RatingBar
+                android:id="@+id/package_rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:rating="3" />
+
+            <View
+                android:id="@+id/social_proof_divider"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/package_rating_bar"
+                android:layout_alignBottom="@id/package_rating_bar"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_5dp"
+                android:layout_toRightOf="@+id/package_rating_bar"
+                android:background="@color/grey"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/number_of_people_bought"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/social_proof_divider"
+                android:text="30 packages sold"
+                android:textColor="#64caf5"
+                android:textSize="13sp"
+                app:font_type="light" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout

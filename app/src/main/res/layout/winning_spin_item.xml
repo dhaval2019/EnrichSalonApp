@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_margin="7dp"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bnb_gradient_circle"
+            android:padding="5dp"
+            android:src="@drawable/bnb_winning_cup" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/spin_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"
+            android:text="First Spin"
+            android:textColor="@color/grey"
+            android:textSize="10sp"
+            app:font_type="light" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/spin_points_won"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="350 "
+                android:textColor="@color/cb_dark_grey"
+                android:textSize="16sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="pts"
+                android:textColor="@color/grey"
+                android:textSize="10sp"
+                app:font_type="light" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -26,7 +26,8 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
     NewServiceListAdapter serviceListAdapterNew;
     RecommendedServicesAdapter recommendedServicesAdapter;
     VariantRecyclerViewAdapter variantRecyclerViewAdapter;
-    HomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter;
+    SampleHomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter;
+    RescheduleServiceListAdapter rescheduleServiceListAdapter;
     Dialog dialog;
 
     public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int parentPosition, int childPosition, NewServiceListAdapter serviceListAdapterNew, Dialog dialog) {
@@ -57,12 +58,21 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
         this.dialog = dialog;
     }
 
-    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int position, HomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter, Dialog dialog) {
+    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int position, SampleHomeParentAndNormalServiceAdapter homeParentAndNormalServiceAdapter, Dialog dialog) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.childPos = position;
+        this.parentPos = position;
         this.homeParentAndNormalServiceAdapter = homeParentAndNormalServiceAdapter;
+        this.dialog = dialog;
+    }
+
+    public TherapistListAdapter(Context context, ArrayList<TherapistModel> list, int position, RescheduleServiceListAdapter rescheduleServiceListAdapter, Dialog dialog) {
+        this.context = context;
+        this.list = list;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.parentPos = position;
+        this.rescheduleServiceListAdapter = rescheduleServiceListAdapter;
         this.dialog = dialog;
     }
 
@@ -92,6 +102,9 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
 
                 if (homeParentAndNormalServiceAdapter != null)
                     homeParentAndNormalServiceAdapter.setTherapist(model, parentPos);
+
+                if(rescheduleServiceListAdapter!=null)
+                    rescheduleServiceListAdapter.setTherapist(model, parentPos);
 
                 dialog.cancel();
             }

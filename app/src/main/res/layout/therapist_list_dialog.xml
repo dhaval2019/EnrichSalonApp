@@ -5,37 +5,54 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <com.enrich.salonapp.ui.views.CustomTextView
-        android:id="@+id/therapist_dialog_title"
+    <RelativeLayout
+        android:id="@+id/therapist_dialog_title_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select a stylist"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:font_type="semi_bold" />
+        android:layout_height="wrap_content">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/therapist_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Select a stylist"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:font_type="semi_bold" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/therapist_dialog_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="SKIP"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            app:font_type="light" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/therapist_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/therapist_dialog_title"
+        android:layout_below="@+id/therapist_dialog_title_container"
         android:layout_marginTop="5dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/therapist_list_recycler_view"
+        android:layout_alignParentEnd="true"
         android:orientation="horizontal">
 
         <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/therapist_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
             android:text="CANCEL"
             android:textColor="@color/colorAccent"
             app:font_type="regular" />

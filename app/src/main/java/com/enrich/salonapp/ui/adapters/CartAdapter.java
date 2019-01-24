@@ -54,7 +54,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         if (model.getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
             holder.name.setText(model.Name + " x " + list.get(position).Quantity);
-            holder.therapist.setText(model.getTherapistModel().Name);
+
+            if (model.getTherapistModel() != null) {
+                holder.therapist.setText(model.getTherapistModel().FirstName + " " + model.getTherapistModel().LastName);
+            } else {
+                holder.therapist.setVisibility(View.GONE);
+            }
             if (model.getSlotTime() != null) {
                 try {
                     SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");

@@ -61,10 +61,10 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="10dp">
+                    android:paddingBottom="10dp">
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:layout_width="wrap_content"
@@ -104,10 +104,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="10dp">
+                    android:paddingBottom="10dp">
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:layout_width="wrap_content"
@@ -168,47 +168,12 @@
                         app:font_type="light" />
                 </LinearLayout>
 
-                <!-- SERVICE TAX -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:paddingTop="15dp"
-                    android:weightSum="2">
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:text="GST"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:font_type="regular" />
-
-                    <View
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/tax_amount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="-"
-                        android:textColor="@color/grey"
-                        android:textSize="16sp"
-                        app:font_type="light" />
-                </LinearLayout>
-
                 <!-- DISCOUNT -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="horizontal"
-                    android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:weightSum="2">
 
@@ -228,6 +193,41 @@
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/discount_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textColor="@color/grey"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+                </LinearLayout>
+
+                <!-- SERVICE TAX -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:weightSum="2">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="GST"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:font_type="regular" />
+
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/tax_amount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -276,8 +276,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="50dp"
                     android:background="@drawable/red_round_rect_border"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -311,7 +311,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
                     android:background="#e5e5e5"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <!-- ADDRESS -->
                 <LinearLayout

@@ -219,7 +219,7 @@
                         android:background="@drawable/gold_bg_gradient"
                         android:gravity="center"
                         android:padding="@dimen/dimen_5dp"
-                        android:text="Member only price's"
+                        android:text="Member only prices"
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:font_type="light" />

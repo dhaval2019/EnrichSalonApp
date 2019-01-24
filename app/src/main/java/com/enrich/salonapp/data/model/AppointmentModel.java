@@ -17,7 +17,7 @@ public class AppointmentModel implements Parcelable {
     public boolean IsCancellationChargeToBeApplied;
     public boolean IsPaymentOrRedemptionApplied;
     public ArrayList<ServiceAppointmentModel> AppointmentServices;
-    public CenterDetailModel Center;
+    public CenterViewModel Center;
     public PriceModel Price;
 
     protected AppointmentModel(Parcel in) {
@@ -31,7 +31,7 @@ public class AppointmentModel implements Parcelable {
         IsCancellationChargeToBeApplied = in.readByte() != 0;
         IsPaymentOrRedemptionApplied = in.readByte() != 0;
         AppointmentServices = in.createTypedArrayList(ServiceAppointmentModel.CREATOR);
-        Center = in.readParcelable(CenterDetailModel.class.getClassLoader());
+        Center = in.readParcelable(CenterViewModel.class.getClassLoader());
         Price = in.readParcelable(PriceModel.class.getClassLoader());
     }
 

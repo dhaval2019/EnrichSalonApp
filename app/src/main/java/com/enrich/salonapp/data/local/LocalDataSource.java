@@ -87,7 +87,7 @@ public class LocalDataSource extends DataSource {
     }
 
     @Override
-    public void getAppointments(String url, GetAppointmentsCallBack callBack) {
+    public void getAppointments(String url, Map<String, String> map, GetAppointmentsCallBack callBack) {
 
     }
 
@@ -112,7 +112,7 @@ public class LocalDataSource extends DataSource {
     }
 
     @Override
-    public void getTimeSlots(AppointmentRequestModel model, GetTimeSlotsCallBack callBack) {
+    public void getTimeSlots(String url, AppointmentRequestModel model, GetTimeSlotsCallBack callBack) {
 
     }
 
@@ -238,6 +238,26 @@ public class LocalDataSource extends DataSource {
 
     @Override
     public void registerFCM(RegisterFCMRequestModel model, RegisterFCMCallback callback) {
+
+    }
+
+    @Override
+    public void getBeautyAndBling(GetBeautyAndBlingCallback callback) {
+
+    }
+
+    @Override
+    public void getGuestSpinCount(Map<String, String> map, GetGuestSpinCountCallback callback) {
+
+    }
+
+    @Override
+    public void getSpinPrice(Map<String, String> map, GetSpinPriceCallback callback) {
+
+    }
+
+    @Override
+    public void getCampaignRewards(Map<String, String> map, GetCampaignRewards callback) {
 
     }
 }

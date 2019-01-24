@@ -2,6 +2,7 @@ package com.enrich.salonapp.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +18,12 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AppointmentModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
+import com.enrich.salonapp.data.model.CenterDetailModel;
+import com.enrich.salonapp.data.model.ServiceViewModel;
+import com.enrich.salonapp.data.model.TherapistModel;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
+import com.enrich.salonapp.ui.activities.RescheduleActivity;
 import com.enrich.salonapp.ui.contracts.CancelAppointmentContract;
 import com.enrich.salonapp.ui.presenters.CancelAppointmentsPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -36,10 +41,11 @@ import butterknife.ButterKnife;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> implements CancelAppointmentContract.View {
 
-    Context context;
+    Activity activity;
     LayoutInflater inflater;
     ArrayList<AppointmentModel> list;
     boolean isCurrent;
+    boolean isHomeSelected;
     int pos;
     String appGroupId;
     BottomSheetDialog dialog;
@@ -47,16 +53,16 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     DataRepository dataRepository;
     CancelAppointmentsPresenter cancelAppointmentsPresenter;
 
-    public AppointmentAdapter(Context context, ArrayList<AppointmentModel> list, boolean isCurrent) {
-        this.context = context;
+    public AppointmentAdapter(Activity activity, ArrayList<AppointmentModel> list, boolean isCurrent) {
+        this.activity = activity;
         this.list = list;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.isCurrent = isCurrent;
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
 
-        dataRepository = Injection.provideDataRepository(context, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(activity, mainUiThread, threadExecutor, null);
         cancelAppointmentsPresenter = new CancelAppointmentsPresenter(this, dataRepository);
     }
 
@@ -99,7 +105,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.appointmentStore.setText(model.Center.Name);
         holder.appointmentTherapist.setText("Stylist: " + model.AppointmentServices.get(0).RequestedTherapist.FullName);
 
-        holder.appointmentPrice.setText(context.getResources().getString(R.string.Rs) + " " + list.get(position).Price._final);
+        holder.appointmentPrice.setText(activity.getResources().getString(R.string.Rs) + " " + list.get(position).Price._final);
 
         if (isCurrent) {
             holder.appointmentCancel.setVisibility(View.VISIBLE);
@@ -107,6 +113,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         } else {
             holder.appointmentCancel.setVisibility(View.GONE);
             holder.appointmentReschedule.setVisibility(View.VISIBLE);
+            holder.appointmentReschedule.setText("REBOOK");
         }
 
         holder.appointmentCancel.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +123,53 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 showCancelDialog(model.AppointmentGroupId);
             }
         });
+
+        holder.appointmentReschedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<ServiceViewModel> serviceList = new ArrayList<>();
+                for (int j = 0; j < model.AppointmentServices.size(); j++) {
+                    TherapistModel therapistModel = new TherapistModel();
+                    therapistModel.Id = model.AppointmentServices.get(j).RequestedTherapist.Id;
+                    therapistModel.FirstName = model.AppointmentServices.get(j).RequestedTherapist.FirstName;
+                    therapistModel.LastName = model.AppointmentServices.get(j).RequestedTherapist.LastName;
+                    therapistModel.DisplayName = model.AppointmentServices.get(j).RequestedTherapist.DisplayName;
+
+                    model.AppointmentServices.get(j).Service.therapist = therapistModel;
+                    serviceList.add(model.AppointmentServices.get(j).Service);
+
+                    if (model.AppointmentServices.get(j).BookingFor == 1) {
+                        isHomeSelected = true;
+                    } else {
+                        isHomeSelected = false;
+                    }
+                }
+
+                CenterDetailModel centerDetailModel = new CenterDetailModel();
+                centerDetailModel.Id = model.Center.Id;
+                centerDetailModel.Phone = model.Center.Phone1.Number;
+                centerDetailModel.Address = model.Center.Address1 + " " + model.Center.Address2;
+                centerDetailModel.Email = model.Center.Email;
+                centerDetailModel.Name = model.Center.Name;
+                centerDetailModel.CenterType = model.Center.CenterType;
+
+                EnrichUtils.saveHomeStoreForRebook(activity, EnrichUtils.newGson().toJson(centerDetailModel));
+
+                RescheduleServiceList rescheduleServiceList = new RescheduleServiceList();
+                rescheduleServiceList.serviceList = serviceList;
+
+                Intent intent = new Intent(activity, RescheduleActivity.class);
+                intent.putExtra("isHomeSelected", isHomeSelected);
+                intent.putExtra("RescheduleServiceList", EnrichUtils.newGson().toJson(rescheduleServiceList));
+                activity.startActivity(intent);
+            }
+        });
     }
+
+    public class RescheduleServiceList {
+        public ArrayList<ServiceViewModel> serviceList;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -135,7 +188,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             notifyDataSetChanged();
             dialog.cancel();
         } else {
-            EnrichUtils.showMessage(context, "Appointment Already cancelled.");
+            EnrichUtils.showMessage(activity, "Appointment Already cancelled.");
         }
     }
 
@@ -147,15 +200,20 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void setProgressBar(boolean show) {
         if (show) {
-            EnrichUtils.showProgressDialog((Activity) context);
+            EnrichUtils.showProgressDialog(activity);
         } else {
-            EnrichUtils.cancelCurrentDialog((Activity) context);
+            EnrichUtils.cancelCurrentDialog(activity);
         }
     }
 
     @Override
     public Context getContext() {
-        return context;
+        return activity;
+    }
+
+    public void updateList(ArrayList<AppointmentModel> list) {
+        this.list.addAll(list);
+        notifyDataSetChanged();
     }
 
     class AppointmentViewHolder extends RecyclerView.ViewHolder {
@@ -192,7 +250,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     public void showCancelDialog(final String appointmentGroupId) {
         View view = inflater.inflate(R.layout.cancel_service_dialog, null);
-        dialog = new BottomSheetDialog(context);
+        dialog = new BottomSheetDialog(activity);
         dialog.setContentView(view);
         dialog.setCancelable(true);
 
@@ -203,7 +261,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         TextView appointmentCancelButton = dialog.findViewById(R.id.appointment_cancel_button);
         TextView appointmentDontCancelButton = dialog.findViewById(R.id.appointment_dont_cancel_button);
 
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/Montserrat-Regular.ttf");
+        Typeface tf = Typeface.createFromAsset(activity.getAssets(), "fonts/Montserrat-Regular.ttf");
         reason_1.setTypeface(tf);
         reason_2.setTypeface(tf);
         reason_3.setTypeface(tf);
@@ -218,7 +276,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     appGroupId = appointmentGroupId;
                     cancelAppointment(reasonStr, appointmentGroupId);
                 } else {
-                    EnrichUtils.showMessage(context, "Please select a reason");
+                    EnrichUtils.showMessage(activity, "Please select a reason");
                 }
             }
         });
@@ -237,6 +295,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         CancelRequestModel model = new CancelRequestModel();
         model.setComments(comment);
         model.setReasonId(99);
-        cancelAppointmentsPresenter.cancelAppointment(context, RemoteDataSource.HOST + "Catalog/Appointments/" + appointmentGroupId + "/Cancel", model);
+        cancelAppointmentsPresenter.cancelAppointment(activity, RemoteDataSource.HOST + "Catalog/Appointments/" + appointmentGroupId + "/Cancel", model);
     }
 }

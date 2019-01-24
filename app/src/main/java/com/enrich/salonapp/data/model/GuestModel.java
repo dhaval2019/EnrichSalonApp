@@ -3,8 +3,6 @@ package com.enrich.salonapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 public class GuestModel implements Parcelable {
@@ -50,10 +48,10 @@ public class GuestModel implements Parcelable {
     public String FacebookUserId;
     public String OldPassword;
     public ArrayList<AddressModel> GuestAddress;
+    public ArrayList<GuestMembershipModel> MembershipModel;
 
     public GuestModel() {
     }
-
 
     protected GuestModel(Parcel in) {
         Id = in.readString();
@@ -97,6 +95,7 @@ public class GuestModel implements Parcelable {
         FacebookUserId = in.readString();
         OldPassword = in.readString();
         GuestAddress = in.createTypedArrayList(AddressModel.CREATOR);
+        MembershipModel = in.createTypedArrayList(GuestMembershipModel.CREATOR);
     }
 
     @Override
@@ -142,6 +141,7 @@ public class GuestModel implements Parcelable {
         dest.writeString(FacebookUserId);
         dest.writeString(OldPassword);
         dest.writeTypedList(GuestAddress);
+        dest.writeTypedList(MembershipModel);
     }
 
     @Override

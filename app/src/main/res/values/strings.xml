@@ -111,4 +111,12 @@
     <string name="enter_cvv">Enter CVV</string>
     <string name="GOOGLE_API_KEY">AIzaSyBX76j24HS3ivetOE11wActiTz5qTVK_0E</string>
     <string name="PLACES_API_KEY">AIzaSyCvkjv6yK5Rti3lqKdViUBIMExD_l2FoEo</string>
+    <string name="spin">Spin</string>
+    <string name="stop">Stop</string>
+    <string name="wait">Wait</string>
+    <string name="alert">Alert</string>
+    <string name="alert_timeout">Connection time out</string>
+    <string name="ok">OK</string>
+    <string name="facebook_app_id">2253022791599567</string>
+    <string name="fb_login_protocol_scheme">fb2253022791599567</string>
 </resources>

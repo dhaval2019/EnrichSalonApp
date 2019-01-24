@@ -15,17 +15,23 @@ import android.widget.TextView;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.AppointmentModel;
 import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.AppointmentAdapter;
 import com.enrich.salonapp.ui.contracts.AppointmentContracts;
 import com.enrich.salonapp.ui.presenters.AppointmentPresenter;
+import com.enrich.salonapp.util.EndlessRecyclerOnScrollListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +76,11 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
     EnrichApplication application;
     Tracker mTracker;
 
+    AppointmentAdapter appointmentAdapter;
+
+    private int pageSize = 0;
+    private int pageIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,17 +115,18 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
 
         collapsingToolbarLayout.setTitle("APPOINTMENT");
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         appointmentPresenter = new AppointmentPresenter(this, dataRepository);
 
         pastAppointmentContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isCurrent = false;
-                appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_PAST_APPOINTMENT);
+                Map<String, String> map = new HashMap<>();
+                map.put("Page", "" + pageIndex);
+                map.put("Size", "9");
+                getAppointments(isCurrent, map);
+//                appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_PAST_APPOINTMENT, map);
                 changeButtonState(false);
             }
         });
@@ -123,13 +135,46 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
             @Override
             public void onClick(View v) {
                 isCurrent = true;
-                appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT);
+                Map<String, String> map = new HashMap<>();
+                map.put("Page", "" + pageIndex);
+                map.put("Size", "9");
+                getAppointments(isCurrent, map);
+//                appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
                 changeButtonState(true);
             }
         });
 
         isCurrent = true;
-        appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT);
+        Map<String, String> map = new HashMap<>();
+        map.put("Page", "" + pageIndex);
+        map.put("Size", "9");
+        getAppointments(isCurrent, map);
+
+        appointmentsRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadMore() {
+                if (!(pageSize < 8)) {
+                    pageIndex++;
+
+                    Map<String, String> map = new HashMap<>();
+                    map.put("Page", "" + pageIndex);
+                    map.put("Size", "9");
+                    getAppointments(isCurrent, map);
+                }
+            }
+        });
+    }
+
+    private void getAppointments(boolean isCurrent, Map<String, String> map) {
+        if (isCurrent) {
+            appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
+        } else {
+            appointmentPresenter.getAppointments(AppointmentsActivity.this, RemoteDataSource.HOST + RemoteDataSource.GET_PAST_APPOINTMENT, map);
+        }
+
+        appointmentAdapter = new AppointmentAdapter(this, new ArrayList<AppointmentModel>(), isCurrent);
+        appointmentsRecyclerView.setAdapter(appointmentAdapter);
+        appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     private void changeButtonState(boolean isCurrent) {
@@ -154,9 +199,7 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
             appointmentsRecyclerView.setVisibility(View.VISIBLE);
             noAppointmentsTextView.setVisibility(View.GONE);
 
-            AppointmentAdapter appointmentAdapter = new AppointmentAdapter(this, model.Appointments, isCurrent);
-            appointmentsRecyclerView.setAdapter(appointmentAdapter);
-            appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            appointmentAdapter.updateList(model.Appointments);
         } else {
             appointmentsRecyclerView.setVisibility(View.GONE);
             noAppointmentsTextView.setVisibility(View.VISIBLE);

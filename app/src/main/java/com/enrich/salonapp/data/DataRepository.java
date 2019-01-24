@@ -10,6 +10,8 @@ import com.enrich.salonapp.data.model.AppointmentResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.AvailableTimeResponseModel;
+import com.enrich.salonapp.data.model.BeautyAndBlingResponseModel;
+import com.enrich.salonapp.data.model.CampaignRewardResponseModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
@@ -28,6 +30,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateResponseModel;
 import com.enrich.salonapp.data.model.InvoiceResponseModel;
@@ -53,6 +56,7 @@ import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
 import com.enrich.salonapp.data.model.ServiceListResponseModel;
 import com.enrich.salonapp.data.model.SignIn.IsUserRegisteredResponseModel;
+import com.enrich.salonapp.data.model.SpinPriceModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletHistoryResponseModel;
 import com.enrich.salonapp.data.model.Wallet.WalletModel;
@@ -276,9 +280,9 @@ public class DataRepository {
         }
     }
 
-    public void getAppointment(Context context, String url, final DataSource.GetAppointmentsCallBack callBack) {
+    public void getAppointment(Context context, String url, Map<String, String> map, final DataSource.GetAppointmentsCallBack callBack) {
         if (networkHelper.isNetworkAvailable(context)) {
-            remoteDataSource.getAppointments(url, new DataSource.GetAppointmentsCallBack() {
+            remoteDataSource.getAppointments(url, map, new DataSource.GetAppointmentsCallBack() {
                 @Override
                 public void onSuccess(AppointmentResponseModel model) {
                     callBack.onSuccess(model);
@@ -381,9 +385,9 @@ public class DataRepository {
         }
     }
 
-    public void getTimeSlot(Context context, AppointmentRequestModel model, final DataSource.GetTimeSlotsCallBack callBack) {
+    public void getTimeSlot(Context context, String url, AppointmentRequestModel model, final DataSource.GetTimeSlotsCallBack callBack) {
         if (networkHelper.isNetworkAvailable(context)) {
-            remoteDataSource.getTimeSlots(model, new DataSource.GetTimeSlotsCallBack() {
+            remoteDataSource.getTimeSlots(url, model, new DataSource.GetTimeSlotsCallBack() {
                 @Override
                 public void onSuccess(AvailableTimeResponseModel model) {
                     callBack.onSuccess(model);
@@ -911,6 +915,90 @@ public class DataRepository {
             remoteDataSource.registerFCM(model, new DataSource.RegisterFCMCallback() {
                 @Override
                 public void onSuccess(RegisterFCMResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getBeautyAndBling(Context context, final DataSource.GetBeautyAndBlingCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getBeautyAndBling(new DataSource.GetBeautyAndBlingCallback() {
+                @Override
+                public void onSuccess(BeautyAndBlingResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getGuestSpinCount(Context context, Map<String, String> map, final DataSource.GetGuestSpinCountCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getGuestSpinCount(map, new DataSource.GetGuestSpinCountCallback() {
+                @Override
+                public void onSuccess(GuestSpinCountResponseModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getSpinPrice(Context context, Map<String, String> map, final DataSource.GetSpinPriceCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getSpinPrice(map, new DataSource.GetSpinPriceCallback() {
+                @Override
+                public void onSuccess(SpinPriceModel model) {
+                    callback.onSuccess(model);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
+
+    public void getCampaignRewards(Context context, Map<String, String> map, final DataSource.GetCampaignRewards callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.getCampaignRewards(map, new DataSource.GetCampaignRewards() {
+                @Override
+                public void onSuccess(CampaignRewardResponseModel model) {
                     callback.onSuccess(model);
                 }
 

@@ -124,10 +124,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
         parentServiceDescription.setText(serviceViewModel.description);
         Picasso.get().load(serviceViewModel.imagePaths.px100).placeholder(R.drawable.placeholder).into(parentServiceLogo);
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         serviceVariantsPresenter = new ServiceVariantsPresenter(this, dataRepository);
 
         Map<String, String> map = new HashMap<>();
@@ -143,10 +140,13 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
             public void onClick(View v) {
                 if (!application.isCartEmpty()) {
                     Intent intent = new Intent(ServiceVariantActivity.this, DateSelectorActivity.class);
+                    intent.putExtra("isHomeSelected", isHomeSelected);
                     startActivity(intent);
                 }
             }
         });
+
+        updateCart();
     }
 
     @Override

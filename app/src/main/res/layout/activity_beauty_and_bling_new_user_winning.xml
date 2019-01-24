@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.BeautyAndBlingLandingActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/beauty_and_bling_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/beauty_and_bling_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:paddingStart="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_15dp"
+            android:paddingEnd="@dimen/dimen_20dp"
+            android:paddingBottom="@dimen/dimen_15dp"
+            android:text="SKIP"
+            android:textColor="@color/white"
+            app:font_type="regular" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/book_now"
+            android:layout_below="@+id/beauty_and_bling_skip"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dimen_40dp"
+            android:paddingRight="@dimen/dimen_40dp">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/beauty_and_bling_logo_cropped" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/bandb_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_40dp"
+                android:gravity="center"
+                android:text="You have won 1000 points"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_18sp"
+                app:font_type="semi_bold" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/bandb_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:gravity="center"
+                android:text="If you like what you have won you can get them for real!"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_18sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/bandb_text_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:gravity="center"
+                android:text="Just visit our salon and spend Rs. 2500 on services or products and we'll credit these points to your account."
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_16sp"
+                app:font_type="ultra_light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/points_expiry_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_18sp"
+                app:font_type="light" />
+        </LinearLayout>
+
+        <com.enrich.salonapp.ui.views.CustomButton
+            android:id="@+id/book_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dimen_40dp"
+            android:background="@drawable/beauty_and_bling_button"
+            android:paddingLeft="@dimen/dimen_15dp"
+            android:paddingRight="@dimen/dimen_15dp"
+            android:text="Book Now"
+            android:textColor="@color/white"
+            app:font_type="regular" />
+    </RelativeLayout>
+</FrameLayout>

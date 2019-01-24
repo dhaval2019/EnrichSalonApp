@@ -38,6 +38,7 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlaceFilter;
@@ -111,7 +112,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
     @BindView(R.id.save_address)
     Button saveAddress;
 
-    PlaceDetectionClient mPlaceDetectionClient;
+//    PlaceDetectionClient mPlaceDetectionClient;
 
     Place suggestedPlace;
 
@@ -165,8 +166,12 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
             @Override
             public void onClick(View view) {
                 try {
+                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                            .setCountry("IN")
+                            .build();
+
                     Intent intent =
-                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter)
                                     .build(AddAddressActivity.this);
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
@@ -182,35 +187,37 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
             landmarkText.setText(addressModel.Landmark);
             changeAddressTypeSelection(addressModel.AddressType);
         } else {
-            mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
+            locationText.setHint("Enter the closes landmark");
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(new PlaceFilter());
-            placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-                @SuppressLint("DefaultLocale")
-                @Override
-                public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                    try {
-
-                        PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-                        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                            if (placeLikelihood.getLikelihood() <= 0.0) {
-                                suggestedPlace = placeLikelihood.getPlace();
-                                locationText.setText(suggestedPlace.getName() + ", " + suggestedPlace.getAddress());
-                                return;
-                            }
-                            EnrichUtils.log(String.format("Place '%s' has likelihood: %g",
-                                    placeLikelihood.getPlace().getName(),
-                                    placeLikelihood.getLikelihood()));
-                        }
-                        likelyPlaces.release();
-                    } catch (Exception e) {
-                        Crashlytics.log(e.getLocalizedMessage());
-                    }
-                }
-            });
+//            mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
+//
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(new PlaceFilter());
+//            placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
+//                @SuppressLint("DefaultLocale")
+//                @Override
+//                public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
+//                    try {
+//
+//                        PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+//                        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+//                            if (placeLikelihood.getLikelihood() <= 0.0) {
+//                                suggestedPlace = placeLikelihood.getPlace();
+//                                locationText.setText(suggestedPlace.getName() + ", " + suggestedPlace.getAddress());
+//                                return;
+//                            }
+//                            EnrichUtils.log(String.format("Place '%s' has likelihood: %g",
+//                                    placeLikelihood.getPlace().getName(),
+//                                    placeLikelihood.getLikelihood()));
+//                        }
+//                        likelyPlaces.release();
+//                    } catch (Exception e) {
+//                        Crashlytics.log(e.getLocalizedMessage());
+//                    }
+//                }
+//            });
 
             changeAddressTypeSelection(addressType);
         }

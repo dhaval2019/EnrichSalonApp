@@ -61,10 +61,7 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
         this.isHomeSelected = isHomeSelected;
         application = (EnrichApplication) activity.getApplicationContext();
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        DataRepository dataRepository = Injection.provideDataRepository(activity, mainUiThread, threadExecutor, null);
+        DataRepository dataRepository = Injection.provideDataRepository(activity, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         therapistPresenter = new TherapistPresenter(this, dataRepository);
     }
 
@@ -95,7 +92,15 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
             model.therapist = null;
         }
 
-        holder.mainPrice.setText(" " + (int) model.price.sales);
+        if (EnrichUtils.getUserData(activity).IsMember == 1) {
+            holder.mainPrice.setText("" + (int) model.price._final);
+            holder.strikePriceContainer.setVisibility(View.VISIBLE);
+            holder.strikePrice.setText("" + (int) model.price.sales);
+        } else {
+            holder.mainPrice.setText("" + (int) model.price.sales);
+            holder.strikePriceContainer.setVisibility(View.GONE);
+        }
+
 
         holder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,11 +178,41 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
+        TextView skip = dialog.findViewById(R.id.therapist_dialog_skip);
         RecyclerView therapistRecyclerView = dialog.findViewById(R.id.therapist_list_recycler_view);
 
         TherapistListAdapter adapter = new TherapistListAdapter(activity, list, position, this, dialog);
         therapistRecyclerView.setAdapter(adapter);
         therapistRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int toggleResponse = application.toggleItem(variantList.get(position));
+
+                if (toggleResponse == 1) {
+                    holder.serviceCheckbox.setChecked(true);
+                } else if (toggleResponse == 0) {
+                    holder.serviceCheckbox.setChecked(false);
+                } else if (toggleResponse == -1) {
+                    new AlertDialog.Builder(activity)
+                            .setMessage(activity.getString(R.string.add_services_to_cart_error))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+//                                    goToCart();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            }).show();
+                }
+
+                ((ServiceVariantActivity) activity).updateCart();
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +294,15 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
 
         @BindView(R.id.price_container)
         LinearLayout priceContainer;
+
+        @BindView(R.id.strike_price_container)
+        LinearLayout strikePriceContainer;
+
+        @BindView(R.id.main_price_container)
+        LinearLayout mainPriceContainer;
+
+        @BindView(R.id.strike_price)
+        TextView strikePrice;
 
         public VariantViewHolder(View itemView) {
             super(itemView);

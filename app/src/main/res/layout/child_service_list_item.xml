@@ -10,16 +10,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:id="@+id/service_name_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_20dp"
             android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/dimen_20dp"
             android:layout_toStartOf="@+id/price_container"
             android:orientation="vertical"
             android:padding="5dp">
@@ -52,8 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
-                android:paddingBottom="2dp"
                 android:paddingRight="5dp"
+                android:paddingBottom="2dp"
                 android:text="View Details"
                 android:textColor="@color/grey"
                 android:textSize="11dp"
@@ -65,27 +65,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_toStartOf="@+id/service_checkbox_container">
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_toStartOf="@+id/service_checkbox_container"
+            android:orientation="horizontal">
 
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/Rs"
-                android:textColor="@color/red"
-                android:textSize="13sp"
-                app:font_type="regular" />
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/main_price"
+            <LinearLayout
+                android:id="@+id/strike_price_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="600000"
-                android:textColor="@color/red"
-                android:textSize="13sp"
-                app:font_type="regular" />
+                android:layout_gravity="center_vertical">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/Rs"
+                    android:textColor="@color/gray"
+                    android:textSize="11sp"
+                    app:font_type="light"
+                    app:strike_text="true" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/strike_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="600000"
+                    android:textColor="@color/gray"
+                    android:textSize="11sp"
+                    app:font_type="light"
+                    app:strike_text="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_price_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_5dp">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/Rs"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    app:font_type="regular" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/main_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="600000"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    app:font_type="regular" />
+            </LinearLayout>
         </LinearLayout>
 
         <FrameLayout

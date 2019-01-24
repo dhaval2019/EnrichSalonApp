@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.BeautyAndBlingLandingActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/beauty_and_bling_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/try_once_more_container"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/beauty_and_bling_logo_cropped" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_40dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginRight="@dimen/dimen_40dp"
+                android:background="@drawable/bnb_gradient"
+                android:paddingStart="20dp"
+                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingBottom="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/total_winnings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2405 "
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            app:font_type="light" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="pts"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Rewards"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/winning_points_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_30dp"
+                android:layout_marginRight="@dimen/dimen_30dp"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/dimen_15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/try_once_more_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/try_a_spin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:background="@drawable/beauty_and_bling_button"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:text="Take another spin"
+                    android:textColor="@color/white"
+                    app:font_type="regular" />
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/move_ahead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:background="@drawable/beauty_and_bling_button"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:text="Book a Service"
+                    android:textColor="@color/white"
+                    app:font_type="regular" />
+            </FrameLayout>
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/copyright_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Copyright C 2018 Enrich. All rights reserved."
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/kpmg_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:gravity="center_horizontal"
+                android:text="KPMGr Process Advisors and Evaluators for this contest"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

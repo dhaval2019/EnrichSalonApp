@@ -65,11 +65,11 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.related_products)
-    RecyclerView relatedProducts;
-
-    @BindView(R.id.similar_products_container)
-    LinearLayout similarProductsContainer;
+//    @BindView(R.id.related_products)
+//    RecyclerView relatedProducts;
+//
+//    @BindView(R.id.similar_products_container)
+//    LinearLayout similarProductsContainer;
 
     @BindView(R.id.cart_container)
     RelativeLayout cartContainer;
@@ -92,8 +92,8 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     @BindView(R.id.cart_next)
     TextView cartNext;
 
-    @BindView(R.id.drawer_collapse_toolbar)
-    CollapsingToolbarLayout collapsingToolbarLayout;
+//    @BindView(R.id.drawer_collapse_toolbar)
+//    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @BindView(R.id.cashback_value)
     TextView cashbackValue;
@@ -139,20 +139,17 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         });
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
+        toolbar.setTitle(" ");
 
-        assert collapsingToolbarLayout != null;
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
-        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
-        collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
-        collapsingToolbarLayout.setExpandedTitleTypeface(tf);
-
-        collapsingToolbarLayout.setTitle(" ");
+//        assert collapsingToolbarLayout != null;
+//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppBar);
+//        final Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf");
+//        collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
+//        collapsingToolbarLayout.setExpandedTitleTypeface(tf);
+//
+//        collapsingToolbarLayout.setTitle(" ");
 
         productId = getIntent().getIntExtra("ProductId", 0);
-
-//        list = getIntent().getParcelableArrayListExtra("ProductList");
-//        setSimilarProductsAdapter(productModel, list);
-//        relatedProducts.setFocusable(false);
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();
@@ -189,12 +186,19 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
                 startActivity(intent);
             }
         });
+
+        cartContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -226,14 +230,14 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
                 productOldPrice.setVisibility(View.GONE);
             } else if (productModel.OriginalPrice < productModel.ProductAmount) {
                 productOldPrice.setVisibility(View.GONE);
-            }else {
+            } else {
                 productOldPrice.setVisibility(View.VISIBLE);
             }
 
             productName.setText(productModel.ProductTitle);
             productDescription.setText(productModel.ProductDescription);
-            productOldPrice.setText(getResources().getString(R.string.rs_symbol) + " " + productModel.OriginalPrice);
-            productPrice.setText(getResources().getString(R.string.rs_symbol) + " " + productModel.ProductAmount);
+            productOldPrice.setText(getResources().getString(R.string.rs_symbol) + " " + (int) productModel.OriginalPrice);
+            productPrice.setText(getResources().getString(R.string.rs_symbol) + " " + (int) productModel.ProductAmount);
             productSavings.setText("");
 
             Picasso.get().load(productModel.ImageURL).into(productImage);

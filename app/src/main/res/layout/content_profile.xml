@@ -20,6 +20,75 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
+            <!-- MEMBERSHIP -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/membership_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_marginEnd="@dimen/dimen_15dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                app:cardCornerRadius="6dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/gold_bg_gradient_curved">
+
+                    <ImageView
+                        android:id="@+id/membership_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/heart_1"
+                        android:tint="@color/white" />
+
+                    <LinearLayout
+                        android:id="@+id/membership_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/membership_icon"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/membership_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:paddingLeft="10dp"
+                            android:paddingBottom="2.5dp"
+                            android:text="You First Club Membership"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:font_type="semi_bold" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/membership_expiry_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="2.5dp"
+                            android:text="Ends on - 25/07/2018"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/membership_container"
+                        android:layout_alignLeft="@+id/membership_container"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#e5e5e5"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
             <!-- NAME -->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -55,9 +124,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="Varun Barve"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -67,8 +136,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/name_container"
                     android:layout_below="@+id/name_container"
+                    android:layout_alignLeft="@+id/name_container"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="#e5e5e5" />
@@ -109,9 +178,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="varun7691@gmail.com"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -121,8 +190,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/email_container"
                     android:layout_below="@+id/email_container"
+                    android:layout_alignLeft="@+id/email_container"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="#e5e5e5" />
@@ -163,9 +232,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="9730363383"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -175,8 +244,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/phone_container"
                     android:layout_below="@+id/phone_container"
+                    android:layout_alignLeft="@+id/phone_container"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="#e5e5e5" />
@@ -217,9 +286,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="Male"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -229,76 +298,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/gender_container"
                     android:layout_below="@+id/gender_container"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#e5e5e5" />
-            </RelativeLayout>
-
-            <!-- MEMBERSHIP -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/membership_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/gender_male_female"
-                    android:tint="@color/dark_gold" />
-
-                <LinearLayout
-                    android:id="@+id/membership_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/membership_icon"
-                    android:orientation="vertical">
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="Membership"
-                        android:textColor="@color/dark_gold"
-                        android:textSize="14sp"
-                        app:font_type="ultra_light" />
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/membership"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:paddingBottom="2.5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="You First Club Membership"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:font_type="light" />
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/membership_end_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="2.5dp"
-                        android:text="Ends on - 25/07/2018"
-                        android:textColor="@color/grey"
-                        android:textSize="14sp"
-                        app:font_type="light" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/membership_container"
-                    android:layout_below="@+id/membership_container"
+                    android:layout_alignLeft="@+id/gender_container"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="#e5e5e5" />
@@ -340,9 +341,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -363,9 +364,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -386,9 +387,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:paddingBottom="10dp"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="-"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -398,8 +399,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/address_container"
                     android:layout_below="@+id/address_container"
+                    android:layout_alignLeft="@+id/address_container"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="#e5e5e5" />

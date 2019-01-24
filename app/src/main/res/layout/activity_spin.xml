@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.BeautyAndBlingSpinActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/beauty_and_bling_bg" />
+
+        <FrameLayout
+            android:id="@+id/loader_spin_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dimen_20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/beauty_and_bling_logo_cropped" />
+
+                    <RelativeLayout
+                        android:id="@+id/loader_baseItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/loader_wheelBase"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="-30dp">
+
+                        <TextView
+                            android:id="@+id/loader_trape"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/sample_trapezoid"
+                            android:gravity="center_horizontal" />
+
+                        <TextView
+                            android:id="@+id/loader_normalRect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="6dp"
+                            android:layout_below="@+id/loader_trape"
+                            android:layout_alignStart="@+id/loader_trape"
+                            android:layout_alignEnd="@+id/loader_trape"
+                            android:layout_marginTop="0dp"
+                            android:background="@drawable/rectangle_base" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/loader_wheelBase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <rubikstudio.library.LuckyWheelView
+                            android:id="@+id/loader_luckyWheel"
+                            android:layout_width="400dp"
+                            android:layout_height="400dp"
+                            android:layout_centerInParent="true"
+                            app:lkwBackgroundColor="@color/blueDark"
+                            app:lkwCursor="@drawable/ic_pointer"
+                            app:lkwTextColor="@color/white" />
+
+                        <LinearLayout
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/white_circle"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <FrameLayout
+                                android:id="@+id/loader_startStopToggelView"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_centerInParent="true"
+                                android:layout_weight="1">
+
+                                <com.enrich.salonapp.ui.views.CustomTextView
+                                    android:id="@+id/loader_play"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/spin"
+                                    android:textSize="@dimen/centerCircleTextSize"
+                                    android:textStyle="bold"
+                                    app:font_type="light" />
+
+                                <com.enrich.salonapp.ui.views.CustomTextView
+                                    android:id="@+id/loader_stop"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/stop"
+                                    android:textSize="@dimen/centerCircleTextSize"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    app:font_type="light" />
+
+                                <com.enrich.salonapp.ui.views.CustomTextView
+                                    android:id="@+id/loader_wait"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/wait"
+                                    android:textSize="@dimen/centerCircleTextSize"
+                                    android:textStyle="bold"
+                                    android:visibility="gone"
+                                    app:font_type="light" />
+                            </FrameLayout>
+
+                            <com.enrich.salonapp.ui.views.CustomTextView
+                                android:id="@+id/loader_showTimerId"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/centerCircleTextSize"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                app:font_type="light" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/spin_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen_20dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/beauty_and_bling_logo_cropped" />
+
+                <RelativeLayout
+                    android:id="@+id/baseItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/wheelBase"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-30dp">
+
+                    <TextView
+                        android:id="@+id/trape"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/sample_trapezoid"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/normalRect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="6dp"
+                        android:layout_below="@+id/trape"
+                        android:layout_alignStart="@+id/trape"
+                        android:layout_alignEnd="@+id/trape"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/rectangle_base" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wheelBase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <rubikstudio.library.LuckyWheelView
+                        android:id="@+id/luckyWheel"
+                        android:layout_width="400dp"
+                        android:layout_height="400dp"
+                        android:layout_centerInParent="true"
+                        app:lkwBackgroundColor="@color/blueDark"
+                        app:lkwCursor="@drawable/ic_pointer"
+                        app:lkwTextColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/white_circle"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <FrameLayout
+                            android:id="@+id/startStopToggelView"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1">
+
+                            <com.enrich.salonapp.ui.views.CustomTextView
+                                android:id="@+id/play"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/spin"
+                                android:textSize="@dimen/centerCircleTextSize"
+                                android:textStyle="bold"
+                                app:font_type="light" />
+
+                            <com.enrich.salonapp.ui.views.CustomTextView
+                                android:id="@+id/stop"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/stop"
+                                android:textSize="@dimen/centerCircleTextSize"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                app:font_type="light" />
+
+                            <com.enrich.salonapp.ui.views.CustomTextView
+                                android:id="@+id/wait"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/wait"
+                                android:textSize="@dimen/centerCircleTextSize"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                app:font_type="light" />
+                        </FrameLayout>
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:id="@+id/showTimerId"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/centerCircleTextSize"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:font_type="light" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</FrameLayout>

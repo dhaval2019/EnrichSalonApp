@@ -1,22 +1,23 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,29 +30,48 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.enrich.salonapp.BuildConfig;
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.BeautyAndBlingResponseModel;
 import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.OfferModel;
+import com.enrich.salonapp.di.Injection;
+import com.enrich.salonapp.ui.contracts.BeautyAndBlingContract;
+import com.enrich.salonapp.ui.contracts.BeautyAndBlingEligibilityContract;
 import com.enrich.salonapp.ui.fragments.HomeFragment;
+import com.enrich.salonapp.ui.presenters.BeautyAndBlingEligibilityPresenter;
+import com.enrich.salonapp.ui.presenters.BeautyAndBlingPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.OfferHandler;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.threads.MainUiThread;
+import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import static com.enrich.salonapp.util.Constants.SHOW_SPIN;
+
+public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, BeautyAndBlingContract.View, BeautyAndBlingEligibilityContract.View {
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public final static String BEAUTY_AND_BLING_SPIN = "com.enrich.salonapp.Beauty.And.Bling";
 
     @BindView(R.id.profile_container)
     RelativeLayout profileContainer;
@@ -105,6 +125,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private int callToAction;
     private OfferModel offerModel;
+
+    private BeautyAndBlingPresenter beautyAndBlingPresenter;
+    private BeautyAndBlingEligibilityPresenter beautyAndBlingEligibilityPresenter;
+
+    private boolean isFromOfferClick = false;
+
+    private BroadcastReceiver beautyAndBling = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isFromOfferClick = true;
+            beautyAndBlingPresenter.getBeautyAndBling(HomeActivity.this);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +274,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
         addFragment(HomeFragment.getInstance(drawer));
+
+        DataRepository dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
+        beautyAndBlingPresenter = new BeautyAndBlingPresenter(this, dataRepository);
+        beautyAndBlingEligibilityPresenter = new BeautyAndBlingEligibilityPresenter(this, dataRepository);
+
+        beautyAndBlingPresenter.getBeautyAndBling(this);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(beautyAndBling, new IntentFilter(BEAUTY_AND_BLING_SPIN));
     }
 
     private void logoutDialog() {
@@ -256,6 +297,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View view) {
                 EnrichUtils.logout(HomeActivity.this);
+                EnrichApplication.clearSpinList();
                 SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
                 Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -307,6 +349,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             googleApiClient.disconnect();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(beautyAndBling);
     }
 
     @Override
@@ -388,5 +436,57 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void saveLocation(double latitude, double longitude) {
         SharedPreferenceStore.storeValue(this, Constants.CURRENT_LATITUDE, latitude);
         SharedPreferenceStore.storeValue(this, Constants.CURRENT_LONGITUDE, longitude);
+    }
+
+    @Override
+    public void checkBeautyAndBling(BeautyAndBlingResponseModel model) {
+        if (!model.BeautyAndBling.isEmpty()) {
+            if (model.BeautyAndBling.get(0).IsActive) {
+                Map<String, String> map = new HashMap<>();
+                map.put("GuestId", EnrichUtils.getUserData(this).Id);
+                beautyAndBlingEligibilityPresenter.getSpinCount(this, map);
+            }
+        }
+    }
+
+    @Override
+    public void showSpinCount(GuestSpinCountResponseModel model) {
+        if (model != null) {
+            if (model.GuestSpinWheel != null) {
+                if (model.GuestSpinWheel.isEmpty()) {
+                    if (model.SpinsWithoutInvoices == SHOW_SPIN) {
+                        Intent intent = new Intent(HomeActivity.this, BeautyAndBlingLandingActivity.class);
+                        intent.putExtra("IsNewUser", true);
+                        startActivity(intent);
+                    } else {
+                        if (model.WonPrice > 0) {
+                            try {
+                                SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                Date expiryDate = stringToDateFormat.parse(model.ValidityDate.substring(0, 10));
+                                if (new Date().after(expiryDate)) {
+                                    Intent intent = new Intent(HomeActivity.this, BeautyAndBlingLandingActivity.class);
+                                    intent.putExtra("IsNewUser", true);
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(HomeActivity.this, BeautyAndBlingNewUserWinningActivity.class);
+                                    intent.putExtra("IsNewUser", true);
+                                    intent.putExtra("SpinTaken", true);
+                                    intent.putExtra("PointsWon", model.WonPrice);
+                                    intent.putExtra("ValidityDateStr", model.ValidityDate.substring(0, 10));
+                                    startActivity(intent);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            isFromOfferClick = false;
+                        }
+                    }
+                } else {
+                    Intent intent = new Intent(HomeActivity.this, BeautyAndBlingLandingActivity.class);
+                    intent.putExtra("IsNewUser", false);
+                    startActivity(intent);
+                }
+            }
+        }
     }
 }

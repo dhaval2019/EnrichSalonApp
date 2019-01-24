@@ -2,6 +2,7 @@ package com.enrich.salonapp.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
@@ -14,6 +15,8 @@ import com.enrich.salonapp.ui.activities.WebActivity;
 
 import java.util.ArrayList;
 
+import static com.enrich.salonapp.ui.activities.HomeActivity.BEAUTY_AND_BLING_SPIN;
+import static com.enrich.salonapp.util.Constants.OFFER_COMMAND_BEAUTY_AND_BLING_SPIN;
 import static com.enrich.salonapp.util.Constants.OFFER_COMMAND_WEB;
 
 public class OfferHandler {
@@ -55,6 +58,8 @@ public class OfferHandler {
                 break;
             case OFFER_COMMAND_WEB:
                 launchWebPage(activity, model.BlogRedirectURL);
+            case OFFER_COMMAND_BEAUTY_AND_BLING_SPIN:
+                launchBeautyAndBling(activity);
                 break;
         }
     }
@@ -117,5 +122,10 @@ public class OfferHandler {
         Intent intent = new Intent(activity, WebActivity.class);
         intent.putExtra("URL", url);
         activity.startActivity(intent);
+    }
+
+    private static void launchBeautyAndBling(Activity activity) {
+        Intent intentPlaylistChange = new Intent(BEAUTY_AND_BLING_SPIN);
+        LocalBroadcastManager.getInstance(activity).sendBroadcast(intentPlaylistChange);
     }
 }

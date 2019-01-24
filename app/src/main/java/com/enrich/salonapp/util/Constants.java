@@ -4,7 +4,7 @@ public class Constants {
 
     public static String LOG_TAG = "EnrichSalonApp";
 
-    public static int PLATFORM_ANDROID= 2;
+    public static int PLATFORM_ANDROID = 2;
 
     public static String BLACK_FONT = "Montserrat-Black.otf";
     public static String BOLD_FONT = "Montserrat-Bold.ttf";
@@ -33,6 +33,7 @@ public class Constants {
     public static final String CURRENT_LONGITUDE = "currentLongitude";
 
     public static final String HOME_STORE = "UserHomeStore";
+    public static final String HOME_STORE_FOR_REBOOK = "UserHomeStoreForRebook";
 
     public static final int OFFER_COMMAND_LOOK = 0;
     public static final int OFFER_COMMAND_PARTICULAR_LOOK = 1;
@@ -53,10 +54,18 @@ public class Constants {
     public static final int OFFER_COMMAND_PRODUCT_BRAND_LIST = 16;
     public static final int OFFER_COMMAND_PARTICULAR_PRODUCT_BRAND = 17;
     public static final int OFFER_COMMAND_WEB = 18;
+    public static final int OFFER_COMMAND_BEAUTY_AND_BLING_SPIN = 19;
 
     public static final int PAYMENT_MODE_CASH = 0;
     public static final int PAYMENT_MODE_ONLINE = 1;
     public static final int PAYMENT_MODE_BOTH = 2;
 
-    public static final int PAYMENT_SUCCESS= 1;
+    public static final int PAYMENT_SUCCESS = 1;
+
+    public static final int CENTER_TYPE_SALON = 1;
+    public static final int CENTER_TYPE_HOME = 2;
+    public static final int CENTER_TYPE_BOTH = 3;
+
+    public static final int SHOW_SPIN = 1;
+    public static final int DONT_SHOW_SPIN = 0;
 }

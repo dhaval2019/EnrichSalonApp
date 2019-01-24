@@ -65,27 +65,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_toStartOf="@+id/service_checkbox">
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_toStartOf="@+id/service_checkbox"
+            android:orientation="horizontal">
 
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/Rs"
-                android:textColor="@color/red"
-                android:textSize="13sp"
-                app:font_type="regular"/>
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/main_price"
+            <LinearLayout
+                android:id="@+id/strike_price_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="600000"
-                android:textColor="@color/red"
-                android:textSize="13sp"
-                app:font_type="regular" />
+                android:layout_gravity="center_vertical">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/Rs"
+                    android:textColor="@color/gray"
+                    android:textSize="11sp"
+                    app:font_type="light"
+                    app:strike_text="true" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/strike_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="600000"
+                    android:textColor="@color/gray"
+                    android:textSize="11sp"
+                    app:font_type="light"
+                    app:strike_text="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_price_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_5dp">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/Rs"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    app:font_type="regular" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/main_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="600000"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    app:font_type="regular" />
+            </LinearLayout>
         </LinearLayout>
 
         <CheckBox

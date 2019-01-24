@@ -76,4 +76,10 @@
         <item name="alertDialogTheme">@style/AlertDialogStyle_Default</item>
         <item name="actionMenuTextColor">@color/white</item>
     </style>
+
+    <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/custom_rating_bar_full</item>
+        <item name="android:minHeight">24dip</item>
+        <item name="android:maxHeight">24dip</item>
+    </style>
 </resources>

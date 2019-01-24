@@ -19,13 +19,13 @@ public class TimeSlotPresenter extends BasePresenter<TimeSlotContract.View> impl
     }
 
     @Override
-    public void getTimeSlots(Context context, AppointmentRequestModel model) {
+    public void getTimeSlots(Context context, String url, AppointmentRequestModel model) {
         if (view == null)
             return;
 
         view.setProgressBar(true);
 
-        dataRepository.getTimeSlot(context, model, new DataSource.GetTimeSlotsCallBack() {
+        dataRepository.getTimeSlot(context, url, model, new DataSource.GetTimeSlotsCallBack() {
             @Override
             public void onSuccess(AvailableTimeResponseModel model) {
                 if (view != null) {

@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.ConfirmReservationResponseModel;
 import com.enrich.salonapp.data.model.InvoiceModel;
 import com.enrich.salonapp.data.model.PaymentSummaryModel;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,10 +57,17 @@ public class ReceiptActivity extends AppCompatActivity {
     //    InvoiceModel invoiceModel;
     PaymentSummaryModel paymentSummaryModel;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
+
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Thank You");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ButterKnife.bind(this);
 

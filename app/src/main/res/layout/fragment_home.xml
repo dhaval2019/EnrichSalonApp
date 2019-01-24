@@ -141,6 +141,7 @@
 
                 <!-- SALON & HOME -->
                 <LinearLayout
+                    android:id="@+id/salon_home_tab_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.BeautyAndBlingLandingActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/beauty_and_bling_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/try_a_spin"
+        android:layout_alignParentTop="true"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_40dp"
+        android:paddingRight="@dimen/dimen_40dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:src="@drawable/beauty_and_bling_logo_cropped" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:gravity="center"
+            android:text="Great!"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_20sp"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:gravity="center"
+            android:text="Your eligible to spin the wheel."
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_16sp"
+            app:font_type="light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="Bill Number"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text="1234567890"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="Customer"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/user_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="Bill Amount"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/invoice_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="# of Spins"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/number_of_spins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text="05"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_20sp"
+                app:font_type="light" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/spin_number_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/copyright_label"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/copyright_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/kpmg_label"
+                android:gravity="center_horizontal"
+                android:text="Copyright C 2018 Enrich. All rights reserved."
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/kpmg_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:gravity="center_horizontal"
+                android:text="KPMGr Process Advisors and Evaluators for this contest"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

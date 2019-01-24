@@ -26,6 +26,7 @@ import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
 import com.enrich.salonapp.data.model.ServiceViewModel;
@@ -72,6 +73,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
     private ParentsAndNormalServiceListPresenter parentsAndNormalServiceListPresenter;
     private String gender;
     private boolean isExpanded;
+    private CenterDetailModel centerDetailModel;
 
     Tracker mTracker;
 
@@ -93,7 +95,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
      * @param parentList List of all parents to be displayed in the RecyclerView that this
      *                   adapter is linked to
      */
-    public NewServiceListAdapter(Activity activity, @NonNull ArrayList<SubCategoryModel> parentList, String gender, boolean isHomeSelected) {
+    public NewServiceListAdapter(Activity activity, @NonNull ArrayList<SubCategoryModel> parentList, String gender, boolean isHomeSelected, CenterDetailModel centerDetailModel) {
         super(parentList);
         this.activity = activity;
         this.list = parentList;
@@ -102,6 +104,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
         application = (EnrichApplication) activity.getApplicationContext();
         this.gender = gender;
         this.isHomeSelected = isHomeSelected;
+        this.centerDetailModel = centerDetailModel;
 
         DataRepository dataRepository = Injection.provideDataRepository(activity, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         therapistPresenter = new TherapistPresenter(this, dataRepository);
@@ -136,7 +139,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 //                    parentViewHolder.serviceProgress.setVisibility(View.VISIBLE);
 
                     Map<String, String> map = new HashMap<>();
-                    map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);
+                    map.put("CenterId", centerDetailModel.Id);
                     map.put("SubCategoryId", filteredList.get(parentPosition).SubCategoryId);
                     map.put("GuestId", Objects.requireNonNull(EnrichUtils.getUserData(activity)).Id);
                     map.put("Tag", gender);
@@ -160,7 +163,13 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
         final ServiceViewModel model = filteredList.get(parentPosition).getChildList().get(childPosition);
 
         childHolder.serviceName.setText(model.name);
-        childHolder.serviceDescription.setText(model.description);
+
+        if (model.description == null) {
+            childHolder.serviceDescription.setVisibility(View.GONE);
+        } else {
+            childHolder.serviceDescription.setVisibility(View.VISIBLE);
+            childHolder.serviceDescription.setText(model.description);
+        }
 
         if (getChildViewType(parentPosition, childPosition) == CHILD_NORMAL) {
             childHolder.mainPrice.setVisibility(View.VISIBLE);
@@ -173,14 +182,21 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                 model.therapist = application.getServiceById(model.ServiceId).therapistModel;
             } else {
                 childHolder.serviceCheckbox.setChecked(false);
-                model.therapist = null;
+//                model.therapist = null;
             }
 
-            childHolder.mainPrice.setText(" " + (int) model.price.sales);
+            if (EnrichUtils.getUserData(activity).IsMember == 1) {
+                childHolder.mainPrice.setText("" + (int) model.price._final);
+                childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
+                childHolder.strikePrice.setText("" + (int) model.price.sales);
+            } else {
+                childHolder.mainPrice.setText("" + (int) model.price.sales);
+                childHolder.strikePriceContainer.setVisibility(View.GONE);
+            }
 
             if (model.therapist != null) {
                 childHolder.serviceTherapistName.setVisibility(View.VISIBLE);
-                childHolder.serviceTherapistName.setText(model.therapist.Name);
+                childHolder.serviceTherapistName.setText(model.therapist.FirstName + " " + model.therapist.LastName);
             } else {
                 childHolder.serviceTherapistName.setVisibility(View.GONE);
             }
@@ -188,8 +204,8 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
             childHolder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (model.therapist != null) {
-                        model.therapist = null;
+                    if (application.alreadyExist(model)) {
+//                        model.therapist = null;
                         notifyItemRangeChanged(0, filteredList.get(parentPosition).ChildServices.size());
 
                         int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
@@ -217,7 +233,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                         childPos = childPosition;
 
                         Map<String, String> map = new HashMap<>();
-                        map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);
+                        map.put("CenterId", centerDetailModel.Id);
                         map.put("ServiceId", "" + model.id);
                         map.put("forDate", "");
                         if (isHomeSelected) {
@@ -285,11 +301,40 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
+        TextView skip = dialog.findViewById(R.id.therapist_dialog_skip);
         RecyclerView therapistRecyclerView = dialog.findViewById(R.id.therapist_list_recycler_view);
 
         TherapistListAdapter adapter = new TherapistListAdapter(activity, list, parentPosition, childPosition, this, dialog);
         therapistRecyclerView.setAdapter(adapter);
         therapistRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
+
+                if (toggleResponse == 1) {
+                    childHolder.serviceCheckbox.setChecked(true);
+                } else if (toggleResponse == 0) {
+                    childHolder.serviceCheckbox.setChecked(false);
+                } else if (toggleResponse == -1) {
+                    new AlertDialog.Builder(activity)
+                            .setMessage(activity.getString(R.string.add_services_to_cart_error))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+//                                    goToCart();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            }).show();
+                }
+                ((ServiceListActivity) activity).updateCart();
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -408,6 +453,15 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
         @BindView(R.id.price_container)
         LinearLayout priceContainer;
+
+        @BindView(R.id.strike_price_container)
+        LinearLayout strikePriceContainer;
+
+        @BindView(R.id.main_price_container)
+        LinearLayout mainPriceContainer;
+
+        @BindView(R.id.strike_price)
+        TextView strikePrice;
 
         @BindView(R.id.parent_arrow)
         ImageView parentArrow;

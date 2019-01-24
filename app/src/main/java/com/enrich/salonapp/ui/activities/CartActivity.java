@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
@@ -50,6 +51,9 @@ public class CartActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.empty_cart_container)
+    LinearLayout emptyCartContainer;
 
     EnrichApplication application;
     Tracker mTracker;
@@ -95,10 +99,25 @@ public class CartActivity extends AppCompatActivity {
         if (application != null)
             updatePriceAndQuantityView();
 
-        adapter = new CartAdapter(this, application.getCartItems(), this);
-        cartRecyclerView.setAdapter(adapter);
-        cartRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        cartRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        if (application.isCartEmpty()) {
+            cartRecyclerView.setVisibility(View.GONE);
+            emptyCartContainer.setVisibility(View.VISIBLE);
+
+            cartProceed.setEnabled(false);
+
+            cartProceed.setBackground(getResources().getDrawable(R.drawable.grey_gradient_curve_bg));
+        } else {
+            cartRecyclerView.setVisibility(View.VISIBLE);
+            emptyCartContainer.setVisibility(View.GONE);
+
+            cartProceed.setEnabled(true);
+
+            adapter = new CartAdapter(this, application.getCartItems(), this);
+            cartRecyclerView.setAdapter(adapter);
+            cartRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            cartRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        }
+
 
         cartProceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +146,10 @@ public class CartActivity extends AppCompatActivity {
                         slotBookingsModel.StartTime = cartList.get(i).SlotTime;
                         slotBookingsModel.GuestId = EnrichUtils.getUserData(CartActivity.this).Id;
                         slotBookingsModel.Services = servicesModelArrayList;
-                        slotBookingsModel.TherapistId = cartList.get(i).getTherapistModel().Id;
+
+                        if (cartList.get(i).getTherapistModel() != null) {
+                            slotBookingsModel.TherapistId = cartList.get(i).getTherapistModel().Id;
+                        }
                         slotBookingsModel.Quantity = 1;
 
                         slotBookingsModelArrayList.add(slotBookingsModel);

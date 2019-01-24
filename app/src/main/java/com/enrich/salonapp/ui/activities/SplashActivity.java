@@ -2,11 +2,15 @@ package com.enrich.salonapp.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -31,7 +36,6 @@ import com.enrich.salonapp.data.model.AppUpdateResponseModel;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.GuestModel;
-import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.di.Injection;
@@ -46,11 +50,11 @@ import com.enrich.salonapp.ui.presenters.RegisterFCMPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.GpsTracker;
-import com.enrich.salonapp.util.OfferHandler;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.facebook.appevents.FacebookUninstallTracker;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
@@ -60,12 +64,10 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.PlaceLikelihood;
@@ -91,6 +93,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.enrich.salonapp.util.EnrichUtils.getUserData;
+import static com.facebook.FacebookSdk.setAutoLogAppEventsEnabled;
 
 public class SplashActivity extends BaseActivity implements AuthenticationTokenContract.View, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks, GuestsContact.View, AppUpdateContract.View, RegisterFCMContract.View {
 
@@ -135,6 +138,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_splash);
 
+        setAutoLogAppEventsEnabled(true);
+
         ButterKnife.bind(this);
 
 //        callToAction = Integer.parseInt(getIntent().getStringExtra("CallToAction") == null ? "-1" : getIntent().getStringExtra("CallToAction"));
@@ -171,6 +176,17 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         displayLocationSettingsRequest();
 
         updateProgressStatus("", false);
+
+        // Facebook Uninstall Tracker
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
+                new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String deviceToken = instanceIdResult.getToken();
+                        FacebookUninstallTracker.updateDeviceToken(deviceToken);
+                    }
+                }
+        );
     }
 
     private void getAppUpdate() {
@@ -205,6 +221,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                         return;
                     } else {
                         switchToNextScreen();
+//                        getBeautyAndBling();
 //                        updateProgressStatus("Getting Your Data...", true);
 //                        guestPresenter.getUserData(this, application.getAuthenticationModel().userId, false);
                     }
@@ -303,7 +320,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     private void getCurrentPlace() {
 //        if (count < 1) {
-            updateProgressStatus("Getting Your Location...", true);
+        updateProgressStatus("Getting Your Location...", true);
 //            LocationRequest locationRequest = new LocationRequest();
 //            locationRequest.setInterval(2000);
 //            locationRequest.setFastestInterval(1000);
@@ -438,6 +455,10 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     public void saveUserDetails(final GuestModel model) {
         GuestModel guestModel = EnrichUtils.getUserData(this);
         model.Password = guestModel.Password;
+
+        EnrichUtils.saveUserData(this, guestModel);
+
+        switchToNextScreen();
     }
 
     private void switchToNextScreen() {

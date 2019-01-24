@@ -35,11 +35,16 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.iwgang.countdownview.CountdownView;
 
 public class PackageDetailActivity extends BaseActivity implements PackageDetailsContract.View {
 
@@ -84,6 +89,9 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
 
     @BindView(R.id.package_detail_container)
     NestedScrollView packageDetailContainer;
+
+    @BindView(R.id.package_end_day_count_down)
+    CountdownView packageEndDayCountDown;
 
     int packageId;
 
@@ -147,6 +155,21 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
                 startActivity(intent);
             }
         });
+
+        try {
+            String dateStr = "28/02/2019 00:00:00";
+            SimpleDateFormat stringToDate = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            Date date = stringToDate.parse(dateStr);
+
+            long[] numberOfDays = EnrichUtils.printDifference(new Date(), date);
+
+            long numberOfDaysInMilliseconds = numberOfDays[0] * 86400000;
+
+            packageEndDayCountDown.start(numberOfDaysInMilliseconds);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            packageEndDayCountDown.setVisibility(View.GONE);
+        }
 
         updateCart();
     }

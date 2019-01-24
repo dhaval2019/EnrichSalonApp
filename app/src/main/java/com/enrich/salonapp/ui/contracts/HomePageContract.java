@@ -25,7 +25,7 @@ public interface HomePageContract {
     interface Presenter extends IBasePresenter<HomePageContract.View> {
         void getOffersList(Context context, Map<String, String> map);
 
-        void getAppointment(Context context, String url);
+        void getAppointment(Context context, String url, Map<String, String> map);
 
         void getNewAndPopularServices(Context context, Map<String, String> map);
     }

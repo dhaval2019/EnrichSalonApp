@@ -37,7 +37,7 @@ public class BookingSummaryPresenter extends BasePresenter<BookingSummaryContrac
             public void onSuccess(ReserveSlotResponseModel model) {
                 if (view != null) {
                     view.slotReserved(model);
-                    view.setProgressBar(false);
+//                    view.setProgressBar(false);
                 }
             }
 
@@ -64,14 +64,14 @@ public class BookingSummaryPresenter extends BasePresenter<BookingSummaryContrac
         if (view == null)
             return;
 
-        view.setProgressBar(true);
+//        view.setProgressBar(true);
 
         dataRepository.createOrder(context, model, new DataSource.CreateOrderCallBack() {
             @Override
             public void onSuccess(CreateOrderResponseModel model) {
                 if (view != null) {
                     view.orderCreated(model);
-                    view.setProgressBar(false);
+//                    view.setProgressBar(false);
                 }
             }
 
@@ -98,7 +98,7 @@ public class BookingSummaryPresenter extends BasePresenter<BookingSummaryContrac
         if (view == null)
             return;
 
-        view.setProgressBar(true);
+//        view.setProgressBar(true);
 
         dataRepository.getInvoice(context, url, new DataSource.GetInvoiceCallBack() {
             @Override

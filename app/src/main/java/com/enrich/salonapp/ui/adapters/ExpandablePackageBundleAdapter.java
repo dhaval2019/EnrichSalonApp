@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
@@ -63,9 +65,10 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         final PackageBundle model = list.get(parentPosition);
 
         parentViewHolder.packageBundleName.setText(model.Name);
+        parentViewHolder.packageBundleSubTitle.setText(model.SubTitle);
 
         double tempValue = Double.valueOf(model.getPrice());
-        parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
+        parentViewHolder.packageBundlePrice.setText("Price: " + activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
 
         parentViewHolder.viewServicesButton.setText("View Details");
         parentViewHolder.packageBundleCount.setText("" + application.getItemQuantity(model));
@@ -75,10 +78,18 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
             Date date = stringToDate.parse(model.ValidTillDate);
 
             SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy");
-            parentViewHolder.packageBundleValidity.setText("Valid till " + dateToString.format(date));
+            parentViewHolder.packageBundleValidity.setText("Offer ends in " + EnrichUtils.printDifference(new Date(), date)[0] + " days");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        parentViewHolder.packageBundleUsageValidity.setText("Usage Validity: " + model.ValidityDays + " days");
+        parentViewHolder.packageRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                Toast.makeText(activity, "Rating: " + v, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         parentViewHolder.packageBundleAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +168,15 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
 
         @BindView(R.id.package_bundle_count)
         TextView packageBundleCount;
+
+        @BindView(R.id.package_bundle_sub_title)
+        TextView packageBundleSubTitle;
+
+        @BindView(R.id.package_bundle_usage_validity)
+        TextView packageBundleUsageValidity;
+
+        @BindView(R.id.package_rating_bar)
+        RatingBar packageRatingBar;
 
         public PackageBundleParentViewHolder(@NonNull View itemView) {
             super(itemView);

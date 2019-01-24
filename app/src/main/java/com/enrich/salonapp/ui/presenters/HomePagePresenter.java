@@ -55,11 +55,11 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
     }
 
     @Override
-    public void getAppointment(Context context, String url) {
+    public void getAppointment(Context context, String url, Map<String, String> map) {
         if (view == null)
             return;
 
-        dataRepository.getAppointment(context, url, new DataSource.GetAppointmentsCallBack() {
+        dataRepository.getAppointment(context, url, map, new DataSource.GetAppointmentsCallBack() {
             @Override
             public void onSuccess(AppointmentResponseModel model) {
                 if (view != null) {

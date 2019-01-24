@@ -63,6 +63,7 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
                 centerDetailModel.Address = model.Address1 + " " + model.Address2;
                 centerDetailModel.Email = model.Email;
                 centerDetailModel.Name = model.Name;
+                centerDetailModel.CenterType = model.CenterType;
 
                 EnrichUtils.saveHomeStore(context, EnrichUtils.newGson().toJson(centerDetailModel));
 

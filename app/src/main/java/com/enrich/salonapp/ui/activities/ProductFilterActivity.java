@@ -31,6 +31,8 @@ import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -179,6 +181,7 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
 
     public void updateSubCategory() {
         if (productRequestModel.ProductCategoryIds.isEmpty()) {
+            productRequestModel.ProductSubCategoryIds = new ArrayList<>();
             productSubCategoryButton.setVisibility(View.GONE);
         } else {
             productSubCategoryButton.setVisibility(View.VISIBLE);

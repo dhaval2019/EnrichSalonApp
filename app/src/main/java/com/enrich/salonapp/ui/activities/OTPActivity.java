@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -75,10 +78,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
         createOTPResponseModel = getIntent().getParcelableExtra("OTPResponseModel");
         createOTPRequestModel = getIntent().getParcelableExtra("OTPRequestModel");
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
         otpPresenter = new OTPPresenter(this, dataRepository);
         authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
@@ -133,7 +133,16 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
                     registerFCMPresenter.registerFCM(OTPActivity.this, fcmModel);
                 }
             });
+
+            logCompletedRegistrationEvent(guestModel);
         }
+    }
+
+    public void logCompletedRegistrationEvent(GuestModel guestModel) {
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_REGISTRATION_METHOD, "EMAIL");
+        params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.newGson().toJson(guestModel));
+        AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_COMPLETED_REGISTRATION, params);
     }
 
     @Override
@@ -144,7 +153,28 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     @Override
     public void saveAuthenticationToken(AuthenticationModel model) {
         if (model.accessToken != null) {
-            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
+//            ((EnrichApplication) getApplicationContext()).setAuthenticationModel(model);
+            EnrichUtils.saveAuthenticationModel(this, model);
+
+            GuestModel guestModel = EnrichUtils.getUserData(this);
+            guestModel.Id = model.userId;
+            EnrichUtils.saveUserData(OTPActivity.this, guestModel);
+
+            switchToNextScreen();
+        }
+    }
+
+    private void switchToNextScreen() {
+        if (EnrichUtils.getHomeStore(this) != null) {
+            Intent intent = new Intent(OTPActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(OTPActivity.this, StoreSelectorActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 

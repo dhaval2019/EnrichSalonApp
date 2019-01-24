@@ -11,6 +11,7 @@ public class ServiceAppointmentModel implements Parcelable {
     public String AppointmentSegmentId;
     public String PackageId;
     public String Package;
+    public int BookingFor;
     public ServiceViewModel Service;
     public String ReducedTimeGroupId;
     public String RequestedTherapistGender;
@@ -50,6 +51,7 @@ public class ServiceAppointmentModel implements Parcelable {
         AppointmentSegmentId = in.readString();
         PackageId = in.readString();
         Package = in.readString();
+        BookingFor = in.readInt();
         Service = in.readParcelable(ServiceViewModel.class.getClassLoader());
         ReducedTimeGroupId = in.readString();
         RequestedTherapistGender = in.readString();
@@ -90,6 +92,7 @@ public class ServiceAppointmentModel implements Parcelable {
         dest.writeString(AppointmentSegmentId);
         dest.writeString(PackageId);
         dest.writeString(Package);
+        dest.writeInt(BookingFor);
         dest.writeParcelable(Service, flags);
         dest.writeString(ReducedTimeGroupId);
         dest.writeString(RequestedTherapistGender);

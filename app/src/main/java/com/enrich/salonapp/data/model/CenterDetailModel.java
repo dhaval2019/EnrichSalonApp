@@ -14,6 +14,7 @@ public class CenterDetailModel implements Parcelable {
     public String OrganizationName;
     public String OrganizationLogoUrl;
     public String Email;
+    public int CenterType;
 
     public CenterDetailModel() {
     }
@@ -28,6 +29,7 @@ public class CenterDetailModel implements Parcelable {
         OrganizationName = in.readString();
         OrganizationLogoUrl = in.readString();
         Email = in.readString();
+        CenterType = in.readInt();
     }
 
     @Override
@@ -41,6 +43,7 @@ public class CenterDetailModel implements Parcelable {
         dest.writeString(OrganizationName);
         dest.writeString(OrganizationLogoUrl);
         dest.writeString(Email);
+        dest.writeInt(CenterType);
     }
 
     @Override

@@ -429,6 +429,16 @@ public class EnrichUtils {
         return newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.HOME_STORE, ""), CenterDetailModel.class);
     }
 
+    public static void saveHomeStoreForRebook(Context context, String modelStr) {
+        if (modelStr != null) {
+            SharedPreferenceStore.storeValue(context, Constants.HOME_STORE_FOR_REBOOK, modelStr);
+        }
+    }
+
+    public static CenterDetailModel getHomeStoreForRebook(Context context) {
+        return newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.HOME_STORE_FOR_REBOOK, ""), CenterDetailModel.class);
+    }
+
     public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
 
         BadgeDrawable badge;
@@ -458,5 +468,36 @@ public class EnrichUtils {
         }
 
         badge.removeBadge(context);
+    }
+
+    public static long[] printDifference(Date startDate, Date endDate) {
+        //milliseconds
+        long different = endDate.getTime() - startDate.getTime();
+
+        System.out.println("startDate : " + startDate);
+        System.out.println("endDate : " + endDate);
+        System.out.println("different : " + different);
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        System.out.printf(
+                "%d days, %d hours, %d minutes, %d seconds%n",
+                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+
+        return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }
 }
