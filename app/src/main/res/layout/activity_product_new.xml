@@ -46,26 +46,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/product_offer_view_pager"
+            <LinearLayout
+                android:id="@+id/product_offer_container"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
-            <com.rd.PageIndicatorView
-                android:id="@+id/product_offer_page_indicator"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:piv_animationType="scale"
-                app:piv_dynamicCount="true"
-                app:piv_interactiveAnimation="true"
-                app:piv_selectedColor="@color/colorAccent"
-                app:piv_unselectedColor="#60d69e5c"
-                app:piv_viewPager="@+id/product_offer_view_pager"
-                tools:piv_padding="3dp"
-                android:layout_marginTop="3dp"
-                tools:piv_radius="2dp" />
+                android:orientation="vertical">
 
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/product_offer_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <com.rd.PageIndicatorView
+                    android:id="@+id/product_offer_page_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    app:piv_animationType="scale"
+                    app:piv_dynamicCount="true"
+                    app:piv_interactiveAnimation="true"
+                    app:piv_selectedColor="@color/colorAccent"
+                    app:piv_unselectedColor="#60d69e5c"
+                    app:piv_viewPager="@+id/product_offer_view_pager"
+                    tools:piv_padding="3dp"
+                    tools:piv_radius="2dp" />
+            </LinearLayout>
             <!-- CATEGORY -->
             <FrameLayout
                 android:layout_width="match_parent"
@@ -83,10 +89,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/gold_border_1dp"
-                    android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_15dp"
-                    android:paddingRight="@dimen/dimen_15dp"
                     android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:text="SHOP BY SUB CATEGORIES"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_10dp"
@@ -119,10 +125,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/gold_border_1dp"
-                    android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_15dp"
-                    android:paddingRight="@dimen/dimen_15dp"
                     android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:text="SHOP BY BRAND"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_10dp"
@@ -155,10 +161,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/gold_border_1dp"
-                    android:paddingBottom="@dimen/dimen_5dp"
                     android:paddingLeft="@dimen/dimen_15dp"
-                    android:paddingRight="@dimen/dimen_15dp"
                     android:paddingTop="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:paddingBottom="@dimen/dimen_5dp"
                     android:text="EXPLORE"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/dimen_10dp"
@@ -179,9 +185,9 @@
                 android:id="@+id/view_all_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_15dp"
-                android:layout_marginEnd="@dimen/dimen_15dp"
                 android:layout_marginStart="@dimen/dimen_15dp"
+                android:layout_marginEnd="@dimen/dimen_15dp"
+                android:layout_marginBottom="@dimen/dimen_15dp"
                 android:background="@drawable/gold_bg_gradient_curved"
                 android:text="View All"
                 android:textColor="@color/white" />

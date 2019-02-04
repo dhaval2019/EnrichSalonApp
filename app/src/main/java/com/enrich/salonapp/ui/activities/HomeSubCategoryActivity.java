@@ -48,6 +48,7 @@ public class HomeSubCategoryActivity extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Home SubCategory List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

@@ -77,6 +77,7 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("My Packages List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

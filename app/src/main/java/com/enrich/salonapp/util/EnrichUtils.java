@@ -2,6 +2,7 @@ package com.enrich.salonapp.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,12 +10,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.support.design.widget.BottomSheetDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enrich.salonapp.R;
@@ -494,10 +499,33 @@ public class EnrichUtils {
 
         long elapsedSeconds = different / secondsInMilli;
 
-        System.out.printf(
-                "%d days, %d hours, %d minutes, %d seconds%n",
-                elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+        System.out.printf("%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
 
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
+    }
+
+    public static void showShouldUpdateDialog(Context context) {
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        dialog.setContentView(R.layout.should_update_dialog);
+
+        dialog.setCancelable(true);
+
+        TextView ok = dialog.findViewById(R.id.should_update_ok);
+        TextView cancel = dialog.findViewById(R.id.should_update_cancel);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

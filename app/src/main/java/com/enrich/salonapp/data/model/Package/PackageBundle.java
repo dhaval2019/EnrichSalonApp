@@ -30,6 +30,8 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
     public String ValidityBasedOn;
     public String ValidTillDate;
     public int ValidityDays;
+    public double BundleRatings;
+    public int PackageBundleSold;
     public List<PackageBundleCashback> Cashbacks;
 
     @SerializedName("PackageBundleService")
@@ -64,6 +66,8 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
         ValidityBasedOn = in.readString();
         ValidTillDate = in.readString();
         ValidityDays = in.readInt();
+        BundleRatings = in.readDouble();
+        PackageBundleSold = in.readInt();
         Cashbacks = in.createTypedArrayList(PackageBundleCashback.CREATOR);
         packageBundleService = in.createTypedArrayList(PackageBundleService.CREATOR);
         packageBundleStore = in.createTypedArrayList(PackageBundleStore.CREATOR);
@@ -87,6 +91,8 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
         dest.writeString(ValidityBasedOn);
         dest.writeString(ValidTillDate);
         dest.writeInt(ValidityDays);
+        dest.writeDouble(BundleRatings);
+        dest.writeInt(PackageBundleSold);
         dest.writeTypedList(Cashbacks);
         dest.writeTypedList(packageBundleService);
         dest.writeTypedList(packageBundleStore);

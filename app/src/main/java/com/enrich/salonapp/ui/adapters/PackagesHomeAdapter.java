@@ -52,8 +52,8 @@ public class PackagesHomeAdapter extends RecyclerView.Adapter<PackagesHomeAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PackagesActivity.class);
-//                intent.putExtra("CreateOrderPackageBundleModel", model.PackageId);
+                Intent intent = new Intent(context, PackageDetailActivity.class);
+                intent.putExtra("CreateOrderPackageBundleModel", model.PackageId);
                 context.startActivity(intent);
             }
         });

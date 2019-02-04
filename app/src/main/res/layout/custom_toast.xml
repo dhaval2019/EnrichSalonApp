@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/custom_toast_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/dimen_10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_gold"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:paddingTop="@dimen/dimen_10dp"
+            android:paddingEnd="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp">
+
+            <ImageView
+                android:id="@+id/custom_toast_icon"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/adaptive_icon" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/custom_toast_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_toLeftOf="@+id/custom_toast_divider"
+                android:layout_toRightOf="@+id/custom_toast_icon"
+                android:text="Varun Barve brought a package form Tandon Mall, Andheri east"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:font_type="light" />
+
+            <View
+                android:id="@+id/custom_toast_divider"
+                android:layout_width="@dimen/dimen_1dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/custom_toast_button"
+                android:layout_alignBottom="@+id/custom_toast_button"
+                android:layout_toLeftOf="@+id/custom_toast_button"
+                android:background="@color/white" />
+
+            <ImageButton
+                android:id="@+id/custom_toast_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_keyboard_arrow_right" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

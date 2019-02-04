@@ -84,12 +84,8 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         }
 
         parentViewHolder.packageBundleUsageValidity.setText("Usage Validity: " + model.ValidityDays + " days");
-        parentViewHolder.packageRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                Toast.makeText(activity, "Rating: " + v, Toast.LENGTH_SHORT).show();
-            }
-        });
+        parentViewHolder.packageRatingBar.setRating((float) model.BundleRatings);
+        parentViewHolder.numberOfPeopleBought.setText(model.PackageBundleSold + " packages sold");
 
         parentViewHolder.packageBundleAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +173,9 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
 
         @BindView(R.id.package_rating_bar)
         RatingBar packageRatingBar;
+
+        @BindView(R.id.number_of_people_bought)
+        TextView numberOfPeopleBought;
 
         public PackageBundleParentViewHolder(@NonNull View itemView) {
             super(itemView);

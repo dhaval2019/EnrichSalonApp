@@ -21,11 +21,10 @@ public class Constants {
 
     public static final String KEY_USER_DATA = "GuestsDataKey";
     public static final String KEY_USER_ADDRESS = "GuestsAddress";
-
     public static final String KEY_AUTHENTICATION = "AuthenticationKey";
-
     public static final String KEY_CURRENT_LATITUDE = "currentLatitude";
     public static final String KEY_CURRENT_LONGITUDE = "currentLongitude";
+    public static final String KEY_TOAST_OFFERS = "ToastOffers";
 
     public static final int IST_EXTRA_MINS = (5 * 60) + 30; // UTC TIME IN MINUTES
 

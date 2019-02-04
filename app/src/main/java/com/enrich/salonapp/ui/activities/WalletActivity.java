@@ -86,6 +86,7 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Wallet Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
 

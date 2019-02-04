@@ -59,15 +59,15 @@ public class OfferHomeAdapter extends RecyclerView.Adapter<OfferHomeAdapter.Offe
             holder.offerCountDownContainer.setVisibility(View.VISIBLE);
 
             try {
-                String dateStr = "28/02/2019 00:00:00";
-                SimpleDateFormat stringToDate = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                Date date = stringToDate.parse(dateStr);
+                String dateStr = model.ValidTill.substring(0, 10) + " " + model.ValidTill.substring(11);
+                SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date endDate = stringToDate.parse(dateStr);
+                Date startDate = new Date();
 
-                long[] numberOfDays = EnrichUtils.printDifference(new Date(), date);
-
-                long numberOfDaysInMilliseconds = numberOfDays[0] * 86400000;
+                long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
 
                 holder.offerEndDayCountDown.start(numberOfDaysInMilliseconds);
+                holder.offerEndDayCountDown.setTag(R.id.offer_end_day_count_down, position);
             } catch (ParseException e) {
                 e.printStackTrace();
                 holder.offerCountDownContainer.setVisibility(View.GONE);

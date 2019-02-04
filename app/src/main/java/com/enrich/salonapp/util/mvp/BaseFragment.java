@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.util.supertoast.SuperActivityToast;
 
 import butterknife.BindView;
 
@@ -26,5 +27,11 @@ public class BaseFragment extends Fragment implements IBaseView {
 //        } else {
 //            progressBar.setVisibility(View.GONE);
 //        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SuperActivityToast.cancelAllSuperToasts();
     }
 }

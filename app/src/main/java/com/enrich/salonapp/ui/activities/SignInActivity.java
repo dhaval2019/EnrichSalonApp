@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AuthenticationModel;
@@ -39,6 +40,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -79,11 +82,21 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
 
     DataRepository dataRepository;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        application = (EnrichApplication) getApplication();
+
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Login Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 
@@ -233,6 +246,10 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         dialog.setContentView(R.layout.forgot_password_success);
 
         dialog.setCancelable(true);
+
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Forgot Password");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         TextView openMailApp = dialog.findViewById(R.id.open_mail_app);
 

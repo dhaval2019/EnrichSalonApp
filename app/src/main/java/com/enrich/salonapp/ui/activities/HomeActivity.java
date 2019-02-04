@@ -49,6 +49,7 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.OfferHandler;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.supertoast.SuperActivityToast;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.common.ConnectionResult;
@@ -340,6 +341,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
             }
         }
+
+        SuperActivityToast.cancelAllSuperToasts();
     }
 
     @Override

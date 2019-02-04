@@ -48,6 +48,7 @@ public class OfferActivity extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Offers List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

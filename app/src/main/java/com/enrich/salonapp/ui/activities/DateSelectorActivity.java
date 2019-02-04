@@ -125,6 +125,7 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Date Time Slot List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

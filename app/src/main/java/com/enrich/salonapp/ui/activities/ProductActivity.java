@@ -81,6 +81,7 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Product List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

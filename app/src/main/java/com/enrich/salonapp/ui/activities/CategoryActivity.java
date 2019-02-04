@@ -62,6 +62,7 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Category List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

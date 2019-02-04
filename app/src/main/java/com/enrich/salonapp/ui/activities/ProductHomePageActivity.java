@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
@@ -73,6 +74,9 @@ public class ProductHomePageActivity extends BaseActivity implements ProductFilt
     @BindView(R.id.product_offer_view_pager)
     ViewPager productOfferViewPager;
 
+    @BindView(R.id.product_offer_container)
+    LinearLayout productOfferContainer;
+
     @BindView(R.id.product_offer_page_indicator)
     PageIndicatorView productOfferPageIndicator;
 
@@ -93,6 +97,7 @@ public class ProductHomePageActivity extends BaseActivity implements ProductFilt
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Product List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 
@@ -186,10 +191,18 @@ public class ProductHomePageActivity extends BaseActivity implements ProductFilt
     @Override
     public void showProductOffers(OfferResponseModel model) {
         if (!model.Offers.isEmpty()) {
+            productOfferContainer.setVisibility(View.VISIBLE);
             ProductOfferAdapter adapter = new ProductOfferAdapter(this, model.Offers);
             productOfferViewPager.setAdapter(adapter);
             productOfferPageIndicator.setCount(model.Offers.size());
+        } else {
+            productOfferContainer.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void noProductOffers() {
+        productOfferContainer.setVisibility(View.GONE);
     }
 
     @Override

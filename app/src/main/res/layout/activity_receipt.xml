@@ -325,6 +325,46 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/order_contact_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/order_payment_address"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:weightSum="2">
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Contact"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:font_type="bold"/>
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/order_salon_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="-----"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        app:font_type="semi_bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/order_payment_address_extended"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

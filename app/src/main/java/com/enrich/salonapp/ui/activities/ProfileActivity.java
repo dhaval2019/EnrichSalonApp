@@ -13,12 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.ImageModel;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,10 +71,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     ImageModel model;
 
+    EnrichApplication application;
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        application = (EnrichApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Profile Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 
@@ -137,18 +149,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setAddressData(ArrayList<AddressModel> list) {
-        if (list != null || !list.isEmpty()) {
-            for (int i = 0; i < list.size(); i++) {
-                switch (list.get(i).AddressType) {
-                    case "S":
-                        addressHome.setText(list.get(i).Location);
-                        break;
-                    case "W":
-                        addressWork.setText(list.get(i).Location);
-                        break;
-                    case "O":
-                        addressOther.setText(list.get(i).Location);
-                        break;
+        if (list != null) {
+            if (!list.isEmpty()) {
+                for (int i = 0; i < list.size(); i++) {
+                    switch (list.get(i).AddressType) {
+                        case "S":
+                            addressHome.setText(list.get(i).Location);
+                            break;
+                        case "W":
+                            addressWork.setText(list.get(i).Location);
+                            break;
+                        case "O":
+                            addressOther.setText(list.get(i).Location);
+                            break;
+                    }
                 }
             }
         }

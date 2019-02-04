@@ -114,7 +114,6 @@
                             android:layout_gravity="left"
                             android:layout_marginTop="15dp"
                             android:gravity="center"
-                            android:text="Service Packages"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             app:font_type="bold" />
@@ -126,7 +125,6 @@
                             android:layout_gravity="left"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
-                            android:text="Rs. 500"
                             android:textColor="@color/red"
                             android:textSize="16sp"
                             app:font_type="semi_bold" />
@@ -138,51 +136,58 @@
                             android:layout_gravity="left"
                             android:layout_marginTop="10dp"
                             android:gravity="left"
-                            android:text="Packages available for as low as Rs.2500/- and you get upto 75% more. Take your pick. PLEASE NOTE : THE TOTAL VALUE (Price + additional service points) WILL REFLECT IN THE ENRICH APP WALLET IN 24 HOURS POST PURCHASE."
                             android:textColor="@color/grey"
                             android:textSize="12sp"
                             app:font_type="regular" />
 
-                        <com.enrich.salonapp.ui.views.CustomTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/package_count_down_container"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:gravity="center"
-                            android:text="OFFER ENDS IN"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            app:font_type="semi_bold" />
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
-                        <cn.iwgang.countdownview.CountdownView
-                            android:id="@+id/package_end_day_count_down"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/dimen_5dp"
-                            android:padding="@dimen/dimen_5dp"
-                            app:isHideTimeBackground="false"
-                            app:isShowDay="true"
-                            app:isShowHour="true"
-                            app:isShowMillisecond="false"
-                            app:isShowMinute="true"
-                            app:isShowSecond="true"
-                            app:isShowTimeBgBorder="true"
-                            app:isTimeTextBold="false"
-                            app:suffixDay="Day"
-                            app:suffixGravity="center"
-                            app:suffixHour="Hrs"
-                            app:suffixMinute="Min"
-                            app:suffixSecond="Sec"
-                            app:suffixTextColor="@color/dark_gold"
-                            app:suffixTextSize="12sp"
-                            app:timeBgBorderColor="@color/grey"
-                            app:timeBgBorderRadius="@dimen/dimen_50dp"
-                            app:timeBgBorderSize="1dp"
-                            app:timeBgRadius="@dimen/dimen_50dp"
-                            app:timeBgSize="@dimen/dimen_45dp"
-                            app:timeTextColor="#000000"
-                            app:timeTextSize="22sp" />
+                            <com.enrich.salonapp.ui.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:gravity="center"
+                                android:text="OFFER ENDS IN"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                app:font_type="semi_bold" />
+
+                            <cn.iwgang.countdownview.CountdownView
+                                android:id="@+id/package_end_day_count_down"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/dimen_5dp"
+                                android:padding="@dimen/dimen_5dp"
+                                app:isHideTimeBackground="false"
+                                app:isShowDay="true"
+                                app:isShowHour="true"
+                                app:isShowMillisecond="false"
+                                app:isShowMinute="true"
+                                app:isShowSecond="true"
+                                app:isShowTimeBgBorder="true"
+                                app:isTimeTextBold="false"
+                                app:suffixDay="Days"
+                                app:suffixGravity="center"
+                                app:suffixHour="Hrs"
+                                app:suffixMinute="Min"
+                                app:suffixSecond="Sec"
+                                app:suffixTextColor="@color/dark_gold"
+                                app:suffixTextSize="12sp"
+                                app:timeBgBorderColor="@color/grey"
+                                app:timeBgBorderRadius="@dimen/dimen_50dp"
+                                app:timeBgBorderSize="1dp"
+                                app:timeBgRadius="@dimen/dimen_50dp"
+                                app:timeBgSize="@dimen/dimen_45dp"
+                                app:timeTextColor="#000000"
+                                app:timeTextSize="22sp" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"

@@ -67,6 +67,7 @@ public class WalletHistoryActivity extends BaseActivity implements WalletHistory
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Wallet History Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

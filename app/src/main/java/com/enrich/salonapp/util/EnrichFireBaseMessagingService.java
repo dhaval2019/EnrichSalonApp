@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
 
+    private int callToAction;
+
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
@@ -61,7 +63,11 @@ public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void sendNotification(String body, String title, Map<String, String> data) {
         OfferModel model = new OfferModel();
-        int callToAction = Integer.parseInt(data.get("CallToAction"));
+        if (data.size() != 0) {
+            callToAction = Integer.parseInt(data.get("CallToAction"));
+        }else{
+            callToAction = 11;
+        }
 
         switch (callToAction) {
             case Constants.OFFER_COMMAND_PACKAGES_LIST:
@@ -92,7 +98,6 @@ public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
                 for (int i = 0; i < productCategorySplit.length; i++) {
                     productCategoryList.add(new OfferProductCategoryTagsModel(0, 0, Integer.parseInt(productCategorySplit[i].trim())));
                 }
-
                 model.OfferProductCategoryTags = productCategoryList;
                 break;
             case Constants.OFFER_COMMAND_PRODUCT_SUBCATEGORY_LIST:
@@ -106,7 +111,6 @@ public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
                 for (int i = 0; i < productSubCategorySplit.length; i++) {
                     productSubCategoryList.add(new OfferProductSubCategoryTagsModel(0, 0, Integer.parseInt(productSubCategorySplit[i].trim())));
                 }
-
                 model.OfferProductSubCategoryTags = productSubCategoryList;
                 break;
             case Constants.OFFER_COMMAND_PRODUCT_BRAND_LIST:
@@ -120,8 +124,9 @@ public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
                 for (int i = 0; i < productBrandSplit.length; i++) {
                     productBrandList.add(new OfferProductBrandTagsModel(0, 0, Integer.parseInt(productBrandSplit[i].trim())));
                 }
-
                 model.OfferProductBrandTags = productBrandList;
+                break;
+            case Constants.OFFER_COMMAND_NO_ACTION:
                 break;
         }
 
@@ -208,6 +213,5 @@ public class EnrichFireBaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(notifyId, notification);
-
     }
 }

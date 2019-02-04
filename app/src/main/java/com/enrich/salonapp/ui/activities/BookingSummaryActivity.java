@@ -17,7 +17,6 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AddressModel;
-import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.ConfirmOrderModel;
 import com.enrich.salonapp.data.model.ConfirmOrderRequestModel;
 import com.enrich.salonapp.data.model.ConfirmOrderResponseModel;
@@ -66,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,6 +136,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     InvoiceModel invoiceModel;
     ReserveSlotRequestModel reserveSlotModel;
     ConfirmReservationResponseModel confirmReservationResponseModel;
+    ConfirmOrderRequestModel confirmOrderRequestModel;
 
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
 
@@ -167,6 +166,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Checkout Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -358,7 +358,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
             }
 
-            ConfirmOrderRequestModel confirmOrderRequestModel = new ConfirmOrderRequestModel();
+            confirmOrderRequestModel = new ConfirmOrderRequestModel();
             confirmOrderRequestModel.setOrderId(createOrderResponseModel.getOrder().getOrderId());
             confirmOrderRequestModel.setConfirmOrder(confirmOrderModel);
 
@@ -376,7 +376,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         if (model.getConfirmOrder() != null) {
             EnrichUtils.log(EnrichUtils.newGson().toJson(model));
             confirmOrderModel = model.getConfirmOrder().getConfirmOrder();
-//            logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
+            logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
 
             if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
                 logPurchaseOnlineEvent(model.getConfirmOrder().getConfirmOrder());
@@ -387,17 +387,19 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             Intent intent = new Intent(BookingSummaryActivity.this, ReceiptActivity.class);
             intent.putExtra("ConfirmReservationResponseModel", EnrichUtils.newGson().toJson(confirmReservationResponseModel));
             intent.putExtra("InvoiceModel", EnrichUtils.newGson().toJson(createOrderResponseModel.getPaymentSummary()));
+            intent.putExtra("ConfirmOrderRequestModel", EnrichUtils.newGson().toJson(confirmOrderRequestModel));
+
             startActivity(intent);
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, model.getError().Message);
         }
     }
 
-//    public void logAppointmentBooked(ConfirmOrderModel model) {
-//        Bundle params = new Bundle();
-//        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
-//        AppEventsLogger.newLogger(this).logPurchase(BigDecimal.valueOf(model.getAmount()), Currency.getInstance("INR"), params);
-//    }
+    public void logAppointmentBooked(ConfirmOrderModel model) {
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
+        AppEventsLogger.newLogger(this).logPurchase(BigDecimal.valueOf(model.getAmount()), Currency.getInstance("INR"), params);
+    }
 
     public void logPurchaseOnlineEvent(ConfirmOrderModel model) {
         Bundle params = new Bundle();
@@ -620,7 +622,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf10 = "";
 
         AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
-        builder.setAmount(amount)
+        builder.setAmount("" + amount)
                 .setTxnId(txnId)
                 .setPhone(phone)
                 .setProductName(productName)

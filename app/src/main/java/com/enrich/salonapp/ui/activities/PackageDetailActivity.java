@@ -93,6 +93,9 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
     @BindView(R.id.package_end_day_count_down)
     CountdownView packageEndDayCountDown;
 
+    @BindView(R.id.package_count_down_container)
+    LinearLayout packageCountDownContainer;
+
     int packageId;
 
     DataRepository dataRepository;
@@ -113,6 +116,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Package Detail Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -156,21 +160,6 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             }
         });
 
-        try {
-            String dateStr = "28/02/2019 00:00:00";
-            SimpleDateFormat stringToDate = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-            Date date = stringToDate.parse(dateStr);
-
-            long[] numberOfDays = EnrichUtils.printDifference(new Date(), date);
-
-            long numberOfDaysInMilliseconds = numberOfDays[0] * 86400000;
-
-            packageEndDayCountDown.start(numberOfDaysInMilliseconds);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            packageEndDayCountDown.setVisibility(View.GONE);
-        }
-
         updateCart();
     }
 
@@ -193,6 +182,26 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageDetailContainer.setVisibility(View.VISIBLE);
 
             PackageModel packageModel = model.Package;
+
+            if (packageModel.IsTimerEnable) {
+                packageCountDownContainer.setVisibility(View.VISIBLE);
+
+                try {
+                    String dateStr = packageModel.PackageValidityDate.substring(0, 10) + " " + packageModel.PackageValidityDate.substring(11);
+                    SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    Date endDate = stringToDate.parse(dateStr);
+                    Date startDate = new Date();
+
+                    long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
+
+                    packageEndDayCountDown.start(numberOfDaysInMilliseconds);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    packageEndDayCountDown.setVisibility(View.GONE);
+                }
+            } else {
+                packageCountDownContainer.setVisibility(View.GONE);
+            }
 
             packageDetailName.setText(packageModel.PackageTitle);
             packageDetailDescription.setText(packageModel.PackageDescription);

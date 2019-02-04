@@ -24,6 +24,7 @@ import com.enrich.salonapp.data.model.AppointmentModels.AppointmentSlotBookingsM
 import com.enrich.salonapp.ui.adapters.CartAdapter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -35,7 +36,7 @@ import butterknife.ButterKnife;
 import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
 import static com.enrich.salonapp.ui.activities.AddressSelectorActivity.SELECT_ADDRESS;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends BaseActivity {
 
     @BindView(R.id.cart_recycler_view)
     RecyclerView cartRecyclerView;
@@ -82,6 +83,7 @@ public class CartActivity extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Cart Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

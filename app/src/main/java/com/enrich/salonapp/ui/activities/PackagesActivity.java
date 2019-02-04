@@ -59,6 +59,7 @@ public class PackagesActivity extends BaseActivity implements PackageContract.Vi
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Package List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

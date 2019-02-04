@@ -81,8 +81,9 @@ public class AddressSelectorActivity extends AppCompatActivity {
         // SEND ANALYTICS
         application = (EnrichApplication) getApplicationContext();
         mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Offers List Screen");
+        mTracker.setScreenName("Address Selector Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

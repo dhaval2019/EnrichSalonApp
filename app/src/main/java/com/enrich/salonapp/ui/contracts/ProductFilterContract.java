@@ -19,6 +19,8 @@ public interface ProductFilterContract {
         void showProductSubCategories(ProductSubCategoryResponseModel model);
 
         void showProductOffers(OfferResponseModel model);
+
+        void noProductOffers();
     }
 
     interface Presenter extends IBasePresenter<ProductFilterContract.View> {

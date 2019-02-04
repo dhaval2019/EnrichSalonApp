@@ -40,6 +40,7 @@ public class OfferModel implements Parcelable {
     public String BlogRedirectURL;
     public String OfferImageURL;
     public String OfferBannerURL;
+    public String ToastImageURL;
 
     public OfferModel() {
     }
@@ -74,6 +75,7 @@ public class OfferModel implements Parcelable {
         BlogRedirectURL = in.readString();
         OfferImageURL = in.readString();
         OfferBannerURL = in.readString();
+        ToastImageURL = in.readString();
     }
 
     @Override
@@ -107,6 +109,7 @@ public class OfferModel implements Parcelable {
         dest.writeString(BlogRedirectURL);
         dest.writeString(OfferImageURL);
         dest.writeString(OfferBannerURL);
+        dest.writeString(ToastImageURL);
     }
 
     @Override

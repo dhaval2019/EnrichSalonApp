@@ -101,6 +101,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Service Variant List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         serviceViewModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ServiceViewModel"), ServiceViewModel.class);
         subCategoryId = getIntent().getStringExtra("SubCategoryId");

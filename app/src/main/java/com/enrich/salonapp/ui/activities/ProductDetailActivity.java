@@ -124,6 +124,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Product Details Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         application = (EnrichApplication) getApplication();
 

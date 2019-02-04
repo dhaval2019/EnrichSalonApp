@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageModel implements Parcelable{
+public class PackageModel implements Parcelable {
 
     public int PackageId;
     public String PackageTitle;
@@ -21,6 +21,8 @@ public class PackageModel implements Parcelable{
     public String PackageFor;
     public boolean IsActive;
     public int PackageCategoryId;
+    public boolean IsTimerEnable;
+    public String PackageValidityDate;
     public String PackageImageURL;
     public String PackageImageWideURL;
 
@@ -39,6 +41,8 @@ public class PackageModel implements Parcelable{
         PackageFor = in.readString();
         IsActive = in.readByte() != 0;
         PackageCategoryId = in.readInt();
+        IsTimerEnable = in.readByte() != 0;
+        PackageValidityDate = in.readString();
         PackageImageURL = in.readString();
         PackageImageWideURL = in.readString();
         packageBundle = in.createTypedArrayList(com.enrich.salonapp.data.model.Package.PackageBundle.CREATOR);
@@ -57,6 +61,8 @@ public class PackageModel implements Parcelable{
         dest.writeString(PackageFor);
         dest.writeByte((byte) (IsActive ? 1 : 0));
         dest.writeInt(PackageCategoryId);
+        dest.writeByte((byte) (IsTimerEnable ? 1 : 0));
+        dest.writeString(PackageValidityDate);
         dest.writeString(PackageImageURL);
         dest.writeString(PackageImageWideURL);
         dest.writeTypedList(packageBundle);

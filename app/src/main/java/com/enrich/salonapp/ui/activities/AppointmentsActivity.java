@@ -91,6 +91,7 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Appointment List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

@@ -79,6 +79,7 @@ public class RescheduleActivity extends BaseActivity {
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Reschedule Services List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         ButterKnife.bind(this);
 

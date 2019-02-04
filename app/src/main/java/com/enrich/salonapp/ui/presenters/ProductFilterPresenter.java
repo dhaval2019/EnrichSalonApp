@@ -141,6 +141,7 @@ public class ProductFilterPresenter extends BasePresenter<ProductFilterContract.
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.noProductOffers();
                     view.setProgressBar(true);
                     view.showToastMessage("Something went wrong. Please try again later.");
                 }

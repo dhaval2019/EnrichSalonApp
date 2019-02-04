@@ -159,6 +159,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Service List Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

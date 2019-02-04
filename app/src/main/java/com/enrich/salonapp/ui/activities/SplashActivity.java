@@ -151,6 +151,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
         mTracker.setScreenName("" + this.getClass().getSimpleName());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
 //        sendAnalyticsData();
 
         // Making notification bar transparent

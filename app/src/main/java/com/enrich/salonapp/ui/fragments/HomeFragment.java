@@ -69,6 +69,7 @@ import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.OfferComparator;
+import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseFragment;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -241,6 +242,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Home Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
     }
 
     @Nullable
@@ -477,16 +479,30 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @Override
     public void showOfferList(OfferResponseModel model) {
         if (!model.Offers.isEmpty()) {
-            offerList = model.Offers;
 
-            Collections.sort(offerList, new OfferComparator());
+            ArrayList<OfferModel> toastOfferList = new ArrayList<>();
+            ArrayList<OfferModel> normalOfferList = new ArrayList<>();
+            for (int i = 0; i < model.Offers.size(); i++) {
+                if (model.Offers.get(i).IsToastOffer) {
+                    toastOfferList.add(model.Offers.get(i));
+                } else {
+                    normalOfferList.add(model.Offers.get(i));
+                }
+            }
+
+            // SAVE TOAST OFFERS
+            SharedPreferenceStore.storeValue(HomeFragment.this.getActivity(), Constants.KEY_TOAST_OFFERS, EnrichUtils.newGson().toJson(toastOfferList));
+
+            Collections.sort(normalOfferList, new OfferComparator());
+
+            offerList = normalOfferList;
 
             if (isSalonStr.equalsIgnoreCase("0")) {
                 ArrayList<OfferModel> tempList = new ArrayList<>();
 
-                for (int i = 0; i < model.Offers.size(); i++) {
-                    if (!model.Offers.get(i).IsHome) {
-                        tempList.add(model.Offers.get(i));
+                for (int i = 0; i < normalOfferList.size(); i++) {
+                    if (!normalOfferList.get(i).IsHome) {
+                        tempList.add(normalOfferList.get(i));
                     }
                 }
 
@@ -497,9 +513,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             } else {
                 ArrayList<OfferModel> tempList = new ArrayList<>();
 
-                for (int i = 0; i < model.Offers.size(); i++) {
-                    if (model.Offers.get(i).IsHome) {
-                        tempList.add(model.Offers.get(i));
+                for (int i = 0; i < normalOfferList.size(); i++) {
+                    if (normalOfferList.get(i).IsHome) {
+                        tempList.add(normalOfferList.get(i));
                     }
                 }
 
@@ -624,6 +640,11 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showProductOffers(OfferResponseModel model) {
+
+    }
+
+    @Override
+    public void noProductOffers() {
 
     }
 
