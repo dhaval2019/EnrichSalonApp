@@ -3,7 +3,6 @@ package com.enrich.salonapp.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +14,12 @@ import android.widget.TextView;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
-import com.enrich.salonapp.data.model.GenericCartModel;
-import com.enrich.salonapp.data.model.GuestModel;
-import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServiceModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentServicesModel;
 import com.enrich.salonapp.data.model.AppointmentModels.AppointmentSlotBookingsModel;
+import com.enrich.salonapp.data.model.GenericCartModel;
+import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.ui.adapters.CartAdapter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -119,7 +118,6 @@ public class CartActivity extends BaseActivity {
             cartRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             cartRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         }
-
 
         cartProceed.setOnClickListener(new View.OnClickListener() {
             @Override

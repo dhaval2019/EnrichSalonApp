@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.AddressResponseModel;
@@ -367,6 +368,7 @@ public class EnrichUtils {
     public static void saveUserData(Context context, GuestModel model) {
         if (model != null) {
             SharedPreferenceStore.storeValue(context, Constants.KEY_USER_DATA, newGson().toJson(model));
+            Crashlytics.setUserIdentifier(model.Id + "_" + model.MobileNumber);
         }
     }
 
@@ -377,6 +379,7 @@ public class EnrichUtils {
      * @return
      */
     public static GuestModel getUserData(Context context) {
+        Crashlytics.setString("GuestModel", SharedPreferenceStore.getValue(context, Constants.KEY_USER_DATA, ""));
         GuestModel model = newGson().fromJson(SharedPreferenceStore.getValue(context, Constants.KEY_USER_DATA, ""), GuestModel.class);
         return model;
     }

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -167,6 +168,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
 
     @Override
     public void showPasswordField(IsUserRegisteredResponseModel model) {
+        Crashlytics.setString("PhoneNumber", userNameEdit.getText().toString());
         if (model.Error.StatusCode == 200) {
             passwordContainer.setVisibility(View.VISIBLE);
         } else if (model.Error.StatusCode == 403) {

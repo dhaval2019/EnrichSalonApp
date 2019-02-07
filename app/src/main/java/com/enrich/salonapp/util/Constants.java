@@ -67,4 +67,21 @@ public class Constants {
 
     public static final int SHOW_SPIN = 1;
     public static final int DONT_SHOW_SPIN = 0;
+
+    public static final int IS_MEMBER = 1;
+    public static final int IS_NOT_MEMBER = 0;
+
+    public static final int SERVICE_CHECKOUT_STEP_SELECT_SERVICE = 1;
+    public static final int SERVICE_CHECKOUT_STEP_SELECT_THERAPIST = 2;
+    public static final int SERVICE_CHECKOUT_STEP_SELECT_TIME_SLOT = 3;
+    public static final int SERVICE_CHECKOUT_STEP_INITIATION = 4;
+    public static final int SERVICE_CHECKOUT_STEP_PAYMENT = 5;
+
+    public static final int PRODUCT_CHECKOUT_STEP_ADD_TO_CART = 101;
+    public static final int PRODUCT_CHECKOUT_STEP_INITIATION = 201;
+    public static final int PRODUCT_CHECKOUT_STEP_PAYMENT = 301;
+
+    public static final int PACKAGE_CHECKOUT_STEP_ADD_TO_CART = 1001;
+    public static final int PACKAGE_CHECKOUT_STEP_INITIATION = 2001;
+    public static final int PACKAGE_CHECKOUT_STEP_PAYMENT = 3001;
 }

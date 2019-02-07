@@ -1,6 +1,8 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.BottomSheetDialog;
@@ -76,6 +78,9 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     @BindView(R.id.forgot_password_more)
     ImageView forgotPasswordMore;
 
+    @BindView(R.id.version_number)
+    TextView versionNumber;
+
     String oldPasswordStr, newPasswordStr, confirmPasswordStr;
 
     SettingsPresenter changePassword;
@@ -120,6 +125,14 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
         collapsingToolbarLayout.setTitle("SETTINGS");
+
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
+            versionNumber.setText("" + info.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
         MainUiThread mainUiThread = MainUiThread.getInstance();

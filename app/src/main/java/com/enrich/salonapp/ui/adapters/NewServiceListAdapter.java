@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,9 +24,11 @@ import android.widget.TextView;
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
@@ -39,12 +42,14 @@ import com.enrich.salonapp.ui.contracts.ParentsAndNormalServiceListContract;
 import com.enrich.salonapp.ui.contracts.TherapistContract;
 import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.TherapistPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.ParentAndNormalServiceComparator;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -185,18 +190,18 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 //                model.therapist = null;
             }
 
-            if (EnrichUtils.getUserData(activity).IsMember == 1) {
-                childHolder.mainPrice.setText("" + (int) model.price._final);
+            if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
+                childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
                 childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
-                childHolder.strikePrice.setText("" + (int) model.price.sales);
+                childHolder.strikePrice.setText(String.format("%d", (int) model.price.sales));
             } else {
-                childHolder.mainPrice.setText("" + (int) model.price.sales);
+                childHolder.mainPrice.setText(String.format("%d", (int) model.price.sales));
                 childHolder.strikePriceContainer.setVisibility(View.GONE);
             }
 
             if (model.therapist != null) {
                 childHolder.serviceTherapistName.setVisibility(View.VISIBLE);
-                childHolder.serviceTherapistName.setText(model.therapist.FirstName + " " + model.therapist.LastName);
+                childHolder.serviceTherapistName.setText(String.format("%s %s", model.therapist.FirstName, model.therapist.LastName));
             } else {
                 childHolder.serviceTherapistName.setVisibility(View.GONE);
             }
@@ -231,6 +236,16 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                     } else {
                         parentPos = parentPosition;
                         childPos = childPosition;
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.ServiceId));
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.name);
+                        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+                        bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(model.price));
+                        bundle.putString(FirebaseAnalytics.Param.QUANTITY, String.valueOf(model.getQuantity()));
+                        bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_SELECT_SERVICE));
+                        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
 
                         Map<String, String> map = new HashMap<>();
                         map.put("CenterId", centerDetailModel.Id);
@@ -267,6 +282,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
     @Override
     public int getChildViewType(int parentPosition, int childPosition) {
+        Crashlytics.setString("SubCategoryName", filteredList.get(parentPosition).Name);
         if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Normal")) {
             return CHILD_NORMAL;
         } else if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Parent")) {
@@ -405,6 +421,10 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
             notifyChildInserted(parentPos, 0);
             expandParent(parentPos);
             isExpanded = true;
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, String.valueOf(filteredList.get(parentPos).Name));
+            application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, bundle);
         }
     }
 

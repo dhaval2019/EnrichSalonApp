@@ -38,6 +38,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -151,10 +152,16 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     }
 
     public void logCompletedRegistrationEvent(GuestModel guestModel) {
+        // Facebook - AppEvents
         Bundle params = new Bundle();
         params.putString(AppEventsConstants.EVENT_PARAM_REGISTRATION_METHOD, "EMAIL");
         params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.newGson().toJson(guestModel));
         AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_COMPLETED_REGISTRATION, params);
+
+        // Firebase
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.METHOD, "EMAIL");
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
     }
 
     @Override
@@ -179,12 +186,14 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     private void switchToNextScreen() {
         if (EnrichUtils.getHomeStore(this) != null) {
             Intent intent = new Intent(OTPActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             finish();
         } else {
             Intent intent = new Intent(OTPActivity.this, StoreSelectorActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             finish();
         }

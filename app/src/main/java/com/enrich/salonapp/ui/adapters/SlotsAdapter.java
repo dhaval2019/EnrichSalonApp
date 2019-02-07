@@ -95,15 +95,7 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.SlotViewHold
 
         public SlotViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this, itemView);
-
-            slotTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
     }
 }

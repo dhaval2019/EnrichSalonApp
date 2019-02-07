@@ -22,6 +22,7 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.Package.PackageModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
+import com.enrich.salonapp.data.model.Product.ProductModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.ExpandablePackageBundleAdapter;
 import com.enrich.salonapp.ui.contracts.PackageDetailsContract;
@@ -33,6 +34,7 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -182,6 +184,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageDetailContainer.setVisibility(View.VISIBLE);
 
             PackageModel packageModel = model.Package;
+            logFirebaseViewItem(packageModel);
 
             if (packageModel.IsTimerEnable) {
                 packageCountDownContainer.setVisibility(View.VISIBLE);
@@ -205,7 +208,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
 
             packageDetailName.setText(packageModel.PackageTitle);
             packageDetailDescription.setText(packageModel.PackageDescription);
-            packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + packageModel.StartingPrice);
+            packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) packageModel.StartingPrice));
 
             Picasso.get().load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
 
@@ -217,5 +220,12 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             noDetailsFound.setVisibility(View.VISIBLE);
             packageDetailContainer.setVisibility(View.GONE);
         }
+    }
+
+    private void logFirebaseViewItem(PackageModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.PackageId));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.PackageTitle);
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 }

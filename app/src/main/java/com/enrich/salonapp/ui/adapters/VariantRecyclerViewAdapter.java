@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,11 +28,13 @@ import com.enrich.salonapp.ui.activities.ServiceVariantActivity;
 import com.enrich.salonapp.ui.contracts.TherapistContract;
 import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.TherapistPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,15 +95,14 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
             model.therapist = null;
         }
 
-        if (EnrichUtils.getUserData(activity).IsMember == 1) {
-            holder.mainPrice.setText("" + (int) model.price._final);
+        if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
+            holder.mainPrice.setText(String.format("%d", (int) model.price._final));
             holder.strikePriceContainer.setVisibility(View.VISIBLE);
-            holder.strikePrice.setText("" + (int) model.price.sales);
+            holder.strikePrice.setText(String.format("%d", (int) model.price.sales));
         } else {
-            holder.mainPrice.setText("" + (int) model.price.sales);
+            holder.mainPrice.setText(String.format("%d", (int) model.price.sales));
             holder.strikePriceContainer.setVisibility(View.GONE);
         }
-
 
         holder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +133,16 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
                     ((ServiceVariantActivity) activity).updateCart();
                 } else {
                     pos = position;
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.ServiceId));
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.name);
+                    bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+                    bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(model.price));
+                    bundle.putString(FirebaseAnalytics.Param.QUANTITY, String.valueOf(model.getQuantity()));
+                    bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_SELECT_SERVICE));
+                    application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
 
                     Map<String, String> map = new HashMap<>();
                     map.put("CenterId", EnrichUtils.getHomeStore(activity).Id);

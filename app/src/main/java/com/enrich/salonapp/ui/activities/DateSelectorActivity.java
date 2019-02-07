@@ -31,6 +31,7 @@ import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.SlotsAdapter;
 import com.enrich.salonapp.ui.contracts.TimeSlotContract;
 import com.enrich.salonapp.ui.presenters.TimeSlotPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -39,6 +40,7 @@ import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.joda.time.DateTime;
 
@@ -290,10 +292,25 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
     public void setDateToReserveSlot(String date) {
         for (int i = 0; i < cartList.size(); i++) {
             cartList.get(i).SlotTime = date;
+            logFirebaseCheckoutProgress(cartList.get(i));
         }
 
         timeSlotProceed.setEnabled(true);
         timeSlotProceed.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
+
+
+    }
+
+    private void logFirebaseCheckoutProgress(GenericCartModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.ServiceId));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.Name);
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+        bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(model.Price));
+        bundle.putString(FirebaseAnalytics.Param.QUANTITY, String.valueOf(model.getQuantity()));
+        bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_SELECT_TIME_SLOT));
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
     }
 
     private void showErrorDialog(String message) {

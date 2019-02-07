@@ -31,6 +31,7 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.security.PublicKey;
@@ -167,7 +168,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             public void onClick(View view) {
                 application.decreaseQuantity(productModel);
                 updateCart();
-                productCount.setText("" + application.getItemQuantity(productModel));
+                productCount.setText(String.format("%d", application.getItemQuantity(productModel)));
             }
         });
 
@@ -176,7 +177,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             public void onClick(View view) {
                 application.increaseQuantity(productModel);
                 updateCart();
-                productCount.setText("" + application.getItemQuantity(productModel));
+                productCount.setText(String.format("%d", application.getItemQuantity(productModel)));
             }
         });
 
@@ -226,6 +227,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
     public void showProductDetails(ProductDetailResponseModel model) {
         if (model.Product != null) {
             productModel = model.Product;
+            logFirebaseViewItem(productModel);
 
             if (productModel.OriginalPrice == productModel.ProductAmount) {
                 productOldPrice.setVisibility(View.GONE);
@@ -253,5 +255,12 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             application.setMaxQuantityAllowed(model.Product.SaleLimit);
             updateCart();
         }
+    }
+
+    private void logFirebaseViewItem(ProductModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.ProductId));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.getName());
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 }

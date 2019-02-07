@@ -186,12 +186,12 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
 
     @Override
     public String getDeliveryPeriod() {
-        return null;
+        return SubTitle;
     }
 
     @Override
     public String getDeliveryInformation() {
-        return null;
+        return Cashbacks.get(0).getName();
     }
 
     @Override

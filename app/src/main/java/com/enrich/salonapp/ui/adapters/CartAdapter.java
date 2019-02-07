@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.ui.activities.CartActivity;
 
@@ -21,12 +23,14 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.iwgang.countdownview.CountdownView;
 
+import static com.enrich.salonapp.data.model.CartItem.CART_TYPE_SUB_PACKAGE;
 import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_CASHBACK;
 import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_PRODUCT;
 import static com.enrich.salonapp.data.model.Package.PackageBundle.BUNDLE_ITEM_TYPE_SERVICE;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
+public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     ArrayList<GenericCartModel> list;
@@ -43,20 +47,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     @Override
-    public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cart_list_item, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        view = inflater.inflate(R.layout.cart_list_item, parent, false);
         return new CartViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(CartViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder recyclerViewHolder, int position) {
+        CartViewHolder holder = (CartViewHolder) recyclerViewHolder;
         final GenericCartModel model = list.get(position);
 
         if (model.getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
-            holder.name.setText(model.Name + " x " + list.get(position).Quantity);
+            holder.name.setText(String.format("%s x %d", model.Name, list.get(position).Quantity));
 
             if (model.getTherapistModel() != null) {
-                holder.therapist.setText(model.getTherapistModel().FirstName + " " + model.getTherapistModel().LastName);
+                holder.therapist.setText(String.format("%s %s", model.getTherapistModel().FirstName, model.getTherapistModel().LastName));
             } else {
                 holder.therapist.setVisibility(View.GONE);
             }
@@ -85,34 +91,46 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
             holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (int) model.getPrice());
 
+            holder.deliveryInformation.setVisibility(View.GONE);
+            holder.deliveryPeriod.setVisibility(View.GONE);
+
         } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) { // FOR PACKAGES
+            holder.deliveryInformation.setVisibility(View.VISIBLE);
+            holder.deliveryPeriod.setVisibility(View.VISIBLE);
+
+            holder.deliveryInformation.setText(model.DeliveryInformation);
+            holder.deliveryPeriod.setText(model.DeliveryPeriod);
+
             if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_SERVICE) {
 
                 holder.name.setText(model.Name);
-                holder.therapist.setText(model.getPackageBundleItemCount() + " Service(s)");
-                holder.description.setText("Quantity: " + model.Quantity);
-                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+                holder.therapist.setText(String.format("%d Service(s)", model.getPackageBundleItemCount()));
+                holder.description.setText(String.format("Quantity: %d", model.Quantity));
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
 
             } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_PRODUCT) {
 
                 holder.name.setText(model.Name);
-                holder.therapist.setText(model.getPackageBundleItemCount() + " Product(s)");
-                holder.description.setText("Quantity: " + model.Quantity);
-                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+                holder.therapist.setText(String.format("%d Product(s)", model.getPackageBundleItemCount()));
+                holder.description.setText(String.format("Quantity: %d", model.Quantity));
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
 
             } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_CASHBACK) {
                 holder.name.setText(model.Name);
                 holder.therapist.setVisibility(View.GONE);
-                holder.description.setText("Quantity: " + model.Quantity);
-                holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+                holder.description.setText(String.format("Quantity: %d", model.Quantity));
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
             } else {
                 holder.therapist.setVisibility(View.GONE);
             }
         } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_PRODUCTS) {
             holder.name.setText(model.Name);
             holder.therapist.setVisibility(View.GONE);
-            holder.description.setText("Quantity: " + model.Quantity);
-            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (model.getPrice() * model.Quantity));
+            holder.description.setText(String.format("Quantity: %d", model.Quantity));
+            holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
+
+            holder.deliveryInformation.setVisibility(View.GONE);
+            holder.deliveryPeriod.setVisibility(View.GONE);
         } else {
             holder.therapist.setVisibility(View.GONE);
         }
@@ -150,6 +168,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         @BindView(R.id.cart_item_remove)
         ImageView remove;
+
+        @BindView(R.id.cart_item_delivery_period)
+        TextView deliveryPeriod;
+
+        @BindView(R.id.cart_item_delivery_information)
+        TextView deliveryInformation;
 
         public CartViewHolder(View itemView) {
             super(itemView);

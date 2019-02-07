@@ -272,8 +272,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, OfferActivity.class);
-                if (!offerList.isEmpty())
-                    intent.putExtra("OfferList", offerList);
+                if (offerList != null)
+                    if (!offerList.isEmpty())
+                        intent.putExtra("OfferList", offerList);
                 startActivity(intent);
             }
         });
@@ -282,8 +283,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, OfferActivity.class);
-                if (!offerList.isEmpty())
-                    intent.putExtra("OfferList", offerList);
+                if (offerList != null)
+                    if (!offerList.isEmpty())
+                        intent.putExtra("OfferList", offerList);
                 startActivity(intent);
             }
         });

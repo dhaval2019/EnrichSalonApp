@@ -2,6 +2,7 @@ package com.enrich.salonapp.data.remote;
 
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.data.DataSource;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.AddressResponseModel;
@@ -83,7 +84,7 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-//        public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+//    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
 //    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
     public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
@@ -152,6 +153,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<IsUserRegisteredResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -173,6 +175,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<AuthenticationModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -202,6 +205,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<GuestResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -223,6 +227,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CheckUserNameResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -242,6 +247,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CreateOTPResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -265,6 +271,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<RegistrationResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -305,6 +312,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<OfferResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -326,6 +334,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CategoryResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -347,6 +356,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<AppointmentResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -367,6 +377,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<GuestUpdateResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -386,6 +397,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ChangePasswordResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -405,6 +417,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ServiceListResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -425,6 +438,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<TherapistResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -447,6 +461,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<AvailableTimeResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -466,6 +481,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ReserveSlotResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -490,6 +506,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CreateOrderResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -510,6 +527,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<InvoiceResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -530,6 +548,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ConfirmReservationResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -545,10 +564,13 @@ public class RemoteDataSource extends DataSource {
             public void onResponse(@NonNull Call<ConfirmOrderResponseModel> call, @NonNull Response<ConfirmOrderResponseModel> response) {
                 if (response.isSuccessful())
                     callBack.onSuccess(response.body());
+                else
+                    callBack.onFailure(new Throwable());
             }
 
             @Override
             public void onFailure(@NonNull Call<ConfirmOrderResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -567,6 +589,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<NewAndPopularResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -585,6 +608,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CancelResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -603,6 +627,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ForgotPasswordResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
         });
@@ -623,6 +649,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<PackageResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -641,6 +668,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<PackageDetailsResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callBack.onFailure(t);
             }
@@ -660,6 +688,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<WalletResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -678,6 +707,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<WalletHistoryResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -698,6 +728,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ProductResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -715,6 +747,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ProductDetailResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -737,6 +770,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<MyPackageResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -755,6 +789,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<BrandResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -779,6 +814,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ProductCategoryResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -797,6 +833,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ProductSubCategoryResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -818,6 +855,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<SubCategoryResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -837,6 +875,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ParentAndNormalServiceListResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -856,6 +895,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<ServiceVariantResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -877,6 +917,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<OfferResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -899,6 +940,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<AddressResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -920,6 +962,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<AppUpdateResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
@@ -939,6 +982,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<RegisterFCMResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -955,6 +1000,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<BeautyAndBlingResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -971,6 +1018,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<GuestSpinCountResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -990,6 +1039,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<SpinPriceModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -1006,6 +1057,8 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onFailure(@NonNull Call<CampaignRewardResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
                 callback.onNetworkFailure();
             }
         });

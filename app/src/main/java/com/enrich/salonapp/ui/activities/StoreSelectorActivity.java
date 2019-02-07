@@ -161,7 +161,8 @@ public class StoreSelectorActivity extends BaseActivity implements CenterListCon
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                storeSelectorAdapter.getFilter().filter(s.toString());
+                if (storeSelectorAdapter != null)
+                    storeSelectorAdapter.getFilter().filter(s.toString());
             }
 
             @Override

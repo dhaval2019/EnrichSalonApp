@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -74,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
     EnrichApplication application;
     Tracker mTracker;
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,14 +111,14 @@ public class ProfileActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("PROFILE");
 
         GuestModel guestModel = EnrichUtils.getUserData(this);
-        name.setText(guestModel.FirstName + " " + guestModel.LastName);
+        name.setText(String.format("%s %s", guestModel.FirstName, guestModel.LastName));
         email.setText(guestModel.Email);
-        phone.setText("" + guestModel.MobileNumber);
+        phone.setText(String.format("%s", guestModel.MobileNumber));
         gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
         setAddressData(guestModel.GuestAddress);
-        if (guestModel.IsMember == 1) {
+        if (guestModel.IsMember == Constants.IS_MEMBER) {
             membershipCardview.setVisibility(View.VISIBLE);
-            membershipName.setText("" + guestModel.MembershipModel.get(0).MembershipName);
+            membershipName.setText(String.format("%s", guestModel.MembershipModel.get(0).MembershipName));
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date stringToDate = sdf.parse(guestModel.MembershipModel.get(0).ExpiryDate.substring(0, 10));
@@ -124,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
                 SimpleDateFormat dateToStringFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String expiryDate = dateToStringFormat.format(stringToDate);
 
-                membershipExpiryDate.setText("Expires on " + expiryDate);
+                membershipExpiryDate.setText(String.format("Expires on %s", expiryDate));
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -140,9 +142,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();
         if (name != null || email != null || phone != null || gender != null) {
             GuestModel guestModel = EnrichUtils.getUserData(this);
-            name.setText(guestModel.FirstName + " " + guestModel.LastName);
+            name.setText(String.format("%s %s", guestModel.FirstName, guestModel.LastName));
             email.setText(guestModel.Email);
-            phone.setText("" + guestModel.MobileNumber);
+            phone.setText(String.format("%s", guestModel.MobileNumber));
             gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
             setAddressData(guestModel.GuestAddress);
         }

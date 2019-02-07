@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -135,8 +136,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private BroadcastReceiver beautyAndBling = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            isFromOfferClick = true;
-            beautyAndBlingPresenter.getBeautyAndBling(HomeActivity.this);
+//            isFromOfferClick = true;
+//            beautyAndBlingPresenter.getBeautyAndBling(HomeActivity.this);
         }
     };
 
@@ -297,9 +298,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         logoutOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 EnrichUtils.logout(HomeActivity.this);
                 EnrichApplication.clearSpinList();
                 SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
+
+                Crashlytics.setUserIdentifier("");
+
                 Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

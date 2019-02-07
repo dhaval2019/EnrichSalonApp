@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.ui.activities.BookingSummaryActivity;
+import com.enrich.salonapp.ui.activities.CartActivity;
+import com.enrich.salonapp.ui.activities.MyPackageActivity;
 import com.enrich.salonapp.ui.activities.OTPActivity;
 import com.enrich.salonapp.ui.activities.PackageDetailActivity;
 import com.enrich.salonapp.ui.activities.PackagesActivity;
@@ -79,6 +81,12 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
             return;
 
         if (BaseActivity.this instanceof PackagesActivity)
+            return;
+
+        if (BaseActivity.this instanceof MyPackageActivity)
+            return;
+
+        if (BaseActivity.this instanceof CartActivity)
             return;
 
         timer = new Timer();
@@ -158,9 +166,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
     @Override
     protected void onPause() {
         super.onPause();
-//        if (timer != null) {
-//            timer.cancel();
-//            timer.purge();
-//        }
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
 }

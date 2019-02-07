@@ -7,16 +7,17 @@ import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.data.model.SpinModel;
+import com.enrich.salonapp.ui.activities.BookingSummaryActivity;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.ObjectSerializer;
 import com.enrich.salonapp.util.SharedPreferenceStore;
-import com.enrich.salonapp.util.handlers.NotificationOpenedHandler;
-import com.enrich.salonapp.util.handlers.NotificationReceivedHandler;
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.onesignal.OneSignal;
+import com.google.firebase.analytics.FirebaseAnalytics;
+//import com.onesignal.OneSignal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,17 +37,21 @@ public class EnrichApplication extends Application {
 
     static ArrayList<SpinModel> spinList;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onCreate() {
         super.onCreate();
         cartList = getStoredCartItem();
-        OneSignal.startInit(this)
-                .setNotificationReceivedHandler(new NotificationReceivedHandler())
-                .setNotificationOpenedHandler(new NotificationOpenedHandler())
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init();
+//        OneSignal.startInit(this)
+//                .setNotificationReceivedHandler(new NotificationReceivedHandler())
+//                .setNotificationOpenedHandler(new NotificationOpenedHandler())
+//                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+//                .unsubscribeWhenNotificationsAreDisabled(true)
+//                .init();
         sAnalytics = GoogleAnalytics.getInstance(this);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     /**
@@ -59,8 +64,14 @@ public class EnrichApplication extends Application {
         if (sTracker == null) {
             sTracker = sAnalytics.newTracker(R.xml.global_tracker);
         }
-
         return sTracker;
+    }
+
+    public FirebaseAnalytics getFirebaseInstance() {
+        if (mFirebaseAnalytics != null)
+            return mFirebaseAnalytics;
+        else
+            return FirebaseAnalytics.getInstance(this);
     }
 
     public static ArrayList<SpinModel> getSpinList() {
@@ -171,6 +182,7 @@ public class EnrichApplication extends Application {
     }
 
     public void logAddedToCartEvent(GenericCartModel cartItem) {
+        // Facebook - AppEvents
         Bundle params = new Bundle();
         params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, cartItem.Name);
         params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, "" + cartItem.Id);
@@ -178,13 +190,33 @@ public class EnrichApplication extends Application {
             params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Service");
         } else if (cartItem.CartItemType == CartItem.CART_TYPE_PRODUCTS) {
             params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Products");
-        } else if (cartItem.CartItemType == CartItem.CART_TYPE_PACKAGE) {
+        } else if (cartItem.CartItemType == CartItem.CART_TYPE_SUB_PACKAGE) {
             params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Package");
         }
         params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "INR");
         params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.getHomeStore(this).Name);
         params.putString(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, "" + cartItem.getQuantity());
         AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_ADDED_TO_CART, cartItem.Price, params);
+
+        // Firebase
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(cartItem.Id));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cartItem.Name);
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+
+        if (cartItem.CartItemType == CartItem.CART_TYPE_SERVICES) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+        } else if (cartItem.CartItemType == CartItem.CART_TYPE_PRODUCTS) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Products");
+        } else if (cartItem.CartItemType == CartItem.CART_TYPE_SUB_PACKAGE) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Package");
+        }
+
+        bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(cartItem.Price));
+        bundle.putString(FirebaseAnalytics.Param.QUANTITY, String.valueOf(cartItem.getQuantity()));
+        bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_SELECT_THERAPIST));
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, bundle);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
     }
 
     public void updateCartItem(CartItem cartItem) {

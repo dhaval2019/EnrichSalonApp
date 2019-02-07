@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -257,6 +258,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Crashlytics.setString("ServiceFilterString", s.toString());
                 if (isHomeSelected) {
 //                    parentAndNormalServiceAdapter.getFilter().filter(s);
                 } else {
@@ -282,7 +284,11 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             @Override
             public void onClick(View view) {
                 changeGenderIcons(true);
-                getServiceList(categoryModel.CategoryId, "female");
+                if (!isHomeSelected) {
+                    getServiceList(categoryModel.CategoryId, "female");
+                } else {
+                    showToastMessage("Home Services are currently only available for Females.");
+                }
             }
         });
     }
@@ -319,7 +325,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @Override
     public void showSubCategories(SubCategoryResponseModel model) {
 
-        if (EnrichUtils.getUserData(this).IsMember == 1) { //is a member
+        if (EnrichUtils.getUserData(this).IsMember == Constants.IS_MEMBER) { //is a member
             memberText.setVisibility(View.VISIBLE);
         } else {
             memberText.setVisibility(View.GONE);

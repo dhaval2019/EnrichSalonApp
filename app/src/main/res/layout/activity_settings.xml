@@ -68,9 +68,9 @@
                 android:id="@+id/forgot_password_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/forgot_password_label_container"
                 android:layout_alignBottom="@+id/forgot_password_label_container"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/forgot_password_label_container"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingRight="@dimen/dimen_10dp"
                 android:src="@drawable/ic_more_vert_black_24dp" />
@@ -80,19 +80,19 @@
             android:id="@+id/forgot_password_click_here"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dimen_10dp"
             android:paddingTop="@dimen/dimen_10dp"
+            android:paddingBottom="@dimen/dimen_10dp"
             android:text="Click Here"
             android:textColor="@color/dark_gold"
             android:textSize="@dimen/dimen_14sp"
             android:visibility="gone"
-            app:font_type="regular"/>
+            app:font_type="regular" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
-            android:layout_marginBottom="@dimen/dimen_15dp"
             android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginBottom="@dimen/dimen_15dp"
             android:background="#E0E0E0" />
 
         <!-- CHANGE PASSWORD -->
@@ -129,9 +129,9 @@
                 android:id="@+id/change_password_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/change_password_label_container"
                 android:layout_alignBottom="@+id/change_password_label_container"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/change_password_label_container"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:paddingRight="@dimen/dimen_10dp"
                 android:src="@drawable/ic_more_vert_black_24dp" />
@@ -156,8 +156,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="Old Password"
-                    android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
@@ -180,8 +180,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="New Password"
-                    android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
@@ -204,8 +204,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:hint="Confirm Password"
-                    android:paddingBottom="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:textColorHint="@color/grey"
                     android:textSize="@dimen/dimen_14sp"
                     app:font_type="light" />
@@ -254,8 +254,45 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_1dp"
-            android:layout_marginBottom="@dimen/dimen_15dp"
             android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginBottom="@dimen/dimen_15dp"
+            android:background="#E0E0E0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/version_label_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Version"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:font_type="light" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/version_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:text="Get a new password sent to you via email and SMS"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/dimen_14sp"
+                    app:font_type="light" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginBottom="@dimen/dimen_15dp"
             android:background="#E0E0E0" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

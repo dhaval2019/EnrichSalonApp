@@ -17,7 +17,7 @@ public class BaseFragment extends Fragment implements IBaseView {
 
     @Override
     public void showToastMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

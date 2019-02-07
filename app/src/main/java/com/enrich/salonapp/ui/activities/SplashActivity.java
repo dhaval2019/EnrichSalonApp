@@ -2,15 +2,10 @@ package com.enrich.salonapp.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -152,7 +146,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         mTracker.setScreenName("" + this.getClass().getSimpleName());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         mTracker.enableAdvertisingIdCollection(true);
-//        sendAnalyticsData();
+
+        application.getFirebaseInstance().setUserProperty("platform", "Android");
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -432,7 +427,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     private void saveLocation(double latitude, double longitude) {
         SharedPreferenceStore.storeValue(this, Constants.CURRENT_LATITUDE, latitude);
         SharedPreferenceStore.storeValue(this, Constants.CURRENT_LONGITUDE, longitude);
-        getAppUpdate();
+//        getAppUpdate();
+        getAuthenticationToken();
     }
 
     @Override

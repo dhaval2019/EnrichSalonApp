@@ -2,6 +2,7 @@ package com.enrich.salonapp.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,8 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
     Context context;
     LayoutInflater inflater;
     ArrayList<CenterViewModel> list;
-    ArrayList<CenterViewModel> filteredList;
-    StoreFilter storeFilter;
+    private ArrayList<CenterViewModel> filteredList;
+    private StoreFilter storeFilter;
     StoreSelectorActivity activity;
 
     public StoreSelectorAdapter(Context context, ArrayList<CenterViewModel> list, StoreSelectorActivity activity) {
@@ -40,19 +41,19 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
     }
 
     @Override
-    public StoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.store_list_item, parent, false);
         return new StoreViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(StoreViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StoreViewHolder holder, int position) {
         final CenterViewModel model = filteredList.get(position);
 
         holder.name.setText(model.Name);
-        holder.address.setText(model.Address1 + ", " + model.Address2);
+        holder.address.setText(String.format("%s, %s", model.Address1, model.Address2));
         holder.phone.setText(model.Phone1.DisplayNumber);
-        holder.storeDistance.setText("" + model.Distance + " km");
+        holder.storeDistance.setText(String.format("%s km", model.Distance));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

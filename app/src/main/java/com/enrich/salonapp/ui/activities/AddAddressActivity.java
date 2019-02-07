@@ -1,28 +1,20 @@
 package com.enrich.salonapp.ui.activities;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
@@ -43,18 +35,15 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.PlaceFilter;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.PlacesOptions;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -198,38 +187,85 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
             houseText.setText(addressModel.HouseNameFlatNo);
             landmarkText.setText(addressModel.Landmark);
             changeAddressTypeSelection(addressModel.AddressType);
+
+            suggestedPlace = new Place() {
+                @Override
+                public String getId() {
+                    return null;
+                }
+
+                @Override
+                public List<Integer> getPlaceTypes() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public CharSequence getAddress() {
+                    return null;
+                }
+
+                @Override
+                public Locale getLocale() {
+                    return null;
+                }
+
+                @Override
+                public CharSequence getName() {
+                    return addressModel.Location;
+                }
+
+                @Override
+                public LatLng getLatLng() {
+                    return new LatLng(addressModel.Latitude, addressModel.Longitude);
+                }
+
+                @Nullable
+                @Override
+                public LatLngBounds getViewport() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public Uri getWebsiteUri() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public CharSequence getPhoneNumber() {
+                    return null;
+                }
+
+                @Override
+                public float getRating() {
+                    return 0;
+                }
+
+                @Override
+                public int getPriceLevel() {
+                    return 0;
+                }
+
+                @Nullable
+                @Override
+                public CharSequence getAttributions() {
+                    return null;
+                }
+
+                @Override
+                public Place freeze() {
+                    return null;
+                }
+
+                @Override
+                public boolean isDataValid() {
+                    return false;
+                }
+            };
         } else {
             locationText.setHint("Enter the closes landmark");
-
-//            mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
-//
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(new PlaceFilter());
-//            placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-//                @SuppressLint("DefaultLocale")
-//                @Override
-//                public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-//                    try {
-//
-//                        PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-//                        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//                            if (placeLikelihood.getLikelihood() <= 0.0) {
-//                                suggestedPlace = placeLikelihood.getPlace();
-//                                locationText.setText(suggestedPlace.getName() + ", " + suggestedPlace.getAddress());
-//                                return;
-//                            }
-//                            EnrichUtils.log(String.format("Place '%s' has likelihood: %g",
-//                                    placeLikelihood.getPlace().getName(),
-//                                    placeLikelihood.getLikelihood()));
-//                        }
-//                        likelyPlaces.release();
-//                    } catch (Exception e) {
-//                        Crashlytics.log(e.getLocalizedMessage());
-//                    }
-//                }
-//            });
 
             changeAddressTypeSelection(addressType);
         }
@@ -258,11 +294,40 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
         saveAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String locationStr = locationText.getText().toString();
+                String houseStr = houseText.getText().toString();
+                String landmarkStr = landmarkText.getText().toString();
+
+                if (locationStr.isEmpty()) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
+                if (houseStr.isEmpty()) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
+                if (landmarkStr.isEmpty()) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
+                if (addressTypeStr.isEmpty()) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
+                if (suggestedPlace == null) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
                 AddressModel model = new AddressModel();
                 model.GuestId = EnrichUtils.getUserData(AddAddressActivity.this).Id;
-                model.Location = locationText.getText().toString();
-                model.HouseNameFlatNo = houseText.getText().toString();
-                model.Landmark = landmarkText.getText().toString();
+                model.Location = locationStr;
+                model.HouseNameFlatNo = houseStr;
+                model.Landmark = landmarkStr;
                 model.Latitude = suggestedPlace.getLatLng().latitude;
                 model.Longitude = suggestedPlace.getLatLng().longitude;
                 model.AddressType = addressTypeStr;

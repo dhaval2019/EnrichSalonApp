@@ -251,17 +251,19 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
     }
 
     private void setAddressData(ArrayList<AddressModel> list) {
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).AddressType) {
-                case AddAddressActivity.ADDRESS_HOME:
-                    editAddressHome.setText(list.get(i).Location);
-                    break;
-                case AddAddressActivity.ADDRESS_WORK:
-                    editAddressWork.setText(list.get(i).Location);
-                    break;
-                case AddAddressActivity.ADDRESS_OTHER:
-                    editAddressOther.setText(list.get(i).Location);
-                    break;
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                switch (list.get(i).AddressType) {
+                    case AddAddressActivity.ADDRESS_HOME:
+                        editAddressHome.setText(list.get(i).Location);
+                        break;
+                    case AddAddressActivity.ADDRESS_WORK:
+                        editAddressWork.setText(list.get(i).Location);
+                        break;
+                    case AddAddressActivity.ADDRESS_OTHER:
+                        editAddressOther.setText(list.get(i).Location);
+                        break;
+                }
             }
         }
     }

@@ -49,6 +49,7 @@ import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
@@ -59,6 +60,7 @@ import com.payumoney.sdkui.ui.utils.ResultModel;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,10 +185,6 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         bookingSummaryPresenter = new BookingSummaryPresenter(this, dataRepository);
-
-        adapter = new BookingSummaryItemAdapter(this, application.getCartItems());
-        bookingSummaryItemRecyclerView.setAdapter(adapter);
-        bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         makePaymentOnlineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -377,6 +375,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             EnrichUtils.log(EnrichUtils.newGson().toJson(model));
             confirmOrderModel = model.getConfirmOrder().getConfirmOrder();
             logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
+            logFirebasePurchaseEvent(model.getConfirmOrder().getConfirmOrder());
 
             if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
                 logPurchaseOnlineEvent(model.getConfirmOrder().getConfirmOrder());
@@ -393,30 +392,6 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         } else {
             EnrichUtils.showMessage(BookingSummaryActivity.this, model.getError().Message);
         }
-    }
-
-    public void logAppointmentBooked(ConfirmOrderModel model) {
-        Bundle params = new Bundle();
-        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
-        AppEventsLogger.newLogger(this).logPurchase(BigDecimal.valueOf(model.getAmount()), Currency.getInstance("INR"), params);
-    }
-
-    public void logPurchaseOnlineEvent(ConfirmOrderModel model) {
-        Bundle params = new Bundle();
-        params.putString("Amount", "" + model.getAmount());
-        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
-        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
-        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
-        AppEventsLogger.newLogger(this).logEvent("PurchaseOnline", model.getAmount(), params);
-    }
-
-    public void logPurchaseOfflineEvent(ConfirmOrderModel model) {
-        Bundle params = new Bundle();
-        params.putString("Amount", "" + model.getAmount());
-        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
-        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
-        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
-        AppEventsLogger.newLogger(this).logEvent("PurchaseOffline", model.getAmount(), params);
     }
 
     @Override
@@ -489,22 +464,22 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             serviceInfoContainer.setVisibility(View.VISIBLE);
             productInfoContainer.setVisibility(View.GONE);
         } else if (application.cartHasPackages()) {
-            totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
-            grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
-            payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
-            discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
-            taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTax())));
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
 
             serviceInfoContainer.setVisibility(View.GONE);
             productInfoContainer.setVisibility(View.GONE);
         } else if (application.cartHasProducts()) {
-            totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
-            grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.getActualPrice());
-            payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTotal());
-            discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.getDiscount());
-            taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.getTax());
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTax())));
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
 
@@ -517,12 +492,33 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     }
 
     private void setData(InvoiceModel model) {
-        totalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
-        grossTotalAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.sales);
-        stylistLabel.setText("" + model.AppointmentServices.get(0).RequestedTherapist.FullName);
-        payableAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price._final);
-        discountAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.discount);
-        taxAmount.setText(getResources().getString(R.string.Rs) + " " + model.Price.tax);
+
+        ArrayList<GenericCartModel> genericCartList = new ArrayList<>();
+
+        for (int i = 0; i < model.AppointmentServices.size(); i++) {
+            GenericCartModel genericCartModel = new GenericCartModel();
+            genericCartModel.Name = model.AppointmentServices.get(i).Service.name;
+
+            if (EnrichUtils.getUserData(BookingSummaryActivity.this).IsMember == Constants.IS_MEMBER) {
+                genericCartModel.Price = model.AppointmentServices.get(i).Service.price.membershipPrice;
+            } else {
+                genericCartModel.Price = model.AppointmentServices.get(i).Service.price.sales;
+            }
+
+            genericCartList.add(genericCartModel);
+            logFirebaseCheckoutProgress(genericCartModel);
+        }
+
+        adapter = new BookingSummaryItemAdapter(this, genericCartList);
+        bookingSummaryItemRecyclerView.setAdapter(adapter);
+        bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));
+        grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price.sales)));
+        stylistLabel.setText(String.format("%s", model.AppointmentServices.get(0).RequestedTherapist.FullName));
+        payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price._final)));
+        discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), model.Price.discount));
+        taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price.tax)));
 
         serviceInfoContainer.setVisibility(View.VISIBLE);
 
@@ -539,7 +535,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             String dateStr = dateToString.format(date);
             String timeStr = timeToString.format(time);
 
-            dateTimeSlot.setText(dateStr + " @" + timeStr);
+            dateTimeSlot.setText(String.format("%s @%s", dateStr, timeStr));
         } catch (ParseException e) {
             e.printStackTrace();
             dateTimeSlot.setText("-");
@@ -551,20 +547,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         logInitiatedCheckoutEvent(model);
     }
 
-    public void logInitiatedCheckoutEvent(InvoiceModel model) {
-        Bundle params = new Bundle();
-        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, model.AppointmentGroupId);
-        if (application.cartHasServices()) {
-            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Service");
-        } else if (application.cartHasProducts()) {
-            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Products");
-        } else if (application.cartHasPackages()) {
-            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Package");
-        }
-        params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.getHomeStore(this).Name);
-        params.putInt(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, application.getItemCount());
-        params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "INR");
-        AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT, model.Price._final, params);
+    public double getTotalPrice(ArrayList<GenericCartModel> list) {
+        double totalPrice = 0;
+        for (int i = 0; i < list.size(); i++)
+            totalPrice += (list.get(i).getPrice() * 1);
+        return totalPrice;
     }
 
     private void showCashDialog() {
@@ -575,7 +562,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         TextView cashAmount = dialog.findViewById(R.id.cod_amount);
         Button cashPaymentProceedButton = dialog.findViewById(R.id.cash_payment_proceed_button);
 
-        cashAmount.setText(getResources().getString(R.string.Rs) + " " + invoiceModel.Price._final);
+        if (application.cartHasServices()) {
+            cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), invoiceModel.Price._final));
+        } else {
+            cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), createOrderResponseModel.getPaymentSummary().getTotal()));
+        }
 
         cashPaymentProceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -593,6 +584,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         dialog.show();
     }
 
+    double amount;
+
     private void payOnline() {
         GuestModel guestModel = EnrichUtils.getUserData(this);
 
@@ -601,8 +594,12 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
 
-//        double amount = invoiceModel.Price._final;
-        double amount = createOrderResponseModel.getPaymentSummary().getTotal();
+        if (application.cartHasServices()) {
+            amount = invoiceModel.Price._final;
+        } else {
+            amount = createOrderResponseModel.getPaymentSummary().getTotal();
+        }
+
         String txnId = System.currentTimeMillis() + "";
         String phone = "" + guestModel.MobileNumber;
 //        String productName = "" + reserveSlotResponseModel.SlotBookings.get(0).Services.get(0).Service.name;
@@ -622,7 +619,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf10 = "";
 
         AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
-        builder.setAmount("" + amount)
+        builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
                 .setProductName(productName)
@@ -700,5 +697,85 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         } catch (NoSuchAlgorithmException ignored) {
         }
         return hexString.toString();
+    }
+
+    /*
+     * Logging events for Analytics
+     */
+
+    private void logAppointmentBooked(ConfirmOrderModel model) {
+        // FACEBOOK - AppEvents
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
+        AppEventsLogger.newLogger(this).logPurchase(BigDecimal.valueOf(model.getAmount()), Currency.getInstance("INR"), params);
+    }
+
+    private void logPurchaseOnlineEvent(ConfirmOrderModel model) {
+        Bundle params = new Bundle();
+        params.putString("Amount", "" + model.getAmount());
+        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
+        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
+        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+        AppEventsLogger.newLogger(this).logEvent("PurchaseOnline", model.getAmount(), params);
+    }
+
+    private void logPurchaseOfflineEvent(ConfirmOrderModel model) {
+        Bundle params = new Bundle();
+        params.putString("Amount", "" + model.getAmount());
+        params.putString("StoreName", EnrichUtils.getHomeStore(this).Name);
+        params.putString("UserPhoneNumber", EnrichUtils.getUserData(this).MobileNumber);
+        params.putString("UserName", EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+        AppEventsLogger.newLogger(this).logEvent("PurchaseOffline", model.getAmount(), params);
+    }
+
+    private void logFirebaseCheckoutProgress(GenericCartModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(model.ServiceId));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, model.Name);
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+        bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(model.Price));
+        bundle.putString(FirebaseAnalytics.Param.QUANTITY, String.valueOf(model.getQuantity()));
+        bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_INITIATION));
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
+    }
+
+    private void logInitiatedCheckoutEvent(InvoiceModel model) {
+        // Facebook - AppEvents
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, model.AppointmentGroupId);
+        if (application.cartHasServices()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Service");
+        } else if (application.cartHasProducts()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Products");
+        } else if (application.cartHasPackages()) {
+            params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "Package");
+        }
+        params.putString(AppEventsConstants.EVENT_PARAM_DESCRIPTION, EnrichUtils.getHomeStore(this).Name);
+        params.putInt(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, application.getItemCount());
+        params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "INR");
+        AppEventsLogger.newLogger(this).logEvent(AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT, model.Price._final, params);
+
+        // Firebase
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, model.AppointmentGroupId);
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+        if (application.cartHasServices()) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Service");
+        } else if (application.cartHasProducts()) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Products");
+        } else if (application.cartHasPackages()) {
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Packages");
+        }
+        bundle.putString(FirebaseAnalytics.Param.PRICE, String.valueOf(model.Price));
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, bundle);
+    }
+
+    private void logFirebasePurchaseEvent(ConfirmOrderModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.CURRENCY, "INR");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, String.valueOf(model.getAmount()));
+        bundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, model.getTransactionId());
+        application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle);
     }
 }
