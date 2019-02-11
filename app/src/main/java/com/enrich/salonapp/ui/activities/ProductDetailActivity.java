@@ -243,7 +243,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             productPrice.setText(getResources().getString(R.string.rs_symbol) + " " + (int) productModel.ProductAmount);
             productSavings.setText("");
 
-            Picasso.get().load(productModel.ImageURL).into(productImage);
+            Picasso.with(this).load(productModel.ImageURL).into(productImage);
 
             if (productModel.ProductCashBacks != null) {
                 cashbackContainer.setVisibility(View.VISIBLE);

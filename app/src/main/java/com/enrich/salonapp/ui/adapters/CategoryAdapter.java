@@ -39,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, final int position) {
-        Picasso.get().load(list.get(position).ImageUrl.px400).placeholder(R.drawable.placeholder).into(holder.image);
+        Picasso.with(context).load(list.get(position).ImageUrl.px400).placeholder(R.drawable.placeholder).into(holder.image);
 
         String[] handsSplit = list.get(position).Name.split(" ");
         if (handsSplit.length == 3) {

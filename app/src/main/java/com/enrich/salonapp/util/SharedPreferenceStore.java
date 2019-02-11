@@ -12,13 +12,13 @@ public class SharedPreferenceStore {
     public static void deleteValue(Context context, String key) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(key).commit();
+        editor.remove(key).apply();
     }
 
     public static void storeValue(Context context, String key, String value) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value).commit();
+        editor.putString(key, value).apply();
         LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(key));
     }
 

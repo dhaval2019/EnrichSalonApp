@@ -175,7 +175,7 @@ public class SuperToast {
         }
 
         if (this.mStyle.messageImageURL != null) {
-            Picasso.get().load(mStyle.messageImageURL).into(this.mImageView);
+            Picasso.with(mContext).load(mStyle.messageImageURL).into(this.mImageView);
         }
 
         // Handle depreciated API for setting the background

@@ -56,7 +56,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
         holder.title.setText("" + model.OfferTitle);
         holder.subTitle.setText("" + model.OfferDescription);
-        Picasso.get().load(model.OfferBannerURL).placeholder(R.drawable.placeholder_ext).into(holder.offer);
+        Picasso.with(context).load(model.OfferBannerURL).placeholder(R.drawable.placeholder_ext).into(holder.offer);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

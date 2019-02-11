@@ -195,7 +195,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                 childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
                 childHolder.strikePrice.setText(String.format("%d", (int) model.price.sales));
             } else {
-                childHolder.mainPrice.setText(String.format("%d", (int) model.price.sales));
+                childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
                 childHolder.strikePriceContainer.setVisibility(View.GONE);
             }
 

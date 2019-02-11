@@ -74,7 +74,7 @@ public class RecommendedServicesAdapter extends RecyclerView.Adapter<Recommended
     public void onBindViewHolder(RecommendServiceVieHolder holder, final int position) {
         holder.name.setText(list.get(position).getName());
         holder.price.setText("From " + context.getResources().getString(R.string.Rs) + " " + list.get(position).getPrice());
-        Picasso.get().load(list.get(position).imagePaths.px200).placeholder(R.drawable.placeholder).into(holder.serviceImage);
+        Picasso.with(context).load(list.get(position).imagePaths.px200).placeholder(R.drawable.placeholder).into(holder.serviceImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

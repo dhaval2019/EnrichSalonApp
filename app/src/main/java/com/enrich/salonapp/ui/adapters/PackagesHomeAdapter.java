@@ -47,7 +47,7 @@ public class PackagesHomeAdapter extends RecyclerView.Adapter<PackagesHomeAdapte
 
         holder.packageTitle.setText(model.PackageTitle);
         holder.packageSubTitle.setText("From " + context.getResources().getString(R.string.Rs) + model.StartingPrice);
-        Picasso.get().load(model.PackageImageURL).placeholder(R.drawable.placeholder).into(holder.packageImageSmall);
+        Picasso.with(context).load(model.PackageImageURL).placeholder(R.drawable.placeholder).into(holder.packageImageSmall);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -112,7 +112,7 @@ public class MyPackageDetailActivity extends AppCompatActivity {
         packageDetailName.setText(packageModel.PackageTitle);
         packageDetailDescription.setText(packageModel.PackageDescription);
         packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + packageModel.StartingPrice);
-        Picasso.get().load(packageModel.PackageImageURL).into(packageDetailImage);
+        Picasso.with(this).load(packageModel.PackageImageURL).into(packageDetailImage);
 
         ExpandableMyPackageBundleAdapter packageBundleAdapter = new ExpandableMyPackageBundleAdapter(this, packageModel.PackageBundle);
         packageBundleRecyclerView.setAdapter(packageBundleAdapter);

@@ -44,7 +44,7 @@ public class ProductOfferAdapter extends PagerAdapter {
         View myImageLayout = inflater.inflate(R.layout.product_offer_list_item, container, false);
         ImageView myImage = myImageLayout.findViewById(R.id.banner_image);
 
-        Picasso.get().load(list.get(position).OfferImageURL).placeholder(R.drawable.placeholder_ext).into(myImage);
+        Picasso.with(context).load(list.get(position).OfferImageURL).placeholder(R.drawable.placeholder_ext).into(myImage);
 
         container.addView(myImageLayout, 0);
 

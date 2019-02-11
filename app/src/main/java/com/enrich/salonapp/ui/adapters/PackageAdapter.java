@@ -51,7 +51,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageV
             holder.genderImage.setImageResource(R.drawable.human_male_female);
         }
 
-        Picasso.get().load(model.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(holder.packageImage);
+        Picasso.with(context).load(model.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(holder.packageImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

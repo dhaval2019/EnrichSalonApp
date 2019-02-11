@@ -46,7 +46,7 @@ public class ProductHomePageBrandAdapter extends RecyclerView.Adapter<ProductHom
         BrandModel model = list.get(position);
 
         holder.categoryName.setText(model.Name.toUpperCase());
-        Picasso.get().load(model.ImageUrl).placeholder(R.drawable.placeholder_ext).into(holder.categoryImage);
+        Picasso.with(context).load(model.ImageUrl).placeholder(R.drawable.placeholder_ext).into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

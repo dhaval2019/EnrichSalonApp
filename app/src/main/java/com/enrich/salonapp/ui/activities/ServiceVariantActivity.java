@@ -123,7 +123,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
         parentServiceName.setText(serviceViewModel.name);
         parentServiceDescription.setText(serviceViewModel.description);
-        Picasso.get().load(serviceViewModel.imagePaths.px100).placeholder(R.drawable.placeholder).into(parentServiceLogo);
+        Picasso.with(this).load(serviceViewModel.imagePaths.px100).placeholder(R.drawable.placeholder).into(parentServiceLogo);
 
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         serviceVariantsPresenter = new ServiceVariantsPresenter(this, dataRepository);

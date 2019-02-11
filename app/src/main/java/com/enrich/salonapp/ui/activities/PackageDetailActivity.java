@@ -210,7 +210,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageDetailDescription.setText(packageModel.PackageDescription);
             packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) packageModel.StartingPrice));
 
-            Picasso.get().load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
+            Picasso.with(this).load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
 
             ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);
             packageBundleRecyclerView.setAdapter(packageBundleAdapter);

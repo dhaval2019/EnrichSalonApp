@@ -50,7 +50,7 @@ public class ProductHomeAdapter extends RecyclerView.Adapter<ProductHomeAdapter.
         holder.productTitle.setText(model.ProductTitle);
         holder.productSubTitle.setText(model.ProductDescription);
 
-        Picasso.get().load(model.ImageURL).placeholder(R.drawable.placeholder).into(holder.productImageSmall);
+        Picasso.with(context).load(model.ImageURL).placeholder(R.drawable.placeholder).into(holder.productImageSmall);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

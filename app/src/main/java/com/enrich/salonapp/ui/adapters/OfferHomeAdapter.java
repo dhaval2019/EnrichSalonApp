@@ -46,7 +46,7 @@ public class OfferHomeAdapter extends RecyclerView.Adapter<OfferHomeAdapter.Offe
     public void onBindViewHolder(OfferHomeViewHolder holder, int position) {
         final OfferModel model = list.get(position);
 
-        Picasso.get().load(model.OfferImageURL).placeholder(R.drawable.placeholder_ext).into(holder.offer);
+        Picasso.with(context).load(model.OfferImageURL).placeholder(R.drawable.placeholder_ext).into(holder.offer);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

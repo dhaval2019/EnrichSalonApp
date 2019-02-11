@@ -66,14 +66,14 @@ dependencies {
     //    implementation 'com.onesignal:OneSignal:3.10.3'
 
     // PICASSO
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // PAY U MONEY SDK
     implementation 'com.payumoney.sdkui:plug-n-play:1.4.4'
     implementation 'com.payumoney.core:payumoney-sdk:7.4.4'
 
     // GOOGLE SERVICES (MAPS, LOCATIONS, ANALYTICS, PLACES)
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-analytics:16.0.7'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.google.firebase:firebase-perf:16.2.3'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.5'
 
     // CRASHLYTICS
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'

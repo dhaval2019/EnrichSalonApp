@@ -47,7 +47,7 @@ public class ProductCategoryHomeAdapter extends RecyclerView.Adapter<ProductCate
 
         holder.subCategoryName.setText(model.Name);
 
-        Picasso.get().load(model.ProductCategoryImageUrl).placeholder(R.drawable.placeholder).into(holder.subCategoryImage);
+        Picasso.with(context).load(model.ProductCategoryImageUrl).placeholder(R.drawable.placeholder).into(holder.subCategoryImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
