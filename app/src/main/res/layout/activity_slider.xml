@@ -24,14 +24,13 @@
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:src="@drawable/full_logo_black" />
+            android:src="@drawable/full_logo_black_786" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/image_slider"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,6 +49,7 @@
             android:background="@drawable/gold_bg_gradient_curved"
             android:paddingLeft="@dimen/dimen_10dp"
             android:paddingRight="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
             android:text="GET STARTED"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -69,7 +69,5 @@
             app:piv_viewPager="@id/image_slider"
             tools:piv_padding="12dp"
             tools:piv_radius="8dp" />
-
-
     </LinearLayout>
 </FrameLayout>

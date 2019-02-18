@@ -46,7 +46,7 @@
             android:id="@+id/nav_header_user_image"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:src="@drawable/full_logo_white" />
+            android:src="@drawable/full_logo_white_786" />
 
         <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/nav_header_user_name"

@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/full_logo_black" />
+            android:src="@drawable/full_logo_black_786" />
 
         <LinearLayout
             android:id="@+id/phone_number_container"
@@ -59,10 +59,9 @@
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:maxLength="10"
-                    android:paddingBottom="15dp"
                     android:paddingStart="@dimen/dimen_10dp"
                     android:paddingTop="15dp"
-                    android:text="9730363383"
+                    android:paddingBottom="15dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_translucent"
                     android:textSize="14sp"
@@ -74,7 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,10 +98,9 @@
                         android:hint="PASSWORD"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:paddingBottom="15dp"
                         android:paddingStart="10dp"
                         android:paddingTop="15dp"
-                        android:text="password"
+                        android:paddingBottom="15dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_translucent"
                         android:textSize="14sp"
@@ -114,14 +113,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:paddingBottom="10dp"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="Forgot password"
                     android:textColor="#989696"
                     android:textSize="12sp"
-                    app:font_type="light"
-                    android:visibility="gone"/>
+                    app:font_type="light" />
 
                 <com.enrich.salonapp.ui.views.CustomButton
                     android:id="@+id/sign_in_btn"
@@ -134,29 +132,6 @@
                     android:textColor="@color/white"
                     app:font_type="regular" />
             </LinearLayout>
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="OR"
-                android:textColor="#424242"
-                android:textSize="14sp"
-                android:visibility="gone"
-                app:font_type="light" />
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/login_sign_up_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:text="Create an account"
-                android:textColor="#ef473a"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:font_type="regular" />
         </LinearLayout>
     </RelativeLayout>
 

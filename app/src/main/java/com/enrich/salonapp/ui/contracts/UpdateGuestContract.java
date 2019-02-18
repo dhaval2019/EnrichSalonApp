@@ -11,6 +11,8 @@ public interface UpdateGuestContract {
 
     interface View extends IBaseView {
         void guestUpdated(GuestUpdateResponseModel model);
+
+        void updateFailed();
     }
 
     interface Presenter extends IBasePresenter<UpdateGuestContract.View> {

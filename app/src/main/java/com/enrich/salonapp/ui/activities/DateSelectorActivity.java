@@ -167,13 +167,8 @@ public class DateSelectorActivity extends BaseActivity implements DatePickerList
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         timeSlotPresenter = new TimeSlotPresenter(this, dataRepository);
 
-//        if (centerDetailModel.Phone != null) {
-//            noSlotsPhoneNumberContainer.setVisibility(View.VISIBLE);
-        storePhoneNumber.setText("Call " + centerDetailModel.Name + " on " + centerDetailModel.Phone + " to check and book your appointment");
+        storePhoneNumber.setText(String.format("Call %s on %s to check and book your appointment", centerDetailModel.Name, centerDetailModel.Phone));
         Linkify.addLinks(storePhoneNumber, Linkify.ALL);
-//        } else {
-//            noSlotsPhoneNumberContainer.setVisibility(View.GONE);
-//        }
 
         storePhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override

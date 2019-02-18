@@ -182,7 +182,7 @@ public class ServiceViewModel extends CartItem implements Parcelable {
 
     @Override
     public double getPrice() {
-        return price.sales;
+        return price._final;
     }
 
     @Override

@@ -25,7 +25,9 @@ import com.enrich.salonapp.data.model.Product.ProductModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.ProductHomeAdapter;
 import com.enrich.salonapp.ui.contracts.ProductDetailsContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.ProductDetailsPresenter;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -184,16 +186,24 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         cartNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
-                startActivity(intent);
+                if (EnrichUtils.getUserData(ProductDetailActivity.this) != null) {
+                    Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                    startActivity(intent);
+                } else {
+                    LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
             }
         });
 
         cartContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
-                startActivity(intent);
+                if (EnrichUtils.getUserData(ProductDetailActivity.this) != null) {
+                    Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                    startActivity(intent);
+                } else {
+                    LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
             }
         });
     }

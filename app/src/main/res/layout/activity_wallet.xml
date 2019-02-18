@@ -48,7 +48,7 @@
                         android:id="@+id/wallet_amount_rs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00"
+                        android:text="--"
                         android:textColor="@color/red"
                         android:textSize="70sp"
                         app:font_type="semi_bold" />
@@ -58,7 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
-                        android:text=".00"
+                        android:text=".--"
                         android:textColor="@color/red"
                         android:textSize="30sp"
                         app:font_type="light" />
@@ -330,57 +330,92 @@
             </LinearLayout>
         </io.supercharge.shimmerlayout.ShimmerLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <View
+            <LinearLayout
+                android:id="@+id/sign_in_container"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#e5e5e5" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/wallet_recycler_view_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#eeeeee"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:paddingStart="@dimen/dimen_15dp"
-                        android:paddingTop="@dimen/dimen_10dp"
-                        android:text="Details"
-                        android:textColor="@color/dark_gold"
-                        app:font_type="light" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/wallet_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:padding="10dp" />
-                </LinearLayout>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/dimen_70dp"
+                android:orientation="vertical">
 
                 <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/no_cashback_available"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="@dimen/dimen_50dp"
-                    android:text="No Cashback Available"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/dimen_18sp" />
-            </FrameLayout>
-        </LinearLayout>
+                    android:text="You are not logged in."
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/dimen_18sp"
+                    app:font_type="light" />
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/wallet_login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:background="@drawable/gold_bg_gradient_curved"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    app:font_type="semi_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wallet_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#e5e5e5" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/wallet_recycler_view_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#eeeeee"
+                            android:paddingStart="@dimen/dimen_15dp"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="Details"
+                            android:textColor="@color/dark_gold"
+                            app:font_type="light" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/wallet_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/no_cashback_available"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dimen_50dp"
+                        android:text="No Cashback Available"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/dimen_18sp" />
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

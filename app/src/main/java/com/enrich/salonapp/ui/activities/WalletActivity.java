@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,9 +26,11 @@ import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.WalletAdapter;
 import com.enrich.salonapp.ui.adapters.WalletHistoryAdapter;
 import com.enrich.salonapp.ui.contracts.WalletContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.WalletPresenter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -42,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
-public class WalletActivity extends BaseActivity implements WalletContract.View {
+public class WalletActivity extends BaseActivity implements WalletContract.View, LoginListener {
 
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -67,6 +70,15 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
 
     @BindView(R.id.wallet_recycler_view_container)
     LinearLayout walletRecyclerViewContainer;
+
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+
+    @BindView(R.id.wallet_container)
+    LinearLayout walletContainer;
+
+    @BindView(R.id.wallet_login_button)
+    Button walletLoginButton;
 
     DataRepository dataRepository;
     WalletPresenter walletPresenter;
@@ -109,16 +121,28 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
 
         collapsingToolbarLayout.setTitle("WALLET");
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         walletPresenter = new WalletPresenter(this, dataRepository);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("GuestId", EnrichUtils.getUserData(this).Id);
+        if (EnrichUtils.getUserData(WalletActivity.this) != null) {
+            walletContainer.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
 
-        walletPresenter.getWallet(this, map);
+            Map<String, String> map = new HashMap<>();
+            map.put("GuestId", EnrichUtils.getUserData(this).Id);
+
+            walletPresenter.getWallet(this, map);
+        } else {
+            walletContainer.setVisibility(View.GONE);
+            signInContainer.setVisibility(View.VISIBLE);
+
+            walletLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(WalletActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
     }
 
     @Override
@@ -166,9 +190,26 @@ public class WalletActivity extends BaseActivity implements WalletContract.View 
         int id = item.getItemId();
 
         if (id == R.id.wallet_menu) {
-            Intent intent = new Intent(WalletActivity.this, WalletHistoryActivity.class);
-            startActivity(intent);
+            if (EnrichUtils.getUserData(WalletActivity.this) != null) {
+                Intent intent = new Intent(WalletActivity.this, WalletHistoryActivity.class);
+                startActivity(intent);
+            } else {
+                showToastMessage("Please login to see your wallet history.");
+            }
         }
         return false;
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(this) != null) {
+            walletContainer.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
+
+            Map<String, String> map = new HashMap<>();
+            map.put("GuestId", EnrichUtils.getUserData(this).Id);
+
+            walletPresenter.getWallet(this, map);
+        }
     }
 }

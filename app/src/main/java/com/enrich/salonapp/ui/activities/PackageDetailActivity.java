@@ -26,6 +26,7 @@ import com.enrich.salonapp.data.model.Product.ProductModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.ExpandablePackageBundleAdapter;
 import com.enrich.salonapp.ui.contracts.PackageDetailsContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.PackageDetailsPresenter;
 import com.enrich.salonapp.util.DividerItemDecoration;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -157,8 +158,12 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
         packageNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PackageDetailActivity.this, CartActivity.class);
-                startActivity(intent);
+                if (EnrichUtils.getUserData(PackageDetailActivity.this) != null) {
+                    Intent intent = new Intent(PackageDetailActivity.this, CartActivity.class);
+                    startActivity(intent);
+                } else {
+                    LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
             }
         });
 
@@ -171,8 +176,8 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageCartContainer.setVisibility(View.GONE);
         } else {
             packageCartContainer.setVisibility(View.VISIBLE);
-            packageTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
-            packageTotalItems.setText("" + application.getCartItems().size());
+            packageTotalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), application.getTotalPrice()));
+            packageTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
     }
 

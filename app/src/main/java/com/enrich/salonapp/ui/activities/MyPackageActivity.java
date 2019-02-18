@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,12 +24,15 @@ import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.MyPackageAdapter;
 import com.enrich.salonapp.ui.contracts.MyPackagesContract;
 import com.enrich.salonapp.ui.contracts.PackageContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.MyPackagesPresenter;
 import com.enrich.salonapp.ui.presenters.PackagePresenter;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.facebook.login.LoginFragment;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -38,7 +42,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyPackageActivity extends BaseActivity implements MyPackagesContract.View, PackageContract.View {
+public class MyPackageActivity extends BaseActivity implements MyPackagesContract.View, PackageContract.View, LoginListener {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -57,6 +61,15 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
 
     @BindView(R.id.no_my_packages)
     TextView noMyPackages;
+
+    @BindView(R.id.my_packages_container)
+    FrameLayout myPackagesContainer;
+
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+
+    @BindView(R.id.my_package_login_button)
+    Button myPackageLoginButton;
 
     DataRepository dataRepository;
     MyPackagesPresenter myPackagesPresenter;
@@ -107,18 +120,33 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
         myPackagesPresenter = new MyPackagesPresenter(this, dataRepository);
         packagePresenter = new PackagePresenter(this, dataRepository);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("guestid", EnrichUtils.getUserData(this).Id);
+        if (EnrichUtils.getUserData(MyPackageActivity.this) != null) {
+            signInContainer.setVisibility(View.GONE);
+            myPackagesContainer.setVisibility(View.VISIBLE);
 
-        myPackagesPresenter.getMyPackages(this, map);
+            Map<String, String> map = new HashMap<>();
+            map.put("guestid", EnrichUtils.getUserData(this).Id);
 
-        seePackages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyPackageActivity.this, PackagesActivity.class);
-                startActivity(intent);
-            }
-        });
+            myPackagesPresenter.getMyPackages(this, map);
+
+            seePackages.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MyPackageActivity.this, PackagesActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            signInContainer.setVisibility(View.VISIBLE);
+            myPackagesContainer.setVisibility(View.GONE);
+
+            myPackageLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(MyPackageActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
     }
 
     @Override
@@ -157,5 +185,26 @@ public class MyPackageActivity extends BaseActivity implements MyPackagesContrac
         noMyPackages.setText("You have not purchased any packages yet");
         seePackages.setVisibility(View.GONE);
         myPackagesRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(this) != null) {
+            signInContainer.setVisibility(View.GONE);
+            myPackagesContainer.setVisibility(View.VISIBLE);
+
+            Map<String, String> map = new HashMap<>();
+            map.put("guestid", EnrichUtils.getUserData(this).Id);
+
+            myPackagesPresenter.getMyPackages(this, map);
+
+            seePackages.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MyPackageActivity.this, PackagesActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

@@ -3,7 +3,9 @@ package com.enrich.salonapp.ui.activities;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -44,6 +46,7 @@ import com.enrich.salonapp.ui.adapters.SampleHomeParentAndNormalServiceAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.ParentsAndNormalServiceListContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
@@ -143,10 +146,13 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     Tracker mTracker;
 
-    String gender;
+    int gender = 0;
+    String genderStr;
 
     boolean isHomeSelected;
     boolean isRebook;
+
+    BottomSheetDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,9 +198,9 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
         if (isHomeSelected) {
             maleContainer.setVisibility(View.GONE);
-            gender = "Female";
+            genderStr = "Female";
             changeGenderIcons(true);
-            getServiceList(Constants.HOME_CATEGORY_ID, gender);
+            getServiceList(Constants.HOME_CATEGORY_ID, Constants.FEMALE);
         } else {
             Map<String, String> categoryMap = new HashMap<>();
             categoryMap.put("CenterId", centerDetailModel.Id);
@@ -221,15 +227,23 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 } else {
                     categoryModel = (CategoryModel) parent.getAdapter().getItem(position);
 
-                    if (gender == null) {
+                    if (gender == 0) {
                         if (isHomeSelected) {
-                            gender = "Female";
+                            gender = Constants.FEMALE;
+                            genderStr = "Female";
                         } else {
-                            gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
+                            if (EnrichUtils.getUserData(ServiceListActivity.this) != null) {
+                                gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender;
+                                genderStr = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
+                            } else {
+                                gender = Constants.FEMALE;
+                                genderStr = "Female";
+                            }
+
                         }
                     }
 
-                    changeGenderIcons(!gender.equalsIgnoreCase("male"));
+                    changeGenderIcons(gender != Constants.MALE);
                     getServiceList(categoryModel.CategoryId, gender);
                 }
             }
@@ -242,10 +256,15 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         serviceNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!application.isCartEmpty()) {
-                    Intent intent = new Intent(ServiceListActivity.this, DateSelectorActivity.class);
-                    intent.putExtra("isHomeSelected", isHomeSelected);
-                    startActivity(intent);
+                if (EnrichUtils.getUserData(ServiceListActivity.this) != null) {
+                    if (!application.isCartEmpty()) {
+                        Intent intent = new Intent(ServiceListActivity.this, DateSelectorActivity.class);
+                        intent.putExtra("isHomeSelected", isHomeSelected);
+                        startActivity(intent);
+                    }
+                } else {
+                    // SHOW LOGIN DIALOG
+                    showLoginDialog();
                 }
             }
         });
@@ -276,7 +295,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             @Override
             public void onClick(View view) {
                 changeGenderIcons(false);
-                getServiceList(categoryModel.CategoryId, "male");
+                getServiceList(categoryModel.CategoryId, Constants.MALE);
             }
         });
 
@@ -285,12 +304,16 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onClick(View view) {
                 changeGenderIcons(true);
                 if (!isHomeSelected) {
-                    getServiceList(categoryModel.CategoryId, "female");
+                    getServiceList(categoryModel.CategoryId, Constants.FEMALE);
                 } else {
                     showToastMessage("Home Services are currently only available for Females.");
                 }
             }
         });
+    }
+
+    private void showLoginDialog() {
+        LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
     }
 
     @Override
@@ -325,8 +348,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @Override
     public void showSubCategories(SubCategoryResponseModel model) {
 
-        if (EnrichUtils.getUserData(this).IsMember == Constants.IS_MEMBER) { //is a member
-            memberText.setVisibility(View.VISIBLE);
+        if (EnrichUtils.getUserData(this) != null) {
+            if (EnrichUtils.getUserData(this).IsMember == Constants.IS_MEMBER) { //is a member
+                memberText.setVisibility(View.VISIBLE);
+            } else {
+                memberText.setVisibility(View.GONE);
+            }
         } else {
             memberText.setVisibility(View.GONE);
         }
@@ -344,7 +371,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
                 Collections.sort(model.SubCategories, new SubCategoryComparator());
 
-                adapter = new NewServiceListAdapter(this, model.SubCategories, gender, isHomeSelected, centerDetailModel);
+                adapter = new NewServiceListAdapter(this, model.SubCategories, genderStr, isHomeSelected, centerDetailModel);
                 serviceRecyclerView.setAdapter(adapter);
                 serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             } else {
@@ -400,13 +427,14 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     private void changeGenderIcons(boolean isFemale) {
         if (isFemale) {
+            genderStr = "Female";
             ImageViewCompat.setImageTintList(femaleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
             femaleText.setTextColor(getResources().getColor(R.color.colorAccent));
 
             ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey)));
             maleText.setTextColor(getResources().getColor(R.color.grey));
         } else {
-
+            genderStr = "Male";
             ImageViewCompat.setImageTintList(maleIcon, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
             maleText.setTextColor(getResources().getColor(R.color.colorAccent));
 
@@ -427,15 +455,15 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         categoryNameSpinner.setSelection(position);
     }
 
-    private void getServiceList(String categoryId, String gender) {
+    private void getServiceList(String categoryId, int gender) {
         this.gender = gender;
         Map<String, String> map = new HashMap<>();
         map.put("CategoryId", categoryId);
         map.put("CenterId", centerDetailModel.Id);
 
-        if (gender.equalsIgnoreCase("male")) {
+        if (gender == Constants.MALE) {
             map.put("gender", "1");
-        } else if (gender.equalsIgnoreCase("female")) {
+        } else if (gender == Constants.FEMALE) {
             map.put("gender", "2");
         } else {
             map.put("gender", "0");
@@ -447,8 +475,10 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         Map<String, String> map = new HashMap<>();
         map.put("CenterId", centerDetailModel.Id);
         map.put("SubCategoryId", subCategoryModel.SubCategoryId);
-        map.put("GuestId", EnrichUtils.getUserData(this).Id);
-        map.put("Tag", gender);
+        if (EnrichUtils.getUserData(this) != null)
+            map.put("GuestId", EnrichUtils.getUserData(this).Id);
+        map.put("Tag", genderStr);
+
         parentsAndNormalServiceListPresenter.getParentAndNormalServiceList(this, map);
     }
 
@@ -466,26 +496,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     @Override
     public void showParentAndNormalServiceList(ParentAndNormalServiceListResponseModel model) {
         if (!model.ParentAndNormalServiceList.isEmpty()) {
-//            EnrichUtils.log("ParentAndNormalServiceList: " + model.ParentAndNormalServiceList.size());
 
             noServiceAvailable.setVisibility(View.GONE);
             recyclerViewContainer.setVisibility(View.VISIBLE);
             serviceRecyclerView.setVisibility(View.VISIBLE);
 
-//            ArrayList<String> list = new ArrayList<>();
-//            list.add("Jan");
-//            list.add("Feb");
-//            list.add("Mar");
-//            list.add("Apr");
-//            list.add("Jun");
-//            list.add("Jul");
-//            list.add("Aug");
-//            list.add("Sep");
-//            list.add("Oct");
-//            list.add("Nov");
-//            list.add("Dec");
-
-            SampleHomeParentAndNormalServiceAdapter adapter = new SampleHomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, gender, subCategoryModel, isHomeSelected);
+            SampleHomeParentAndNormalServiceAdapter adapter = new SampleHomeParentAndNormalServiceAdapter(this, model.ParentAndNormalServiceList, genderStr, subCategoryModel, isHomeSelected);
             serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             serviceRecyclerView.setHasFixedSize(true);
             serviceRecyclerView.setAdapter(adapter);

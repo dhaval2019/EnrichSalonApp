@@ -22,6 +22,7 @@ import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.VariantRecyclerViewAdapter;
 import com.enrich.salonapp.ui.contracts.ServiceVariantsContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.ServiceVariantsPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.ParentAndNormalServiceComparator;
@@ -131,7 +132,8 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
         Map<String, String> map = new HashMap<>();
         map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
         map.put("SubCategoryId", subCategoryId);
-        map.put("GuestId", EnrichUtils.getUserData(this).Id);
+        if (EnrichUtils.getUserData(this) != null)
+            map.put("GuestId", EnrichUtils.getUserData(this).Id);
         map.put("ParentServiceId", serviceViewModel.id);
         map.put("Tag", gender);
         serviceVariantsPresenter.getServiceVariants(this, map);
@@ -139,10 +141,14 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
         serviceNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!application.isCartEmpty()) {
-                    Intent intent = new Intent(ServiceVariantActivity.this, DateSelectorActivity.class);
-                    intent.putExtra("isHomeSelected", isHomeSelected);
-                    startActivity(intent);
+                if (EnrichUtils.getUserData(ServiceVariantActivity.this) != null) {
+                    if (!application.isCartEmpty()) {
+                        Intent intent = new Intent(ServiceVariantActivity.this, DateSelectorActivity.class);
+                        intent.putExtra("isHomeSelected", isHomeSelected);
+                        startActivity(intent);
+                    }
+                } else {
+                    LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
                 }
             }
         });

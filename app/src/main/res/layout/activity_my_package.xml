@@ -33,52 +33,86 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/no_details_found"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/dimen_50dp">
-
-            <ImageView
-                android:layout_width="@dimen/dimen_50dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:src="@drawable/package_variant_closed"
-                android:tint="@color/grey" />
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/no_my_packages"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:gravity="center_horizontal"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_18sp"
-                app:font_type="ultra_light" />
-
-            <com.enrich.salonapp.ui.views.CustomButton
-                android:id="@+id/see_packages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_40dp"
-                android:background="@drawable/gold_bg_gradient_curved"
-                android:paddingLeft="@dimen/dimen_15dp"
-                android:paddingRight="@dimen/dimen_15dp"
-                android:text="Buy Packages"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                app:font_type="regular" />
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_packages_recycler_view"
+            android:id="@+id/sign_in_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:visibility="gone" />
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="You are not logged in."
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimen_18sp"
+                app:font_type="light" />
+
+            <com.enrich.salonapp.ui.views.CustomButton
+                android:id="@+id/my_package_login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:background="@drawable/gold_bg_gradient_curved"
+                android:text="Login"
+                android:textColor="@color/white"
+                app:font_type="semi_bold" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/my_packages_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/no_details_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/dimen_50dp">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_50dp"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:src="@drawable/package_variant_closed"
+                    android:tint="@color/grey" />
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/no_my_packages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/dimen_18sp"
+                    app:font_type="ultra_light" />
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/see_packages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_40dp"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:background="@drawable/gold_bg_gradient_curved"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:text="Buy Packages"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    app:font_type="regular" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_packages_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:visibility="gone" />
+        </FrameLayout>
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

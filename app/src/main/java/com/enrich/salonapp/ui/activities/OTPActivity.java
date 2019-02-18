@@ -68,6 +68,8 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     EnrichApplication application;
     Tracker mTracker;
 
+    boolean isFromLoginLater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,7 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
         registrationRequestModel = getIntent().getParcelableExtra("RegisterModel");
         createOTPResponseModel = getIntent().getParcelableExtra("OTPResponseModel");
         createOTPRequestModel = getIntent().getParcelableExtra("OTPRequestModel");
+        isFromLoginLater = getIntent().getBooleanExtra("IsFromLoginLater", false);
 
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
@@ -184,19 +187,26 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     }
 
     private void switchToNextScreen() {
-        if (EnrichUtils.getHomeStore(this) != null) {
-            Intent intent = new Intent(OTPActivity.this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(OTPActivity.this, StoreSelectorActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-            finish();
-        }
+//        if (isFromLoginLater) {
+//            finish();
+//        } else {
+//            if (EnrichUtils.getHomeStore(this) != null) {
+//                Intent intent = new Intent(OTPActivity.this, HomeActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                startActivity(intent);
+//                finish();
+//            } else {
+//                Intent intent = new Intent(OTPActivity.this, StoreSelectorActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }
+        Intent intent = getIntent();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
@@ -208,5 +218,13 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
     public void FCMRegistered(RegisterFCMResponseModel model) {
         if (model.Error != null)
             EnrichUtils.log("FCM REGISTER: " + model.Error.StatusCode);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent intent = getIntent();
+        setResult(RESULT_OK);
+        finish();
     }
 }

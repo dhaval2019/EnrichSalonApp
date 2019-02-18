@@ -35,221 +35,262 @@
         android:paddingRight="20dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/forgot_password_label_container"
+                android:id="@+id/sign_in_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/forgot_password_more"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Forgot Password"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/dimen_16sp"
-                    app:font_type="light" />
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_5dp"
-                    android:text="Get a new password sent to you via email and SMS"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/dimen_14sp"
-                    app:font_type="light" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/forgot_password_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/forgot_password_label_container"
-                android:layout_alignBottom="@+id/forgot_password_label_container"
-                android:layout_alignParentEnd="true"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:paddingRight="@dimen/dimen_10dp"
-                android:src="@drawable/ic_more_vert_black_24dp" />
-        </RelativeLayout>
-
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/forgot_password_click_here"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dimen_10dp"
-            android:paddingBottom="@dimen/dimen_10dp"
-            android:text="Click Here"
-            android:textColor="@color/dark_gold"
-            android:textSize="@dimen/dimen_14sp"
-            android:visibility="gone"
-            app:font_type="regular" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_1dp"
-            android:layout_marginTop="@dimen/dimen_15dp"
-            android:layout_marginBottom="@dimen/dimen_15dp"
-            android:background="#E0E0E0" />
-
-        <!-- CHANGE PASSWORD -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/change_password_label_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/change_password_more"
-                android:orientation="vertical">
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Change Password"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/dimen_16sp"
-                    app:font_type="light" />
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_5dp"
-                    android:text="Enter your old password along with the new one and confirm to change your password"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/dimen_14sp"
-                    app:font_type="light" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/change_password_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/change_password_label_container"
-                android:layout_alignBottom="@+id/change_password_label_container"
-                android:layout_alignParentRight="true"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:paddingRight="@dimen/dimen_10dp"
-                android:src="@drawable/ic_more_vert_black_24dp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/change_password_edit_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_15dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.enrich.salonapp.ui.views.CustomEditText
-                    android:id="@+id/change_password_old_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="Old Password"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textColorHint="@color/grey"
-                    android:textSize="@dimen/dimen_14sp"
+                    android:gravity="center"
+                    android:text="You are not logged in."
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/dimen_18sp"
                     app:font_type="light" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_1dp"
-                    android:background="#E0E0E0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <com.enrich.salonapp.ui.views.CustomEditText
-                    android:id="@+id/change_password_new_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="New Password"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textColorHint="@color/grey"
-                    android:textSize="@dimen/dimen_14sp"
-                    app:font_type="light" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_1dp"
-                    android:background="#E0E0E0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:orientation="vertical">
-
-                <com.enrich.salonapp.ui.views.CustomEditText
-                    android:id="@+id/change_password_confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="Confirm Password"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textColorHint="@color/grey"
-                    android:textSize="@dimen/dimen_14sp"
-                    app:font_type="light" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_1dp"
-                    android:background="#E0E0E0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_weight="2"
-                android:orientation="horizontal">
 
                 <com.enrich.salonapp.ui.views.CustomButton
-                    android:id="@+id/change_password_cancel"
-                    android:layout_width="0dp"
+                    android:id="@+id/settings_login_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/gold_broder_curved"
-                    android:text="Cancel"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:background="@drawable/gold_bg_gradient_curved"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    app:font_type="semi_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- FORGOT PASSWORD -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/forgot_password_label_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/forgot_password_more"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Forgot Password"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/dimen_16sp"
+                            app:font_type="light" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Get a new password sent to you via email and SMS"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/forgot_password_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/forgot_password_label_container"
+                        android:layout_alignBottom="@+id/forgot_password_label_container"
+                        android:layout_alignParentEnd="true"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_more_vert_black_24dp" />
+                </RelativeLayout>
+
+                <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/forgot_password_click_here"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Click Here"
                     android:textColor="@color/dark_gold"
                     android:textSize="@dimen/dimen_14sp"
+                    android:visibility="gone"
                     app:font_type="regular" />
 
                 <View
-                    android:layout_width="@dimen/dimen_10dp"
-                    android:layout_height="match_parent" />
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dp"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:layout_marginBottom="@dimen/dimen_15dp"
+                    android:background="#E0E0E0" />
 
-                <com.enrich.salonapp.ui.views.CustomButton
-                    android:id="@+id/change_password_save"
-                    android:layout_width="0dp"
+                <!-- CHANGE PASSWORD -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/change_password_label_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/change_password_more"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Change Password"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/dimen_16sp"
+                            app:font_type="light" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Enter your old password along with the new one and confirm to change your password"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/change_password_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/change_password_label_container"
+                        android:layout_alignBottom="@+id/change_password_label_container"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_more_vert_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/change_password_edit_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/gold_bg_gradient_curved"
-                    android:text="SAVE"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_14sp"
-                    app:font_type="regular" />
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomEditText
+                            android:id="@+id/change_password_old_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Old Password"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_1dp"
+                            android:background="#E0E0E0" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomEditText
+                            android:id="@+id/change_password_new_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="New Password"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_1dp"
+                            android:background="#E0E0E0" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomEditText
+                            android:id="@+id/change_password_confirm_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Confirm Password"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_1dp"
+                            android:background="#E0E0E0" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <com.enrich.salonapp.ui.views.CustomButton
+                            android:id="@+id/change_password_cancel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gold_broder_curved"
+                            android:text="Cancel"
+                            android:textColor="@color/dark_gold"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="regular" />
+
+                        <View
+                            android:layout_width="@dimen/dimen_10dp"
+                            android:layout_height="match_parent" />
+
+                        <com.enrich.salonapp.ui.views.CustomButton
+                            android:id="@+id/change_password_save"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gold_bg_gradient_curved"
+                            android:text="SAVE"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="regular" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
 
         <View
             android:layout_width="match_parent"

@@ -95,15 +95,19 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
             model.therapist = null;
         }
 
-        if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-            holder.mainPrice.setText(String.format("%d", (int) model.price._final));
-            holder.strikePriceContainer.setVisibility(View.VISIBLE);
-            holder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+        if (EnrichUtils.getUserData(activity) != null) {
+            if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
+                holder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                holder.strikePriceContainer.setVisibility(View.VISIBLE);
+                holder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+            } else {
+                holder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                holder.strikePriceContainer.setVisibility(View.GONE);
+            }
         } else {
-            holder.mainPrice.setText(String.format("%d", (int) model.price.sales));
+            holder.mainPrice.setText(String.format("%d", (int) model.price._final));
             holder.strikePriceContainer.setVisibility(View.GONE);
         }
-
         holder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -17,7 +17,9 @@ import com.enrich.salonapp.ui.fragments.TutorialFragmentFour;
 import com.enrich.salonapp.ui.fragments.TutorialFragmentOne;
 import com.enrich.salonapp.ui.fragments.TutorialFragmentThree;
 import com.enrich.salonapp.ui.fragments.TutorialFragmentTwo;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -40,6 +42,8 @@ public class SliderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slider);
 
+        SharedPreferenceStore.storeValue(this, Constants.TUTORIAL_SHOWN, true);
+
         application = (EnrichApplication) getApplication();
 
         mTracker = application.getDefaultTracker();
@@ -59,7 +63,7 @@ public class SliderActivity extends AppCompatActivity {
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SliderActivity.this, SignInActivity.class);
+                Intent intent = new Intent(SliderActivity.this, SignInActivity.class); //StoreSelectorActivity
                 startActivity(intent);
                 finish();
             }

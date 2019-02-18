@@ -3,6 +3,8 @@ package com.enrich.salonapp;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
@@ -22,6 +24,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import io.fabric.sdk.android.Fabric;
 
 public class EnrichApplication extends Application {
 
@@ -52,6 +56,9 @@ public class EnrichApplication extends Application {
         sAnalytics = GoogleAnalytics.getInstance(this);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Answers());
     }
 
     /**

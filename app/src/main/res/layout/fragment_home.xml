@@ -543,7 +543,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/gold_bg_gradient"
-                    android:paddingTop="20dp">
+                    android:paddingTop="20dp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"

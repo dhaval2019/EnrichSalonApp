@@ -6,21 +6,27 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.ImageModel;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -32,7 +38,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements LoginListener {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -69,6 +75,15 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.membership_expiry_date)
     TextView membershipExpiryDate;
+
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+
+    @BindView(R.id.profile_detail_container)
+    NestedScrollView profileDetailContainer;
+
+    @BindView(R.id.profile_login_button)
+    Button profileLoginButton;
 
     ImageModel model;
 
@@ -111,6 +126,24 @@ public class ProfileActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("PROFILE");
 
         GuestModel guestModel = EnrichUtils.getUserData(this);
+        if (guestModel != null) {
+            signInContainer.setVisibility(View.GONE);
+            profileDetailContainer.setVisibility(View.VISIBLE);
+            setData(guestModel);
+        } else {
+            signInContainer.setVisibility(View.VISIBLE);
+            profileDetailContainer.setVisibility(View.GONE);
+
+            profileLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(ProfileActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
+    }
+
+    private void setData(GuestModel guestModel) {
         name.setText(String.format("%s %s", guestModel.FirstName, guestModel.LastName));
         email.setText(guestModel.Email);
         phone.setText(String.format("%s", guestModel.MobileNumber));
@@ -140,13 +173,15 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (name != null || email != null || phone != null || gender != null) {
-            GuestModel guestModel = EnrichUtils.getUserData(this);
-            name.setText(String.format("%s %s", guestModel.FirstName, guestModel.LastName));
-            email.setText(guestModel.Email);
-            phone.setText(String.format("%s", guestModel.MobileNumber));
-            gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
-            setAddressData(guestModel.GuestAddress);
+        if (EnrichUtils.getUserData(this) != null) {
+            if (name != null || email != null || phone != null || gender != null) {
+                GuestModel guestModel = EnrichUtils.getUserData(this);
+                name.setText(String.format("%s %s", guestModel.FirstName, guestModel.LastName));
+                email.setText(guestModel.Email);
+                phone.setText(String.format("%s", guestModel.MobileNumber));
+                gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
+                setAddressData(guestModel.GuestAddress);
+            }
         }
     }
 
@@ -186,12 +221,32 @@ public class ProfileActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-            intent.putExtra("ImageModel", model);
-            startActivity(intent);
+            if (EnrichUtils.getUserData(ProfileActivity.this) != null) {
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("ImageModel", model);
+                startActivity(intent);
+            } else {
+                Toast.makeText(application, "Please login to see your wallet history.", Toast.LENGTH_SHORT).show();
+            }
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        GuestModel guestModel = EnrichUtils.getUserData(this);
+        if (guestModel != null) {
+            signInContainer.setVisibility(View.GONE);
+            profileDetailContainer.setVisibility(View.VISIBLE);
+            setData(guestModel);
+        } else {
+            signInContainer.setVisibility(View.VISIBLE);
+            profileDetailContainer.setVisibility(View.GONE);
+
+            Toast.makeText(application, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

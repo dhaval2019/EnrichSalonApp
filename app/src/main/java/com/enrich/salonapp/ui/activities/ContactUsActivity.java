@@ -13,8 +13,16 @@ import android.widget.LinearLayout;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.util.Constants;
+import com.enrich.salonapp.util.EnrichUtils;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,6 +84,9 @@ public class ContactUsActivity extends AppCompatActivity {
         phoneContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                application.getFirebaseInstance().logEvent("ContactUsCall", bundle);
+
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse("tel:1860 266 3000"));//change the number
                 startActivity(callIntent);
@@ -85,6 +96,9 @@ public class ContactUsActivity extends AppCompatActivity {
         emailContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                application.getFirebaseInstance().logEvent("ContactUsEmail", bundle);
+
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, "customercare@enrichsalon.com");
@@ -96,6 +110,9 @@ public class ContactUsActivity extends AppCompatActivity {
         websiteContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                application.getFirebaseInstance().logEvent("ContactUsWebsite", bundle);
+
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.enrichsalon.com"));
                 startActivity(browserIntent);
             }

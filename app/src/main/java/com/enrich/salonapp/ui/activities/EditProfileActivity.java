@@ -274,6 +274,11 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
             updateUser(guestUpdateRequestModel.Guest);
     }
 
+    @Override
+    public void updateFailed() {
+        showToastMessage("Update failed. Please try again later.");
+    }
+
     private void updateUser(GuestModel guestUpdateModel) {
         GuestModel model = EnrichUtils.getUserData(this);
 
@@ -289,6 +294,7 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
         model.Gender = guestUpdateModel.Gender;
 
         EnrichUtils.saveUserData(this, model);
+        finish();
     }
 
     @Override

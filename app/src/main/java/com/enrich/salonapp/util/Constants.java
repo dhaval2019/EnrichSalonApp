@@ -84,4 +84,9 @@ public class Constants {
     public static final int PACKAGE_CHECKOUT_STEP_ADD_TO_CART = 1001;
     public static final int PACKAGE_CHECKOUT_STEP_INITIATION = 2001;
     public static final int PACKAGE_CHECKOUT_STEP_PAYMENT = 3001;
+
+    public static final int MALE = 1;
+    public static final int FEMALE = 2;
+
+    public static final String TUTORIAL_SHOWN = "TutorialShown";
 }

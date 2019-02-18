@@ -146,8 +146,10 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                     Map<String, String> map = new HashMap<>();
                     map.put("CenterId", centerDetailModel.Id);
                     map.put("SubCategoryId", filteredList.get(parentPosition).SubCategoryId);
-                    map.put("GuestId", Objects.requireNonNull(EnrichUtils.getUserData(activity)).Id);
                     map.put("Tag", gender);
+
+                    if (EnrichUtils.getUserData(activity) != null)
+                        map.put("GuestId", Objects.requireNonNull(EnrichUtils.getUserData(activity)).Id);
                     parentsAndNormalServiceListPresenter.getParentAndNormalServiceList(activity, map);
                 } else {
                     if (isExpanded) {
@@ -190,10 +192,15 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 //                model.therapist = null;
             }
 
-            if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
-                childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
-                childHolder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+            if (EnrichUtils.getUserData(activity) != null) {
+                if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
+                    childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                    childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
+                    childHolder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+                } else {
+                    childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                    childHolder.strikePriceContainer.setVisibility(View.GONE);
+                }
             } else {
                 childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
                 childHolder.strikePriceContainer.setVisibility(View.GONE);

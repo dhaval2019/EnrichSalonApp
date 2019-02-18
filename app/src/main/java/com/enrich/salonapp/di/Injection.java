@@ -35,12 +35,6 @@ public class Injection {
                 Request original = chain.request();
                 Request.Builder requestBuilder;
 
-//                if (EnrichUtils.getAuthenticationModel(context) != null) {
-//                    requestBuilder = original.newBuilder().header("Content-Type", "application/json").header("Authorization", EnrichUtils.getAuthenticationModel(context).accessToken);
-//                } else {
-//                    requestBuilder = original.newBuilder().header("Content-Type", "application/json");
-//                }
-
                 if (((EnrichApplication) context.getApplicationContext()).getAuthenticationModel() != null) {
                     requestBuilder = original.newBuilder().header("Content-Type", "application/json").header("Authorization", ((EnrichApplication) context.getApplicationContext()).getAuthenticationModel().accessToken);
                 } else {

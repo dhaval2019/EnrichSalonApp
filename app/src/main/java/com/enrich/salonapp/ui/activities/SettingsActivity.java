@@ -27,10 +27,12 @@ import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.ForgotPasswordContract;
 import com.enrich.salonapp.ui.contracts.SettingsContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.ForgotPasswordPresenter;
 import com.enrich.salonapp.ui.presenters.SettingsPresenter;
 import com.enrich.salonapp.util.Animations;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -40,7 +42,7 @@ import com.google.android.gms.analytics.Tracker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends BaseActivity implements SettingsContract.View, ForgotPasswordContract.View {
+public class SettingsActivity extends BaseActivity implements SettingsContract.View, ForgotPasswordContract.View, LoginListener {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -80,6 +82,15 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
 
     @BindView(R.id.version_number)
     TextView versionNumber;
+
+    @BindView(R.id.user_settings)
+    LinearLayout userSettings;
+
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+
+    @BindView(R.id.settings_login_button)
+    Button settingsLoginButton;
 
     String oldPasswordStr, newPasswordStr, confirmPasswordStr;
 
@@ -129,15 +140,12 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         try {
             PackageManager manager = this.getPackageManager();
             PackageInfo info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
-            versionNumber.setText("" + info.versionName);
+            versionNumber.setText(String.format("%s", info.versionName));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         changePassword = new SettingsPresenter(this, dataRepository);
         forgotPasswordPresenter = new ForgotPasswordPresenter(this, dataRepository);
 
@@ -211,6 +219,21 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 forgotPasswordPresenter.forgotPassword(SettingsActivity.this, forgotPasswordRequestModel);
             }
         });
+
+        if (EnrichUtils.getUserData(SettingsActivity.this) != null) {
+            userSettings.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
+        } else {
+            userSettings.setVisibility(View.GONE);
+            signInContainer.setVisibility(View.VISIBLE);
+
+            settingsLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(SettingsActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
     }
 
     @Override
@@ -248,5 +271,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(this) != null) {
+            userSettings.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
+        }
     }
 }

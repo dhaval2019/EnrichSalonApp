@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,8 +23,11 @@ import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.AppointmentAdapter;
 import com.enrich.salonapp.ui.contracts.AppointmentContracts;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.AppointmentPresenter;
 import com.enrich.salonapp.util.EndlessRecyclerOnScrollListener;
+import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -36,7 +41,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AppointmentsActivity extends BaseActivity implements AppointmentContracts.View {
+public class AppointmentsActivity extends BaseActivity implements AppointmentContracts.View, LoginListener {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -67,6 +72,15 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+
+    @BindView(R.id.appointment_container)
+    LinearLayout appointmentContainer;
+
+    @BindView(R.id.appointment_login_button)
+    Button appointmentLoginButton;
 
     DataRepository dataRepository;
     AppointmentPresenter appointmentPresenter;
@@ -145,25 +159,40 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
             }
         });
 
-        isCurrent = true;
-        Map<String, String> map = new HashMap<>();
-        map.put("Page", "" + pageIndex);
-        map.put("Size", "9");
-        getAppointments(isCurrent, map);
+        if (EnrichUtils.getUserData(AppointmentsActivity.this) != null) {
+            signInContainer.setVisibility(View.GONE);
+            appointmentContainer.setVisibility(View.VISIBLE);
 
-        appointmentsRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
-            @Override
-            public void onLoadMore() {
-                if (!(pageSize < 8)) {
-                    pageIndex++;
+            isCurrent = true;
+            Map<String, String> map = new HashMap<>();
+            map.put("Page", "" + pageIndex);
+            map.put("Size", "9");
+            getAppointments(isCurrent, map);
 
-                    Map<String, String> map = new HashMap<>();
-                    map.put("Page", "" + pageIndex);
-                    map.put("Size", "9");
-                    getAppointments(isCurrent, map);
+            appointmentsRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+                @Override
+                public void onLoadMore() {
+                    if (!(pageSize < 8)) {
+                        pageIndex++;
+
+                        Map<String, String> map = new HashMap<>();
+                        map.put("Page", "" + pageIndex);
+                        map.put("Size", "9");
+                        getAppointments(isCurrent, map);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            signInContainer.setVisibility(View.VISIBLE);
+            appointmentContainer.setVisibility(View.GONE);
+
+            appointmentLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(AppointmentsActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
     }
 
     private void getAppointments(boolean isCurrent, Map<String, String> map) {
@@ -204,6 +233,34 @@ public class AppointmentsActivity extends BaseActivity implements AppointmentCon
         } else {
             appointmentsRecyclerView.setVisibility(View.GONE);
             noAppointmentsTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(this) != null) {
+            signInContainer.setVisibility(View.GONE);
+            appointmentContainer.setVisibility(View.VISIBLE);
+
+            isCurrent = true;
+            Map<String, String> map = new HashMap<>();
+            map.put("Page", "" + pageIndex);
+            map.put("Size", "9");
+            getAppointments(isCurrent, map);
+
+            appointmentsRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+                @Override
+                public void onLoadMore() {
+                    if (!(pageSize < 8)) {
+                        pageIndex++;
+
+                        Map<String, String> map = new HashMap<>();
+                        map.put("Page", "" + pageIndex);
+                        map.put("Size", "9");
+                        getAppointments(isCurrent, map);
+                    }
+                }
+            });
         }
     }
 }

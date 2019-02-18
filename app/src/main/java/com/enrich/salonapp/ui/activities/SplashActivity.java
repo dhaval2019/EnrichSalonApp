@@ -128,8 +128,6 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
-        Fabric.with(this, new Answers());
         setContentView(R.layout.activity_splash);
 
         setAutoLogAppEventsEnabled(true);
@@ -232,9 +230,22 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                 authenticationTokenPresenter.getAuthenticationToken(SplashActivity.this, authenticationRequestModel, false);
             }
         } else {
-            Intent intent = new Intent(SplashActivity.this, SliderActivity.class);
-            startActivity(intent);
-            finish();
+            boolean isTutorialShown = SharedPreferenceStore.getValue(this, Constants.TUTORIAL_SHOWN, false);
+            if (!isTutorialShown) {
+                Intent intent = new Intent(SplashActivity.this, SliderActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                if (EnrichUtils.getHomeStore(this) != null) {
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, StoreSelectorActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
         }
     }
 

@@ -61,9 +61,6 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
     @BindView(R.id.sign_in_btn)
     Button signInBtn;
 
-    @BindView(R.id.login_sign_up_btn)
-    TextView signUpBtn;
-
     @BindView(R.id.forgot_password_btn)
     TextView forgotPasswordBtn;
 
@@ -107,10 +104,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
         EnrichUtils.changeStatusBarColor(getWindow());
 
         // INIT DataRepository
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
         signInPresenter = new SignInPresenter(this, dataRepository);
         forgotPasswordPresenter = new ForgotPasswordPresenter(this, dataRepository);
@@ -178,6 +172,7 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
             Intent intent = new Intent(SignInActivity.this, RegisterActivity.class);
             intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
             startActivity(intent);
+            finish();
         } else if (model.Error.StatusCode == 410) {// NO EMAIL
             passwordContainer.setVisibility(View.VISIBLE);
         } else if (model.Error.StatusCode == 409) {// NO USERNAME

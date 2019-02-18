@@ -19,7 +19,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:src="@drawable/full_logo_black" />
+        android:src="@drawable/full_logo_black_786" />
 
     <com.enrich.salonapp.ui.views.CustomTextView
         android:id="@+id/progress_status"

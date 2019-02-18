@@ -388,7 +388,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         homePagePresenter.getAppointment(context, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
 
         // GET NEW AND POPULAR
-        getNewAndPopularServices();
+//        getNewAndPopularServices();
 
         // GET PACKAGES
         packagePresenter.getAllPackages(context);
@@ -474,7 +474,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         application.clearCart();
         if (categoriesRecyclerView != null) {
             getCategories();
-            getNewAndPopularServices();
+//            getNewAndPopularServices();
         }
     }
 

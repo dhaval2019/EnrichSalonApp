@@ -3,6 +3,7 @@ package com.enrich.salonapp.ui.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RegisterActivity extends BaseActivity implements RegisterContract.View {
+
+    public static final int VERIFY_OTP = 6334;
 
     @BindView(R.id.first_name_edit)
     EditText firstNameEdit;
@@ -79,6 +82,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     EnrichApplication application;
     Tracker mTracker;
 
+    boolean isFromLoginLater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,23 +100,36 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 
         phoneNumberStr = getIntent().getStringExtra("PhoneNumber");
         model = getIntent().getParcelableExtra("GuestData");
+        isFromLoginLater = getIntent().getBooleanExtra("IsFromLoginLater", false);
+//        registrationRequestModel = getIntent().getParcelableExtra("RegisterModel");
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Montserrat-Light.otf");
         maleRadioBtn.setTypeface(tf);
         femaleRadioBtn.setTypeface(tf);
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
         registerPresenter = new RegisterPresenter(this, dataRepository);
+
+//        if (registrationRequestModel != null) {
+//            firstNameEdit.setText(registrationRequestModel.Guest.FirstName);
+//            lastNameEdit.setText(registrationRequestModel.Guest.LastName);
+//            emailEdit.setText(registrationRequestModel.Guest.Email);
+//            phoneNumberEdit.setText(registrationRequestModel.Guest.MobileNumber);
+//            userNameEdit.setText(registrationRequestModel.Guest.Email);
+//            passwordEdit.setText(registrationRequestModel.Guest.Password);
+//            if (registrationRequestModel.Guest.Gender == Constants.MALE) {
+//                maleRadioBtn.setChecked(true);
+//            } else if (registrationRequestModel.Guest.Gender == Constants.FEMALE) {
+//                femaleRadioBtn.setChecked(true);
+//            }
+//        }
 
         if (phoneNumberStr == null) {
             firstNameEdit.setText(model.FirstName);
             lastNameEdit.setText(model.LastName);
             emailEdit.setText(model.Email);
-            phoneNumberEdit.setText("" + model.MobileNumber);
+            phoneNumberEdit.setText(String.format("%s", model.MobileNumber));
             phoneNumberEdit.setEnabled(false);
         } else {
             phoneNumberEdit.setText(phoneNumberStr);
@@ -140,9 +158,9 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
                 int gender = 0;
 
                 if (maleRadioBtn.isChecked()) {
-                    gender = 1;
+                    gender = Constants.MALE;
                 } else if (femaleRadioBtn.isChecked()) {
-                    gender = 2;
+                    gender = Constants.FEMALE;
                 }
 
                 if (!EnrichUtils.isValidEmailId(emailStr)) {
@@ -195,7 +213,34 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
             intent.putExtra("RegisterModel", registrationRequestModel);
             intent.putExtra("OTPResponseModel", model);
             intent.putExtra("OTPRequestModel", createOTPRequestModel);
-            startActivity(intent);
+            intent.putExtra("IsFromLoginLater", isFromLoginLater);
+            startActivityForResult(intent, VERIFY_OTP);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == VERIFY_OTP) {
+            if (resultCode == RESULT_OK) {
+                if (!isFromLoginLater) {
+                    if (EnrichUtils.getHomeStore(this) != null) {
+                        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(RegisterActivity.this, StoreSelectorActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    finish();
+                }
+            }
         }
     }
 

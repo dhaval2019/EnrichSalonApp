@@ -19,8 +19,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 168
-        versionName '1.6.8'
+        versionCode 171
+        versionName '1.7.1'
         multiDexEnabled true
 //        manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
                                 // Project number pulled from dashboard, local value is ignored.
@@ -65,7 +65,7 @@ dependencies {
 
     //    implementation 'com.onesignal:OneSignal:3.10.3'
 
-    // PICASSO
+    // PICASSO - DON'T UPGRADE
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // PAY U MONEY SDK
@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.5'
 
     // CRASHLYTICS
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     // ANSWERS
     implementation('com.crashlytics.sdk.android:answers:1.4.2@aar') {

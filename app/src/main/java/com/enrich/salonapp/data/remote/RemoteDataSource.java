@@ -372,6 +372,8 @@ public class RemoteDataSource extends DataSource {
             public void onResponse(@NonNull Call<GuestUpdateResponseModel> call, @NonNull Response<GuestUpdateResponseModel> response) {
                 if (response.isSuccessful()) {
                     callBack.onSuccess(response.body());
+                } else {
+                    callBack.onFailure(new Throwable());
                 }
             }
 

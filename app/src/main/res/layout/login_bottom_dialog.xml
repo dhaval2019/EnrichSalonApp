@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/login_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            app:font_type="semi_bold" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/login_dialog_title"
+            android:layout_alignBottom="@+id/login_dialog_title"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/dialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="Please login before you can check time slots."
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_14sp"
+        app:font_type="light" />
+
+    <!-- USERNAME -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/username_edit_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_15dp">
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:id="@+id/user_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="MOBILE NUMBER"
+            android:imeOptions="actionDone"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black_translucent"
+            android:textSize="14sp"
+            app:font_type="light" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- PASSWORD -->
+    <LinearLayout
+        android:id="@+id/password_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_edit_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:visibility="gone">
+
+            <com.enrich.salonapp.ui.views.CustomEditText
+                android:id="@+id/password_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="PASSWORD"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black_translucent"
+                android:textSize="14sp"
+                app:font_type="light" />
+        </android.support.design.widget.TextInputLayout>
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/forgot_password_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Forgot password"
+            android:textColor="#989696"
+            android:textSize="12sp"
+            app:font_type="light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/should_login_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/should_login_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="LOGIN"
+            android:textColor="@color/colorAccent"
+            app:font_type="regular" />
+    </LinearLayout>
+</LinearLayout>
