@@ -19,11 +19,11 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 171
-        versionName '1.7.1'
+        versionCode 174
+        versionName '1.7.4'
         multiDexEnabled true
 //        manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
-                                // Project number pulled from dashboard, local value is ignored.
+        // Project number pulled from dashboard, local value is ignored.
 //                                onesignal_google_project_number: "REMOTE"]
     }
     buildTypes {
@@ -129,6 +129,10 @@ dependencies {
 
     // TOASTY
     implementation 'com.github.GrenderG:Toasty:1.4.0'
+
+    //SEGMENT
+    implementation 'com.segment.analytics.android:analytics:4.3.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -84,6 +84,8 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     @SerializedName("CategoryName")
     public String CategoryName;
 
+    public String SubCategoryName;
+
     @SerializedName("ServiceTag")
     public ArrayList<ServiceTagModel> ServiceTag;
 
@@ -181,8 +183,23 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     }
 
     @Override
+    public String getCategoryName() {
+        return CategoryName;
+    }
+
+    @Override
+    public String getSubCategoryName() {
+        return SubCategoryName;
+    }
+
+    @Override
     public double getPrice() {
         return price._final;
+    }
+
+    @Override
+    public double getMembershipPrice() {
+        return price.membershipPrice;
     }
 
     @Override

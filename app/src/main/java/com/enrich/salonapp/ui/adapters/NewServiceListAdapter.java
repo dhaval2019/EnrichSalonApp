@@ -50,6 +50,8 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -194,9 +196,9 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
             if (EnrichUtils.getUserData(activity) != null) {
                 if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                    childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                    childHolder.mainPrice.setText(String.format("%d", (int) model.price.membershipPrice));
                     childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
-                    childHolder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+                    childHolder.strikePrice.setText(String.format("%d", (int) model.price._final));
                 } else {
                     childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
                     childHolder.strikePriceContainer.setVisibility(View.GONE);
@@ -375,6 +377,24 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
         int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
 
+        if (EnrichUtils.getUserData(activity) != null) {
+            // SEGMENT
+            Analytics.with(activity).track(Constants.SEGMENT_SELECT_SERVICE, new Properties()
+                    .putValue("user_id", EnrichUtils.getUserData(activity).Id)
+                    .putValue("mobile", EnrichUtils.getUserData(activity).MobileNumber)
+                    .putValue("service", list.get(parentPosition).ChildServices.get(childPosition).name)
+                    .putValue("category", list.get(parentPosition).ChildServices.get(childPosition).CategoryName)
+                    .putValue("stylist", therapistModel.DisplayName)
+                    .putValue("amount", list.get(parentPosition).ChildServices.get(childPosition).price._final)
+                    .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
+                    .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
+                    .putValue("location", EnrichUtils.getHomeStore(activity).Address)
+                    .putValue("area", "")
+                    .putValue("city", EnrichUtils.getHomeStore(activity).City)
+                    .putValue("state", EnrichUtils.getHomeStore(activity).State.Name)
+                    .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode));
+        }
+
         if (toggleResponse == 1) {
             childHolder.serviceCheckbox.setChecked(true);
         } else if (toggleResponse == 0) {
@@ -423,6 +443,10 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
         if (!model.ParentAndNormalServiceList.isEmpty()) {
 
             Collections.sort(model.ParentAndNormalServiceList, new ParentAndNormalServiceComparator());
+
+            for (int i = 0; i < model.ParentAndNormalServiceList.size(); i++) {
+                model.ParentAndNormalServiceList.get(i).SubCategoryName = filteredList.get(parentPos).Name;
+            }
 
             filteredList.get(parentPos).ChildServices = model.ParentAndNormalServiceList;
             notifyChildInserted(parentPos, 0);

@@ -531,4 +531,14 @@ public class EnrichUtils {
         });
         dialog.show();
     }
+
+    public static String getGenderString(int gender) {
+        if (gender == Constants.MALE) {
+            return "Male";
+        } else if (gender == Constants.FEMALE) {
+            return "Female";
+        } else {
+            return "NA";
+        }
+    }
 }

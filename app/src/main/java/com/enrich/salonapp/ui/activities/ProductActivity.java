@@ -70,6 +70,7 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
     ProductsAdapter productsAdapter;
 
     private int pageSize = 0;
+    boolean isFilterApplied = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +93,10 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductActivity.this, ProductHomePageActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(ProductActivity.this, ProductHomePageActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -108,10 +110,7 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
 
         collapsingToolbarLayout.setTitle("PRODUCTS");
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         productPresenter = new ProductPresenter(this, dataRepository);
 
         productRequestModel = getIntent().getParcelableExtra("ProductRequestModel");
@@ -150,6 +149,7 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILTER) {
             if (resultCode == RESULT_OK) {
+                isFilterApplied = true;
                 String tempProductRequestModel = data.getStringExtra("ProductRequestModelReceive");
                 productRequestModel = EnrichUtils.newGson().fromJson(tempProductRequestModel, ProductRequestModel.class);
                 EnrichUtils.log(EnrichUtils.newGson().toJson(productRequestModel));
@@ -179,7 +179,12 @@ public class ProductActivity extends BaseActivity implements ProductContract.Vie
         } else {
             noProductsAvailable.setVisibility(View.GONE);
             productsRecyclerView.setVisibility(View.VISIBLE);
-            productsAdapter.updateList(model.Product);
+            if (isFilterApplied) {
+                productsAdapter.setData(model.Product);
+                isFilterApplied = false;
+            } else {
+                productsAdapter.updateList(model.Product);
+            }
         }
     }
 

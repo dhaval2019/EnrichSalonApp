@@ -26,6 +26,8 @@ public interface BookingSummaryContract {
         void reservationConfirmed(ConfirmReservationResponseModel model);
 
         void orderConfirmed(ConfirmOrderResponseModel model);
+
+        void orderNotConfirmed();
     }
 
     interface Presenter extends IBasePresenter<BookingSummaryContract.View> {

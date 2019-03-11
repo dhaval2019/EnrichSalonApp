@@ -21,28 +21,28 @@ public class BookingSummaryItemAdapter extends RecyclerView.Adapter<BookingSumma
     ArrayList<GenericCartModel> list;
     LayoutInflater inflater;
 
-    public BookingSummaryItemAdapter (Context context, ArrayList<GenericCartModel> list) {
+    public BookingSummaryItemAdapter(Context context, ArrayList<GenericCartModel> list) {
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public BookingSummaryViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+    public BookingSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.booking_summary_list_item, parent, false);
         return new BookingSummaryViewHolder(view);
     }
 
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         return list.size();
     }
 
     @Override
-    public void onBindViewHolder (BookingSummaryViewHolder holder, int position) {
+    public void onBindViewHolder(BookingSummaryViewHolder holder, int position) {
         GenericCartModel model = list.get(position);
-        holder.item.setText(model.Name);
-        holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (int)model.Price);
+        holder.item.setText(String.format("%s", model.Name.trim()));
+        holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.Price));
     }
 
     class BookingSummaryViewHolder extends RecyclerView.ViewHolder {

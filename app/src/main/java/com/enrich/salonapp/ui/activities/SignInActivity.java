@@ -46,6 +46,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.segment.analytics.Analytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -254,7 +255,8 @@ public class SignInActivity extends BaseActivity implements SignInContract.View,
             @Override
             public void onClick(View v) {
                 Intent mailClient = new Intent(Intent.ACTION_VIEW);
-                mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+//                mailClient.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail");
+                mailClient.setType("message/rfc822");
                 startActivity(mailClient);
                 dialog.dismiss();
             }

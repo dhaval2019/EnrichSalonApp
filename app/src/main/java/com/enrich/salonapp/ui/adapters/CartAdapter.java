@@ -15,6 +15,8 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.ui.activities.CartActivity;
+import com.enrich.salonapp.util.Constants;
+import com.enrich.salonapp.util.EnrichUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,7 +61,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final GenericCartModel model = list.get(position);
 
         if (model.getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
-            holder.name.setText(String.format("%s x %d", model.Name, list.get(position).Quantity));
+            holder.name.setText(String.format("%s %s x %d", model.SubCategoryName, model.Name.trim(), list.get(position).Quantity));
 
             if (model.getTherapistModel() != null) {
                 holder.therapist.setText(String.format("%s %s", model.getTherapistModel().FirstName, model.getTherapistModel().LastName));
@@ -89,7 +91,11 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder.description.setVisibility(View.GONE);
             }
 
-            holder.price.setText(context.getResources().getString(R.string.Rs) + " " + (int) model.getPrice());
+            if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
+                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.getMembershipPrice()));
+            }else {
+                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.getPrice()));
+            }
 
             holder.deliveryInformation.setVisibility(View.GONE);
             holder.deliveryPeriod.setVisibility(View.GONE);

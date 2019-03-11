@@ -347,6 +347,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
 
+        if (logoutContainer != null) {
+            if (EnrichUtils.getUserData(this) != null) {
+                logoutContainer.setVisibility(View.VISIBLE);
+            } else {
+                logoutContainer.setVisibility(View.GONE);
+            }
+        }
+
         SuperActivityToast.cancelAllSuperToasts();
     }
 

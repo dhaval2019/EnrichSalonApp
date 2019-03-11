@@ -14,10 +14,14 @@ import com.enrich.salonapp.data.model.SlotModel;
 import com.enrich.salonapp.ui.activities.DateSelectorActivity;
 import com.enrich.salonapp.util.EnrichUtils;
 
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,38 +49,36 @@ public class SlotsAdapter extends RecyclerView.Adapter<SlotsAdapter.SlotViewHold
 
     @Override
     public void onBindViewHolder(final SlotViewHolder holder, final int position) {
-        try {
-            SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
+//                    SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
+//                    String timeStr = list.get(position).Time.substring(11);
+//                    Date time = stringToTime.parse(timeStr);
+//                    SimpleDateFormat timeToString = new SimpleDateFormat("hh:mm a");
+//                    String dateStr = timeToString.format(time);
 
-            Date time = stringToTime.parse(list.get(position).Time.substring(11));
+        // String Format
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+        LocalTime localTime = LocalTime.parse(list.get(position).Time.substring(11));
+        String newDateStr = dateTimeFormatter.format(localTime);
 
-            SimpleDateFormat timeToString = new SimpleDateFormat("hh:mm a");
-
-            String dateStr = timeToString.format(time);
-
-            holder.slotTextView.setText(dateStr);
-            holder.slotTextView.setTag(position);
-            if (this.pos == position) {
-                holder.slotTextView.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
-                holder.slotTextView.setTextColor(Color.parseColor("#ffffff"));
-            } else {
-                holder.slotTextView.setBackgroundResource(R.drawable.grey_round_rect_border);
-                holder.slotTextView.setTextColor(Color.parseColor("#787878"));
-            }
-
-            holder.slotTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SlotsAdapter.this.pos = (int) holder.slotTextView.getTag();
-                    onBindViewHolder(holder, pos);
-                    notifyDataSetChanged();
-                    dateSelectorActivity.setDateToReserveSlot(list.get(position).Time);
-                }
-            });
-        } catch (ParseException e) {
-            EnrichUtils.log(e.getLocalizedMessage());
-            e.printStackTrace();
+        holder.slotTextView.setText(newDateStr);
+        holder.slotTextView.setTag(position);
+        if (this.pos == position) {
+            holder.slotTextView.setBackgroundResource(R.drawable.gold_bg_gradient_curved);
+            holder.slotTextView.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            holder.slotTextView.setBackgroundResource(R.drawable.grey_round_rect_border);
+            holder.slotTextView.setTextColor(Color.parseColor("#787878"));
         }
+
+        holder.slotTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SlotsAdapter.this.pos = (int) holder.slotTextView.getTag();
+                onBindViewHolder(holder, pos);
+                notifyDataSetChanged();
+                dateSelectorActivity.setDateToReserveSlot(list.get(position).Time);
+            }
+        });
     }
 
     @Override

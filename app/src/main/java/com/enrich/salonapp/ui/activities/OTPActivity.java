@@ -41,6 +41,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -165,6 +167,15 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.METHOD, "EMAIL");
         application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
+
+        // Segment
+        Analytics.with(this).track(Constants.SEGMENT_REGISTRATION, new Properties()
+                .putValue("user_id", guestModel.Id)
+                .putValue("first_name", guestModel.FirstName)
+                .putValue("last_name", guestModel.LastName)
+                .putValue("email", guestModel.Email)
+                .putValue("mobile", guestModel.MobileNumber)
+                .putValue("gender", EnrichUtils.getGenderString(guestModel.Gender)));
     }
 
     @Override

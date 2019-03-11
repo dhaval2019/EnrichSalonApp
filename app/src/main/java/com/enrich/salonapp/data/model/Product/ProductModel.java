@@ -103,8 +103,23 @@ public class ProductModel extends CartItem implements Parcelable {
     }
 
     @Override
+    public String getCategoryName() {
+        return null;
+    }
+
+    @Override
+    public String getSubCategoryName() {
+        return null;
+    }
+
+    @Override
     public double getPrice() {
-        return (double) ProductAmount;
+        return ProductAmount;
+    }
+
+    @Override
+    public double getMembershipPrice() {
+        return ProductAmount;
     }
 
     @Override

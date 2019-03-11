@@ -29,6 +29,7 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.segment.analytics.Analytics;
 
 import java.util.Date;
 

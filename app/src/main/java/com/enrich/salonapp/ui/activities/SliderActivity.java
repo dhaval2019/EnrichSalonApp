@@ -63,7 +63,7 @@ public class SliderActivity extends AppCompatActivity {
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SliderActivity.this, SignInActivity.class); //StoreSelectorActivity
+                Intent intent = new Intent(SliderActivity.this, StoreSelectorActivity.class); //SignInActivity
                 startActivity(intent);
                 finish();
             }

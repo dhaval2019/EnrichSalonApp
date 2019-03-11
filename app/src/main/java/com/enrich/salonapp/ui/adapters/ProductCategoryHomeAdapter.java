@@ -14,6 +14,7 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.Product.ProductCategoryModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.ui.activities.ProductActivity;
+import com.enrich.salonapp.ui.activities.ProductSubCategoryActivity;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +44,7 @@ public class ProductCategoryHomeAdapter extends RecyclerView.Adapter<ProductCate
 
     @Override
     public void onBindViewHolder(@NonNull ProductCategoryViewHolder holder, final int position) {
-        ProductCategoryModel model = list.get(position);
+        final ProductCategoryModel model = list.get(position);
 
         holder.subCategoryName.setText(model.Name);
 
@@ -59,8 +60,8 @@ public class ProductCategoryHomeAdapter extends RecyclerView.Adapter<ProductCate
 
                 EnrichUtils.log(EnrichUtils.newGson().toJson(productRequestModel));
 
-                Intent intent = new Intent(context, ProductActivity.class);
-                intent.putExtra("ProductRequestModel", productRequestModel);
+                Intent intent = new Intent(context, ProductSubCategoryActivity.class); //ProductActivity
+                intent.putExtra("ProductRequestModel", model);
                 context.startActivity(intent);
             }
         });

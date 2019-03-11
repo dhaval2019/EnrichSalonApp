@@ -75,6 +75,7 @@ import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.segment.analytics.Analytics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -493,7 +494,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             }
 
             // SAVE TOAST OFFERS
-            SharedPreferenceStore.storeValue(HomeFragment.this.getActivity(), Constants.KEY_TOAST_OFFERS, EnrichUtils.newGson().toJson(toastOfferList));
+            SharedPreferenceStore.storeValue(context, Constants.KEY_TOAST_OFFERS, EnrichUtils.newGson().toJson(toastOfferList));
 
             Collections.sort(normalOfferList, new OfferComparator());
 

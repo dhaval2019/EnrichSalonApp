@@ -23,10 +23,8 @@ import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.data.model.TherapistModel;
 import com.enrich.salonapp.data.model.TherapistResponseModel;
 import com.enrich.salonapp.di.Injection;
-import com.enrich.salonapp.ui.activities.ServiceListActivity;
 import com.enrich.salonapp.ui.activities.ServiceVariantActivity;
 import com.enrich.salonapp.ui.contracts.TherapistContract;
-import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.TherapistPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -35,6 +33,8 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,12 +50,12 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
     LayoutInflater inflater;
     private EnrichApplication application;
     private TherapistPresenter therapistPresenter;
-    int pos;
+    private int pos;
     private BottomSheetDialog dialog;
     VariantViewHolder holder;
 
-    Tracker mTracker;
-    boolean isHomeSelected;
+    private Tracker mTracker;
+    private boolean isHomeSelected;
 
     public VariantRecyclerViewAdapter(Activity activity, ArrayList<ServiceViewModel> list, boolean isHomeSelected) {
         this.activity = activity;
@@ -97,9 +97,9 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
 
         if (EnrichUtils.getUserData(activity) != null) {
             if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                holder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                holder.mainPrice.setText(String.format("%d", (int) model.price.membershipPrice));
                 holder.strikePriceContainer.setVisibility(View.VISIBLE);
-                holder.strikePrice.setText(String.format("%d", (int) model.price.sales));
+                holder.strikePrice.setText(String.format("%d", (int) model.price._final));
             } else {
                 holder.mainPrice.setText(String.format("%d", (int) model.price._final));
                 holder.strikePriceContainer.setVisibility(View.GONE);
@@ -246,6 +246,24 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
         variantList.get(position).therapist = therapistModel;
 
         int toggleResponse = application.toggleItem(variantList.get(position));
+
+        if (EnrichUtils.getUserData(activity) != null) {
+            // SEGMENT
+            Analytics.with(activity).track(Constants.SEGMENT_SELECT_SERVICE, new Properties()
+                    .putValue("user_id", EnrichUtils.getUserData(activity).Id)
+                    .putValue("mobile", EnrichUtils.getUserData(activity).MobileNumber)
+                    .putValue("service", variantList.get(position).name)
+                    .putValue("category", variantList.get(position).CategoryName)
+                    .putValue("stylist", therapistModel.DisplayName)
+                    .putValue("amount", variantList.get(position).price._final)
+                    .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
+                    .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
+                    .putValue("location", EnrichUtils.getHomeStore(activity).Address)
+                    .putValue("area", "")
+                    .putValue("city", EnrichUtils.getHomeStore(activity).City)
+                    .putValue("state", EnrichUtils.getHomeStore(activity).State.Name)
+                    .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode));
+        }
 
         if (toggleResponse == 1) {
             holder.serviceCheckbox.setChecked(true);

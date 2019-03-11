@@ -9,7 +9,6 @@ import com.enrich.salonapp.data.model.AuthenticationModel;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.data.model.SpinModel;
-import com.enrich.salonapp.ui.activities.BookingSummaryActivity;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.ObjectSerializer;
@@ -19,13 +18,16 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
-//import com.onesignal.OneSignal;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import io.fabric.sdk.android.Fabric;
+
+//import com.onesignal.OneSignal;
 
 public class EnrichApplication extends Application {
 
@@ -59,6 +61,16 @@ public class EnrichApplication extends Application {
 
         Fabric.with(this, new Crashlytics());
         Fabric.with(this, new Answers());
+
+        // SEGMENT
+        // Create an analytics client with the given context and Segment write key.
+        Analytics analytics = new Analytics.Builder(this, getString(R.string.semgent_write_key))
+                .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
+                .recordScreenViews() // Enable this to record screen views automatically!
+                .build();
+
+        Analytics.setSingletonInstance(analytics);
+        Analytics.with(this).track("Application Started");
     }
 
     /**
@@ -139,6 +151,7 @@ public class EnrichApplication extends Application {
             genericCartModel.Quantity = cartItem.getQuantity();
             genericCartModel.Name = cartItem.getName();
             genericCartModel.Price = cartItem.getPrice();
+            genericCartModel.MembershipPrice = cartItem.getMembershipPrice();
             genericCartModel.CartItemType = cartItem.getCartItemType();
             genericCartModel.StoreId = cartItem.getStoreId();
             genericCartModel.Latitude = cartItem.getLatitude();
@@ -151,6 +164,8 @@ public class EnrichApplication extends Application {
             genericCartModel.therapistModel = cartItem.getTherapistModel();
             genericCartModel.PackageBundleItemType = cartItem.getPackageBundleItemType();
             genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
+            genericCartModel.CategoryName = cartItem.getCategoryName();
+            genericCartModel.SubCategoryName = cartItem.getSubCategoryName();
 
             cartList.add(genericCartModel);
             logAddedToCartEvent(genericCartModel);
@@ -168,6 +183,7 @@ public class EnrichApplication extends Application {
         genericCartModel.Quantity = cartItem.getQuantity();
         genericCartModel.Name = cartItem.getName();
         genericCartModel.Price = cartItem.getPrice();
+        genericCartModel.MembershipPrice = cartItem.getMembershipPrice();
         genericCartModel.CartItemType = cartItem.getCartItemType();
         genericCartModel.StoreId = cartItem.getStoreId();
         genericCartModel.Latitude = cartItem.getLatitude();
@@ -180,6 +196,8 @@ public class EnrichApplication extends Application {
         genericCartModel.therapistModel = cartItem.getTherapistModel();
         genericCartModel.PackageBundleItemType = cartItem.getPackageBundleItemType();
         genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
+        genericCartModel.CategoryName = cartItem.getCategoryName();
+        genericCartModel.SubCategoryName = cartItem.getSubCategoryName();
 
         cartList.add(genericCartModel);
         logAddedToCartEvent(genericCartModel);
@@ -224,6 +242,18 @@ public class EnrichApplication extends Application {
         bundle.putString(FirebaseAnalytics.Param.CHECKOUT_STEP, String.valueOf(Constants.SERVICE_CHECKOUT_STEP_SELECT_THERAPIST));
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, bundle);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CHECKOUT_PROGRESS, bundle);
+
+        if (cartItem.CartItemType == CartItem.CART_TYPE_PRODUCTS) {
+            if (EnrichUtils.getUserData(this) != null) {
+                Analytics.with(this).track(Constants.SEGMENT_ADD_TO_CART, new Properties()
+                        .putValue("user_id", EnrichUtils.getUserData(this).Id)
+                        .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
+                        .putValue("product_name", cartItem.getName())
+                        .putValue("description", "")
+                        .putValue("quantity", cartItem.getQuantity())
+                        .putValue("amount", cartItem.getPrice()));
+            }
+        }
     }
 
     public void updateCartItem(CartItem cartItem) {
@@ -480,8 +510,18 @@ public class EnrichApplication extends Application {
 
     public double getTotalPrice() {
         double totalPrice = 0;
-        for (int i = 0; i < cartList.size(); i++)
-            totalPrice += (cartList.get(i).getPrice() * cartList.get(i).getQuantity());
+        for (int i = 0; i < cartList.size(); i++) {
+            if (EnrichUtils.getUserData(this) != null) {
+                if (EnrichUtils.getUserData(this).IsMember == Constants.IS_MEMBER) {
+                    totalPrice += (cartList.get(i).getMembershipPrice() * cartList.get(i).getQuantity());
+                } else {
+                    totalPrice += (cartList.get(i).getPrice() * cartList.get(i).getQuantity());
+                }
+            } else {
+                totalPrice += (cartList.get(i).getPrice() * cartList.get(i).getQuantity());
+            }
+        }
+
         return totalPrice;
     }
 

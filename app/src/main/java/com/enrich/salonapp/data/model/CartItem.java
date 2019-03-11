@@ -43,7 +43,13 @@ public abstract class CartItem implements Parcelable {
 
     public abstract String getName();
 
+    public abstract String getCategoryName();
+
+    public abstract String getSubCategoryName();
+
     public abstract double getPrice();
+
+    public abstract double getMembershipPrice();
 
     public abstract int getCartItemType();
 

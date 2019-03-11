@@ -9,8 +9,6 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
-
     <application
         android:name=".EnrichApplication"
         android:allowBackup="true"
@@ -25,7 +23,10 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -157,14 +158,10 @@
         <activity
             android:name=".ui.activities.ProductFilterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- CRASHLYTICS -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- CRASHLYTICS -->
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0f35cab090557f840d17e1621755f2983baa97f4" />
-
-        <!-- PLACES -->
+            android:value="0f35cab090557f840d17e1621755f2983baa97f4" /> <!-- PLACES -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -237,6 +234,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activities.BigDaysActivity" />
+
+        <activity
+            android:name=".ui.activities.ProductSubCategoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".util.EnrichFireBaseMessagingService"

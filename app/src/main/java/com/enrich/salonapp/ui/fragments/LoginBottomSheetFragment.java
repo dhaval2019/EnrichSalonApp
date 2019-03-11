@@ -49,10 +49,13 @@ import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseBottomSheetDialogFragment;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,6 +102,16 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        application = (EnrichApplication) getActivity().getApplicationContext();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Login Dialog");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
     }
 
     public static LoginBottomSheetFragment getInstance() {
@@ -243,7 +256,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
             EnrichUtils.saveAuthenticationModel(context, model);
             guestPresenter.getUserData(context, model.userId, true);
         } else {
-            showToastMessage("Invalid Credentials");
+            showToastMessage(context, "Invalid Credentials");
         }
     }
 
@@ -271,7 +284,14 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
         });
 
         Toast.makeText(context, "Welcome " + model.FirstName + "!", Toast.LENGTH_SHORT).show();
-//        showToastMessage("Welcome " + model.FirstName + "!");
+
+        Analytics.with(context).track(Constants.SEGMENT_LOGIN, new Properties()
+                .putValue("user_id", model.Id)
+                .putValue("first_name", model.FirstName)
+                .putValue("last_name", model.LastName)
+                .putValue("email", model.Email)
+                .putValue("mobile", model.MobileNumber));
+
         LoginBottomSheetFragment.this.dismiss();
     }
 
@@ -296,9 +316,14 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
     @Override
     public void passwordSent(ForgotPasswordResponseModel model) {
         if (model.Success) {
-            showToastMessage("Password sent to SMS and Email");
+            showToastMessage(context, "Password sent to SMS and Email");
         } else {
-            showToastMessage("" + model.Error.Message);
+            showToastMessage(context, "" + model.Error.Message);
         }
+    }
+
+    @Override
+    public void showToastMessage(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

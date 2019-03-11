@@ -24,6 +24,7 @@ import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.AddressContract;
 import com.enrich.salonapp.ui.presenters.AddressPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -39,6 +40,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.util.List;
 import java.util.Locale;
@@ -111,14 +114,12 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
     String addressType = "";
     String addressTypeStr = "";
 
-    private ThreadExecutor threadExecutor;
-    private MainUiThread mainUiThread;
-    private DatabaseDefinition databaseDefinition;
     private DataRepository dataRepository;
 
     private AddressPresenter addressPresenter;
 
     private AddressModel addressModel;
+    private AddressModel addressModelToLog;
 
     EnrichApplication application;
     Tracker mTracker;
@@ -139,7 +140,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
 
         ButterKnife.bind(this);
 
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, databaseDefinition);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         addressPresenter = new AddressPresenter(this, dataRepository);
 
         setSupportActionBar(toolbar);
@@ -178,7 +179,6 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                 } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
                     EnrichUtils.log(e.getLocalizedMessage());
                 }
-
             }
         });
 
@@ -332,6 +332,8 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                 model.Longitude = suggestedPlace.getLatLng().longitude;
                 model.AddressType = addressTypeStr;
 
+                addressModelToLog = model;
+
                 addressPresenter.addAddress(AddAddressActivity.this, model);
             }
         });
@@ -342,7 +344,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 suggestedPlace = PlaceAutocomplete.getPlace(this, data);
-                locationText.setText(suggestedPlace.getName() + ", " + suggestedPlace.getAddress());
+                locationText.setText(String.format("%s, %s", suggestedPlace.getName(), suggestedPlace.getAddress()));
 
 //                EnrichUtils.log("Place: " + suggestedPlace.getAddress());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -406,6 +408,8 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
     @Override
     public void addressAdded(AddressResponseModel model) {
         if (model != null) {
+            logAddAddressActivity();
+
             GuestModel guestModel = EnrichUtils.getUserData(this);
             guestModel.GuestAddress = model.GuestAddress;
             EnrichUtils.saveUserData(this, guestModel);
@@ -416,5 +420,15 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
+    }
+
+    private void logAddAddressActivity() {
+        Analytics.with(this).track(Constants.SEGMENT_ADD_ADDRESS, new Properties()
+                .putValue("user_id", EnrichUtils.getUserData(this).Id)
+                .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
+                .putValue("address_type", addressModelToLog.AddressType)
+                .putValue("location", addressModelToLog.Location)
+                .putValue("house", addressModelToLog.HouseNameFlatNo)
+                .putValue("landmark", addressModelToLog.Landmark));
     }
 }

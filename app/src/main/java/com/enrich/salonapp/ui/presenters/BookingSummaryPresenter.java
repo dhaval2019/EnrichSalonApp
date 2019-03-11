@@ -180,6 +180,7 @@ public class BookingSummaryPresenter extends BasePresenter<BookingSummaryContrac
             @Override
             public void onFailure(Throwable t) {
                 if (view != null) {
+                    view.orderNotConfirmed();
                     view.setProgressBar(false);
                     view.showToastMessage("Something went wrong. Please try again later.");
                 }

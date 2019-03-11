@@ -3,7 +3,6 @@ package com.enrich.salonapp.ui.activities;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -52,6 +51,7 @@ import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.SubCategoryComparator;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -67,7 +67,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceListActivity extends BaseActivity implements ServiceListContract.View, CategoryContract.View, ParentsAndNormalServiceListContract.View {
+public class ServiceListActivity extends BaseActivity implements ServiceListContract.View, CategoryContract.View, ParentsAndNormalServiceListContract.View, LoginListener {
 
     @BindView(R.id.category_name_spinner)
     Spinner categoryNameSpinner;
@@ -281,7 +281,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 if (isHomeSelected) {
 //                    parentAndNormalServiceAdapter.getFilter().filter(s);
                 } else {
-                    adapter.getFilter().filter(s);
+                    if (adapter != null)
+                        adapter.getFilter().filter(s);
                 }
             }
 
@@ -313,7 +314,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     }
 
     private void showLoginDialog() {
-        LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+        LoginBottomSheetFragment.getInstance(this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
     }
 
     @Override
@@ -382,6 +383,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 recyclerViewContainer.setVisibility(View.GONE);
             }
         }
+
+        updateCart();
     }
 
     @Override
@@ -488,8 +491,8 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
-            serviceTotalItems.setText("" + application.getCartItems().size());
+            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) application.getTotalPrice()));
+            serviceTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
     }
 
@@ -512,6 +515,30 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 //            serviceRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 //            serviceRecyclerView.setHasFixedSize(true);
 //            serviceRecyclerView.setAdapter(adapter);
+        }
+
+        updateCart();
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(ServiceListActivity.this) != null) {
+            if (EnrichUtils.getUserData(this).IsMember == Constants.IS_MEMBER) {
+                if (isHomeSelected) {
+                    maleContainer.setVisibility(View.GONE);
+                    genderStr = "Female";
+                    changeGenderIcons(true);
+                    getServiceList(Constants.HOME_CATEGORY_ID, Constants.FEMALE);
+                } else {
+                    Map<String, String> categoryMap = new HashMap<>();
+                    categoryMap.put("CenterId", centerDetailModel.Id);
+                    categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
+                    if (isHomeSelected) {
+                        categoryMap.put("HomeCategory", "home");
+                    }
+                    categoryPresenter.getCategoriesList(this, categoryMap, true);
+                }
+            }
         }
     }
 }

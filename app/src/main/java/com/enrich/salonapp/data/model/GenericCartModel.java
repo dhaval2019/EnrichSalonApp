@@ -18,6 +18,7 @@ public class GenericCartModel implements Serializable, Parcelable {
     public int Quantity;
     public String Name;
     public double Price;
+    public double MembershipPrice;
     public int CartItemType;
     public int StoreId;
     public double Latitude;
@@ -30,6 +31,8 @@ public class GenericCartModel implements Serializable, Parcelable {
     public String CustomerAddress;
     public TherapistModel therapistModel;
     public String SlotTime;
+    public String CategoryName;
+    public String SubCategoryName;
 
     protected boolean addedToCart;
 
@@ -50,6 +53,7 @@ public class GenericCartModel implements Serializable, Parcelable {
         Quantity = in.readInt();
         Name = in.readString();
         Price = in.readDouble();
+        MembershipPrice = in.readDouble();
         CartItemType = in.readInt();
         StoreId = in.readInt();
         Latitude = in.readDouble();
@@ -62,6 +66,8 @@ public class GenericCartModel implements Serializable, Parcelable {
         SlotTime = in.readString();
         PackageBundleItemCount = in.readInt();
         PackageBundleItemType = in.readInt();
+        CategoryName = in.readString();
+        SubCategoryName = in.readString();
     }
 
     public static final Creator<GenericCartModel> CREATOR = new Creator<GenericCartModel>() {
@@ -101,7 +107,7 @@ public class GenericCartModel implements Serializable, Parcelable {
     }
 
     public String getName() {
-        return Name;
+        return CategoryName + " " + Name;
     }
 
     public void setName(String name) {
@@ -114,6 +120,14 @@ public class GenericCartModel implements Serializable, Parcelable {
 
     public void setPrice(double price) {
         Price = price;
+    }
+
+    public double getMembershipPrice() {
+        return MembershipPrice;
+    }
+
+    public void setMembershipPrice(double membershipPrice) {
+        MembershipPrice = membershipPrice;
     }
 
     public int getCartItemType() {
@@ -264,6 +278,7 @@ public class GenericCartModel implements Serializable, Parcelable {
         dest.writeInt(Quantity);
         dest.writeString(Name);
         dest.writeDouble(Price);
+        dest.writeDouble(MembershipPrice);
         dest.writeInt(CartItemType);
         dest.writeInt(StoreId);
         dest.writeDouble(Latitude);
@@ -276,6 +291,8 @@ public class GenericCartModel implements Serializable, Parcelable {
         dest.writeString(SlotTime);
         dest.writeInt(PackageBundleItemCount);
         dest.writeInt(PackageBundleItemType);
+        dest.writeString(CategoryName);
+        dest.writeString(SubCategoryName);
     }
 }
 

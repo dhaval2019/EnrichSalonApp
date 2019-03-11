@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +23,7 @@ import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.BrandAdapter;
 import com.enrich.salonapp.ui.adapters.ProductCategoryAdapter;
-import com.enrich.salonapp.ui.adapters.ProductSubCategoryAdapter;
+import com.enrich.salonapp.ui.adapters.ProductFilterSubCategoryAdapter;
 import com.enrich.salonapp.ui.contracts.ProductFilterContract;
 import com.enrich.salonapp.ui.presenters.ProductFilterPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
@@ -75,7 +74,7 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
 
     BrandAdapter brandAdapter;
     ProductCategoryAdapter productCategoryAdapter;
-    ProductSubCategoryAdapter productSubCategoryAdapter;
+    ProductFilterSubCategoryAdapter productFilterSubCategoryAdapter;
 
     EnrichApplication application;
     Tracker mTracker;
@@ -114,10 +113,7 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
 
         collapsingToolbarLayout.setTitle("Filter");
 
-        ThreadExecutor threadExecutor = ThreadExecutor.getInstance();
-        MainUiThread mainUiThread = MainUiThread.getInstance();
-
-        dataRepository = Injection.provideDataRepository(this, mainUiThread, threadExecutor, null);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         productFilterPresenter = new ProductFilterPresenter(this, dataRepository);
 
         productRequestModel = EnrichUtils.newGson().fromJson(getIntent().getStringExtra("ProductRequestModelSend"), ProductRequestModel.class);
@@ -169,8 +165,8 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
                     productCategoryAdapter.notifyDataSetChanged();
                 }
 
-                if (productSubCategoryAdapter != null) {
-                    productSubCategoryAdapter.notifyDataSetChanged();
+                if (productFilterSubCategoryAdapter != null) {
+                    productFilterSubCategoryAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -249,8 +245,8 @@ public class ProductFilterActivity extends BaseActivity implements ProductFilter
     @Override
     public void showProductSubCategories(ProductSubCategoryResponseModel model) {
         if (!model.ProductSubCategory.isEmpty()) {
-            productSubCategoryAdapter = new ProductSubCategoryAdapter(this, model.ProductSubCategory);
-            filterRecyclerView.setAdapter(productSubCategoryAdapter);
+            productFilterSubCategoryAdapter = new ProductFilterSubCategoryAdapter(this, model.ProductSubCategory);
+            filterRecyclerView.setAdapter(productFilterSubCategoryAdapter);
             filterRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
     }

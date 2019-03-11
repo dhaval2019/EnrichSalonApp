@@ -160,7 +160,22 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
     }
 
     @Override
+    public String getCategoryName() {
+        return null;
+    }
+
+    @Override
+    public String getSubCategoryName() {
+        return null;
+    }
+
+    @Override
     public double getPrice() {
+        return Price;
+    }
+
+    @Override
+    public double getMembershipPrice() {
         return Price;
     }
 

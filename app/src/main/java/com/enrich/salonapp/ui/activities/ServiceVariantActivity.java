@@ -24,7 +24,9 @@ import com.enrich.salonapp.ui.adapters.VariantRecyclerViewAdapter;
 import com.enrich.salonapp.ui.contracts.ServiceVariantsContract;
 import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.ServiceVariantsPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.ParentAndNormalServiceComparator;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
@@ -40,7 +42,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceVariantActivity extends BaseActivity implements ServiceVariantsContract.View {
+public class ServiceVariantActivity extends BaseActivity implements ServiceVariantsContract.View, LoginListener {
 
 //    @BindView(R.id.drawer_collapse_toolbar)
 //    CollapsingToolbarLayout collapsingToolbarLayout;
@@ -148,7 +150,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
                         startActivity(intent);
                     }
                 } else {
-                    LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                    LoginBottomSheetFragment.getInstance(ServiceVariantActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
                 }
             }
         });
@@ -164,10 +166,16 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
 
             Collections.sort(model.ServiceVariants, new ParentAndNormalServiceComparator());
 
+            for (int i = 0; i < model.ServiceVariants.size(); i++) {
+                model.ServiceVariants.get(i).SubCategoryName = serviceViewModel.name;
+            }
+
             VariantRecyclerViewAdapter variantRecyclerViewAdapter = new VariantRecyclerViewAdapter(this, model.ServiceVariants, isHomeSelected);
             variantRecyclerView.setAdapter(variantRecyclerViewAdapter);
             variantRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             variantRecyclerView.setNestedScrollingEnabled(false);
+
+            updateCart();
         } else {
             noServiceAvailable.setVisibility(View.VISIBLE);
             variantRecyclerView.setVisibility(View.GONE);
@@ -180,8 +188,25 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
-            serviceTotalItems.setText("" + application.getCartItems().size());
+            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) application.getTotalPrice()));
+            serviceTotalItems.setText(String.format("%d", application.getCartItems().size()));
+        }
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(ServiceVariantActivity.this) != null) {
+            if (EnrichUtils.getUserData(ServiceVariantActivity.this).IsMember == Constants.IS_MEMBER) {
+//            showToastMessage(EnrichUtils.getUserData(ServiceVariantActivity.this).FirstName + " is a Member");
+                Map<String, String> map = new HashMap<>();
+                map.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+                map.put("SubCategoryId", subCategoryId);
+                if (EnrichUtils.getUserData(this) != null)
+                    map.put("GuestId", EnrichUtils.getUserData(this).Id);
+                map.put("ParentServiceId", serviceViewModel.id);
+                map.put("Tag", gender);
+                serviceVariantsPresenter.getServiceVariants(this, map);
+            }
         }
     }
 }

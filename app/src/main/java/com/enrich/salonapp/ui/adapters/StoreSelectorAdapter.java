@@ -16,7 +16,10 @@ import com.enrich.salonapp.data.model.CenterDetailModel;
 import com.enrich.salonapp.data.model.CenterViewModel;
 import com.enrich.salonapp.ui.activities.HomeActivity;
 import com.enrich.salonapp.ui.activities.StoreSelectorActivity;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.util.ArrayList;
 
@@ -65,12 +68,29 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
                 centerDetailModel.Email = model.Email;
                 centerDetailModel.Name = model.Name;
                 centerDetailModel.CenterType = model.CenterType;
+                centerDetailModel.Country = model.Country;
+                centerDetailModel.State = model.State;
+                centerDetailModel.City = model.City;
+                centerDetailModel.ZipCode = model.ZipCode;
 
                 EnrichUtils.saveHomeStore(context, EnrichUtils.newGson().toJson(centerDetailModel));
 
                 Intent intent = new Intent(context, HomeActivity.class);
                 activity.startActivity(intent);
                 activity.finish();
+
+                if (EnrichUtils.getUserData(activity) != null) {
+                    Analytics.with(context).track(Constants.SEGMENT_SELECT_STORE, new Properties()
+                            .putValue("user_id", EnrichUtils.getUserData(context).Id)
+                            .putValue("mobile", EnrichUtils.getUserData(context).MobileNumber)
+                            .putValue("salonid", model.Id)
+                            .putValue("salon_name", model.Name)
+                            .putValue("location", model.Address1)
+                            .putValue("area", model.Address2)
+                            .putValue("city", model.City)
+                            .putValue("state", model.State)
+                            .putValue("zipcode", model.ZipCode));
+                }
             }
         });
     }

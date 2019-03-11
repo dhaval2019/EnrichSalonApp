@@ -89,4 +89,17 @@ public class Constants {
     public static final int FEMALE = 2;
 
     public static final String TUTORIAL_SHOWN = "TutorialShown";
+
+    public static final String SEGMENT_LOGIN = "Login";
+    public static final String SEGMENT_REGISTRATION = "Registration";
+    public static final String SEGMENT_SELECT_STORE = "SelectStore";
+    public static final String SEGMENT_SELECT_SERVICE = "SelectService";
+    public static final String SEGMENT_BOOK_APPOINTMENT = "BookAppointment";
+    public static final String SEGMENT_BOOK_SUMMARY = "BookingSummary";
+    public static final String SEGMENT_PAYMENT = "Payment";
+    public static final String SEGMENT_BOOKING_STATUS = "BookingStatus";
+    public static final String SEGMENT_ADD_TO_CART = "AddToCart";
+    public static final String SEGMENT_CHECKOUT = "Checkout";
+    public static final String SEGMENT_ADD_ADDRESS = "AddAddress";
+    public static final String SEGMENT_SELECT_ADDRESS = "SelectAddress";
 }

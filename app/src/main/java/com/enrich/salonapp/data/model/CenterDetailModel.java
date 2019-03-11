@@ -15,6 +15,10 @@ public class CenterDetailModel implements Parcelable {
     public String OrganizationLogoUrl;
     public String Email;
     public int CenterType;
+    public CountryModel Country;
+    public StateModel State;
+    public String City;
+    public String ZipCode;
 
     public CenterDetailModel() {
     }
@@ -30,6 +34,10 @@ public class CenterDetailModel implements Parcelable {
         OrganizationLogoUrl = in.readString();
         Email = in.readString();
         CenterType = in.readInt();
+        Country = in.readParcelable(CountryModel.class.getClassLoader());
+        State = in.readParcelable(StateModel.class.getClassLoader());
+        City = in.readString();
+        ZipCode = in.readString();
     }
 
     @Override
@@ -44,6 +52,10 @@ public class CenterDetailModel implements Parcelable {
         dest.writeString(OrganizationLogoUrl);
         dest.writeString(Email);
         dest.writeInt(CenterType);
+        dest.writeParcelable(Country, flags);
+        dest.writeParcelable(State, flags);
+        dest.writeString(City);
+        dest.writeString(ZipCode);
     }
 
     @Override

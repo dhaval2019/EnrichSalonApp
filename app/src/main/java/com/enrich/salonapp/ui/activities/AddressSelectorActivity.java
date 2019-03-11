@@ -17,9 +17,12 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.util.ArrayList;
 
@@ -232,6 +235,7 @@ public class AddressSelectorActivity extends AppCompatActivity {
     }
 
     private void setSelectedAddress(AddressModel model) {
+        logSelectAddress(model);
         switch (model.AddressType) {
             case AddAddressActivity.ADDRESS_HOME:
                 addressHomeRadio.setChecked(true);
@@ -255,6 +259,15 @@ public class AddressSelectorActivity extends AppCompatActivity {
                 selectedAddress = model;
                 break;
         }
+    }
+
+    private void logSelectAddress(AddressModel model) {
+        Analytics.with(this).track(Constants.SEGMENT_SELECT_ADDRESS, new Properties()
+                .putValue("user_id", EnrichUtils.getUserData(this).Id)
+                .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
+                .putValue("address_type", model.AddressType)
+                .putValue("house", model.HouseNameFlatNo)
+                .putValue("landmark", model.Landmark));
     }
 
     @Override
