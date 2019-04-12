@@ -19,8 +19,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 174
-        versionName '1.7.4'
+        versionCode 186
+        versionName '1.8.6'
         multiDexEnabled true
 //        manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
         // Project number pulled from dashboard, local value is ignored.
@@ -69,8 +69,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // PAY U MONEY SDK
-    implementation 'com.payumoney.sdkui:plug-n-play:1.4.4'
-    implementation 'com.payumoney.core:payumoney-sdk:7.4.4'
+    implementation 'com.payumoney.sdkui:plug-n-play:1.5.0'
+    implementation 'com.payumoney.core:payumoney-sdk:7.5.0'
 
     // GOOGLE SERVICES (MAPS, LOCATIONS, ANALYTICS, PLACES)
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
@@ -80,9 +80,9 @@ dependencies {
 
     // FIREBASE (CORE, MESSAGING, PERFORMANCE)
     implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.google.firebase:firebase-perf:16.2.3'
-    implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.5'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:17.1.0'
 
     // CRASHLYTICS
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
@@ -130,8 +130,10 @@ dependencies {
     // TOASTY
     implementation 'com.github.GrenderG:Toasty:1.4.0'
 
-    //SEGMENT
+    // SEGMENT
     implementation 'com.segment.analytics.android:analytics:4.3.1'
+
+    // DATETIME
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 }
 

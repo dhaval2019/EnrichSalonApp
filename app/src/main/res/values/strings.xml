@@ -104,6 +104,7 @@
     <string name="services_looks_error">Cannot add services and looks together.</string>
     <string name="more_than_one_looks_error">Cannot add more than one look</string>
     <string name="location_rationale">Location permission is needed for core functionality</string>
+    <string name="sms_rationale">We need to read your incoming messages to read the OTP directly</string>
     <string name="phone_state_rationale">Phone State permission is needed for core functionality</string>
     <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
     <string name="no_location_detected">No location detected. Make sure location is enabled on the device.</string>
@@ -120,4 +121,6 @@
     <string name="facebook_app_id">2253022791599567</string>
     <string name="fb_login_protocol_scheme">fb2253022791599567</string>
     <string name="semgent_write_key">vlYWHeIjxVNaZCyRHlxsyY47xjAdKddx</string>
+
+    <string name="rs_symbol">\u20B9</string>
 </resources>

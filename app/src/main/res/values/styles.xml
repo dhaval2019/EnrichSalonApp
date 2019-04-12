@@ -68,18 +68,27 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.default" parent="PayumoneyAppTheme">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="colorButtonNormal">@color/red</item>
-        <item name="alertDialogTheme">@style/AlertDialogStyle_Default</item>
-        <item name="actionMenuTextColor">@color/white</item>
-    </style>
+    <!--<style name="AppTheme.default" parent="PayumoneyAppTheme">-->
+        <!--<item name="colorPrimary">@color/colorAccent</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorPrimary</item>-->
+        <!--<item name="colorButtonNormal">@color/red</item>-->
+        <!--<item name="alertDialogTheme">@style/AlertDialogStyle_Default</item>-->
+        <!--<item name="actionMenuTextColor">@color/white</item>-->
+    <!--</style>-->
 
     <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_rating_bar_full</item>
         <item name="android:minHeight">24dip</item>
         <item name="android:maxHeight">24dip</item>
+    </style>
+
+    <style name="PayU.AppTheme.default" parent="PayumoneyAppTheme">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle_Default</item>
     </style>
 </resources>

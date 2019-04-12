@@ -623,7 +623,7 @@ public class EnrichApplication extends Application {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < cartList.size(); i++) {
-            sb.append(cartList.get(i) + ", ");
+            sb.append(cartList.get(i).Name + ", ");
         }
 
         return sb.toString().substring(0, sb.toString().length() - 2);

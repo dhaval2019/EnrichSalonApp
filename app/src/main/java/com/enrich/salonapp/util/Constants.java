@@ -102,4 +102,5 @@ public class Constants {
     public static final String SEGMENT_CHECKOUT = "Checkout";
     public static final String SEGMENT_ADD_ADDRESS = "AddAddress";
     public static final String SEGMENT_SELECT_ADDRESS = "SelectAddress";
+    public static final String SEGMENT_CANCEL_APPOINTMENT = "CancelAppointment";
 }

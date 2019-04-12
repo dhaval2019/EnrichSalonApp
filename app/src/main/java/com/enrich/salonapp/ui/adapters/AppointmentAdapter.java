@@ -19,6 +19,8 @@ import com.enrich.salonapp.data.model.AppointmentModel;
 import com.enrich.salonapp.data.model.CancelRequestModel;
 import com.enrich.salonapp.data.model.CancelResponseModel;
 import com.enrich.salonapp.data.model.CenterDetailModel;
+import com.enrich.salonapp.data.model.SegmentLoggingServiceModel;
+import com.enrich.salonapp.data.model.SegmentLoggingServiceModelParent;
 import com.enrich.salonapp.data.model.ServiceViewModel;
 import com.enrich.salonapp.data.model.TherapistModel;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
@@ -26,9 +28,12 @@ import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.activities.RescheduleActivity;
 import com.enrich.salonapp.ui.contracts.CancelAppointmentContract;
 import com.enrich.salonapp.ui.presenters.CancelAppointmentsPresenter;
+import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +58,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     DataRepository dataRepository;
     CancelAppointmentsPresenter cancelAppointmentsPresenter;
 
+    AppointmentModel model;
+
     public AppointmentAdapter(Activity activity, ArrayList<AppointmentModel> list, boolean isCurrent) {
         this.activity = activity;
         this.list = list;
@@ -74,13 +81,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(AppointmentViewHolder holder, final int position) {
-        final AppointmentModel model = list.get(position);
+        model = list.get(position);
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
 
             Date date = stringToDate.parse(model.AppointmentServices.get(0).StartTime);
-            Date time = stringToTime.parse(model.AppointmentServices.get(0).StartTime.substring(11, model.AppointmentServices.get(0).StartTime.length()));
+            Date time = stringToTime.parse(model.AppointmentServices.get(0).StartTime.substring(11));
 
             SimpleDateFormat dateToString = new SimpleDateFormat("dd MMM, yyyy");
             SimpleDateFormat timeToString = new SimpleDateFormat("hh:mm a");
@@ -120,7 +127,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @Override
             public void onClick(View v) {
                 pos = position;
-                showCancelDialog(model.AppointmentGroupId);
+                showCancelDialog(model);
             }
         });
 
@@ -138,11 +145,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     model.AppointmentServices.get(j).Service.therapist = therapistModel;
                     serviceList.add(model.AppointmentServices.get(j).Service);
 
-                    if (model.AppointmentServices.get(j).BookingFor == 1) {
-                        isHomeSelected = true;
-                    } else {
-                        isHomeSelected = false;
-                    }
+                    isHomeSelected = model.AppointmentServices.get(j).BookingFor == 1;
                 }
 
                 CenterDetailModel centerDetailModel = new CenterDetailModel();
@@ -177,8 +180,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     @Override
-    public void appointmentCancelled(CancelResponseModel model) {
-        if (model.isAppointmentStatusSet()) {
+    public void appointmentCancelled(CancelResponseModel cancelResponseModel) {
+        if (cancelResponseModel.isAppointmentStatusSet()) {
+
+            logSegmentCancelAppointment();
+
             Iterator itr = list.iterator();
             while (itr.hasNext()) {
                 AppointmentModel appointmentModel = (AppointmentModel) itr.next();
@@ -189,6 +195,41 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             dialog.cancel();
         } else {
             EnrichUtils.showMessage(activity, "Appointment Already cancelled.");
+        }
+    }
+
+    private void logSegmentCancelAppointment() {
+        ArrayList<SegmentLoggingServiceModel> services = new ArrayList<>();
+
+        for (int i = 0; i < model.AppointmentServices.size(); i++) {
+            SegmentLoggingServiceModel segmentLoggingServiceModel = new SegmentLoggingServiceModel();
+            segmentLoggingServiceModel.service = model.AppointmentServices.get(i).Service.name;
+            segmentLoggingServiceModel.category = model.AppointmentServices.get(i).Service.CategoryName;
+            segmentLoggingServiceModel.stylist = model.AppointmentServices.get(i).RequestedTherapist.DisplayName;
+            segmentLoggingServiceModel.amount = "" + model.Price._final;
+
+            services.add(segmentLoggingServiceModel);
+        }
+
+        SegmentLoggingServiceModelParent segmentLoggingServiceModelParent = new SegmentLoggingServiceModelParent();
+        segmentLoggingServiceModelParent.service = services;
+
+        if (EnrichUtils.getUserData(activity) != null) {
+            // SEGMENT
+            Analytics.with(activity).track(Constants.SEGMENT_CANCEL_APPOINTMENT, new Properties()
+                    .putValue("user_id", EnrichUtils.getUserData(activity).Id)
+                    .putValue("mobile", EnrichUtils.getUserData(activity).MobileNumber)
+                    .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
+                    .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
+                    .putValue("location", EnrichUtils.getHomeStore(activity).Address)
+                    .putValue("area", "")
+                    .putValue("city", EnrichUtils.getHomeStore(activity).City)
+                    .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
+                    .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode)
+                    .putValue("total_amount", model.Price._final)
+                    .putValue("status", "Cancelled")
+                    .putValue("services", segmentLoggingServiceModelParent)
+            );
         }
     }
 
@@ -248,7 +289,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public void showCancelDialog(final String appointmentGroupId) {
+    public void showCancelDialog(final AppointmentModel model) {
         View view = inflater.inflate(R.layout.cancel_service_dialog, null);
         dialog = new BottomSheetDialog(activity);
         dialog.setContentView(view);
@@ -273,8 +314,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
                 if (selectedId != -1) {
                     String reasonStr = ((RadioButton) dialog.findViewById(selectedId)).getText().toString();
-                    appGroupId = appointmentGroupId;
-                    cancelAppointment(reasonStr, appointmentGroupId);
+                    appGroupId = model.AppointmentGroupId;
+                    cancelAppointment(reasonStr, model.AppointmentGroupId);
                 } else {
                     EnrichUtils.showMessage(activity, "Please select a reason");
                 }

@@ -30,6 +30,7 @@ import com.enrich.salonapp.ui.presenters.OTPPresenter;
 import com.enrich.salonapp.ui.presenters.RegisterFCMPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.SMSListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -48,6 +49,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OTPActivity extends BaseActivity implements OTPContract.RegisterView, AuthenticationTokenContract.View, RegisterFCMContract.View {
+
+    private static final int RC_SMS_PERMISSION = 12945;
 
     @BindView(R.id.otp_container)
     LinearLayout otpContainer;
@@ -116,7 +119,40 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
                 otpPresenter.registerUser(OTPActivity.this, registrationRequestModel);
             }
         });
+
+//        bindOTPListener();
     }
+
+//    @AfterPermissionGranted(RC_SMS_PERMISSION)
+//    private void bindOTPListener() {
+//        if (EasyPermissions.hasPermissions(this, Manifest.permission.RECEIVE_SMS)) {
+//            SMSListener.bindListener(new Common.OTPListener() {
+//                @Override
+//                public void onOTPReceived(String extractedOTP) {
+//                    otpNumberEdit.setText(extractedOTP);
+//                }
+//            });
+//        } else {
+//            EasyPermissions.requestPermissions(this, getString(R.string.sms_rationale), RC_SMS_PERMISSION, Manifest.permission.RECEIVE_SMS);
+//        }
+//    }
+
+    @Override
+    protected void onDestroy() {
+        SMSListener.unbindListener();
+        super.onDestroy();
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults) {
+//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+//    }
 
     @Override
     public void userRegistered(RegistrationResponseModel model) {
@@ -238,4 +274,14 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
         setResult(RESULT_OK);
         finish();
     }
+
+//    @Override
+//    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+//        bindOTPListener();
+//    }
+//
+//    @Override
+//    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+//
+//    }
 }

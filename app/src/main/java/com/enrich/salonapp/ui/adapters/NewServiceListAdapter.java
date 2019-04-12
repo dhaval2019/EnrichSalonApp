@@ -391,7 +391,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                     .putValue("location", EnrichUtils.getHomeStore(activity).Address)
                     .putValue("area", "")
                     .putValue("city", EnrichUtils.getHomeStore(activity).City)
-                    .putValue("state", EnrichUtils.getHomeStore(activity).State.Name)
+                    .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
                     .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode));
         }
 

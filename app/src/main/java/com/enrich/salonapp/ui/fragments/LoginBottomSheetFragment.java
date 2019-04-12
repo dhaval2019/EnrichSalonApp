@@ -262,7 +262,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void createTokenError() {
-
+        Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show();
     }
 
     @Override

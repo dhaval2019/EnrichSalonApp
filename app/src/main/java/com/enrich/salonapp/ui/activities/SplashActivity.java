@@ -448,10 +448,10 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if (requestCode == RC_PHONE_STATE_PERMISSION) {
-            sendAnalyticsData();
-            return;
-        }
+//        if (requestCode == RC_PHONE_STATE_PERMISSION) {
+//            sendAnalyticsData();
+//            return;
+//        }
 
         if (requestCode == RC_LOCATION_PERMISSION) {
             displayLocationSettingsRequest();
@@ -504,22 +504,22 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     }
 
-    @SuppressLint("HardwareIds")
-    @AfterPermissionGranted(RC_PHONE_STATE_PERMISSION)
-    private void sendAnalyticsData() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            Answers.getInstance().logContentView(new ContentViewEvent()
-                    .putContentName("Install")
-                    .putContentType("Application")
-                    .putContentId("" + telephonyManager.getDeviceId()));
-        } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.phone_state_rationale), RC_PHONE_STATE_PERMISSION, Manifest.permission.READ_PHONE_STATE);
-        }
-    }
+//    @SuppressLint("HardwareIds")
+//    @AfterPermissionGranted(RC_PHONE_STATE_PERMISSION)
+//    private void sendAnalyticsData() {
+//        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE)) {
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//            Answers.getInstance().logContentView(new ContentViewEvent()
+//                    .putContentName("Install")
+//                    .putContentType("Application")
+//                    .putContentId("" + telephonyManager.getDeviceId()));
+//        } else {
+//            EasyPermissions.requestPermissions(this, getString(R.string.phone_state_rationale), RC_PHONE_STATE_PERMISSION, Manifest.permission.READ_PHONE_STATE);
+//        }
+//    }
 
     @Override
     public void showAppUpdate(AppUpdateResponseModel model) {

@@ -121,6 +121,13 @@ public class TherapistListAdapter extends RecyclerView.Adapter<TherapistListAdap
 
                 if (variantRecyclerViewAdapter != null)
                     variantRecyclerViewAdapter.setTherapist(model, parentPos);
+
+                if (homeParentAndNormalServiceAdapter != null)
+                    homeParentAndNormalServiceAdapter.setTherapist(model, parentPos);
+
+                if(rescheduleServiceListAdapter!=null)
+                    rescheduleServiceListAdapter.setTherapist(model, parentPos);
+
                 dialog.cancel();
             }
         });

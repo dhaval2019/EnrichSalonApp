@@ -34,6 +34,9 @@ import com.enrich.salonapp.data.model.InvoiceResponseModel;
 import com.enrich.salonapp.data.model.PaymentSummaryModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.SegmentLoggingProducts;
+import com.enrich.salonapp.data.model.SegmentLoggingServiceModel;
+import com.enrich.salonapp.data.model.SegmentLoggingServiceModelParent;
 import com.enrich.salonapp.data.remote.RemoteDataSource;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.BookingSummaryItemAdapter;
@@ -58,6 +61,9 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.security.MessageDigest;
@@ -363,11 +369,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 confirmOrderModel.setPaymentId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));
                 confirmOrderModel.setModeOfPayment(PAYMENT_MODE_ONLINE);
                 confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
+                logSegmentPayment("Card", "");
             } else { // CASH
                 confirmOrderModel.setTransactionId(System.currentTimeMillis() + "");
                 confirmOrderModel.setPaymentId(System.currentTimeMillis() + "");
                 confirmOrderModel.setModeOfPayment(PAYMENT_MODE_CASH);
                 confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
+                logSegmentPayment("Cash", "");
             }
 
             confirmOrderRequestModel = new ConfirmOrderRequestModel();
@@ -424,6 +432,17 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 null) {
             TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
                     .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+            try {
+                JSONObject transactionResponseJSONObject = new JSONObject(transactionResponse.getPayuResponse());
+                JSONObject payUResponseJSONObject = transactionResponseJSONObject.getJSONObject("result");
+                String cardType = payUResponseJSONObject.getString("card_type");
+                String amount = payUResponseJSONObject.getString("amount");
+
+                EnrichUtils.log(cardType);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
 
@@ -521,13 +540,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             for (int i = 0; i < model.AppointmentServices.size(); i++) {
                 GenericCartModel genericCartModel = new GenericCartModel();
                 genericCartModel.Name = model.AppointmentServices.get(i).Service.name;
+                genericCartModel.Price = model.AppointmentServices.get(i).Service.price.sales;
 
-
-                if (EnrichUtils.getUserData(BookingSummaryActivity.this).IsMember == Constants.IS_MEMBER) {
-                    genericCartModel.Price = model.AppointmentServices.get(i).Service.price.membershipPrice;
-                } else {
-                    genericCartModel.Price = model.AppointmentServices.get(i).Service.price.sales;
-                }
+//                if (EnrichUtils.getUserData(BookingSummaryActivity.this).IsMember == Constants.IS_MEMBER) {
+//                    genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
+//                } else {
+//                    genericCartModel.Price = model.AppointmentServices.get(i).Service.price.sales;
+//                }
 
                 genericCartList.add(genericCartModel);
                 logFirebaseCheckoutProgress(genericCartModel);
@@ -536,10 +555,10 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             adapter = new BookingSummaryItemAdapter(this, genericCartList);
             bookingSummaryItemRecyclerView.setAdapter(adapter);
             bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));
+//            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));
         }
 
-        totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(application.getTotalPrice())));
+        totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price.sales)));
         grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price.sales)));
         stylistLabel.setText(String.format("%s", model.AppointmentServices.get(0).RequestedTherapist.FullName));
         payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.Price._final)));
@@ -644,7 +663,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -672,7 +691,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
             mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
 
-            PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, this, R.style.AppTheme_default, false);
+            PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, this, R.style.PayU_AppTheme_default, false);
 
         } catch (Exception e) {
             Log.e("PAY U", "ERROR: " + e.getMessage());
@@ -696,7 +715,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
         stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());
@@ -804,6 +823,38 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         application.getFirebaseInstance().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle);
     }
 
+    private void logSegmentPayment(String paymentType, String cardType) {
+        ArrayList<SegmentLoggingServiceModel> services = new ArrayList<>();
+
+        for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
+            SegmentLoggingServiceModel segmentLoggingServiceModel = new SegmentLoggingServiceModel();
+            segmentLoggingServiceModel.service = invoiceModel.AppointmentServices.get(i).Service.name;
+            segmentLoggingServiceModel.category = invoiceModel.AppointmentServices.get(i).Service.CategoryName;
+            segmentLoggingServiceModel.stylist = invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName;
+
+            services.add(segmentLoggingServiceModel);
+        }
+
+        SegmentLoggingServiceModelParent segmentLoggingServiceModelParent = new SegmentLoggingServiceModelParent();
+        segmentLoggingServiceModelParent.service = services;
+
+        Analytics.with(this).track(Constants.SEGMENT_PAYMENT, new Properties()
+                .putValue("user_id", EnrichUtils.getUserData(this).Id)
+                .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
+                .putValue("salonid", EnrichUtils.getHomeStore(this).Id)
+                .putValue("salon_name", EnrichUtils.getHomeStore(this).Name)
+                .putValue("location", EnrichUtils.getHomeStore(this).Address)
+                .putValue("area", "")
+                .putValue("city", EnrichUtils.getHomeStore(this).City)
+                .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
+                .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
+                .putValue("amount", invoiceModel.Price._final)
+                .putValue("paymentType", paymentType)
+                .putValue("cardType", cardType)
+                .putValue("payAtSalon", paymentType.equalsIgnoreCase("Cash"))
+                .putValue("services", segmentLoggingServiceModelParent));
+    }
+
     private void logSegmentBookAppointment() {
         ArrayList<SegmentLoggingServiceModel> services = new ArrayList<>();
 
@@ -811,14 +862,14 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             SegmentLoggingServiceModel segmentLoggingServiceModel = new SegmentLoggingServiceModel();
             segmentLoggingServiceModel.service = invoiceModel.AppointmentServices.get(i).Service.name;
             segmentLoggingServiceModel.category = invoiceModel.AppointmentServices.get(i).Service.CategoryName;
-            segmentLoggingServiceModel.stylist = invoiceModel.AppointmentServices.get(i).RequestedTherapist.DisplayName;
+            segmentLoggingServiceModel.stylist = invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName;
             segmentLoggingServiceModel.amount = "" + invoiceModel.Price._final;
             segmentLoggingServiceModel.salonid = EnrichUtils.getHomeStore(this).Id;
             segmentLoggingServiceModel.salon_name = EnrichUtils.getHomeStore(this).Name;
             segmentLoggingServiceModel.location = EnrichUtils.getHomeStore(this).Address;
             segmentLoggingServiceModel.area = "";
             segmentLoggingServiceModel.city = EnrichUtils.getHomeStore(this).City;
-            segmentLoggingServiceModel.state = EnrichUtils.getHomeStore(this).State.Name;
+            segmentLoggingServiceModel.state = EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name;
             segmentLoggingServiceModel.zipcode = EnrichUtils.getHomeStore(this).ZipCode;
 
             services.add(segmentLoggingServiceModel);
@@ -830,7 +881,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         Analytics.with(this).track(Constants.SEGMENT_BOOK_APPOINTMENT, new Properties()
                 .putValue("user_id", EnrichUtils.getUserData(this).Id)
                 .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
-                .putValue("appointmentDateTime", invoiceModel.AppointmentServices.get(0).ActualStartTime)
+                .putValue("appointmentDateTime", invoiceModel.AppointmentServices.get(0).StartTime)
                 .putValue("services", segmentLoggingServiceModelParent));
     }
 
@@ -858,7 +909,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
                 .putValue("area", "")
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
-                .putValue("state", EnrichUtils.getHomeStore(this).State.Name)
+                .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
                 .putValue("gross_amount", invoiceModel.Price.sales)
                 .putValue("tax_amount", invoiceModel.Price.tax)
@@ -891,7 +942,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
                 .putValue("area", "")
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
-                .putValue("state", EnrichUtils.getHomeStore(this).State.Name)
+                .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
                 .putValue("total_amount", invoiceModel.Price._final)
                 .putValue("status", status)
@@ -915,30 +966,5 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("user_id", EnrichUtils.getUserData(this).Id)
                 .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
                 .putValue("products", list));
-    }
-
-    class SegmentLoggingProducts {
-        public String product_name;
-        public String description;
-        public String quantity;
-        public String amount;
-    }
-
-    class SegmentLoggingServiceModelParent {
-        public ArrayList<SegmentLoggingServiceModel> service;
-    }
-
-    class SegmentLoggingServiceModel {
-        public String service;
-        public String category;
-        public String stylist;
-        public String amount;
-        public String salonid;
-        public String salon_name;
-        public String location;
-        public String area;
-        public String city;
-        public String state;
-        public String zipcode;
     }
 }

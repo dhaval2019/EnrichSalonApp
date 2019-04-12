@@ -190,7 +190,7 @@
                     android:background="@drawable/text_field_background"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:maxLines="@integer/int_1"
+                    android:maxLines="1"
                     android:paddingBottom="10dp"
                     android:paddingStart="@dimen/dimen_10dp"
                     android:paddingTop="10dp"

@@ -216,11 +216,40 @@ public class SampleHomeParentAndNormalServiceAdapter extends RecyclerView.Adapte
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         TextView cancel = dialog.findViewById(R.id.therapist_cancel);
+        TextView skip = dialog.findViewById(R.id.therapist_dialog_skip);
         RecyclerView therapistRecyclerView = dialog.findViewById(R.id.therapist_list_recycler_view);
 
         TherapistListAdapter adapter = new TherapistListAdapter(activity, list, position, this, dialog);
         therapistRecyclerView.setAdapter(adapter);
         therapistRecyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int toggleResponse = application.toggleItem(filteredServiceList.get(position));
+
+                if (toggleResponse == 1) {
+                    normalServiceViewHolder.serviceCheckbox.setChecked(true);
+                } else if (toggleResponse == 0) {
+                    normalServiceViewHolder.serviceCheckbox.setChecked(false);
+                } else if (toggleResponse == -1) {
+                    new AlertDialog.Builder(activity)
+                            .setMessage(activity.getString(R.string.add_services_to_cart_error))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+//                                    goToCart();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            }).show();
+                }
+                ((ServiceListActivity) activity).updateCart();
+                notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

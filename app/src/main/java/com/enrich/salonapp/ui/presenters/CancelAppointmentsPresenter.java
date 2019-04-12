@@ -24,10 +24,13 @@ public class CancelAppointmentsPresenter extends BasePresenter<CancelAppointment
         if (view == null)
             return;
 
+        view.setProgressBar(true);
+
         dataRepository.cancelAppointment(context, url, model, new DataSource.CancelAppointmentCallBack() {
             @Override
             public void onSuccess(CancelResponseModel model) {
                 if (view != null) {
+                    view.setProgressBar(false);
                     view.appointmentCancelled(model);
                 }
             }

@@ -383,10 +383,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         getCategories();
 
         // GET APPOINTMENTS
-        Map<String, String> map = new HashMap<>();
-        map.put("Page", "" + 0);
-        map.put("Size", "9");
-        homePagePresenter.getAppointment(context, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
+        getAppointments();
 
         // GET NEW AND POPULAR
 //        getNewAndPopularServices();
@@ -440,6 +437,13 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         }
     }
 
+    private void getAppointments() {
+        Map<String, String> map = new HashMap<>();
+        map.put("Page", "" + 0);
+        map.put("Size", "9");
+        homePagePresenter.getAppointment(context, RemoteDataSource.HOST + RemoteDataSource.GET_UPCOMING_APPOINTMENT, map);
+    }
+
     private void getCategories() {
         Map<String, String> categoryMap = new HashMap<>();
         categoryMap.put("CenterId", EnrichUtils.getHomeStore(context).Id);
@@ -476,6 +480,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         if (categoriesRecyclerView != null) {
             getCategories();
 //            getNewAndPopularServices();
+            getAppointments();
         }
     }
 
