@@ -33,6 +33,7 @@ public class GenericCartModel implements Serializable, Parcelable {
     public String SlotTime;
     public String CategoryName;
     public String SubCategoryName;
+    public String Description;
 
     protected boolean addedToCart;
 
@@ -68,6 +69,7 @@ public class GenericCartModel implements Serializable, Parcelable {
         PackageBundleItemType = in.readInt();
         CategoryName = in.readString();
         SubCategoryName = in.readString();
+        Description = in.readString();
     }
 
     public static final Creator<GenericCartModel> CREATOR = new Creator<GenericCartModel>() {
@@ -267,6 +269,14 @@ public class GenericCartModel implements Serializable, Parcelable {
         PackageBundleItemType = packageBundleItemType;
     }
 
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -293,6 +303,7 @@ public class GenericCartModel implements Serializable, Parcelable {
         dest.writeInt(PackageBundleItemType);
         dest.writeString(CategoryName);
         dest.writeString(SubCategoryName);
+        dest.writeString(Description);
     }
 }
 

@@ -271,5 +271,10 @@ public class ServiceViewModel extends CartItem implements Parcelable {
     public int getPackageBundleItemType() {
         return 0;
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }
 

@@ -136,8 +136,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private BroadcastReceiver beautyAndBling = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            isFromOfferClick = true;
-//            beautyAndBlingPresenter.getBeautyAndBling(HomeActivity.this);
+            isFromOfferClick = true;
+            beautyAndBlingPresenter.getBeautyAndBling(HomeActivity.this);
         }
     };
 
@@ -304,11 +304,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 SharedPreferenceStore.clearSharedPreferences(HomeActivity.this);
 
                 Crashlytics.setUserIdentifier("");
+                logoutContainer.setVisibility(View.GONE);
+                drawer.closeDrawers();
+                dialog.dismiss();
 
-                Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
             }
         });
 
@@ -456,11 +459,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void checkBeautyAndBling(BeautyAndBlingResponseModel model) {
-        if (!model.BeautyAndBling.isEmpty()) {
-            if (model.BeautyAndBling.get(0).IsActive) {
-                Map<String, String> map = new HashMap<>();
-                map.put("GuestId", EnrichUtils.getUserData(this).Id);
-                beautyAndBlingEligibilityPresenter.getSpinCount(this, map);
+        if (EnrichUtils.getUserData(this) != null) {
+            if (!model.BeautyAndBling.isEmpty()) {
+                for (int i = 0; i < model.BeautyAndBling.size(); i++) {
+                    if (model.BeautyAndBling.get(i).IsActive) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("GuestId", EnrichUtils.getUserData(this).Id);
+                        beautyAndBlingEligibilityPresenter.getSpinCount(this, map);
+                    }
+                }
             }
         }
     }

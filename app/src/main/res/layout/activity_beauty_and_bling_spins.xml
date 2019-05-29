@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.BeautyAndBlingLandingActivity">
+    android:background="@color/beauty_and_bling_background"
+    tools:context=".ui.activities.BeautyAndBlingLandingActivity"
+    tools:ignore="MissingPrefix">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/beauty_and_bling_bg" />
+        android:src="@drawable/beauty_and_bling_bg"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/try_a_spin"
-        android:layout_alignParentTop="true"
         android:gravity="left"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dimen_40dp"
@@ -27,27 +28,41 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dimen_30dp"
-            android:src="@drawable/beauty_and_bling_logo_cropped" />
+            android:src="@drawable/beauty_and_bling_logo_cropped"
+            android:visibility="gone" />
 
-        <com.enrich.salonapp.ui.views.CustomTextView
+        <TextView
+            android:id="@+id/bandb_text_3_new"
+            fontPath="fonts/Quicksand-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="left"
+            android:layout_marginTop="@dimen/dimen_50dp"
+            android:gravity="center"
+            android:text="Spin a wheel and win \nupto 100% Cashback!"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            fontPath="fonts/Quicksand-Regular.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_20dp"
             android:gravity="center"
             android:text="Great!"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_20sp"
-            app:font_type="regular" />
+            android:textSize="@dimen/dimen_20sp" />
 
-        <com.enrich.salonapp.ui.views.CustomTextView
+        <TextView
+            fontPath="fonts/Quicksand-Regular.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_5dp"
             android:gravity="center"
             android:text="Your eligible to spin the wheel."
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_16sp"
-            app:font_type="light" />
+            android:textSize="@dimen/dimen_16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,18 +100,19 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
+                fontPath="fonts/Quicksand-Light.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="left"
                 android:text="Customer"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_14sp"
-                app:font_type="light" />
+                android:textColor="@color/new_dark_grey"
+                android:textSize="@dimen/dimen_14sp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/user_name"
+                fontPath="fonts/Quicksand-Regular.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
@@ -113,25 +129,25 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
+                fontPath="fonts/Quicksand-Light.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="left"
                 android:text="Bill Amount"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_14sp"
-                app:font_type="light" />
+                android:textColor="@color/new_dark_grey"
+                android:textSize="@dimen/dimen_14sp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/invoice_amount"
+                fontPath="fonts/Quicksand-Regular.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:gravity="left"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_14sp"
-                app:font_type="light" />
+                android:textSize="@dimen/dimen_14sp" />
         </LinearLayout>
 
         <View
@@ -148,26 +164,26 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
+                fontPath="fonts/Quicksand-Light.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="left"
                 android:text="# of Spins"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_14sp"
-                app:font_type="light" />
+                android:textColor="@color/new_dark_grey"
+                android:textSize="@dimen/dimen_14sp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/number_of_spins"
+                fontPath="fonts/Quicksand-Regular.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:gravity="left"
                 android:text="05"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_20sp"
-                app:font_type="light" />
+                android:textSize="@dimen/dimen_20sp" />
         </LinearLayout>
 
         <RelativeLayout
@@ -183,21 +199,24 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/copyright_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/kpmg_label"
                 android:gravity="center_horizontal"
-                android:text="Copyright C 2018 Enrich. All rights reserved."
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:text="Copyright\u00A9 2019 Enrich. All rights reserved."
+                android:layout_alignParentBottom="true"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                fontPath="fonts/Quicksand-Light.ttf"/>
 
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/kpmg_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:visibility="gone"
                 android:layout_marginBottom="@dimen/dimen_10dp"
                 android:gravity="center_horizontal"
                 android:text="KPMGr Process Advisors and Evaluators for this contest"

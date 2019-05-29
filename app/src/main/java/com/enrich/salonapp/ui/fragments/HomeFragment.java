@@ -68,6 +68,7 @@ import com.enrich.salonapp.ui.presenters.ProductPresenter;
 import com.enrich.salonapp.ui.presenters.ServiceListPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.OfferComparator;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseFragment;
@@ -86,7 +87,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
-public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View, PackageContract.View, CategoryContract.View, ProductFilterContract.View, ServiceListContract.View {
+public class HomeFragment extends BaseFragment implements HomePageContract.View, ProductContract.View, PackageContract.View, CategoryContract.View, ProductFilterContract.View, ServiceListContract.View, LoginListener {
 
     static DrawerLayout mDrawer;
 
@@ -212,6 +213,8 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     PackagePresenter packagePresenter;
     CategoryPresenter categoryPresenter;
 
+    CategoriesHomeAdapter categoriesHomeAdapter;
+
     DataRepository dataRepository;
 
     EnrichApplication application;
@@ -265,9 +268,6 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             salonComponentsContainer.setVisibility(View.GONE);
             homeComponentsContainer.setVisibility(View.VISIBLE);
         }
-
-        salonLabel.setText("@Salon");
-        homeLabel.setText("@Home");
 
         offerMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -473,6 +473,10 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         homePagePresenter.getNewAndPopularServices(context, map);
     }
 
+    public void showLoginDialog() {
+        LoginBottomSheetFragment.getInstance(this).show(getActivity().getSupportFragmentManager(), "login_bottomsheet_fragment");
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -543,7 +547,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     public void showCategoryList(CategoryResponseModel model) {
         categoryList = model.Categories;
 
-        CategoriesHomeAdapter categoriesHomeAdapter = new CategoriesHomeAdapter(context, model.Categories, false);
+        categoriesHomeAdapter = new CategoriesHomeAdapter(context, model.Categories, false, this);
         categoriesRecyclerView.setAdapter(categoriesHomeAdapter);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -677,5 +681,12 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @Override
     public void noSubCategories() {
         EnrichUtils.cancelCurrentDialog((Activity) context);
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (categoriesHomeAdapter != null) {
+            categoriesHomeAdapter.userLoggedIn();
+        }
     }
 }

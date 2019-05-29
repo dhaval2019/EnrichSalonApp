@@ -78,4 +78,6 @@ public abstract class CartItem implements Parcelable {
     public abstract int getPackageBundleItemCount();
 
     public abstract int getPackageBundleItemType();
+
+    public abstract String getDescription();
 }

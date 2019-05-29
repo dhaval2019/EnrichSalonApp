@@ -12,6 +12,9 @@ public class GuestInvoiceAndSpinCountModel implements Parcelable {
     public int NoOfSpin;
     public int RemainingSpins;
 
+    public GuestInvoiceAndSpinCountModel() {
+    }
+
     protected GuestInvoiceAndSpinCountModel(Parcel in) {
         CenterId = in.readString();
         InvoiceId = in.readString();

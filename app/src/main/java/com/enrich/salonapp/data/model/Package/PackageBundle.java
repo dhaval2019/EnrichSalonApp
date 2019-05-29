@@ -259,4 +259,9 @@ public class PackageBundle extends CartItem implements Parcelable, Parent<BaseCh
             return 0;
         }
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }

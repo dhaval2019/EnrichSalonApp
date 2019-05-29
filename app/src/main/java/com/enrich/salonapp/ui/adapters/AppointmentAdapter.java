@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,37 +200,41 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     private void logSegmentCancelAppointment() {
-        ArrayList<SegmentLoggingServiceModel> services = new ArrayList<>();
+        List<Properties> propertiesArrayList = new ArrayList<>();
 
         for (int i = 0; i < model.AppointmentServices.size(); i++) {
             SegmentLoggingServiceModel segmentLoggingServiceModel = new SegmentLoggingServiceModel();
             segmentLoggingServiceModel.service = model.AppointmentServices.get(i).Service.name;
             segmentLoggingServiceModel.category = model.AppointmentServices.get(i).Service.CategoryName;
-            segmentLoggingServiceModel.stylist = model.AppointmentServices.get(i).RequestedTherapist.DisplayName;
+            segmentLoggingServiceModel.stylist = model.AppointmentServices.get(i).RequestedTherapist.FullName;
             segmentLoggingServiceModel.amount = "" + model.Price._final;
 
-            services.add(segmentLoggingServiceModel);
+            Properties properties = new Properties();
+            properties.putValue("service", model.AppointmentServices.get(i).Service.name);
+            properties.putValue("category", model.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("stylist", model.AppointmentServices.get(i).RequestedTherapist.FullName);
+            properties.putValue("amount", "" + model.Price._final);
+
+            propertiesArrayList.add(properties);
         }
 
-        SegmentLoggingServiceModelParent segmentLoggingServiceModelParent = new SegmentLoggingServiceModelParent();
-        segmentLoggingServiceModelParent.service = services;
+        Properties properties = new Properties()
+                .putValue("user_id", EnrichUtils.getUserData(activity).Id)
+                .putValue("mobile", EnrichUtils.getUserData(activity).MobileNumber)
+                .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
+                .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
+                .putValue("location", EnrichUtils.getHomeStore(activity).Address)
+                .putValue("area", "")
+                .putValue("city", EnrichUtils.getHomeStore(activity).City)
+                .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
+                .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode)
+                .putValue("total_amount", model.Price._final)
+                .putValue("status", "Cancelled")
+                .putValue("services", propertiesArrayList);
 
         if (EnrichUtils.getUserData(activity) != null) {
             // SEGMENT
-            Analytics.with(activity).track(Constants.SEGMENT_CANCEL_APPOINTMENT, new Properties()
-                    .putValue("user_id", EnrichUtils.getUserData(activity).Id)
-                    .putValue("mobile", EnrichUtils.getUserData(activity).MobileNumber)
-                    .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
-                    .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
-                    .putValue("location", EnrichUtils.getHomeStore(activity).Address)
-                    .putValue("area", "")
-                    .putValue("city", EnrichUtils.getHomeStore(activity).City)
-                    .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
-                    .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode)
-                    .putValue("total_amount", model.Price._final)
-                    .putValue("status", "Cancelled")
-                    .putValue("services", segmentLoggingServiceModelParent)
-            );
+            Analytics.with(activity).track(Constants.SEGMENT_CANCEL_APPOINTMENT, properties);
         }
     }
 

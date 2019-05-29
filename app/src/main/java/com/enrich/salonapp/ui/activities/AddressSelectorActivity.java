@@ -266,6 +266,7 @@ public class AddressSelectorActivity extends AppCompatActivity {
                 .putValue("user_id", EnrichUtils.getUserData(this).Id)
                 .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
                 .putValue("address_type", model.AddressType)
+                .putValue("location", model.Location)
                 .putValue("house", model.HouseNameFlatNo)
                 .putValue("landmark", model.Landmark));
     }

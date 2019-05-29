@@ -88,7 +88,7 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
                             .putValue("location", model.Address1)
                             .putValue("area", model.Address2)
                             .putValue("city", model.City)
-                            .putValue("state", model.State)
+                            .putValue("state", model.State.Name)
                             .putValue("zipcode", model.ZipCode));
                 }
             }

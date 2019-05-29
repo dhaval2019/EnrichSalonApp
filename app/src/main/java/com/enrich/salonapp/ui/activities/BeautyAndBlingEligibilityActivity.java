@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class BeautyAndBlingEligibilityActivity extends BaseActivity implements BeautyAndBlingEligibilityContract.View {
 
@@ -86,24 +88,36 @@ public class BeautyAndBlingEligibilityActivity extends BaseActivity implements B
 
     @Override
     public void showSpinCount(GuestSpinCountResponseModel model) {
-        if (!model.GuestSpinWheel.isEmpty()) {
-            userName.setText(model.UserName);
+//        if (!model.GuestSpinWheel.isEmpty()) {
+        userName.setText(model.UserName);
 
-            GuestInvoiceAndSpinCountModel guestInvoiceAndSpinCountModel = model.GuestSpinWheel.get(0);
+//            GuestInvoiceAndSpinCountModel guestInvoiceAndSpinCountModel = model.GuestSpinWheel.get(0);
+        GuestInvoiceAndSpinCountModel guestInvoiceAndSpinCountModel = new GuestInvoiceAndSpinCountModel();
+        guestInvoiceAndSpinCountModel.CenterId = "4d9b754d-99bc-4ffe-9e92-bbca5c4c7144";
+        guestInvoiceAndSpinCountModel.PurchaseType = "Service";
+        guestInvoiceAndSpinCountModel.InvoiceId = "00000000-0000-0000-0000-000000000000";
+        guestInvoiceAndSpinCountModel.NoOfSpin = 15;
+        guestInvoiceAndSpinCountModel.RemainingSpins = 14;
 
-            ArrayList<SpinModel> list = new ArrayList<>();
-            for (int i = 0; i < guestInvoiceAndSpinCountModel.RemainingSpins; i++) {
-                list.add(new SpinModel((i + 1), false));
-            }
-
-            EnrichApplication.setSpinList(list);
-
-            spinRecyclerViewAdapter = new SpinRecyclerViewAdapter(this, EnrichApplication.getSpinList(), isNewUser, guestInvoiceAndSpinCountModel.CenterId, guestInvoiceAndSpinCountModel.PurchaseType, guestInvoiceAndSpinCountModel.InvoiceId);
-            spinNumberRecyclerView.setAdapter(spinRecyclerViewAdapter);
-            spinNumberRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-
-            invoiceAmount.setText(getResources().getString(R.string.Rs) + " " + guestInvoiceAndSpinCountModel.InvoiceAmount);
-            numberOfSpins.setText("" + guestInvoiceAndSpinCountModel.RemainingSpins);
+        ArrayList<SpinModel> list = new ArrayList<>();
+        for (int i = 0; i < guestInvoiceAndSpinCountModel.RemainingSpins; i++) {
+            list.add(new SpinModel((i + 1), false));
         }
+
+
+        EnrichApplication.setSpinList(list);
+
+        spinRecyclerViewAdapter = new SpinRecyclerViewAdapter(this, EnrichApplication.getSpinList(), isNewUser, guestInvoiceAndSpinCountModel.CenterId, guestInvoiceAndSpinCountModel.PurchaseType, guestInvoiceAndSpinCountModel.InvoiceId);
+        spinNumberRecyclerView.setAdapter(spinRecyclerViewAdapter);
+        spinNumberRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
+        invoiceAmount.setText(String.format("%s %d", getResources().getString(R.string.Rs), guestInvoiceAndSpinCountModel.InvoiceAmount));
+        numberOfSpins.setText(String.format("%d", guestInvoiceAndSpinCountModel.RemainingSpins));
+//        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

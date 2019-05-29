@@ -47,7 +47,7 @@ public class HomeSubCategoryAdapter extends RecyclerView.Adapter<HomeSubCategory
 
         String[] handsSplit = list.get(position).Name.split(" ");
         if (handsSplit.length == 3) {
-            holder.name.setText(handsSplit[0].toUpperCase() + "\n" + handsSplit[1].toUpperCase() + "\n" + handsSplit[2].toUpperCase());
+            holder.name.setText(String.format("%s\n%s\n%s", handsSplit[0].toUpperCase(), handsSplit[1].toUpperCase(), handsSplit[2].toUpperCase()));
         } else {
             holder.name.setText(list.get(position).Name.toUpperCase());
         }

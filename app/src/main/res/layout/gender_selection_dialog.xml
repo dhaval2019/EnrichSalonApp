@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/gender_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select a gender"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:font_type="regular" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/gender_male_container"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:background="@drawable/gold_border_curved"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/gender_male_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/gender_male_label"
+                android:layout_alignParentTop="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/human_male"
+                android:tint="@color/dark_gold" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/gender_male_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingEnd="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Male"
+                android:textColor="#424242"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/dimen_20dp"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/gender_female_container"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:background="@drawable/gold_border_curved"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/gender_female_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/gender_female_label"
+                android:layout_alignParentTop="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/human_female"
+                android:tint="@color/dark_gold" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/gender_female_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingEnd="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:text="Female"
+                android:textColor="#424242"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="light" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp">
+
+        <View
+            android:id="@+id/divider_left"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/divider_or"
+            android:background="#e5e5e5" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/divider_or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/dimen_10dp"
+            android:text="OR"
+            app:font_type="light" />
+
+        <View
+            android:id="@+id/divider_right"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/divider_or"
+            android:background="#e5e5e5" />
+    </RelativeLayout>
+
+    <com.enrich.salonapp.ui.views.CustomButton
+        android:id="@+id/gender_selector_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/gold_bg_gradient_curved"
+        android:text="LOGIN"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_16sp"
+        app:font_type="regular" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/gender_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_14sp"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/gender_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:text="OK"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_14sp"
+            android:visibility="gone"
+            app:font_type="regular" />
+    </LinearLayout>
+</LinearLayout>

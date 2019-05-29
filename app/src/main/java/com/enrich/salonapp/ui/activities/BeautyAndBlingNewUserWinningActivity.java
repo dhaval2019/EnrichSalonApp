@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class BeautyAndBlingNewUserWinningActivity extends AppCompatActivity {
 
@@ -59,30 +61,33 @@ public class BeautyAndBlingNewUserWinningActivity extends AppCompatActivity {
 
         if (spinTaken) {
             bandbText1.setVisibility(View.GONE);
-            String bandText2Str = "You have " + pointsWon + " points in your account!";
+            String pointsWonStr = "" + pointsWon;
+            String bandText2Str = "You have " + pointsWonStr + " points in your account!";
             SpannableStringBuilder spannableStringBuilder2 = new SpannableStringBuilder(bandText2Str);
             spannableStringBuilder2.setSpan(new CustomTypefaceSpan("", Typeface.createFromAsset(getAssets(),
-                    "fonts/Montserrat-SemiBold.otf")), 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableStringBuilder2.setSpan(new UnderlineSpan(), 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    "fonts/Quicksand-Bold.ttf")), 9, 9 + pointsWonStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableStringBuilder2.setSpan(new UnderlineSpan(), 9, 9 + pointsWonStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             bandbText2.setText(spannableStringBuilder2);
-            bandbText3.setText("You can redeem these points on a minimum spend on " + getResources().getString(R.string.Rs) + "2500 on services at any of our salons");
+            bandbText3.setText(String.format("You can redeem these points on a minimum spend on %s2500 on services at any of our salons", getResources().getString(R.string.Rs)));
 
             try {
                 SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date expiryDate = stringToDateFormat.parse(validityDateStr);
 
-                String pointsExpiryDateStr = "Points expiring in " + TimeUnit.DAYS.convert(expiryDate.getTime() - new Date().getTime(), TimeUnit.MILLISECONDS) + " days";
+                String daysRemaining = "" + TimeUnit.DAYS.convert(expiryDate.getTime() - new Date().getTime(), TimeUnit.MILLISECONDS);
+                String pointsExpiryDateStr = "Points expiring in " + daysRemaining + " days";
                 SpannableStringBuilder pointsExpiryDateSpannableStringBuilder = new SpannableStringBuilder(pointsExpiryDateStr);
-                pointsExpiryDateSpannableStringBuilder.setSpan(new CustomTypefaceSpan("", Typeface.createFromAsset(getAssets(), "fonts/Montserrat-SemiBold.otf")), 19, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                pointsExpiryDateSpannableStringBuilder.setSpan(new UnderlineSpan(), 19, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                pointsExpiryDateSpannableStringBuilder.setSpan(new CustomTypefaceSpan("", Typeface.createFromAsset(getAssets(), "fonts/Quicksand-Bold.ttf")), 19, 19 + daysRemaining.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                pointsExpiryDateSpannableStringBuilder.setSpan(new UnderlineSpan(), 19, 19 + daysRemaining.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 pointsExpiryDate.setText(pointsExpiryDateSpannableStringBuilder);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
             bandbText1.setVisibility(View.VISIBLE);
-            bandbText1.setText("You have won " + pointsWon + " points");
+            bandbText2.setVisibility(View.GONE);
+            bandbText1.setText(String.format("You have won %d points", pointsWon));
         }
 
         bookNow.setOnClickListener(new View.OnClickListener() {
@@ -101,5 +106,10 @@ public class BeautyAndBlingNewUserWinningActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/beauty_and_bling_bg" />
+            android:src="@drawable/beauty_and_bling_bg"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/loader_spin_container"
@@ -34,7 +35,21 @@
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/beauty_and_bling_logo_cropped" />
+                        android:src="@drawable/beauty_and_bling_logo_cropped"
+                        android:visibility="gone" />
+
+                    <TextView
+                        fontPath="fonts/Quicksand-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="@dimen/dimen_20dp"
+                        android:gravity="center"
+                        android:text="Spin a wheel and win \nupto 100% Cashback!"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        tools:ignore="MissingPrefix" />
 
                     <RelativeLayout
                         android:id="@+id/loader_baseItem"
@@ -140,6 +155,19 @@
                                 app:font_type="light" />
                         </LinearLayout>
                     </RelativeLayout>
+
+                    <TextView
+                        fontPath="fonts/Quicksand-Light.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/kpmg_label"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:gravity="center_horizontal"
+                        android:text="Copyright\u00A9 2019 Enrich. All rights reserved."
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        tools:ignore="MissingPrefix" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -164,7 +192,21 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/beauty_and_bling_logo_cropped" />
+                    android:src="@drawable/beauty_and_bling_logo_cropped"
+                    android:visibility="gone" />
+
+                <TextView
+                    fontPath="fonts/Quicksand-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="@dimen/dimen_20dp"
+                    android:gravity="center"
+                    android:text="Spin a wheel and win \nupto 100% Cashback!"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    tools:ignore="MissingPrefix" />
 
                 <RelativeLayout
                     android:id="@+id/baseItem"
@@ -270,6 +312,22 @@
                             app:font_type="light" />
                     </LinearLayout>
                 </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/copyright_label"
+                    fontPath="fonts/Quicksand-Light.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/kpmg_label"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:gravity="center_horizontal"
+                    android:text="Copyright\u00A9 2019 Enrich. All rights reserved."
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    tools:ignore="MissingPrefix" />
+
             </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>

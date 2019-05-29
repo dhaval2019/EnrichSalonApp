@@ -19,8 +19,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 186
-        versionName '1.8.6'
+        versionCode 188
+        versionName '1.8.8'
         multiDexEnabled true
 //        manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
         // Project number pulled from dashboard, local value is ignored.
@@ -33,6 +33,10 @@ android {
         }
     }
     productFlavors {
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 
@@ -135,6 +139,15 @@ dependencies {
 
     // DATETIME
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
+
+    // CALLIGRAPHY
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:1.0.0'
+
+    // TEST
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test:core:1.1.0'
+    testImplementation 'org.mockito:mockito-core:2.23.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

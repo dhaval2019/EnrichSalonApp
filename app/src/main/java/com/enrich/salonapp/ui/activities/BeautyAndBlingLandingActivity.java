@@ -1,5 +1,6 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.enrich.salonapp.util.CustomTypefaceSpan;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class BeautyAndBlingLandingActivity extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class BeautyAndBlingLandingActivity extends AppCompatActivity {
     TextView bandbText4;
 
     @BindView(R.id.try_a_spin)
-    Button tryASpin;
+    TextView tryASpin;
 
     @BindView(R.id.beauty_and_bling_skip)
     TextView beautyAndBlingSkip;
@@ -66,18 +68,17 @@ public class BeautyAndBlingLandingActivity extends AppCompatActivity {
         tryASpin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isNewUser){
+                if (isNewUser) {
                     Intent intent = new Intent(BeautyAndBlingLandingActivity.this, BeautyAndBlingSpinActivity.class);
                     intent.putExtra("IsNewUser", isNewUser);
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     Intent intent = new Intent(BeautyAndBlingLandingActivity.this, BeautyAndBlingEligibilityActivity.class);
                     intent.putExtra("IsNewUser", isNewUser);
                     startActivity(intent);
                     finish();
                 }
-
             }
         });
 
@@ -87,5 +88,10 @@ public class BeautyAndBlingLandingActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

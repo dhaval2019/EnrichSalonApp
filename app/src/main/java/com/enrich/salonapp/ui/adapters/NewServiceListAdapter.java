@@ -219,7 +219,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                 @Override
                 public void onClick(View v) {
                     if (application.alreadyExist(model)) {
-//                        model.therapist = null;
+                        model.therapist = null;
                         notifyItemRangeChanged(0, filteredList.get(parentPosition).ChildServices.size());
 
                         int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));

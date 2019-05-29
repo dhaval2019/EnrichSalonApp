@@ -146,7 +146,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     Tracker mTracker;
 
-    int gender = 0;
+    int gender;
     String genderStr;
 
     boolean isHomeSelected;
@@ -184,6 +184,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         position = getIntent().getIntExtra("CategoryListPosition", 0);
         isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
         isRebook = getIntent().getBooleanExtra("isRebook", false);
+        gender = getIntent().getIntExtra("Gender", 0);
 
         if (isRebook) {
             centerDetailModel = EnrichUtils.getHomeStoreForRebook(this);
@@ -239,7 +240,6 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                                 gender = Constants.FEMALE;
                                 genderStr = "Female";
                             }
-
                         }
                     }
 

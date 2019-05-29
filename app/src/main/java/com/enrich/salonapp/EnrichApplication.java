@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import io.fabric.sdk.android.Fabric;
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
 
 //import com.onesignal.OneSignal;
 
@@ -49,12 +52,7 @@ public class EnrichApplication extends Application {
     public void onCreate() {
         super.onCreate();
         cartList = getStoredCartItem();
-//        OneSignal.startInit(this)
-//                .setNotificationReceivedHandler(new NotificationReceivedHandler())
-//                .setNotificationOpenedHandler(new NotificationOpenedHandler())
-//                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-//                .unsubscribeWhenNotificationsAreDisabled(true)
-//                .init();
+
         sAnalytics = GoogleAnalytics.getInstance(this);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -66,11 +64,18 @@ public class EnrichApplication extends Application {
         // Create an analytics client with the given context and Segment write key.
         Analytics analytics = new Analytics.Builder(this, getString(R.string.semgent_write_key))
                 .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
-                .recordScreenViews() // Enable this to record screen views automatically!
-                .build();
+                .recordScreenViews().build(); // Enable this to record screen views automatically!
 
         Analytics.setSingletonInstance(analytics);
         Analytics.with(this).track("Application Started");
+
+        //CALLIGRAPHY
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/Quicksand-Regular.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build())).build());
     }
 
     /**
@@ -166,6 +171,7 @@ public class EnrichApplication extends Application {
             genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
             genericCartModel.CategoryName = cartItem.getCategoryName();
             genericCartModel.SubCategoryName = cartItem.getSubCategoryName();
+            genericCartModel.Description = cartItem.getDescription();
 
             cartList.add(genericCartModel);
             logAddedToCartEvent(genericCartModel);
@@ -198,6 +204,7 @@ public class EnrichApplication extends Application {
         genericCartModel.PackageBundleItemCount = cartItem.getPackageBundleItemCount();
         genericCartModel.CategoryName = cartItem.getCategoryName();
         genericCartModel.SubCategoryName = cartItem.getSubCategoryName();
+        genericCartModel.Description = cartItem.getDescription();
 
         cartList.add(genericCartModel);
         logAddedToCartEvent(genericCartModel);
@@ -249,7 +256,7 @@ public class EnrichApplication extends Application {
                         .putValue("user_id", EnrichUtils.getUserData(this).Id)
                         .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
                         .putValue("product_name", cartItem.getName())
-                        .putValue("description", "")
+                        .putValue("description", cartItem.getDescription())
                         .putValue("quantity", cartItem.getQuantity())
                         .putValue("amount", cartItem.getPrice()));
             }

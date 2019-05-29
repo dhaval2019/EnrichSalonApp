@@ -163,7 +163,7 @@
                             android:paddingTop="10dp"
                             android:paddingRight="20dp"
                             android:paddingBottom="10dp"
-                            android:text="SALON"
+                            android:text="\u0040SALON"
                             android:textColor="@color/dark_gold"
                             android:textSize="20sp"
                             app:font_type="semi_bold" />
@@ -194,7 +194,7 @@
                             android:paddingTop="10dp"
                             android:paddingRight="20dp"
                             android:paddingBottom="10dp"
-                            android:text="HOME"
+                            android:text="\u0040HOME"
                             android:textColor="@color/grey"
                             android:textSize="20sp"
                             app:font_type="semi_bold" />

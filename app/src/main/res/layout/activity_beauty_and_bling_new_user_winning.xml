@@ -4,38 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.BeautyAndBlingLandingActivity">
+    android:background="@color/beauty_and_bling_background"
+    tools:context=".ui.activities.BeautyAndBlingLandingActivity"
+    tools:ignore="MissingPrefix">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/beauty_and_bling_bg" />
+        android:src="@drawable/beauty_and_bling_bg"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/beauty_and_bling_skip"
+        <TextView
+            fontPath="fonts/Quicksand-Regular.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:paddingStart="@dimen/dimen_20dp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:paddingEnd="@dimen/dimen_20dp"
-            android:paddingBottom="@dimen/dimen_15dp"
-            android:text="SKIP"
-            android:textColor="@color/white"
-            app:font_type="regular" />
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dimen_40dp"
+            android:gravity="center"
+            android:text="Spin a wheel and win \nupto 100% Cashback!"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            tools:ignore="MissingPrefix" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/book_now"
-            android:layout_below="@+id/beauty_and_bling_skip"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="@dimen/dimen_40dp"
             android:paddingRight="@dimen/dimen_40dp">
@@ -44,10 +45,12 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/beauty_and_bling_logo_cropped" />
+                android:src="@drawable/beauty_and_bling_logo_cropped"
+                android:visibility="gone" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/bandb_text_1"
+                fontPath="fonts/Quicksand-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -56,57 +59,71 @@
                 android:text="You have won 1000 points"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_18sp"
-                app:font_type="semi_bold" />
+                android:visibility="gone" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/bandb_text_2"
+                fontPath="fonts/Quicksand-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_15dp"
                 android:gravity="center"
-                android:text="If you like what you have won you can get them for real!"
+                android:text="You have won 1000 points"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_18sp"
-                app:font_type="light" />
+                android:textSize="@dimen/dimen_20dp" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/bandb_text_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_15dp"
                 android:gravity="center"
-                android:text="Just visit our salon and spend Rs. 2500 on services or products and we'll credit these points to your account."
+                android:text="You can redeem these points on a minimum spend on Rs. 2500 on services at any of our salons"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_16sp"
-                app:font_type="ultra_light" />
+                fontPath="fonts/Quicksand-Light.ttf" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <TextView
                 android:id="@+id/points_expiry_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layout_marginTop="@dimen/dimen_50dp"
                 android:gravity="center"
-                android:text=""
+                android:text="Points expiring in 14 days"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_18sp"
-                app:font_type="light" />
+                android:textSize="@dimen/dimen_20sp"
+                fontPath="fonts/Quicksand-Regular.ttf" />
         </LinearLayout>
 
-        <com.enrich.salonapp.ui.views.CustomButton
+        <Button
             android:id="@+id/book_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/beauty_and_bling_skip"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/beauty_and_bling_button"
+            android:paddingLeft="@dimen/dimen_30dp"
+            android:paddingRight="@dimen/dimen_30dp"
+            android:text="Book Now"
+            android:textColor="@color/white"
+            fontPath="fonts/Quicksand-Regular.ttf" />
+
+        <TextView
+            android:id="@+id/beauty_and_bling_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dimen_40dp"
-            android:background="@drawable/beauty_and_bling_button"
-            android:paddingLeft="@dimen/dimen_15dp"
-            android:paddingRight="@dimen/dimen_15dp"
-            android:text="Book Now"
+            android:paddingStart="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_15dp"
+            android:paddingEnd="@dimen/dimen_20dp"
+            android:paddingBottom="@dimen/dimen_15dp"
+            android:text="SKIP"
             android:textColor="@color/white"
-            app:font_type="regular" />
+            fontPath="fonts/Quicksand-Regular.ttf" />
     </RelativeLayout>
 </FrameLayout>

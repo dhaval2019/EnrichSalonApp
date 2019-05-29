@@ -100,7 +100,6 @@ public class RemoteDataSource extends DataSource {
     public static final String GET_HOME_DATE_TME_SLOTS = "Catalog/Appointments/AvailableTimesForHomeService";
 
     private static RemoteDataSource remoteDataSource;
-
     private ApiService apiService;
 
     private RemoteDataSource(MainUiThread mainUiThread,

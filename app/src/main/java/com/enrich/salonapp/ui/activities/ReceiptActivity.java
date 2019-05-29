@@ -120,7 +120,7 @@ public class ReceiptActivity extends AppCompatActivity {
 
         collapsingToolbarLayout.setTitle("RECEIPT");
 
-        paymentConfirmOrderPurchaseAmount.setText(getResources().getString(R.string.Rs) + " " + paymentSummaryModel.getTotal());
+        paymentConfirmOrderPurchaseAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), paymentSummaryModel.getTotal()));
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -151,9 +151,10 @@ public class ReceiptActivity extends AppCompatActivity {
         } else if (confirmOrderRequestModel.getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
             paymentConfirmOrderPaymentMode.setText("Online");
         }
-        paymentConfirmOrderSalonName.setText("" + EnrichUtils.getHomeStore(this).Name);
-        orderSalonNumber.setText("" + EnrichUtils.getHomeStore(this).Phone);
+        paymentConfirmOrderSalonName.setText(String.format("%s", EnrichUtils.getHomeStore(this).Name));
+        orderSalonNumber.setText(String.format("%s", EnrichUtils.getHomeStore(this).Phone));
         Linkify.addLinks(orderSalonNumber, Linkify.ALL);
+
         orderSalonNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,5 +173,14 @@ public class ReceiptActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ReceiptActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

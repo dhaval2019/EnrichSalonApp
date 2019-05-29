@@ -17,9 +17,11 @@ import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.CategoryAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
@@ -33,7 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryActivity extends BaseActivity implements CategoryContract.View {
+public class CategoryActivity extends BaseActivity implements CategoryContract.View, LoginListener {
 
     @BindView(R.id.drawer_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -51,6 +53,8 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
 
     DataRepository dataRepository;
     CategoryPresenter categoryPresenter;
+
+    CategoryAdapter categoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +105,24 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
         list = getIntent().getParcelableArrayListExtra("CategoryList");
     }
 
+    public void showLoginDialog() {
+        LoginBottomSheetFragment.getInstance(this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+    }
+
     @Override
     public void showCategoryList(CategoryResponseModel model) {
         if (!model.Categories.isEmpty()) {
-            CategoryAdapter categoryAdapter = new CategoryAdapter(this, list);
+            categoryAdapter = new CategoryAdapter(this, list, this, false);
             categoryRecyclerView.setAdapter(categoryAdapter);
             categoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
             setProgressBar(false);
+        }
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (categoryAdapter != null) {
+            categoryAdapter.userLoggedIn();
         }
     }
 }
