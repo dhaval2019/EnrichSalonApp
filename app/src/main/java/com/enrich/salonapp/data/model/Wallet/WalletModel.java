@@ -3,7 +3,7 @@ package com.enrich.salonapp.data.model.Wallet;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class WalletModel implements Parcelable{
+public class WalletModel implements Parcelable,Comparable<WalletModel>{
 
     public int Id;
     public double Amount;
@@ -18,7 +18,10 @@ public class WalletModel implements Parcelable{
         WalletValidityDate = in.readString();
         Walletfor = in.readString();
     }
-
+    @Override
+    public int compareTo(WalletModel o) {
+        return WalletValidityDate.compareTo(o.WalletValidityDate);
+    }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(Id);

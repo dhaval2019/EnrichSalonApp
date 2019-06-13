@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enrich.salonapp.EnrichApplication;
@@ -75,6 +76,15 @@ public class AddressSelectorActivity extends AppCompatActivity {
     Tracker mTracker;
 
     AddressModel selectedAddress;
+    @BindView(R.id.address_home_image)
+    ImageView addressHomeImage;
+
+    @BindView(R.id.address_work_image)
+    ImageView addressWorkImage;
+
+    @BindView(R.id.address_other_image)
+    ImageView addressOtherImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +189,7 @@ public class AddressSelectorActivity extends AppCompatActivity {
 
     private void setAddress() {
         // CHECK ADDRESS
-        if (EnrichUtils.getHomeAddress(this) == null) {
+       /* if (EnrichUtils.getHomeAddress(this) == null) {
             addressHomeRadio.setEnabled(false);
         } else {
             addressHomeRadio.setEnabled(true);
@@ -195,8 +205,36 @@ public class AddressSelectorActivity extends AppCompatActivity {
             addressOtherRadio.setEnabled(false);
         } else {
             addressOtherRadio.setEnabled(true);
+        }*///changed by dhaval on 13th june for add plus button
+        if (EnrichUtils.getHomeAddress(this) == null) {
+            //addressHomeRadio.setEnabled(false);
+            addressHomeImage.setVisibility(View.VISIBLE);
+            addressHomeRadio.setVisibility(View.GONE);
+        } else {
+            //addressHomeRadio.setEnabled(true);
+            addressHomeImage.setVisibility(View.GONE);
+            addressHomeRadio.setVisibility(View.VISIBLE);
         }
 
+        if (EnrichUtils.getWorkAddress(this) == null) {
+            //addressWorkRadio.setEnabled(false);
+            addressWorkImage.setVisibility(View.VISIBLE);
+            addressWorkRadio.setVisibility(View.GONE);
+        } else {
+           // addressWorkRadio.setEnabled(true);
+            addressWorkImage.setVisibility(View.GONE);
+            addressWorkRadio.setVisibility(View.VISIBLE);
+        }
+
+        if (EnrichUtils.getOtherAddress(this) == null) {
+           // addressOtherRadio.setEnabled(false);
+            addressOtherImage.setVisibility(View.VISIBLE);
+            addressOtherRadio.setVisibility(View.GONE);
+        } else {
+          //  addressOtherRadio.setEnabled(true);
+            addressOtherImage.setVisibility(View.GONE);
+            addressOtherRadio.setVisibility(View.VISIBLE);
+        }
         ArrayList<AddressModel> list = EnrichUtils.getUserData(this).GuestAddress;
         for (int i = 0; i < list.size(); i++) {
             switch (list.get(i).AddressType) {

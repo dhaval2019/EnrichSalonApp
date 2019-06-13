@@ -78,6 +78,9 @@ public class ReceiptActivity extends AppCompatActivity {
     EnrichApplication application;
     Tracker mTracker;
 
+    @BindView(R.id.order_payment_address)
+    LinearLayout orderPaymentAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +157,13 @@ public class ReceiptActivity extends AppCompatActivity {
         paymentConfirmOrderSalonName.setText(String.format("%s", EnrichUtils.getHomeStore(this).Name));
         orderSalonNumber.setText(String.format("%s", EnrichUtils.getHomeStore(this).Phone));
         Linkify.addLinks(orderSalonNumber, Linkify.ALL);
-
+        if (application.cartHasServices())
+        {
+            orderPaymentAddress.setVisibility(View.VISIBLE);
+        }else
+        {
+            orderPaymentAddress.setVisibility(View.GONE);
+        }
         orderSalonNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

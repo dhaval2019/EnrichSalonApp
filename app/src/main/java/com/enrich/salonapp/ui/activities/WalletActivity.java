@@ -38,6 +38,8 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,7 +153,7 @@ public class WalletActivity extends BaseActivity implements WalletContract.View,
             walletLoader.setVisibility(View.GONE);
             walletRecyclerViewContainer.setVisibility(View.VISIBLE);
             noCashbackAvailable.setVisibility(View.GONE);
-
+            Collections.sort( model.Wallets,Collections.reverseOrder());
             WalletAdapter adapter = new WalletAdapter(this, model.Wallets);
             walletRecyclerView.setAdapter(adapter);
             walletRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

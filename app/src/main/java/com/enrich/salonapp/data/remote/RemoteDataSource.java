@@ -1,6 +1,7 @@
 package com.enrich.salonapp.data.remote;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.data.DataSource;
@@ -912,12 +913,14 @@ public class RemoteDataSource extends DataSource {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
+
                     callback.onFailure(new Throwable());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OfferResponseModel> call, @NonNull Throwable t) {
+
                 Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
                 callback.onFailure(t);

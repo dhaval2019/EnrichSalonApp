@@ -157,6 +157,7 @@ public class CartActivity extends BaseActivity {
                     reserveSlotModel.SlotBookings = slotBookingsModelArrayList;
 
                     switchToNextScreen(reserveSlotModel);
+
                 } else if (doesCartContainProducts()) {
                     if (EnrichUtils.doesUserHasAddresses(CartActivity.this)) {
                         Intent intent = new Intent(CartActivity.this, AddressSelectorActivity.class);
@@ -165,9 +166,11 @@ public class CartActivity extends BaseActivity {
                         Intent intent = new Intent(CartActivity.this, AddAddressActivity.class);
                         startActivity(intent);
                     }
+
                 } else {
                     Intent intent = new Intent(CartActivity.this, BookingSummaryActivity.class);
                     startActivity(intent);
+
                 }
             }
         });

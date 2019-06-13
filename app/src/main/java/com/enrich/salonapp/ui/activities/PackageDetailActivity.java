@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +108,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
     EnrichApplication application;
     Tracker mTracker;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,6 +162,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             public void onClick(View view) {
                 if (EnrichUtils.getUserData(PackageDetailActivity.this) != null) {
                     Intent intent = new Intent(PackageDetailActivity.this, CartActivity.class);
+
                     startActivity(intent);
                 } else {
                     LoginBottomSheetFragment.getInstance().show(getSupportFragmentManager(), "login_bottomsheet_fragment");
@@ -214,7 +217,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageDetailName.setText(packageModel.PackageTitle);
             packageDetailDescription.setText(packageModel.PackageDescription);
             packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) packageModel.StartingPrice));
-
+            Log.e("dhaval",packageModel.PackageImageWideURL);
             Picasso.with(this).load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
 
             ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);

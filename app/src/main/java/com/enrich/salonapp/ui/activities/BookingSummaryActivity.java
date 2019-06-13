@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
@@ -202,25 +203,6 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         bookingSummaryPresenter = new BookingSummaryPresenter(this, dataRepository);
 
-        makePaymentOnlineBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isOnlinePayment = true;
-                payOnline();
-            }
-        });
-
-        makePaymentOfflineBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isOnlinePayment = false;
-                showCashDialog();
-            }
-        });
-
-        makePaymentOfflineBtn.setEnabled(false);
-        makePaymentOnlineBtn.setEnabled(false);
-
 
         if (application.cartHasServices()) {
             if (reserveSlotModel.SlotBookings != null) {
@@ -292,6 +274,44 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             bookingSummaryItemRecyclerView.setAdapter(adapter);
             bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         }
+
+        makePaymentOnlineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isOnlinePayment = true;
+                payOnline();
+            }
+        });
+
+        makePaymentOfflineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isOnlinePayment = false;
+                if (makePaymentOfflineBtn.getText().toString().equalsIgnoreCase(getString(R.string.txt_confirm_order)))
+                {
+                    if (application.cartHasServices()) {
+                        confirmReservation();
+                    } else if (application.cartHasPackages()) {
+                        ConfirmReservationResponseModel confirmReservationResponseModel = new ConfirmReservationResponseModel();
+                        confirmReservationResponseModel.IsConfirmed = true;
+                        reservationConfirmed(confirmReservationResponseModel);
+                    } else if (application.cartHasProducts()) {
+                        ConfirmReservationResponseModel confirmReservationResponseModel = new ConfirmReservationResponseModel();
+                        confirmReservationResponseModel.IsConfirmed = true;
+                        reservationConfirmed(confirmReservationResponseModel);
+                    }
+                }else
+                {
+                    showCashDialog();
+                }
+
+            }
+        });
+
+        makePaymentOfflineBtn.setEnabled(false);
+        makePaymentOnlineBtn.setEnabled(false);
+
+
     }
 
     @Override
@@ -337,6 +357,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 bookingSummaryPresenter.getInvoice(this, RemoteDataSource.HOST + RemoteDataSource.GET_INVOICE + reserveSlotResponseModel.InvoiceId);
                 setData(model.getPaymentSummary());
             } else if (application.cartHasProducts()) {
+
                 setData(model.getPaymentSummary());
                 logSegmentProducts();
             } else {
@@ -360,7 +381,9 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     @Override
     public void reservationConfirmed(ConfirmReservationResponseModel model) {
         if (model.IsConfirmed) {
-            logSegmentBookAppointment();
+            if (application.cartHasServices()) {
+                logSegmentBookAppointment();//changed by dhaval shah on 12june2019because invoice null for other condition
+            }
 
             ConfirmOrderModel confirmOrderModel = new ConfirmOrderModel();
             confirmOrderModel.setAmount(createOrderResponseModel.getPaymentSummary().getPayableAmount());
@@ -377,13 +400,19 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 confirmOrderModel.setPaymentId(mPaymentParams.getParams().get(PayUmoneyConstants.TXNID));
                 confirmOrderModel.setModeOfPayment(PAYMENT_MODE_ONLINE);
                 confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
-                logSegmentPayment("Card", "");
+                if (application.cartHasServices()) {
+                    logSegmentPayment("Card", "");//changed by dhaval shah on 12june2019because invoice null for other condition
+                }
+
             } else { // CASH
                 confirmOrderModel.setTransactionId(System.currentTimeMillis() + "");
                 confirmOrderModel.setPaymentId(System.currentTimeMillis() + "");
                 confirmOrderModel.setModeOfPayment(PAYMENT_MODE_CASH);
                 confirmOrderModel.setPaymentStatus(PAYMENT_SUCCESS);
-                logSegmentPayment("Cash", "");
+                if (application.cartHasServices()) {
+                    logSegmentPayment("Cash", "");//changed by dhaval shah on 12june2019because invoice null for other condition
+                }
+
             }
 
             confirmOrderRequestModel = new ConfirmOrderRequestModel();
@@ -393,10 +422,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             confirmReservationResponseModel = model;
 
             EnrichUtils.log(EnrichUtils.newGson().toJson(confirmOrderRequestModel));
+
             bookingSummaryPresenter.confirmOrder(BookingSummaryActivity.this, confirmOrderRequestModel);
         } else {
+
             EnrichUtils.showMessage(BookingSummaryActivity.this, "" + model.Error.Message);
         }
+
     }
 
     @Override
@@ -404,16 +436,20 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         if (model.getConfirmOrder() != null) {
             EnrichUtils.log(EnrichUtils.newGson().toJson(model));
             confirmOrderModel = model.getConfirmOrder().getConfirmOrder();
-            logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
-            logFirebasePurchaseEvent(model.getConfirmOrder().getConfirmOrder());
-            logSegmentBookSummary();
-            logSegmentBookingStatus("Successful");
 
-            if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
-                logPurchaseOnlineEvent(model.getConfirmOrder().getConfirmOrder());
-            } else if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_CASH) {
-                logPurchaseOfflineEvent(model.getConfirmOrder().getConfirmOrder());
+            if (application.cartHasServices()) {//changed by dhaval shah on 12june2019because invoice null for other condition
+                logAppointmentBooked(model.getConfirmOrder().getConfirmOrder());
+                logFirebasePurchaseEvent(model.getConfirmOrder().getConfirmOrder());
+                logSegmentBookSummary();
+                logSegmentBookingStatus("Successful");
+
+                if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
+                    logPurchaseOnlineEvent(model.getConfirmOrder().getConfirmOrder());
+                } else if (model.getConfirmOrder().getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_CASH) {
+                    logPurchaseOfflineEvent(model.getConfirmOrder().getConfirmOrder());
+                }
             }
+
 
             Intent intent = new Intent(BookingSummaryActivity.this, ReceiptActivity.class);
             intent.putExtra("ConfirmReservationResponseModel", EnrichUtils.newGson().toJson(confirmReservationResponseModel));
@@ -487,6 +523,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             } else {
                 EnrichUtils.log("Both objects are null!");
             }
+
+
         }
     }
 
@@ -547,6 +585,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             deliveryPeriod.setText(application.getDeliveryPeriod());
             deliveryInformation.setText(application.getDeliveryInformation());
             makePaymentOfflineBtn.setText("PAY CASH");
+        }
+          if (model.getTotal()==0.0) {
+            makePaymentOnlineBtn.setVisibility(View.GONE);
+            makePaymentOfflineBtn.setText(getString(R.string.txt_confirm_order));
+        } else {
+            makePaymentOnlineBtn.setVisibility(View.VISIBLE);
+            makePaymentOfflineBtn.setText(getString(R.string.txt_pay_at_salon));
         }
     }
 
@@ -682,7 +727,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -734,7 +779,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
         stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());
@@ -874,6 +919,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     }
 
     private void logSegmentBookAppointment() {
+
         List<Properties> propertiesArrayList = new ArrayList<>();
 
         for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {

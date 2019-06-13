@@ -15,8 +15,10 @@ import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.CartItem;
 import com.enrich.salonapp.data.model.GenericCartModel;
 import com.enrich.salonapp.ui.activities.CartActivity;
+import com.enrich.salonapp.ui.activities.PackageDetailActivity;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -151,6 +153,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     activity.onBackPressed();
             }
         });
+
     }
 
     @Override
@@ -174,6 +177,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @BindView(R.id.cart_item_remove)
         ImageView remove;
+
 
         @BindView(R.id.cart_item_delivery_period)
         TextView deliveryPeriod;

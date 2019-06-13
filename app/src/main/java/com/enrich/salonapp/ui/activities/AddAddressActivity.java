@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,7 +70,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
     LinearLayout locationContainer;
 
     @BindView(R.id.location_text)
-    TextView locationText;
+    EditText locationText;
 
     @BindView(R.id.house_text)
     TextView houseText;
@@ -164,7 +165,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
 
         collapsingToolbarLayout.setTitle("ADD ADDRESS");
 
-        locationContainer.setOnClickListener(new View.OnClickListener() {
+       /* locationContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -180,7 +181,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                     EnrichUtils.log(e.getLocalizedMessage());
                 }
             }
-        });
+        });*/
 
         if (addressModel != null) {
             locationText.setText(addressModel.Location);
@@ -188,7 +189,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
             landmarkText.setText(addressModel.Landmark);
             changeAddressTypeSelection(addressModel.AddressType);
 
-            suggestedPlace = new Place() {
+           /* suggestedPlace = new Place() {
                 @Override
                 public String getId() {
                     return null;
@@ -263,9 +264,9 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                 public boolean isDataValid() {
                     return false;
                 }
-            };
+            };*/
         } else {
-            locationText.setHint("Enter the closes landmark");
+          //  locationText.setHint("Enter the closes landmark");
 
             changeAddressTypeSelection(addressType);
         }
@@ -318,18 +319,18 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                     return;
                 }
 
-                if (suggestedPlace == null) {
+               /* if (suggestedPlace == null) {
                     showToastMessage("Please fill all the fields");
                     return;
-                }
+                }*/
 
                 AddressModel model = new AddressModel();
                 model.GuestId = EnrichUtils.getUserData(AddAddressActivity.this).Id;
                 model.Location = locationStr;
                 model.HouseNameFlatNo = houseStr;
                 model.Landmark = landmarkStr;
-                model.Latitude = suggestedPlace.getLatLng().latitude;
-                model.Longitude = suggestedPlace.getLatLng().longitude;
+               /* model.Latitude = suggestedPlace.getLatLng().latitude;
+                model.Longitude = suggestedPlace.getLatLng().longitude;*/
                 model.AddressType = addressTypeStr;
 
                 addressModelToLog = model;
