@@ -123,4 +123,6 @@
     <string name="semgent_write_key">vlYWHeIjxVNaZCyRHlxsyY47xjAdKddx</string>
 
     <string name="rs_symbol">\u20B9</string>
+    <string name="txt_confirm_order">Confirm Order</string>
+    <string name="txt_pay_at_salon">Pay at Salon</string>
 </resources>

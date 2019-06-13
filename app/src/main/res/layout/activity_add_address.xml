@@ -51,11 +51,13 @@
                 android:textSize="@dimen/dimen_14sp"
                 app:font_type="ultra_light" />
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+
+            <com.enrich.salonapp.ui.views.CustomEditText
                 android:id="@+id/location_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Identifying your location..."
+                android:background="@color/white"
+                android:hint="Enter the location..."
                 android:paddingBottom="@dimen/dimen_10dp"
                 android:paddingTop="@dimen/dimen_10dp"
                 android:textColor="@color/black"

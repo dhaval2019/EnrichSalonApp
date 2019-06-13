@@ -6,11 +6,13 @@
     android:orientation="vertical"
     android:padding="15dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/cart_item_price_container"
+
         android:orientation="vertical">
 
         <com.enrich.salonapp.ui.views.CustomTextView
@@ -82,5 +84,6 @@
             android:tint="@color/grey" />
 
     </LinearLayout>
+
 
 </RelativeLayout>
