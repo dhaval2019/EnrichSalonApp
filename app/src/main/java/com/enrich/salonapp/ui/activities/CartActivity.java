@@ -202,7 +202,7 @@ public class CartActivity extends BaseActivity {
 
     public void updatePriceAndQuantityView() {
         cartTotalItems.setText("" + application.getCartItems().size());
-        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
+        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " +  (int) Math.round(application.getTotalPrice()));
     }
 
     private void switchToNextScreen(ReserveSlotRequestModel reserveSlotModel) {

@@ -542,8 +542,62 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         bookingSummaryPresenter.confirmReservation(BookingSummaryActivity.this, confirmReservationRequestModel);
     }
+    private void setData(PaymentSummaryModel model) {//redefiend in integer by dhaval shah
+        makePaymentOfflineBtn.setEnabled(true);
+        makePaymentOnlineBtn.setEnabled(true);
 
-    private void setData(PaymentSummaryModel model) {
+        if (application.cartHasServices()) {
+            serviceInfoContainer.setVisibility(View.VISIBLE);
+            productInfoContainer.setVisibility(View.GONE);
+            int i1 =(int) Math.round(model.getActualPrice());
+//            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTotal())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i1));
+            int i2=(int)Math.round(model.getTotal());
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i2));
+            int i3=(int)Math.round(model.getDiscount());
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i3));
+            int i4=(int)Math.round(model.getTax());
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i4));
+            int i5=(int)Math.round(model.getCashBackApplied());
+            cashbackAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i5));
+
+        } else if (application.cartHasPackages()) {
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getTax())));
+
+            dateTimeSlot.setText("-");
+            stylistLabel.setText("-");
+
+            serviceInfoContainer.setVisibility(View.GONE);
+            productInfoContainer.setVisibility(View.GONE);
+        } else if (application.cartHasProducts()) {
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTax())));
+
+            dateTimeSlot.setText("-");
+            stylistLabel.setText("-");
+
+            serviceInfoContainer.setVisibility(View.GONE);
+            productInfoContainer.setVisibility(View.VISIBLE);
+            deliveryPeriod.setText(application.getDeliveryPeriod());
+            deliveryInformation.setText(application.getDeliveryInformation());
+            makePaymentOfflineBtn.setText("PAY CASH");
+        }
+        if (model.getTotal()==0.0) {
+            makePaymentOnlineBtn.setVisibility(View.GONE);
+            makePaymentOfflineBtn.setText(getString(R.string.txt_confirm_order));
+        } else {
+            makePaymentOnlineBtn.setVisibility(View.VISIBLE);
+            makePaymentOfflineBtn.setText(getString(R.string.txt_pay_at_salon));
+        }
+    }
+   /* private void setData(PaymentSummaryModel model) {
         makePaymentOfflineBtn.setEnabled(true);
         makePaymentOnlineBtn.setEnabled(true);
 
@@ -593,7 +647,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             makePaymentOnlineBtn.setVisibility(View.VISIBLE);
             makePaymentOfflineBtn.setText(getString(R.string.txt_pay_at_salon));
         }
-    }
+    }*/
 
     private void setData(InvoiceModel model) {
 
@@ -603,6 +657,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             for (int i = 0; i < model.AppointmentServices.size(); i++) {
                 GenericCartModel genericCartModel = new GenericCartModel();
                 genericCartModel.Name = model.AppointmentServices.get(i).Service.name;
+               // genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
                 genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
 
 //                if (EnrichUtils.getUserData(BookingSummaryActivity.this).IsMember == Constants.IS_MEMBER) {
@@ -615,10 +670,13 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 logFirebaseCheckoutProgress(genericCartModel);
             }
 
-            adapter = new BookingSummaryItemAdapter(this, genericCartList);
+            //adapter = new BookingSummaryItemAdapter(this, genericCartList,"service");
+            adapter = new BookingSummaryItemAdapter(this, application.getCartItems());//changed by dhaval since data was not correct in genericcartlist
             bookingSummaryItemRecyclerView.setAdapter(adapter);
             bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));
+          /*  totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));*/
+           /* totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int) Math.round(getTotalPrice(genericCartList))));*/
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int)Math.round(application.getTotalPrice())));//changed by dhaval
         }
 
         stylistLabel.setText(String.format("%s", model.AppointmentServices.get(0).RequestedTherapist.FullName));
@@ -674,7 +732,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 //        if (application.cartHasServices()) {
 //            cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(invoiceModel.Price._final)));
 //        } else {
-        cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), createOrderResponseModel.getPaymentSummary().getTotal()));
+        cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int) Math.round(createOrderResponseModel.getPaymentSummary().getTotal())));
 //        }
 
         cashPaymentProceedButton.setOnClickListener(new View.OnClickListener() {
@@ -727,7 +785,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -779,7 +837,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
         stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());

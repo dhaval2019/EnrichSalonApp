@@ -42,7 +42,8 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.PackageV
         final PackageModel model = list.get(position);
 
         holder.title.setText(model.PackageTitle);
-        holder.subTitle.setText("From " + context.getResources().getString(R.string.Rs) + " " + model.StartingPrice);
+        int i = (int) Math.round(model.StartingPrice);
+        holder.subTitle.setText("From " + context.getResources().getString(R.string.Rs) + " " + i);
         if (model.Gender.equals("M")) {
             holder.genderImage.setImageResource(R.drawable.human_male);
         } else if (model.Gender.equals("F")) {

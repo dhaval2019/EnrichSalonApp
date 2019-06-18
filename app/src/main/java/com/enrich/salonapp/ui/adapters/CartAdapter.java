@@ -94,9 +94,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.getMembershipPrice()));
+                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int)Math.round( model.getMembershipPrice())));
             }else {
-                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.getPrice()));
+                holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int)Math.round( model.getPrice())));
             }
 
             holder.deliveryInformation.setVisibility(View.GONE);
@@ -114,20 +114,23 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder.name.setText(model.Name);
                 holder.therapist.setText(String.format("%d Service(s)", model.getPackageBundleItemCount()));
                 holder.description.setText(String.format("Quantity: %d", model.Quantity));
-                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
+                int i = (int)Math.round(model.getPrice() * model.Quantity);
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), i));
 
             } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_PRODUCT) {
 
                 holder.name.setText(model.Name);
                 holder.therapist.setText(String.format("%d Product(s)", model.getPackageBundleItemCount()));
                 holder.description.setText(String.format("Quantity: %d", model.Quantity));
-                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
+                int i = (int)Math.round( model.getPrice() * model.Quantity);
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs),i ));
 
             } else if (model.getPackageBundleItemType() == BUNDLE_ITEM_TYPE_CASHBACK) {
                 holder.name.setText(model.Name);
                 holder.therapist.setVisibility(View.GONE);
                 holder.description.setText(String.format("Quantity: %d", model.Quantity));
-                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
+                int i = (int)Math.round(  model.getPrice() * model.Quantity);
+                holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), i));
             } else {
                 holder.therapist.setVisibility(View.GONE);
             }
@@ -135,7 +138,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.name.setText(model.Name);
             holder.therapist.setVisibility(View.GONE);
             holder.description.setText(String.format("Quantity: %d", model.Quantity));
-            holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), model.getPrice() * model.Quantity));
+            int i = (int)Math.round( model.getPrice() * model.Quantity);
+            holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), i));
 
             holder.deliveryInformation.setVisibility(View.GONE);
             holder.deliveryPeriod.setVisibility(View.GONE);

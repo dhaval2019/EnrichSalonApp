@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.GenericCartModel;
+import com.enrich.salonapp.util.Constants;
+import com.enrich.salonapp.util.EnrichUtils;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class BookingSummaryItemAdapter extends RecyclerView.Adapter<BookingSumma
         this.context = context;
         this.list = list;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override
@@ -42,7 +47,15 @@ public class BookingSummaryItemAdapter extends RecyclerView.Adapter<BookingSumma
     public void onBindViewHolder(BookingSummaryViewHolder holder, int position) {
         GenericCartModel model = list.get(position);
         holder.item.setText(String.format("%s", model.Name.trim()));
-        holder.price.setText(String.format("%s %d", context.getResources().getString(R.string.Rs), (int) model.Price));
+       /* if (type.equalsIgnoreCase("service")) {
+            int i = (int)Math.round(model.getPrice() );
+            holder.price.setText(String.format("%s %s", context.getResources().getString(R.string.Rs), i));
+        }else
+         {*/
+             holder.price.setText(context.getResources().getString(R.string.Rs)+ (int) Math.round((model.getPrice())*(model.getQuantity())));
+     //   }
+
+
     }
 
     class BookingSummaryViewHolder extends RecyclerView.ViewHolder {

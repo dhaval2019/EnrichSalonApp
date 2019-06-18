@@ -1,6 +1,7 @@
 package com.enrich.salonapp.ui.presenters;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.DataSource;
@@ -72,6 +73,7 @@ public class BookingSummaryPresenter extends BasePresenter<BookingSummaryContrac
                 if (view != null) {
                     view.orderCreated(model);
 //                    view.setProgressBar(false);
+                    Log.e("dhaval",model.getOrder()+"");
                 }
             }
 

@@ -160,7 +160,7 @@ public class RescheduleActivity extends BaseActivity {
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) application.getTotalPrice());
+            serviceTotalPrice.setText(getResources().getString(R.string.Rs) + " " +  (int) Math.round( application.getTotalPrice()));
             serviceTotalItems.setText("" + application.getCartItems().size());
         }
     }

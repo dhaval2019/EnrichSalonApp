@@ -179,7 +179,8 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageCartContainer.setVisibility(View.GONE);
         } else {
             packageCartContainer.setVisibility(View.VISIBLE);
-            packageTotalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), application.getTotalPrice()));
+            int i = (int)Math.round( application.getTotalPrice());
+            packageTotalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), i));
             packageTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
     }
@@ -216,8 +217,8 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
 
             packageDetailName.setText(packageModel.PackageTitle);
             packageDetailDescription.setText(packageModel.PackageDescription);
-            packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) packageModel.StartingPrice));
-            Log.e("dhaval",packageModel.PackageImageWideURL);
+            packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int)Math.round( packageModel.StartingPrice)));
+           // Log.e("dhaval",packageModel.PackageImageWideURL);
             Picasso.with(this).load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
 
             ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);

@@ -42,7 +42,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletView
         WalletModel model = list.get(position);
 
         holder.walletName.setText(model.Walletfor);
-        holder.walletAmount.setText(context.getResources().getString(R.string.rs_symbol) + " " + model.Amount);
+        holder.walletAmount.setText(context.getResources().getString(R.string.rs_symbol) + " " + (int)Math.round(model.Amount));
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");

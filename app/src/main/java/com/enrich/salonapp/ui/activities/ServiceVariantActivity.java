@@ -188,7 +188,7 @@ public class ServiceVariantActivity extends BaseActivity implements ServiceVaria
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) application.getTotalPrice()));
+            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs),  (int) Math.round( application.getTotalPrice())));
             serviceTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
     }

@@ -85,9 +85,9 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
-    public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+//   public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
 //    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
-//    public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
+  public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
 
     private static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
@@ -724,14 +724,18 @@ public class RemoteDataSource extends DataSource {
         call.enqueue(new Callback<ProductResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<ProductResponseModel> call, @NonNull Response<ProductResponseModel> response) {
-                if (response.isSuccessful())
+                if (response.isSuccessful()) {
+                    Log.e("enrich",response.toString());
                     callback.onSuccess(response.body());
+                }
+
             }
 
             @Override
             public void onFailure(@NonNull Call<ProductResponseModel> call, @NonNull Throwable t) {
                 Crashlytics.logException(t);
                 EnrichUtils.log(t.getLocalizedMessage());
+                Log.e("enrich",t.getLocalizedMessage());
                 callback.onFailure(t);
             }
         });
@@ -849,8 +853,10 @@ public class RemoteDataSource extends DataSource {
         call.enqueue(new Callback<SubCategoryResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<SubCategoryResponseModel> call, @NonNull Response<SubCategoryResponseModel> response) {
-                if (response.isSuccessful())
+                if (response.isSuccessful()) {
+
                     callback.onSuccess(response.body());
+                }
                 else
                     callback.onFailure(new Throwable());
             }

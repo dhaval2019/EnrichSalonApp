@@ -113,7 +113,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.appointmentStore.setText(model.Center.Name);
         holder.appointmentTherapist.setText("Stylist: " + model.AppointmentServices.get(0).RequestedTherapist.FullName);
 
-        holder.appointmentPrice.setText(activity.getResources().getString(R.string.Rs) + " " + list.get(position).Price._final);
+        holder.appointmentPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int)Math.round(list.get(position).Price._final));
 
         if (isCurrent) {
             holder.appointmentCancel.setVisibility(View.VISIBLE);

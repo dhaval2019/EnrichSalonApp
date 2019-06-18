@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,7 @@ public class SampleHomeParentAndNormalServiceAdapter extends RecyclerView.Adapte
                 model.therapist = null;
             }
 
-            normalServiceViewHolder.mainPrice.setText(" " + (int) model.price.sales);
+            normalServiceViewHolder.mainPrice.setText(" " + (int)Math.round( model.price.sales));
 
             if (model.therapist != null) {
                 normalServiceViewHolder.serviceTherapistName.setVisibility(View.VISIBLE);

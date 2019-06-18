@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,15 +197,15 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
             if (EnrichUtils.getUserData(activity) != null) {
                 if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                    childHolder.mainPrice.setText(String.format("%d", (int) model.price.membershipPrice));
+                    childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price.membershipPrice)));
                     childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
-                    childHolder.strikePrice.setText(String.format("%d", (int) model.price._final));
+                    childHolder.strikePrice.setText(String.format("%d", (int) Math.round(model.price._final)));
                 } else {
-                    childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                    childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price._final)));
                     childHolder.strikePriceContainer.setVisibility(View.GONE);
                 }
             } else {
-                childHolder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price._final)));
                 childHolder.strikePriceContainer.setVisibility(View.GONE);
             }
 

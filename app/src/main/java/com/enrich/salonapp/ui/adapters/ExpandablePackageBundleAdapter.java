@@ -68,7 +68,7 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         parentViewHolder.packageBundleSubTitle.setText(model.SubTitle);
 
         double tempValue = Double.valueOf(model.getPrice());
-        parentViewHolder.packageBundlePrice.setText("Price: " + activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
+        parentViewHolder.packageBundlePrice.setText("Price: " + activity.getResources().getString(R.string.Rs) + " " + (int)Math.round( tempValue));
 
         parentViewHolder.viewServicesButton.setText("View Details");
         parentViewHolder.packageBundleCount.setText("" + application.getItemQuantity(model));
@@ -133,7 +133,7 @@ public class ExpandablePackageBundleAdapter extends ExpandableRecyclerAdapter<Pa
         childViewHolder.packageBundleChildName.setText(child.getName());
 
         double tempValue = Double.valueOf(child.getPrice());
-        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int) tempValue);
+        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int)Math.round( tempValue));
     }
 
     class PackageBundleParentViewHolder extends ParentViewHolder<PackageBundle, BaseChildModel> {

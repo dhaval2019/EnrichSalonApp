@@ -97,15 +97,15 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
 
         if (EnrichUtils.getUserData(activity) != null) {
             if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
-                holder.mainPrice.setText(String.format("%d", (int) model.price.membershipPrice));
+                holder.mainPrice.setText(String.format("%d", (int)Math.round( model.price.membershipPrice)));
                 holder.strikePriceContainer.setVisibility(View.VISIBLE);
-                holder.strikePrice.setText(String.format("%d", (int) model.price._final));
+                holder.strikePrice.setText(String.format("%d", (int)Math.round( model.price._final)));
             } else {
-                holder.mainPrice.setText(String.format("%d", (int) model.price._final));
+                holder.mainPrice.setText(String.format("%d", (int)Math.round( model.price._final)));
                 holder.strikePriceContainer.setVisibility(View.GONE);
             }
         } else {
-            holder.mainPrice.setText(String.format("%d", (int) model.price._final));
+            holder.mainPrice.setText(String.format("%d",(int)Math.round( model.price._final)));
             holder.strikePriceContainer.setVisibility(View.GONE);
         }
         holder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {

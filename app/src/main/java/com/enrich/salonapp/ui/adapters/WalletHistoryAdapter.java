@@ -45,7 +45,7 @@ public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdap
 
         holder.orderCenter.setText(model.Center.Name);
         holder.orderName.setText(model.OrderTitle);
-        holder.walletAmount.setText(context.getResources().getString(R.string.rs_symbol) + " " + model.AppliedAmount);
+        holder.walletAmount.setText(context.getResources().getString(R.string.rs_symbol) + " " + (int)Math.round(model.AppliedAmount));
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");

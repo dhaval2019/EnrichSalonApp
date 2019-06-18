@@ -223,7 +223,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
             cartNext.setBackground(getResources().getDrawable(R.drawable.grey_gradient_curve_bg));
         } else {
             productModel.setQuantity(application.getItemQuantity(productModel));
-            cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + application.getTotalPrice());
+            cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " +  (int) Math.round(application.getTotalPrice()));
             cartTotalItems.setVisibility(View.VISIBLE);
             cartTotalItems.setText("" + application.getCartItems().size());
             productCount.setText("" + application.getItemQuantity(productModel));
@@ -249,8 +249,8 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 
             productName.setText(productModel.ProductTitle);
             productDescription.setText(productModel.ProductDescription);
-            productOldPrice.setText(getResources().getString(R.string.rs_symbol) + " " + (int) productModel.OriginalPrice);
-            productPrice.setText(getResources().getString(R.string.rs_symbol) + " " + (int) productModel.ProductAmount);
+            productOldPrice.setText(getResources().getString(R.string.rs_symbol) + " " +  (int) Math.round( productModel.OriginalPrice));
+            productPrice.setText(getResources().getString(R.string.rs_symbol) + " " +  (int) Math.round( productModel.ProductAmount));
             productSavings.setText("");
 
             Picasso.with(this).load(productModel.ImageURL).into(productImage);

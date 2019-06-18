@@ -59,7 +59,7 @@ public class ExpandableMyPackageBundleAdapter extends ExpandableRecyclerAdapter<
         final MyPackageBundleModel model = list.get(parentPosition);
 
         parentViewHolder.packageBundleName.setText(model.Name);
-        parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + model.Price);
+        parentViewHolder.packageBundlePrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int)Math.round(model.Price));
 
         if (!model.PackageBundleService.isEmpty()) {
             parentViewHolder.viewServicesButton.setText("View Services");
@@ -73,7 +73,7 @@ public class ExpandableMyPackageBundleAdapter extends ExpandableRecyclerAdapter<
     @Override
     public void onBindChildViewHolder(@NonNull ExpandableMyPackageBundleAdapter.MyPackageBundleChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull BaseChildModel child) {
         childViewHolder.packageBundleChildName.setText(child.getName());
-        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " + child.getPrice());
+        childViewHolder.packageBundleChildPrice.setText(activity.getResources().getString(R.string.Rs) + " " +(int)Math.round(Double.valueOf( child.getPrice())));
     }
 
     class MyPackageBundleParentViewHolder extends ParentViewHolder<PackageBundle, BaseChildModel> {

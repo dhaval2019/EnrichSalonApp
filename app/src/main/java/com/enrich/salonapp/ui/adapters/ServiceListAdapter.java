@@ -109,7 +109,7 @@ public class ServiceListAdapter extends ExpandableRecyclerAdapter<ParentServiceV
 
         childHolder.serviceName.setText(model.name);
         childHolder.serviceDescription.setText(model.description);
-        childHolder.mainPrice.setText(" " + model.price.sales);
+        childHolder.mainPrice.setText(" " +(int)Math.round( model.price.sales));
 
         childHolder.serviceCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override

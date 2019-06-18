@@ -58,8 +58,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.productTitle.setText(model.ProductTitle);
 
         DecimalFormat format = new DecimalFormat("#,###.##");
-        holder.productSubTitle.setText(String.format("%s %s", context.getString(R.string.rs_symbol), format.format(model.ProductAmount)));
-//        holder.productSubTitle.setText(model.ProductDescription);
+//        holder.productSubTitle.setText(String.format("%s %s", context.getString(R.string.rs_symbol), format.format(model.ProductAmount)));
+        holder.productSubTitle.setText((int)Math.round(Double.valueOf(model.ProductAmount))+"");
 
         Picasso.with(context).load(model.ImageURL).placeholder(R.drawable.placeholder).into(holder.productImageSmall);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -73,7 +73,7 @@ public class RescheduleServiceListAdapter extends RecyclerView.Adapter implement
         final ServiceViewModel serviceViewModel = serviceList.get(position);
 
         rescheduleServiceViewHolder.rescheduleServiceName.setText(serviceViewModel.name);
-        rescheduleServiceViewHolder.rescheduleServiceRate.setText(activity.getResources().getString(R.string.rs_symbol) + " " + serviceViewModel.price._final);
+        rescheduleServiceViewHolder.rescheduleServiceRate.setText(activity.getResources().getString(R.string.rs_symbol) + " " + (int)Math.round(serviceViewModel.price._final));
         rescheduleServiceViewHolder.rescheduleServiceTherapist.setText(serviceViewModel.therapist.FirstName + " " + serviceViewModel.therapist.LastName);
 
         if (serviceViewModel.IsAdded || application.hasThisItem(serviceViewModel)) { //cartHostActivity.hasThisItem(model.getId())
