@@ -209,7 +209,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 bookingSummaryPresenter.reserveSlot(this, reserveSlotModel);
             }
         } else if (application.cartHasPackages()) {
-            makePaymentOfflineBtn.setVisibility(View.GONE);
+            makePaymentOfflineBtn.setVisibility(View.VISIBLE);
 
             CreateOrderRequestModel createOrderRequestModel = new CreateOrderRequestModel();
             createOrderRequestModel.setApplyCredits(false);
