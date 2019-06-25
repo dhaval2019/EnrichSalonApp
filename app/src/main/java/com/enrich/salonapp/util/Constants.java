@@ -5,7 +5,7 @@ public class Constants {
     public static String LOG_TAG = "EnrichSalonApp";
 
     public static int PLATFORM_ANDROID = 2;
-
+    public static String AREA ="area";
     public static String BLACK_FONT = "Montserrat-Black.otf";
     public static String BOLD_FONT = "Montserrat-Bold.ttf";
     public static String EXTRA_BOLD_FONT = "Montserrat-ExtraBold.otf";
