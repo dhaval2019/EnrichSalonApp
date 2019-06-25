@@ -963,7 +963,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("salonid", EnrichUtils.getHomeStore(this).Id)
                 .putValue("salon_name", EnrichUtils.getHomeStore(this).Name)
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
-                .putValue("area", "")
+                .putValue("area",  EnrichUtils.getHomeStore(this).Area)
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
                 .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
@@ -989,7 +989,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             properties.putValue("salonid", EnrichUtils.getHomeStore(this).Id);
             properties.putValue("salon_name", EnrichUtils.getHomeStore(this).Name);
             properties.putValue("location", EnrichUtils.getHomeStore(this).Address);
-            properties.putValue("area", EnrichUtils.getHomeStore(this).City);
+            properties.putValue("area", EnrichUtils.getHomeStore(this).Area);//Area instead of city by dhaval shah24/6/19
             properties.putValue("city", EnrichUtils.getHomeStore(this).City);
             properties.putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name);
             properties.putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode);
@@ -1027,7 +1027,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("salonid", EnrichUtils.getHomeStore(this).Id)
                 .putValue("salon_name", EnrichUtils.getHomeStore(this).Name)
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
-                .putValue("area", "")
+                .putValue("area", EnrichUtils.getHomeStore(this).Area)//area instead of empty string by dhaval shah24/6/19
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
                 .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
@@ -1059,7 +1059,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("salonid", EnrichUtils.getHomeStore(this).Id)
                 .putValue("salon_name", EnrichUtils.getHomeStore(this).Name)
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
-                .putValue("area", "")
+                .putValue("area", EnrichUtils.getHomeStore(this).Area)//area instead of empty string by dhaval shah24/6/19
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
                 .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)

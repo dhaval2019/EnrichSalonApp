@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CenterDetailModel implements Parcelable {
-
+    public String Area;
     public String Id;
     public String Name;
     public String Address;
@@ -24,6 +24,7 @@ public class CenterDetailModel implements Parcelable {
     }
 
     protected CenterDetailModel(Parcel in) {
+        Area =in.readString();
         Id = in.readString();
         Name = in.readString();
         Address = in.readString();
@@ -38,10 +39,12 @@ public class CenterDetailModel implements Parcelable {
         State = in.readParcelable(StateModel.class.getClassLoader());
         City = in.readString();
         ZipCode = in.readString();
+
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Area);
         dest.writeString(Id);
         dest.writeString(Name);
         dest.writeString(Address);
@@ -56,6 +59,7 @@ public class CenterDetailModel implements Parcelable {
         dest.writeParcelable(State, flags);
         dest.writeString(City);
         dest.writeString(ZipCode);
+
     }
 
     @Override

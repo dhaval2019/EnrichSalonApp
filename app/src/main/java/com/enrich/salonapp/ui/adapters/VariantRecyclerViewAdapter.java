@@ -259,7 +259,7 @@ public class VariantRecyclerViewAdapter extends RecyclerView.Adapter<VariantRecy
                     .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
                     .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
                     .putValue("location", EnrichUtils.getHomeStore(activity).Address)
-                    .putValue("area", "")
+                    .putValue("area", EnrichUtils.getHomeStore(activity).Area)//changed by dhaval from empty string to area 25/6/19
                     .putValue("city", EnrichUtils.getHomeStore(activity).City)
                     .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
                     .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode));

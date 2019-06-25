@@ -87,22 +87,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
     boolean isHomeSelected;
 
-    /**
-     * Primary constructor. Sets up {@link #mParentList} and {@link #mFlatItemList}.
-     * <p>
-     * Any changes to {@link #mParentList} should be made on the original instance, and notified via
-     * {@link #notifyParentInserted(int)}
-     * {@link #notifyParentRemoved(int)}
-     * {@link #notifyParentChanged(int)}
-     * {@link #notifyParentRangeInserted(int, int)}
-     * {@link #notifyChildInserted(int, int)}
-     * {@link #notifyChildRemoved(int, int)}
-     * {@link #notifyChildChanged(int, int)}
-     * methods and not the notify methods of RecyclerView.Adapter.
-     *
-     * @param parentList List of all parents to be displayed in the RecyclerView that this
-     *                   adapter is linked to
-     */
+
     public NewServiceListAdapter(Activity activity, @NonNull ArrayList<SubCategoryModel> parentList, String gender, boolean isHomeSelected, CenterDetailModel centerDetailModel) {
         super(parentList);
         this.activity = activity;
@@ -378,6 +363,8 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
         int toggleResponse = application.toggleItem(filteredList.get(parentPosition).ChildServices.get(childPosition));
 
+
+
         if (EnrichUtils.getUserData(activity) != null) {
             // SEGMENT
             Analytics.with(activity).track(Constants.SEGMENT_SELECT_SERVICE, new Properties()
@@ -390,7 +377,7 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                     .putValue("salonid", EnrichUtils.getHomeStore(activity).Id)
                     .putValue("salon_name", EnrichUtils.getHomeStore(activity).Name)
                     .putValue("location", EnrichUtils.getHomeStore(activity).Address)
-                    .putValue("area", "")
+                    .putValue("area", EnrichUtils.getHomeStore(activity).Area)
                     .putValue("city", EnrichUtils.getHomeStore(activity).City)
                     .putValue("state", EnrichUtils.getHomeStore(activity).State == null ? "" : EnrichUtils.getHomeStore(activity).State.Name)
                     .putValue("zipcode", EnrichUtils.getHomeStore(activity).ZipCode));

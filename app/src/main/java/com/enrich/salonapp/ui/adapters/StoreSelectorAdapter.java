@@ -62,6 +62,7 @@ public class StoreSelectorAdapter extends RecyclerView.Adapter<StoreSelectorAdap
             @Override
             public void onClick(View view) {
                 CenterDetailModel centerDetailModel = new CenterDetailModel();
+                centerDetailModel.Area = model.Address2;
                 centerDetailModel.Id = model.Id;
                 centerDetailModel.Phone = model.Phone1.Number;
                 centerDetailModel.Address = model.Address1 + " " + model.Address2;
