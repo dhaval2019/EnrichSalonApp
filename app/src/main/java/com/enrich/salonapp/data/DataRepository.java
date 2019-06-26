@@ -290,7 +290,7 @@ public class DataRepository {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    onFailure(t);
+                    callBack.onFailure(t);
                 }
 
                 @Override
