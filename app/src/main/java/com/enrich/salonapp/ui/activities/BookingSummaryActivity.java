@@ -287,8 +287,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             @Override
             public void onClick(View v) {
                 isOnlinePayment = false;
-                if (makePaymentOfflineBtn.getText().toString().equalsIgnoreCase(getString(R.string.txt_confirm_order)))
-                {
+                if (makePaymentOfflineBtn.getText().toString().equalsIgnoreCase(getString(R.string.txt_confirm_order))) {
                     if (application.cartHasServices()) {
                         confirmReservation();
                     } else if (application.cartHasPackages()) {
@@ -300,8 +299,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                         confirmReservationResponseModel.IsConfirmed = true;
                         reservationConfirmed(confirmReservationResponseModel);
                     }
-                }else
-                {
+                } else {
                     showCashDialog();
                 }
 
@@ -355,6 +353,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             createOrderResponseModel = model;
             if (application.cartHasServices()) {
                 bookingSummaryPresenter.getInvoice(this, RemoteDataSource.HOST + RemoteDataSource.GET_INVOICE + reserveSlotResponseModel.InvoiceId);
+                Log.e("invoiceid", reserveSlotResponseModel.InvoiceId + "");
                 setData(model.getPaymentSummary());
             } else if (application.cartHasProducts()) {
 
@@ -542,6 +541,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
         bookingSummaryPresenter.confirmReservation(BookingSummaryActivity.this, confirmReservationRequestModel);
     }
+
     private void setData(PaymentSummaryModel model) {//redefiend in integer by dhaval shah
         makePaymentOfflineBtn.setEnabled(true);
         makePaymentOnlineBtn.setEnabled(true);
@@ -549,24 +549,24 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         if (application.cartHasServices()) {
             serviceInfoContainer.setVisibility(View.VISIBLE);
             productInfoContainer.setVisibility(View.GONE);
-            int i1 =(int) Math.round(model.getActualPrice());
+            int i1 = (int) Math.round(model.getActualPrice());
 //            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(model.getTotal())));
             grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i1));
-            int i2=(int)Math.round(model.getTotal());
+            int i2 = (int) Math.round(model.getTotal());
             payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i2));
-            int i3=(int)Math.round(model.getDiscount());
+            int i3 = (int) Math.round(model.getDiscount());
             discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i3));
-            int i4=(int)Math.round(model.getTax());
+            int i4 = (int) Math.round(model.getTax());
             taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i4));
-            int i5=(int)Math.round(model.getCashBackApplied());
+            int i5 = (int) Math.round(model.getCashBackApplied());
             cashbackAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i5));
 
         } else if (application.cartHasPackages()) {
-            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( application.getTotalPrice())));
-            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getActualPrice())));
-            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTotal())));
-            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getDiscount())));
-            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(model.getTax())));
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTax())));
 
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
@@ -574,11 +574,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             serviceInfoContainer.setVisibility(View.GONE);
             productInfoContainer.setVisibility(View.GONE);
         } else if (application.cartHasProducts()) {
-            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int)Math.round(application.getTotalPrice())));
-            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getActualPrice())));
-            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTotal())));
-            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round(model.getDiscount())));
-            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),(int)Math.round( model.getTax())));
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(application.getTotalPrice())));
+            grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getActualPrice())));
+            payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTotal())));
+            discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getDiscount())));
+            taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTax())));
 
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
@@ -589,7 +589,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             deliveryInformation.setText(application.getDeliveryInformation());
             makePaymentOfflineBtn.setText("PAY CASH");
         }
-        if (model.getTotal()==0.0) {
+        if (model.getTotal() == 0.0) {
             makePaymentOnlineBtn.setVisibility(View.GONE);
             makePaymentOfflineBtn.setText(getString(R.string.txt_confirm_order));
         } else {
@@ -657,7 +657,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             for (int i = 0; i < model.AppointmentServices.size(); i++) {
                 GenericCartModel genericCartModel = new GenericCartModel();
                 genericCartModel.Name = model.AppointmentServices.get(i).Service.name;
-               // genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
+                // genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
                 genericCartModel.Price = model.AppointmentServices.get(i).Service.price._final;
 
 //                if (EnrichUtils.getUserData(BookingSummaryActivity.this).IsMember == Constants.IS_MEMBER) {
@@ -674,9 +674,9 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             adapter = new BookingSummaryItemAdapter(this, application.getCartItems());//changed by dhaval since data was not correct in genericcartlist
             bookingSummaryItemRecyclerView.setAdapter(adapter);
             bookingSummaryItemRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-          /*  totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));*/
-           /* totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int) Math.round(getTotalPrice(genericCartList))));*/
-            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int)Math.round(application.getTotalPrice())));//changed by dhaval
+            /*  totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(getTotalPrice(genericCartList))));*/
+            /* totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int) Math.round(getTotalPrice(genericCartList))));*/
+            totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(application.getTotalPrice())));//changed by dhaval
         }
 
         stylistLabel.setText(String.format("%s", model.AppointmentServices.get(0).RequestedTherapist.FullName));
@@ -732,7 +732,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 //        if (application.cartHasServices()) {
 //            cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), new DecimalFormat(".##").format(invoiceModel.Price._final)));
 //        } else {
-        cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs),  (int) Math.round(createOrderResponseModel.getPaymentSummary().getTotal())));
+        cashAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(createOrderResponseModel.getPaymentSummary().getTotal())));
 //        }
 
         cashPaymentProceedButton.setOnClickListener(new View.OnClickListener() {
@@ -947,14 +947,21 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
     private void logSegmentPayment(String paymentType, String cardType) {
         List<Properties> propertiesArrayList = new ArrayList<>();
-
+        String st_amount = null;
         for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
+            if (EnrichUtils.getUserData(this).IsMember == 1) {
+                st_amount = application.getCartItems().get(i).MembershipPrice + "";
+            } else {
+                st_amount = application.getCartItems().get(i).getPrice() + "";
+            }
             Properties properties = new Properties();
             properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-            properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+          //  properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("category", application.getCartItems().get(i).CategoryName);
             properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
-
+            properties.putValue("amount_st", st_amount);//changed by dhaval shah 28/6/19
             propertiesArrayList.add(properties);
+
         }
 
         Properties properties = new Properties()
@@ -963,11 +970,12 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("salonid", EnrichUtils.getHomeStore(this).Id)
                 .putValue("salon_name", EnrichUtils.getHomeStore(this).Name)
                 .putValue("location", EnrichUtils.getHomeStore(this).Address)
-                .putValue("area",  EnrichUtils.getHomeStore(this).Area)
+                .putValue("area", EnrichUtils.getHomeStore(this).Area)
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
                 .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
-                .putValue("amount", invoiceModel.Price._final)
+                // .putValue("amount", invoiceModel.Price._final)
+                .putValue("amount", (int) Math.round(application.getTotalPrice()) + "")//changed by dhaval shah 28/6/19
                 .putValue("paymentType", paymentType)
                 .putValue("cardType", cardType)
                 .putValue("payAtSalon", paymentType.equalsIgnoreCase("Cash"))
@@ -983,9 +991,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
             Properties properties = new Properties();
             properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-            properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            //properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah28/6/19
             properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
-            properties.putValue("amount", "" + invoiceModel.Price._final);
+            //properties.putValue("amount", "" + invoiceModel.Price._final);
+            properties.putValue("amount", "" + (int) Math.round(application.getTotalPrice()) + "");//changed by dhaval shah 28/6/19
             properties.putValue("salonid", EnrichUtils.getHomeStore(this).Id);
             properties.putValue("salon_name", EnrichUtils.getHomeStore(this).Name);
             properties.putValue("location", EnrichUtils.getHomeStore(this).Address);
@@ -1014,10 +1024,12 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
             Properties properties = new Properties();
             properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-            properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            // properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah 28/6/19
+            //application.getCartItems().get(i).CategoryName
             properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
-            properties.putValue("amount", "" + invoiceModel.Price._final);
-
+            // properties.putValue("amount", "" + invoiceModel.Price._final);
+            properties.putValue("amount", "" + (int) Math.round(application.getTotalPrice()) + "");//changed by dhaval shah 28/6/19
             propertiesArrayList.add(properties);
         }
 
@@ -1046,10 +1058,11 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
             Properties properties = new Properties();
             properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-            properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            //properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah 28/6/19
             properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
-            properties.putValue("amount", "" + invoiceModel.Price._final);
-
+            // properties.putValue("amount", "" + invoiceModel.Price._final);
+            properties.putValue("amount", "" + (int) Math.round(application.getTotalPrice()));//changed by dhaval shah 28/6/19
             propertiesArrayList.add(properties);
         }
 
@@ -1063,7 +1076,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 .putValue("city", EnrichUtils.getHomeStore(this).City)
                 .putValue("state", EnrichUtils.getHomeStore(this).State == null ? "" : EnrichUtils.getHomeStore(this).State.Name)
                 .putValue("zipcode", EnrichUtils.getHomeStore(this).ZipCode)
-                .putValue("total_amount", invoiceModel.Price._final)
+                //  .putValue("total_amount", invoiceModel.Price._final)
+                .putValue("total_amount", "" + (int) Math.round(application.getTotalPrice()))//changed by dhaval shah 28/6/19
                 .putValue("status", status)
                 .putValue("services", propertiesArrayList);
 
@@ -1077,7 +1091,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             Properties properties = new Properties();
 
             properties.putValue("product_name", application.getCartItems().get(i).Name);
-            properties.putValue("description", "");
+            properties.putValue("description", application.getCartItems().get(i).getDescription());
             properties.putValue("quantity", "" + application.getCartItems().get(i).getQuantity());
             properties.putValue("amount", "" + application.getCartItems().get(i).getPrice());
 
