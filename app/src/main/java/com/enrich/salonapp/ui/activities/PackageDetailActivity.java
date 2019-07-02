@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.Package.PackageBundle;
 import com.enrich.salonapp.data.model.Package.PackageModel;
 import com.enrich.salonapp.data.model.PackageDetailsResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductModel;
@@ -41,9 +43,11 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -108,7 +112,10 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
     EnrichApplication application;
     Tracker mTracker;
 
-
+    public static List<PackageBundle> packageBundleSelected;//by dhaval shah for cart activity 2/7/19
+    public static String imageUrl;//by dhaval shah for cart activity 2/7/19
+    public static boolean isTimerEnabled;//by dhaval shah for cart activity 2/7/19
+    public static String packageValidityDate;//by dhaval shah for cart activity 2/7/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +186,7 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             packageCartContainer.setVisibility(View.GONE);
         } else {
             packageCartContainer.setVisibility(View.VISIBLE);
-            int i = (int)Math.round( application.getTotalPrice());
+            int i = (int) Math.round(application.getTotalPrice());
             packageTotalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), i));
             packageTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
@@ -194,11 +201,12 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
 
             PackageModel packageModel = model.Package;
             logFirebaseViewItem(packageModel);
-
+            isTimerEnabled = packageModel.IsTimerEnable;//by dhaval shah for cart activity 2/7/ 19
             if (packageModel.IsTimerEnable) {
                 packageCountDownContainer.setVisibility(View.VISIBLE);
 
                 try {
+                    packageValidityDate= packageModel.PackageValidityDate;//by dhaval shah for cart activity 2/7/19
                     String dateStr = packageModel.PackageValidityDate.substring(0, 10) + " " + packageModel.PackageValidityDate.substring(11);
                     SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     Date endDate = stringToDate.parse(dateStr);
@@ -214,13 +222,13 @@ public class PackageDetailActivity extends BaseActivity implements PackageDetail
             } else {
                 packageCountDownContainer.setVisibility(View.GONE);
             }
-
+            packageBundleSelected = packageModel.packageBundle;//by dhaval shah for cart activity 2/7/19
             packageDetailName.setText(packageModel.PackageTitle);
             packageDetailDescription.setText(packageModel.PackageDescription);
-            packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int)Math.round( packageModel.StartingPrice)));
-           // Log.e("dhaval",packageModel.PackageImageWideURL);
+            packageDetailPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) Math.round(packageModel.StartingPrice)));
+            // Log.e("dhaval",packageModel.PackageImageWideURL);
             Picasso.with(this).load(packageModel.PackageImageWideURL).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
-
+            imageUrl = packageModel.PackageImageWideURL;//by dhaval shah for cart activity 2/7/ 19
             ExpandablePackageBundleAdapter packageBundleAdapter = new ExpandablePackageBundleAdapter(this, packageModel.packageBundle);
             packageBundleRecyclerView.setAdapter(packageBundleAdapter);
             packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
