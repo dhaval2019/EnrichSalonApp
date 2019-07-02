@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -105,6 +106,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) { // FOR PACKAGES
             holder.deliveryInformation.setVisibility(View.VISIBLE);
             holder.deliveryPeriod.setVisibility(View.VISIBLE);
+            holder.packageRatingBar.setRating((float) PackageDetailActivity.packageBundleSelected.get(position).BundleRatings);
 
             holder.deliveryInformation.setText(model.DeliveryInformation);
             holder.deliveryPeriod.setText(model.DeliveryPeriod);
@@ -166,6 +168,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class CartViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.package_rating_bar)
+        RatingBar packageRatingBar;
 
         @BindView(R.id.cart_item_name)
         TextView name;
