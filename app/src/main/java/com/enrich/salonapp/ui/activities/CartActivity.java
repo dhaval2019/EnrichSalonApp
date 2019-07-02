@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,11 +28,16 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.iwgang.countdownview.CountdownView;
 
 import static com.enrich.salonapp.ui.activities.AddAddressActivity.ADD_ADDRESS;
 import static com.enrich.salonapp.ui.activities.AddressSelectorActivity.SELECT_ADDRESS;
@@ -66,6 +73,15 @@ public class CartActivity extends BaseActivity {
 
     ReserveSlotRequestModel reserveSlotModel;
 
+    @BindView(R.id.package_count_down_container)
+    LinearLayout packageCountDownContainer;//by dhaval shah 2/7/19
+
+    @BindView(R.id.package_end_day_count_down)
+    CountdownView packageEndDayCountDown;      //by dhaval shah 2/7/19
+
+
+    @BindView(R.id.package_detail_image)
+    ImageView packageDetailImage;              //by dhaval shah 2/7/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +134,26 @@ public class CartActivity extends BaseActivity {
             cartRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             cartRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         }
+        Picasso.with(this).load(PackageDetailActivity.imageUrl).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
+        if (PackageDetailActivity.isTimerEnabled) {
+            packageCountDownContainer.setVisibility(View.VISIBLE);
 
+            try {
+                String dateStr = PackageDetailActivity.packageValidityDate.substring(0, 10) + " " +PackageDetailActivity.packageValidityDate.substring(11);
+                SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date endDate = stringToDate.parse(dateStr);
+                Date startDate = new Date();
+
+                long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
+
+                packageEndDayCountDown.start(numberOfDaysInMilliseconds);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                packageEndDayCountDown.setVisibility(View.GONE);
+            }
+        } else {
+            packageCountDownContainer.setVisibility(View.GONE);
+        }
         cartProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
