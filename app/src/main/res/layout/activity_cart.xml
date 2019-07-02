@@ -38,43 +38,9 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/cart_proceed_container"
-        android:layout_below="@+id/cart_app_bar">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/cart_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="10dp"
-            android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/empty_cart_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/dimen_60dp"
-                android:layout_height="@dimen/dimen_60dp"
-                android:src="@drawable/cart_off"
-                android:tint="@color/grey" />
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:text="Cart seems to be empty"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/dimen_20sp"
-                app:font_type="light" />
-        </LinearLayout>
-    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/cart_proceed_container"
@@ -84,6 +50,7 @@
         android:background="@color/white"
         android:paddingTop="15dp"
         android:paddingBottom="15dp">
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -151,6 +118,7 @@
             </LinearLayout>
         </LinearLayout>
 
+
         <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/cart_proceed"
             android:layout_width="wrap_content"
@@ -167,4 +135,116 @@
             android:textColor="@color/white"
             app:font_type="regular" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@id/cart_proceed_container"
+        android:id="@+id/imageandcounterlayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="@dimen/app_bar_height">
+
+            <ImageView
+                android:id="@+id/package_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/black_gradient_tint" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/package_count_down_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:gravity="center"
+                android:text="OFFER ENDS IN"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:font_type="semi_bold" />
+
+            <cn.iwgang.countdownview.CountdownView
+                android:id="@+id/package_end_day_count_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:padding="@dimen/dimen_5dp"
+                app:isHideTimeBackground="false"
+                app:isShowDay="true"
+                app:isShowHour="true"
+                app:isShowMillisecond="false"
+                app:isShowMinute="true"
+                app:isShowSecond="true"
+                app:isShowTimeBgBorder="true"
+                app:isTimeTextBold="false"
+                app:suffixDay="Days"
+                app:suffixGravity="center"
+                app:suffixHour="Hrs"
+                app:suffixMinute="Min"
+                app:suffixSecond="Sec"
+                app:suffixTextColor="@color/dark_gold"
+                app:suffixTextSize="12sp"
+                app:timeBgBorderColor="@color/grey"
+                app:timeBgBorderRadius="@dimen/dimen_50dp"
+                app:timeBgBorderSize="1dp"
+                app:timeBgRadius="@dimen/dimen_50dp"
+                app:timeBgSize="@dimen/dimen_45dp"
+                app:timeTextColor="#000000"
+                app:timeTextSize="22sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/imageandcounterlayout"
+        android:layout_below="@+id/cart_app_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cart_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/empty_cart_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_60dp"
+                android:layout_height="@dimen/dimen_60dp"
+                android:src="@drawable/cart_off"
+                android:tint="@color/grey" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:text="Cart seems to be empty"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/dimen_20sp"
+                app:font_type="light" />
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>
