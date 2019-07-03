@@ -73,15 +73,8 @@ public class CartActivity extends BaseActivity {
 
     ReserveSlotRequestModel reserveSlotModel;
 
-    @BindView(R.id.package_count_down_container)
-    LinearLayout packageCountDownContainer;//by dhaval shah 2/7/19
-
-    @BindView(R.id.package_end_day_count_down)
-    CountdownView packageEndDayCountDown;      //by dhaval shah 2/7/19
 
 
-    @BindView(R.id.package_detail_image)
-    ImageView packageDetailImage;              //by dhaval shah 2/7/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,26 +127,34 @@ public class CartActivity extends BaseActivity {
             cartRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             cartRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         }
-        Picasso.with(this).load(PackageDetailActivity.imageUrl).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
-        if (PackageDetailActivity.isTimerEnabled) {
-            packageCountDownContainer.setVisibility(View.VISIBLE);
-
-            try {
-                String dateStr = PackageDetailActivity.packageValidityDate.substring(0, 10) + " " +PackageDetailActivity.packageValidityDate.substring(11);
-                SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Date endDate = stringToDate.parse(dateStr);
-                Date startDate = new Date();
-
-                long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
-
-                packageEndDayCountDown.start(numberOfDaysInMilliseconds);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                packageEndDayCountDown.setVisibility(View.GONE);
-            }
+        /*if (doesCartContainServices()) {
+            imageandcounterlayout.setVisibility(View.GONE);
+        } else if (doesCartContainProducts()) {
+            imageandcounterlayout.setVisibility(View.GONE);
         } else {
-            packageCountDownContainer.setVisibility(View.GONE);
-        }
+            imageandcounterlayout.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(PackageDetailActivity.imageUrl).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
+            if (PackageDetailActivity.isTimerEnabled) {
+                packageCountDownContainer.setVisibility(View.VISIBLE);
+
+                try {
+                    String dateStr = PackageDetailActivity.packageValidityDate.substring(0, 10) + " " + PackageDetailActivity.packageValidityDate.substring(11);
+                    SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    Date endDate = stringToDate.parse(dateStr);
+                    Date startDate = new Date();
+
+                    long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
+
+                    packageEndDayCountDown.start(numberOfDaysInMilliseconds);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    packageEndDayCountDown.setVisibility(View.GONE);
+                }
+            } else {
+                packageCountDownContainer.setVisibility(View.GONE);
+            }
+        }*/
+
         cartProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,7 +238,7 @@ public class CartActivity extends BaseActivity {
 
     public void updatePriceAndQuantityView() {
         cartTotalItems.setText("" + application.getCartItems().size());
-        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " +  (int) Math.round(application.getTotalPrice()));
+        cartTotalPrice.setText(getResources().getString(R.string.Rs) + " " + (int) Math.round(application.getTotalPrice()));
     }
 
     private void switchToNextScreen(ReserveSlotRequestModel reserveSlotModel) {
