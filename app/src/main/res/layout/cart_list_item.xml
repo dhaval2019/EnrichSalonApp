@@ -1,97 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="15dp">
+    >
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/cart_item_price_container"
+        android:orientation="vertical"
+        android:padding="15dp">
 
-        android:orientation="vertical">
 
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hair Cut By Master Stylist"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:font_type="regular" />
-
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_therapist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Varun Barve"
-            android:textColor="@color/dark_gold"
-            android:textSize="12sp" />
-
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12th October, 2017 @12:00"
-            android:textColor="@color/grey"
-            android:textSize="12sp" />
-
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_delivery_period"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"
-            android:textSize="12sp"
-            android:visibility="gone" />
-
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_delivery_information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"
-            android:textSize="12sp"
-            android:visibility="gone" />
-        <RatingBar
-            android:id="@+id/package_rating_bar"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:rating="3" />
+            android:layout_toLeftOf="@+id/cart_item_price_container"
 
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hair Cut By Master Stylist"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:font_type="regular" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_therapist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Varun Barve"
+                android:textColor="@color/dark_gold"
+                android:textSize="12sp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12th October, 2017 @12:00"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_delivery_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_delivery_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <RatingBar
+                android:id="@+id/package_rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:rating="3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cart_item_price_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:id="@+id/cart_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Rs. 500"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                app:font_type="semi_bold" />
+
+            <ImageView
+                android:id="@+id/cart_item_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/grey" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/cart_item_price_container"
-        android:layout_width="wrap_content"
+        android:id="@+id/imageandcounterlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <com.enrich.salonapp.ui.views.CustomTextView
-            android:id="@+id/cart_item_price"
-            android:layout_width="wrap_content"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:background="@android:color/darker_gray" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="210dp"
+            android:padding="@dimen/dimen_15dp">
+
+            <ImageView
+                android:id="@+id/package_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/black_gradient_tint" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/package_count_down_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Rs. 500"
-            android:textColor="@color/red"
-            android:textSize="14sp"
-            app:font_type="semi_bold" />
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_15dp">
 
-        <ImageView
-            android:id="@+id/cart_item_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_delete"
-            android:tint="@color/grey" />
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:gravity="center"
+                android:text="OFFER ENDS IN"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:font_type="semi_bold" />
 
+            <cn.iwgang.countdownview.CountdownView
+                android:id="@+id/package_end_day_count_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:padding="@dimen/dimen_5dp"
+                app:isHideTimeBackground="false"
+                app:isShowDay="true"
+                app:isShowHour="true"
+                app:isShowMillisecond="false"
+                app:isShowMinute="true"
+                app:isShowSecond="true"
+                app:isShowTimeBgBorder="true"
+                app:isTimeTextBold="false"
+                app:suffixDay="Days"
+                app:suffixGravity="center"
+                app:suffixHour="Hrs"
+                app:suffixMinute="Min"
+                app:suffixSecond="Sec"
+                app:suffixTextColor="@color/dark_gold"
+                app:suffixTextSize="12sp"
+                app:timeBgBorderColor="@color/grey"
+                app:timeBgBorderRadius="@dimen/dimen_50dp"
+                app:timeBgBorderSize="1dp"
+                app:timeBgRadius="@dimen/dimen_50dp"
+                app:timeBgSize="@dimen/dimen_45dp"
+                app:timeTextColor="#000000"
+                app:timeTextSize="22sp" />
+        </LinearLayout>
     </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>
