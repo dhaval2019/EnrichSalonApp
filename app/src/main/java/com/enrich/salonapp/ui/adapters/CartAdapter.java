@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -64,6 +65,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final GenericCartModel model = list.get(position);
 
         if (model.getCartItemType() == GenericCartModel.CART_TYPE_SERVICES) {
+            holder.imageandcounterlayout.setVisibility(View.GONE);
+            holder.packageRatingBar.setVisibility(View.GONE);
             holder.name.setText(String.format("%s %s x %d", model.SubCategoryName, model.Name.trim(), list.get(position).Quantity));
 
             if (model.getTherapistModel() != null) {
@@ -103,9 +106,37 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.deliveryInformation.setVisibility(View.GONE);
             holder.deliveryPeriod.setVisibility(View.GONE);
 
-        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) { // FOR PACKAGES
+        } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_SUB_PACKAGE) {
+            // FOR PACKAGES
+            if(position==(list.size()-1)) {
+                holder.imageandcounterlayout.setVisibility(View.VISIBLE);
+                Picasso.with(context).load(PackageDetailActivity.imageUrl).placeholder(R.drawable.placeholder_ext).into(holder.packageDetailImage);
+                if (PackageDetailActivity.isTimerEnabled) {
+                    holder.packageCountDownContainer.setVisibility(View.VISIBLE);
+
+                    try {
+                        String dateStr = PackageDetailActivity.packageValidityDate.substring(0, 10) + " " + PackageDetailActivity.packageValidityDate.substring(11);
+                        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        Date endDate = stringToDate.parse(dateStr);
+                        Date startDate = new Date();
+
+                        long numberOfDaysInMilliseconds = (endDate.getTime() - startDate.getTime());
+
+                        holder.packageEndDayCountDown.start(numberOfDaysInMilliseconds);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        holder.packageEndDayCountDown.setVisibility(View.GONE);
+                    }
+                } else {
+                    holder.packageCountDownContainer.setVisibility(View.GONE);
+                }
+            }else
+            {
+                holder.imageandcounterlayout.setVisibility(View.GONE);
+            }
             holder.deliveryInformation.setVisibility(View.VISIBLE);
             holder.deliveryPeriod.setVisibility(View.VISIBLE);
+            holder.packageRatingBar.setVisibility(View.VISIBLE);
             holder.packageRatingBar.setRating((float) PackageDetailActivity.packageBundleSelected.get(position).BundleRatings);
 
             holder.deliveryInformation.setText(model.DeliveryInformation);
@@ -137,6 +168,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder.therapist.setVisibility(View.GONE);
             }
         } else if (model.getCartItemType() == GenericCartModel.CART_TYPE_PRODUCTS) {
+            holder.imageandcounterlayout.setVisibility(View.GONE);
+            holder.packageRatingBar.setVisibility(View.GONE);
             holder.name.setText(model.Name);
             holder.therapist.setVisibility(View.GONE);
             holder.description.setText(String.format("Quantity: %d", model.Quantity));
@@ -147,6 +180,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder.deliveryPeriod.setVisibility(View.GONE);
         } else {
             holder.therapist.setVisibility(View.GONE);
+            holder.packageRatingBar.setVisibility(View.GONE);
         }
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
@@ -168,8 +202,20 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class CartViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.package_count_down_container)
+        LinearLayout packageCountDownContainer;//by dhaval shah 2/7/19
 
-        @BindView(R.id.package_rating_bar)
+        @BindView(R.id.package_end_day_count_down)
+        CountdownView packageEndDayCountDown;      //by dhaval shah 2/7/19
+
+
+        @BindView(R.id.package_detail_image)
+        ImageView packageDetailImage;              //by dhaval shah 2/7/19
+
+        @BindView(R.id.imageandcounterlayout)
+        LinearLayout imageandcounterlayout;        //by dhaval shah 3/7/19
+
+        @BindView(R.id.package_rating_bar)         //by dhaval shah 3/7/19
         RatingBar packageRatingBar;
 
         @BindView(R.id.cart_item_name)
