@@ -19,8 +19,8 @@ android {
         applicationId "com.enrich.salonapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 191
-        versionName '1.8.11'
+        versionCode 192
+        versionName '1.8.12'
         multiDexEnabled true
 //        manifestPlaceholders = [onesignal_app_id               : "a3dafaa6-fdce-4682-85ad-3e5255ae11c5",
         // Project number pulled from dashboard, local value is ignored.
