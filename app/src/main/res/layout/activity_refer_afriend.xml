@@ -1,9 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activities.ReferAFriendActivity">
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.enrich.salonapp.ui.activities.ReferAFriendActivity">
+
+        <LinearLayout
+            android:id="@+id/backlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_35dp"
+            android:layout_marginLeft="@dimen/dimen_35dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/leftarrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:gravity="center"
+                android:text="@string/txt_back"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dimen_35dp"
+            android:layout_marginLeft="@dimen/dimen_35dp"
+            android:layout_marginTop="@dimen/dimen_40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/refer_a_friend_artwork"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dimen_43dp"
+            android:layout_marginLeft="@dimen/dimen_43dp"
+            android:layout_marginTop="@dimen/dimen_175dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/women_announcement_artwork"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvfrnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginStart="@dimen/dimen_35dp"
+            android:layout_marginLeft="@dimen/dimen_35dp"
+            android:layout_marginTop="@dimen/dimen_435dp"
+            android:layout_marginEnd="@dimen/dimen_93dp"
+            android:layout_marginRight="@dimen/dimen_93dp"
+            android:gravity="center_vertical|left"
+            android:paddingRight="@dimen/dimen_93dp"
+            android:text="@string/txt_dummy_frnd"
+            android:textColor="@color/violet_frnd_text"
+            android:textSize="@dimen/dimen_16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/invite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_550dp"
+            android:background="@drawable/rounded_corner_pink_btn"
+            android:paddingLeft="@dimen/dimen_35dp"
+            android:paddingRight="@dimen/dimen_35dp"
+            android:paddingBottom="@dimen/dimen_15dp"
+            android:paddingTop="@dimen/dimen_15dp"
+            android:textColor="@android:color/white"
+            android:text="@string/txt_send_invite"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAllCaps="false"
+            android:textSize="@dimen/dimen_18sp"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
