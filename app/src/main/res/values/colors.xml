@@ -54,7 +54,7 @@
     <color name="blue">#0000FF</color>
     <color name="violet">#7F00FF</color>
     <color name="magenta">#FF00FF</color>
-
+    <color name="violet_frnd_text">#6736c3</color>
     <array name="rainbow">
         <item>@color/bright_pink</item>
         <item>@color/red</item>

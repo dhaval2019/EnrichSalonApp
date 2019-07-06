@@ -43,4 +43,11 @@
     <dimen name="dimen_18sp">18sp</dimen>
     <dimen name="dimen_20sp">20sp</dimen>
     <dimen name="dimen_12sp">12sp</dimen>
+
+    <dimen name="dimen_75dp">75dp</dimen>
+    <dimen name="dimen_43dp">43dp</dimen>
+    <dimen name="dimen_175dp">175dp</dimen>
+    <dimen name="dimen_435dp">435dp</dimen>
+    <dimen name="dimen_93dp">93dp</dimen>
+    <dimen name="dimen_550dp">550dp</dimen>
 </resources>
