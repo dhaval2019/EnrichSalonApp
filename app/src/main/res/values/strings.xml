@@ -128,5 +128,6 @@
     <string name="txt_back">Back</string>
     <string name="txt_dummy_frnd">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat nunc vitae mi sollicitudin finibus. Cras ultricies tempus lectus a facilisis.</string>
     <string name="txt_send_invite">Send Invite</string>
-
+    <string name="txt_select_frnd">Select 3 Friends</string>
+    <string name="txt_continue">Continue</string>
 </resources>
