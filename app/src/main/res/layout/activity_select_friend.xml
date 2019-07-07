@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_horizontal|fill_vertical"
+        android:layout_margin="@dimen/dimen_10dp"
+        card_view:cardCornerRadius="4dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/headinglayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+
+
+                    android:gravity="center_vertical|left"
+                    android:text="@string/txt_select_frnd"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_24sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/redclose" />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/pinkborder"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_1dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:background="@color/bright_pink"
+                android:layout_below="@id/headinglayout"
+                android:layout_marginRight="@dimen/dimen_5dp"
+                android:layout_marginLeft="@dimen/dimen_5dp"/>
+            <Button
+                android:id="@+id/continue_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dimen_40dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:background="@drawable/rounded_corner_pink_btn"
+                android:paddingLeft="@dimen/dimen_35dp"
+                android:paddingRight="@dimen/dimen_35dp"
+                android:paddingBottom="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_15dp"
+                android:textColor="@android:color/white"
+                android:text="@string/txt_continue"
+
+                android:textAllCaps="false"
+                android:textSize="@dimen/dimen_18sp"
+
+
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:layout_below="@id/pinkborder"
+                android:layout_above="@id/continue_button"
+                android:layout_margin="@dimen/dimen_10dp"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
