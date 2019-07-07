@@ -20,9 +20,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -41,7 +44,8 @@ import butterknife.ButterKnife;
 public class SelectFriendActivity extends BaseActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-
+    @BindView(R.id.card_view)
+    CardView cardView;
     @BindView(R.id.continue_button)
     Button btnContinue;//by dhaval shah 7/7/19
     private static final int PERMISSION_REQUEST_CONTACT = 1;
@@ -61,6 +65,10 @@ public class SelectFriendActivity extends BaseActivity {
             }
         });
         askForContactPermission();
+        Animation animation;
+        animation = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.bottom_to_original);
+        cardView .setAnimation(animation);
     }
 
     public void askForContactPermission() {
