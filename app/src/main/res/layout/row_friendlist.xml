@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/circle"
+                android:scaleType="fitXY"
+                android:src="@drawable/cellphone"
+                android:id="@+id/ivuser"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Black Widow"
+                android:layout_toRightOf="@id/ivuser"
+                android:layout_alignParentTop="true"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:textSize="@dimen/dimen_16sp"
+                android:textColor="@color/black"
+                android:id="@+id/tvname"
+                android:textStyle="bold"
+                android:gravity="left|center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+918758839221"
+                android:layout_toRightOf="@id/ivuser"
+                android:layout_below="@id/tvname"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:gravity="center_vertical|left"
+                android:textSize="@dimen/dimen_14sp"
+                android:textColor="@color/black"
+                android:id="@+id/tvmobno"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/green_select_friend"
+                android:id="@+id/cbselect"
+                android:checked="false"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+
+
+
+</LinearLayout>
