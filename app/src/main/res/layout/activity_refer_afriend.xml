@@ -31,7 +31,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/leftarrow" />
 
-            <TextView
+            <com.enrich.salonapp.ui.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -40,7 +40,7 @@
                 android:text="@string/txt_back"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_18sp"
-                android:textStyle="bold" />
+                app:font_type="bold" />
         </LinearLayout>
 
         <ImageView
@@ -69,7 +69,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.enrich.salonapp.ui.views.CustomTextView
             android:id="@+id/tvfrnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,14 +85,15 @@
             android:textColor="@color/violet_frnd_text"
             android:textSize="@dimen/dimen_16sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:font_type="regular"/>
 
-        <Button
+        <com.enrich.salonapp.ui.views.CustomButton
             android:id="@+id/invite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_550dp"
-            android:background="@drawable/rounded_corner_pink_btn"
+            android:background="@drawable/rounded_corner_gold_btn"
             android:paddingLeft="@dimen/dimen_35dp"
             android:paddingRight="@dimen/dimen_35dp"
             android:paddingBottom="@dimen/dimen_15dp"
@@ -105,6 +106,7 @@
             android:textAllCaps="false"
             android:textSize="@dimen/dimen_18sp"
             app:layout_constraintTop_toTopOf="parent"
+            app:font_type="regular"
 
             />
     </android.support.constraint.ConstraintLayout>
