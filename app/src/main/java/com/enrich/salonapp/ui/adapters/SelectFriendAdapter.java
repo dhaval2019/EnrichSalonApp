@@ -66,6 +66,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
         Picasso.with(mContext).load(album.getPhoto()).resize(100, 100)
                 .centerCrop()
                 .placeholder(R.drawable.image_placeholder).into(holder.userImage);
+
         holder.isSelect.setOnCheckedChangeListener(null);
 
         //if true, your checkbox will be selected, else unselected
