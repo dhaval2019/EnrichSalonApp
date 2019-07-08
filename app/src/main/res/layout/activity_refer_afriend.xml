@@ -98,6 +98,7 @@
             android:paddingBottom="@dimen/dimen_15dp"
             android:paddingTop="@dimen/dimen_15dp"
             android:textColor="@android:color/white"
+            android:gravity="center"
             android:text="@string/txt_send_invite"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
