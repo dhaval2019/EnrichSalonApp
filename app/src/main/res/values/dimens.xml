@@ -50,4 +50,5 @@
     <dimen name="dimen_435dp">435dp</dimen>
     <dimen name="dimen_93dp">93dp</dimen>
     <dimen name="dimen_550dp">550dp</dimen>
+    <dimen name="dimen_245dp">245dp</dimen>
 </resources>
