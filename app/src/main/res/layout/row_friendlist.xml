@@ -2,7 +2,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 
@@ -11,8 +12,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen_65dp"
+                android:layout_height="@dimen/dimen_65dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
@@ -22,29 +23,38 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/cellphone"
                 android:id="@+id/ivuser"/>
-            <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/ivuser"
+                android:layout_centerVertical="true">
+            <com.enrich.salonapp.ui.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Black Widow"
-                android:layout_toRightOf="@id/ivuser"
-                android:layout_alignParentTop="true"
+
                 android:layout_margin="@dimen/dimen_5dp"
                 android:textSize="@dimen/dimen_16sp"
                 android:textColor="@color/black"
                 android:id="@+id/tvname"
-                android:textStyle="bold"
-                android:gravity="left|center_vertical"/>
-            <TextView
+                app:font_type="bold"
+                android:gravity="left|center_vertical"
+                android:layout_gravity="left|center_vertical"
+                />
+            <com.enrich.salonapp.ui.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+918758839221"
-                android:layout_toRightOf="@id/ivuser"
-                android:layout_below="@id/tvname"
+
                 android:layout_margin="@dimen/dimen_5dp"
                 android:gravity="center_vertical|left"
+                android:layout_gravity="left|center_vertical"
                 android:textSize="@dimen/dimen_14sp"
                 android:textColor="@color/black"
-                android:id="@+id/tvmobno"/>
+                android:id="@+id/tvmobno"
+                app:font_type="regular"/>
+            </LinearLayout>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
