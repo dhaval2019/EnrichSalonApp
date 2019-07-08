@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.ThankyouActivity">
+    tools:context="com.enrich.salonapp.ui.activities.ThankyouActivity">
 
     <ImageView
         android:id="@+id/ivthankyou"
@@ -13,30 +13,20 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_245dp"
+        android:layout_marginTop="@dimen/dimen_120dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/thank_you_artwork" />
 
-    <TextView
-        android:id="@+id/tvthankyou"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivthankyou"
-        android:layout_marginLeft="@dimen/dimen_35dp"
-        android:layout_marginTop="@dimen/dimen_25dp"
-        android:layout_marginRight="@dimen/dimen_35dp"
-        android:text="@string/txt_dummy_frnd"
-        android:textColor="@color/violet_frnd_text"
-        android:textSize="@dimen/dimen_16sp" />
 
-    <Button
+
+    <com.enrich.salonapp.ui.views.CustomButton
         android:id="@+id/continue_shopping_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/rounded_corner_pink_btn"
+        android:background="@drawable/rounded_corner_gold_btn"
         android:paddingLeft="@dimen/dimen_25dp"
         android:paddingTop="@dimen/dimen_15dp"
         android:paddingRight="@dimen/dimen_25dp"
@@ -47,7 +37,22 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/dimen_18sp"
         android:layout_marginBottom="@dimen/dimen_60dp"
+        android:layout_marginTop="@dimen/dimen_30dp"
+        app:font_type="regular"
 
 
         />
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/tvthankyou"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivthankyou"
+        android:layout_above="@id/continue_shopping_button"
+        android:layout_marginLeft="@dimen/dimen_35dp"
+        android:layout_marginTop="@dimen/dimen_25dp"
+        android:layout_marginRight="@dimen/dimen_35dp"
+        android:text="@string/txt_dummy_frnd"
+        android:textColor="@color/violet_frnd_text"
+        android:textSize="@dimen/dimen_16sp"
+        app:font_type="regular"/>
 </RelativeLayout>
