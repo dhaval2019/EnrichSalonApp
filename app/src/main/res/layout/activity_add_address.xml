@@ -140,7 +140,40 @@
                 android:layout_height="1dp"
                 android:background="@color/dark_gold" />
         </LinearLayout>
+        <!-- CITY -->
+        <LinearLayout
+            android:id="@+id/city_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_25dp"
+            android:orientation="vertical">
 
+            <com.enrich.salonapp.ui.views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:textColor="@color/dark_gold"
+                android:textSize="@dimen/dimen_14sp"
+                app:font_type="ultra_light" />
+
+            <com.enrich.salonapp.ui.views.CustomEditText
+                android:id="@+id/city_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="Enter your city name"
+                android:paddingBottom="@dimen/dimen_10dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:textSize="@dimen/dimen_16sp"
+                app:font_type="light" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_gold" />
+        </LinearLayout>
         <!-- ADDRESS TYPE -->
         <LinearLayout
             android:layout_width="match_parent"
