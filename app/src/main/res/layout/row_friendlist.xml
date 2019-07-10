@@ -12,8 +12,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="@dimen/dimen_65dp"
-                android:layout_height="@dimen/dimen_65dp"
+                android:layout_width="@dimen/dimen_48dp"
+                android:layout_height="@dimen/dimen_48dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
@@ -21,7 +21,7 @@
                 android:adjustViewBounds="true"
                 android:background="@drawable/circle"
                 android:scaleType="fitXY"
-                android:src="@drawable/cellphone"
+                android:src="@drawable/profile_icon"
                 android:id="@+id/ivuser"/>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                 android:textSize="@dimen/dimen_16sp"
                 android:textColor="@color/black"
                 android:id="@+id/tvname"
-                app:font_type="bold"
+                app:font_type="semi_bold"
                 android:gravity="left|center_vertical"
                 android:layout_gravity="left|center_vertical"
                 />
@@ -53,7 +53,7 @@
                 android:textSize="@dimen/dimen_14sp"
                 android:textColor="@color/black"
                 android:id="@+id/tvmobno"
-                app:font_type="regular"/>
+                app:font_type="light"/>
             </LinearLayout>
             <CheckBox
                 android:layout_width="wrap_content"
