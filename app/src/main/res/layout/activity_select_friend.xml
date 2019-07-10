@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    app:font_type="bold"
+                    app:font_type="regular"
 
                     android:gravity="center_vertical|left"
                     android:text="@string/txt_select_frnd"
