@@ -125,6 +125,14 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
     EnrichApplication application;
     Tracker mTracker;
 
+
+    @BindView(R.id.city_container)
+    LinearLayout cityContainer;
+
+
+    @BindView(R.id.city_text)
+    EditText cityText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,9 +192,13 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
         });*/
 
         if (addressModel != null) {
-            locationText.setText(addressModel.Location);
+
+            String loc = addressModel.Location.substring(0, addressModel.Location.lastIndexOf(" "));
+            String city = addressModel.Location.substring(addressModel.Location.lastIndexOf(" ") + 1);
+            locationText.setText(loc);
             houseText.setText(addressModel.HouseNameFlatNo);
             landmarkText.setText(addressModel.Landmark);
+            cityText.setText(city);
             changeAddressTypeSelection(addressModel.AddressType);
 
            /* suggestedPlace = new Place() {
@@ -298,6 +310,9 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                 String locationStr = locationText.getText().toString();
                 String houseStr = houseText.getText().toString();
                 String landmarkStr = landmarkText.getText().toString();
+                String cityStr = cityText.getText().toString();
+
+
 
                 if (locationStr.isEmpty()) {
                     showToastMessage("Please fill all the fields");
@@ -314,6 +329,11 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
                     return;
                 }
 
+                if (cityStr.isEmpty()) {
+                    showToastMessage("Please fill all the fields");
+                    return;
+                }
+
                 if (addressTypeStr.isEmpty()) {
                     showToastMessage("Please fill all the fields");
                     return;
@@ -326,7 +346,7 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
 
                 AddressModel model = new AddressModel();
                 model.GuestId = EnrichUtils.getUserData(AddAddressActivity.this).Id;
-                model.Location = locationStr;
+                model.Location = locationStr+ " "+cityStr;
                 model.HouseNameFlatNo = houseStr;
                 model.Landmark = landmarkStr;
                /* model.Latitude = suggestedPlace.getLatLng().latitude;
