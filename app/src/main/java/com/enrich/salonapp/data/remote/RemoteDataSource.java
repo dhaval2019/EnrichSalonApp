@@ -33,6 +33,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ErrorModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
+import com.enrich.salonapp.data.model.FriendResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
 import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
@@ -50,12 +51,14 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.ReferFriendModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.SelectFriendModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
@@ -85,10 +88,10 @@ import retrofit2.Response;
 
 public class RemoteDataSource extends DataSource {
 
- //  public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
+   public static final String HOST = "http://137.59.54.53/EnrichAPI/api/"; // STAGING 53
 //    public static final String HOST = "http://137.59.54.51/EnrichAPI/api/"; // STAGING 51
  // public static final String HOST = "http://13.71.113.69/EnrichAPI/api/"; // PROD
-    public static final String HOST = "http://enrichsalon.com/EnrichAPI/api/"; // PROD
+   // public static final String HOST = "http://enrichsalon.com/EnrichAPI/api/"; // PROD
     private static final String IS_USER_REGISTERED = "Catalog/Guests/IsRegisteredUser_New";
 
     public static final String GET_INVOICE = "Catalog/Invoices/";
@@ -957,7 +960,29 @@ public class RemoteDataSource extends DataSource {
         });
 
     }
+    @Override
+    public void referFriend(ReferFriendModel model, final ReferFriendCallback callback) {
+        EnrichUtils.log(EnrichUtils.newGson().toJson(model));
+        Call<FriendResponseModel> call = apiService.referFriend(model);
+        call.enqueue(new Callback<FriendResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<FriendResponseModel> call, @NonNull Response<FriendResponseModel> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Throwable());
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<FriendResponseModel> call, @NonNull Throwable t) {
+                Crashlytics.logException(t);
+                EnrichUtils.log(t.getLocalizedMessage());
+                callback.onFailure(t);
+            }
+        });
+
+    }
     @Override
     public void getAppUpdate(final Map<String, String> map, final GetAppUpdateCallback callback) {
         EnrichUtils.log(EnrichUtils.newGson().toJson(map));

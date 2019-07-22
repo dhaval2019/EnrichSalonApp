@@ -27,6 +27,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
+import com.enrich.salonapp.data.model.FriendResponseModel;
 import com.enrich.salonapp.data.model.GuestResponseModel;
 import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
@@ -43,12 +44,14 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.ReferFriendModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.SelectFriendModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
@@ -183,6 +186,12 @@ public interface ApiService {
 
     @POST("Catalog/Guests/AddGuestAddress")
     Call<AddressResponseModel> addAddress(@Body AddressModel model);
+
+
+
+    @POST("Catalog/Guests/GuestReferral")
+    Call<FriendResponseModel> referFriend(@Body ReferFriendModel model);
+
 
     @GET("Catalog/Guests/GetAppUpdate")
     Call<AppUpdateResponseModel> getAppUpdate(@QueryMap Map<String, String> map);

@@ -29,6 +29,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.CreateOrder.CreateOrderResponseModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordResponseModel;
+import com.enrich.salonapp.data.model.FriendResponseModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.GuestSpinCountResponseModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
@@ -45,12 +46,14 @@ import com.enrich.salonapp.data.model.Product.ProductDetailResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductResponseModel;
 import com.enrich.salonapp.data.model.Product.ProductSubCategoryResponseModel;
+import com.enrich.salonapp.data.model.ReferFriendModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.RegistrationResponseModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotResponseModel;
+import com.enrich.salonapp.data.model.SelectFriendModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.ServiceVariantResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryResponseModel;
@@ -888,7 +891,26 @@ public class DataRepository {
             });
         }
     }
+    public void referFriend(Context context, ReferFriendModel model, final DataSource.ReferFriendCallback callback) {
+        if (networkHelper.isNetworkAvailable(context)) {
+            remoteDataSource.referFriend(model, new DataSource.ReferFriendCallback() {
+                @Override
+                public void onSuccess(FriendResponseModel model) {
+                    callback.onSuccess(model);
+                }
 
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onFailure(t);
+                }
+
+                @Override
+                public void onNetworkFailure() {
+                    callback.onNetworkFailure();
+                }
+            });
+        }
+    }
     public void getAppUpdate(Context context, Map<String, String> map, final DataSource.GetAppUpdateCallback callback) {
         if (networkHelper.isNetworkAvailable(context)) {
             remoteDataSource.getAppUpdate(map, new DataSource.GetAppUpdateCallback() {
