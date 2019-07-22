@@ -33,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enrich.salonapp.R;
@@ -77,7 +78,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     EditText serachBar;
     private FriendPresenter friendPresenter;
     private DataRepository dataRepository;
-
+    @BindView(R.id.tvclose)
+    TextView tvClose;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +88,14 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         friendPresenter = new FriendPresenter(this, dataRepository);
+        tvClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectFriendActivity.this.finish();
+
+
+            }
+        });
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
