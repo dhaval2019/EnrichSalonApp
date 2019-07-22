@@ -377,7 +377,7 @@
 
 
 
-                <RelativeLayout
+              <!--  <RelativeLayout
                     android:id="@+id/refer_a_friend_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -390,7 +390,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/add_friend"
+                        android:src="@unchecked/add_friend"
                         android:tint="@color/white" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
@@ -412,7 +412,7 @@
                         android:layout_below="@id/nav_refer_a_friend_icon"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
-                </RelativeLayout>
+                </RelativeLayout>-->
 
 
                 <!-- LOGOUT -->
