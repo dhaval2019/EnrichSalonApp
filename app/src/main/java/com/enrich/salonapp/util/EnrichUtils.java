@@ -451,7 +451,7 @@ public class EnrichUtils {
 
         BadgeDrawable badge;
 
-        // Reuse drawable if possible
+        // Reuse unchecked if possible
         Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
         if (reuse != null && reuse instanceof BadgeDrawable) {
             badge = (BadgeDrawable) reuse;
@@ -467,7 +467,7 @@ public class EnrichUtils {
     public static void removeBadge(Context context, LayerDrawable icon) {
         BadgeDrawable badge;
 
-        // Reuse drawable if possible
+        // Reuse unchecked if possible
         Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
         if (reuse != null && reuse instanceof BadgeDrawable) {
             badge = (BadgeDrawable) reuse;
