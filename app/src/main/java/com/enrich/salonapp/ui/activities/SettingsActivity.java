@@ -103,6 +103,10 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     EnrichApplication application;
     Tracker mTracker;
 
+
+    @BindView(R.id.refer_a_friend_label_container)//dhaval shah 17-7-19
+    LinearLayout referAFriendContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +211,14 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 } else {
                     Animations.collapse(forgotPasswordClickHere, 400);
                 }
+            }
+        });
+
+        referAFriendContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, ReferAFriendActivity.class);
+                startActivity(intent);
             }
         });
 
