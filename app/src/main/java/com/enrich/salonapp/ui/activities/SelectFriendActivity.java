@@ -28,6 +28,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -82,6 +83,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         friendPresenter = new FriendPresenter(this, dataRepository);
         btnContinue.setOnClickListener(new View.OnClickListener() {
