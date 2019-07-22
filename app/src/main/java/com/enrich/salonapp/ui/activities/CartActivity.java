@@ -133,7 +133,7 @@ public class CartActivity extends BaseActivity {
             imageandcounterlayout.setVisibility(View.GONE);
         } else {
             imageandcounterlayout.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(PackageDetailActivity.imageUrl).placeholder(R.drawable.placeholder_ext).into(packageDetailImage);
+            Picasso.with(this).load(PackageDetailActivity.imageUrl).placeholder(R.unchecked.placeholder_ext).into(packageDetailImage);
             if (PackageDetailActivity.isTimerEnabled) {
                 packageCountDownContainer.setVisibility(View.VISIBLE);
 
