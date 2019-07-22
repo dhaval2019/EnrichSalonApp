@@ -3,6 +3,7 @@ package com.enrich.salonapp.ui.activities;
 import android.Manifest;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -23,16 +24,34 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.DataRepository;
+import com.enrich.salonapp.data.model.AddressResponseModel;
+import com.enrich.salonapp.data.model.FriendResponseModel;
+import com.enrich.salonapp.data.model.GuestMobileNo;
+import com.enrich.salonapp.data.model.GuestModel;
+import com.enrich.salonapp.data.model.ReferFriendModel;
 import com.enrich.salonapp.data.model.SelectFriendModel;
+import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.adapters.SelectFriendAdapter;
+import com.enrich.salonapp.ui.contracts.AddressContract;
+import com.enrich.salonapp.ui.contracts.FriendContract;
+import com.enrich.salonapp.ui.presenters.AddressPresenter;
+import com.enrich.salonapp.ui.presenters.FriendPresenter;
+import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.threads.MainUiThread;
+import com.enrich.salonapp.util.threads.ThreadExecutor;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,7 +60,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectFriendActivity extends BaseActivity {
+public class SelectFriendActivity extends BaseActivity implements FriendContract.View{
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.card_view)
@@ -50,27 +69,103 @@ public class SelectFriendActivity extends BaseActivity {
     Button btnContinue;//by dhaval shah 7/7/19
     private static final int PERMISSION_REQUEST_CONTACT = 1;
     private SelectFriendAdapter adapter;
-    private List<SelectFriendModel> albumList= new ArrayList<>();
+    private List<SelectFriendModel> albumList = new ArrayList<>();
+    private List<SelectFriendModel> searchList = new ArrayList<>();
+    private List<SelectFriendModel> selectedList = new ArrayList<>();
+    @BindView(R.id.searchbar)
+    EditText serachBar;
+    private FriendPresenter friendPresenter;
+    private DataRepository dataRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
+        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
+        friendPresenter = new FriendPresenter(this, dataRepository);
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectFriendActivity.this, ThankyouActivity.class);
-                startActivity(intent);
+                selectedList.clear();
+               // if (searchList.isEmpty()) {
+                    for (int i = 0; i < albumList.size(); i++) {
+                        if (albumList.get(i).getIsSelect()) {
+                            selectedList.add(albumList.get(i));
+                        } else {
+
+                        }
+                    }
+               /* } else {
+                    for (int i = 0; i < searchList.size(); i++) {
+                        if (searchList.get(i).getIsSelect()) {
+                            selectedList.add(searchList.get(i));
+                        } else {
+
+                        }
+                    }
+                }*/
+                 ArrayList<GuestMobileNo> guestReferredMobileNos= new ArrayList<GuestMobileNo>();
+                ReferFriendModel referFriendModel = new ReferFriendModel();
+                referFriendModel.setGuestId(EnrichUtils.getUserData(SelectFriendActivity.this).Id);
+                for (int j = 0; j < selectedList.size(); j++) {
+                    GuestMobileNo guestMobileNo =  new GuestMobileNo();
+                    guestMobileNo.setMobileNo(selectedList.get(j).getMobNo());
+                    guestReferredMobileNos.add(guestMobileNo);
+                   // Log.e("name", selectedList.get(j).getName());
+                }
+                referFriendModel.setGuestReferredMobileNos(guestReferredMobileNos);
+                friendPresenter.referFriend(SelectFriendActivity.this,referFriendModel);
+
+
             }
         });
+        searchList.clear();
         askForContactPermission();
         Animation animation;
         animation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.bottom_to_original);
-        cardView .setAnimation(animation);
-    }
+        cardView.setAnimation(animation);
+        serachBar.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                searchList.clear();
+                for (int i = 0; i < albumList.size(); i++) {
+                    if (albumList.get(i).getName().toLowerCase().contains(cs.toString().toLowerCase())) {
+                        searchList.add(albumList.get(i));
+
+                    }
+                }
+                adapter = new SelectFriendAdapter(SelectFriendActivity.this, searchList);
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                //Toast.makeText(getApplicationContext(),"before text change",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                //Toast.makeText(getApplicationContext(),"after text change",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    @Override
+    public void friendReferred(FriendResponseModel model) {
+        if (model != null) {
+           // Log.e("tag1",model.ExistingGuests.get(0).getMobileNo());
+          //  Log.e("tag2",model.toString());
+           // Log.e("tag2",model.ExistingReferrals.get(0).getMobileNo());
+            Intent intent = new Intent(SelectFriendActivity.this, ThankyouActivity.class);
+            startActivity(intent);
+        }
+    }
     public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
