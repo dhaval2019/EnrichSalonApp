@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.SelectFriendModel;
+import com.enrich.salonapp.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
         holder.userMobileNo.setText(album.getMobNo());
        // holder.userImage.setImageURI(album.getPhoto());
         Picasso.with(mContext).load(album.getPhoto()).resize(100, 100)
-                .centerCrop()
+                .transform(new CircleTransform())
                 .placeholder(R.drawable.profile_icon).into(holder.userImage);
 
         holder.isSelect.setOnCheckedChangeListener(null);
