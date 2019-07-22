@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/blur_bg"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -13,8 +13,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="fill_horizontal|fill_vertical"
         android:layout_margin="@dimen/dimen_10dp"
-        card_view:cardCornerRadius="4dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,31 +25,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_20dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_20dp">
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginRight="@dimen/dimen_10dp">
 
                 <com.enrich.salonapp.ui.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    app:font_type="regular"
-
                     android:gravity="center_vertical|left"
+
                     android:text="@string/txt_select_frnd"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_24sp" />
+                    android:textSize="@dimen/dimen_24sp"
+                    app:font_type="regular" />
 
-                <ImageView
+                <com.enrich.salonapp.ui.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/redclose" />
+                    android:layout_margin="@dimen/dimen_15dp"
+                    android:gravity="center"
+                    android:text="X"
+                    android:textColor="@color/dark_gold"
+                    android:textSize="@dimen/dimen_30sp"
+                    app:font_type="regular"
+                    android:id="@+id/tvclose"/>
 
             </RelativeLayout>
 
@@ -57,44 +60,70 @@
                 android:id="@+id/pinkborder"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_1dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:background="@color/dark_gold"
                 android:layout_below="@id/headinglayout"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_5dp"
-                android:layout_marginLeft="@dimen/dimen_5dp"/>
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:background="@color/dark_gold" />
+
+            <com.enrich.salonapp.ui.views.CustomEditText
+                android:id="@+id/searchbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pinkborder"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:drawableLeft="@drawable/ic_search_24"
+                android:gravity="left|center_vertical"
+
+                android:hint="@string/label_name"
+                android:paddingLeft="@dimen/dimen_5dp"
+                android:paddingTop="@dimen/dimen_15dp"
+                android:paddingBottom="@dimen/dimen_15dp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/dimen_18sp"
+                app:font_type="light"
+
+
+                />
+
             <com.enrich.salonapp.ui.views.CustomButton
                 android:id="@+id/continue_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/dimen_40dp"
+                android:layout_marginLeft="@dimen/dimen_40dp"
+                android:layout_marginRight="@dimen/dimen_40dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_40dp"
                 android:background="@drawable/rounded_corner_gold_btn"
+                android:gravity="center"
                 android:paddingLeft="@dimen/dimen_35dp"
+                android:paddingTop="@dimen/dimen_15dp"
                 android:paddingRight="@dimen/dimen_35dp"
                 android:paddingBottom="@dimen/dimen_15dp"
-                android:paddingTop="@dimen/dimen_15dp"
-                android:textColor="@android:color/white"
                 android:text="@string/txt_continue"
-                android:gravity="center"
                 android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/dimen_18sp"
                 app:font_type="regular"
 
 
                 />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:scrollbars="vertical"
-                android:layout_below="@id/pinkborder"
                 android:layout_above="@id/continue_button"
+                android:layout_below="@id/searchbar"
                 android:layout_margin="@dimen/dimen_10dp"
-                />
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

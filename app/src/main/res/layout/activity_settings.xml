@@ -289,6 +289,54 @@
                             app:font_type="regular" />
                     </LinearLayout>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dp"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:layout_marginBottom="@dimen/dimen_15dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Refer A Friend -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/refer_a_friend_label_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/refer_a_friend_container_more"
+                        android:orientation="vertical">
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Refer A Friend"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/dimen_16sp"
+                            app:font_type="light" />
+
+                        <com.enrich.salonapp.ui.views.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Refer a friend and get 200 points!"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/dimen_14sp"
+                            app:font_type="light" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/refer_a_friend_container_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/refer_a_friend_label_container"
+                        android:layout_alignBottom="@+id/refer_a_friend_label_container"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_more_vert_black_24dp" />
+                </RelativeLayout>
             </LinearLayout>
         </FrameLayout>
 
