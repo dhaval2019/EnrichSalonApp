@@ -13,6 +13,7 @@ import com.enrich.salonapp.data.model.CreateOrder.CreateOrderRequestModel;
 import com.enrich.salonapp.data.model.ForgotPasswordRequestModel;
 import com.enrich.salonapp.data.model.GuestUpdateRequestModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.ReferFriendModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegistrationRequestModel;
 import com.enrich.salonapp.data.model.ReserveSlotRequestModel;
@@ -228,6 +229,11 @@ public class LocalDataSource extends DataSource {
 
     @Override
     public void addAddress(AddressModel model, AddAddressCallback callback) {
+
+    }
+
+    @Override
+    public void referFriend(ReferFriendModel model, ReferFriendCallback callback) {
 
     }
 
