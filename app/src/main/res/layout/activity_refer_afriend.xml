@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true">
-
-    <android.support.constraint.ConstraintLayout
+<android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.enrich.salonapp.ui.activities.ReferAFriendActivity">
+        tools:context="com.enrich.salonapp.ui.activities.ReferAFriendActivity"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-        <LinearLayout
+      <!--  <LinearLayout
             android:id="@+id/backlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,16 +18,21 @@
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
+-->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/leftarrow" />
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:id="@+id/backarrow"/>
 
-            <com.enrich.salonapp.ui.views.CustomTextView
+            <!--<com.enrich.salonapp.ui.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -42,7 +43,7 @@
                 android:textSize="@dimen/dimen_18sp"
                 app:font_type="bold" />
         </LinearLayout>
-
+-->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +106,7 @@
 
                 android:text="@string/txt_refer_a_frnd_intro_link"
                 android:textColor="@color/dark_gold"
-                android:textSize="@dimen/dimen_16sp"
+                android:textSize="@dimen/dimen_14sp"
 
                 app:font_type="regular" />
         </LinearLayout>
@@ -136,11 +137,18 @@
             android:id="@+id/popuplayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_65dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="@android:color/white"
+            android:elevation="2dp"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_50dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
+
+            app:layout_constraintBaseline_toBaselineOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/invite_button"
+            app:layout_constraintRight_toRightOf="@id/invite_button">
 
             <RelativeLayout
                 android:id="@+id/headinglayout"
@@ -154,11 +162,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_15dp"
                     android:text="@string/txt_refer_a_frnd_intro_link"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/dimen_20sp"
                     app:font_type="regular"
-                    android:layout_marginLeft="@dimen/dimen_15dp"
 
                     />
 
@@ -194,36 +202,38 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/border"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_marginRight="@dimen/dimen_15dp"
-                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:gravity="left|top"
                 android:text="@string/txt_refer_a_frnd_popup_txt1"
                 app:font_type="regular" />
+
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/tvpopuptext2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvpopuptext1"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:layout_marginTop="@dimen/dimen_15dp"
                 android:layout_marginRight="@dimen/dimen_15dp"
-                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:gravity="left|top"
                 android:text="@string/txt_refer_a_frnd_popup_txt2"
                 app:font_type="regular" />
+
             <com.enrich.salonapp.ui.views.CustomTextView
                 android:id="@+id/tvpopuptext3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvpopuptext2"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:layout_marginTop="@dimen/dimen_15dp"
                 android:layout_marginRight="@dimen/dimen_15dp"
-                android:layout_marginLeft="@dimen/dimen_15dp"
                 android:gravity="left|top"
                 android:text="@string/txt_refer_a_frnd_popup_txt3"
                 app:font_type="regular" />
         </RelativeLayout>
+
     </android.support.constraint.ConstraintLayout>
-</ScrollView>
