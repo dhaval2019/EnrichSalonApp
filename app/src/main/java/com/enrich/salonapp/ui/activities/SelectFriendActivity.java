@@ -175,6 +175,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
           //  Log.e("tag2",model.toString());
            // Log.e("tag2",model.ExistingReferrals.get(0).getMobileNo());
             Intent intent = new Intent(SelectFriendActivity.this, ThankyouActivity.class);
+            intent.putExtra("friendResponseModel", model);
             startActivity(intent);
         }
     }
