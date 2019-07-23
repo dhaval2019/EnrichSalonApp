@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_20dp"
+
                 android:layout_marginRight="@dimen/dimen_10dp">
 
                 <com.enrich.salonapp.ui.views.CustomTextView
@@ -37,7 +37,7 @@
 
                     android:text="@string/txt_select_frnd"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_24sp"
+                    android:textSize="@dimen/dimen_16sp"
                     app:font_type="regular" />
 
                 <com.enrich.salonapp.ui.views.CustomTextView
@@ -46,7 +46,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_15dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:gravity="center"
                     android:text="X"
                     android:textColor="@color/dark_gold"
@@ -62,9 +62,9 @@
                 android:layout_height="@dimen/dimen_1dp"
                 android:layout_below="@id/headinglayout"
                 android:layout_marginLeft="@dimen/dimen_5dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_5dp"
                 android:layout_marginRight="@dimen/dimen_5dp"
-                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_5dp"
                 android:background="@color/dark_gold" />
 
             <com.enrich.salonapp.ui.views.CustomEditText
@@ -73,15 +73,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pinkborder"
                 android:layout_marginLeft="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:drawableLeft="@drawable/ic_search_24"
                 android:gravity="left|center_vertical"
 
                 android:hint="@string/label_name"
                 android:paddingLeft="@dimen/dimen_5dp"
-                android:paddingTop="@dimen/dimen_15dp"
-                android:paddingBottom="@dimen/dimen_15dp"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_10dp"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/dimen_18sp"
