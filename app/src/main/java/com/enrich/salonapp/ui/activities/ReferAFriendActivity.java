@@ -32,6 +32,7 @@ public class ReferAFriendActivity extends BaseActivity {
         setContentView(R.layout.activity_refer_afriend);
         ButterKnife.bind(this);
         popupLayout.setVisibility(View.GONE);
+        btnInvite.setVisibility(View.VISIBLE);
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,16 +44,22 @@ public class ReferAFriendActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 popupLayout.setVisibility(View.VISIBLE);
+               /* RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) popupLayout.getLayoutParams();
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                popupLayout.setLayoutParams(lp);*/
                 Animation animation;
                 animation = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.bottom_to_original);
                 popupLayout.setAnimation(animation);
+                popupLayout.bringToFront();
+                btnInvite.setVisibility(View.GONE);
             }
         });
         txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupLayout.setVisibility(View.GONE);
+                btnInvite.setVisibility(View.VISIBLE);
             }
         });
 
