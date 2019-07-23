@@ -51,7 +51,7 @@
         android:layout_marginLeft="@dimen/dimen_35dp"
         android:layout_marginTop="@dimen/dimen_25dp"
         android:layout_marginRight="@dimen/dimen_35dp"
-        android:text="@string/txt_dummy_frnd"
+
         android:textColor="@color/violet_frnd_text"
         android:textSize="@dimen/dimen_16sp"
         app:font_type="regular"/>
