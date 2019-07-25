@@ -82,6 +82,11 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     private DataRepository dataRepository;
     @BindView(R.id.tvclose)
     TextView tvClose;
+    int index = 0;
+    int size = 10;
+    int offset = 10;
+    private Cursor cursor;
+    ContentResolver contentResolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +108,14 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             @Override
             public void onClick(View view) {
                 selectedList.clear();
-                 if (searchList.isEmpty()) {
-                for (int i = 0; i < albumList.size(); i++) {
-                    if (albumList.get(i).getIsSelect()) {
-                        selectedList.add(albumList.get(i));
-                    } else {
+                if (searchList.isEmpty()) {
+                    for (int i = 0; i < albumList.size(); i++) {
+                        if (albumList.get(i).getIsSelect()) {
+                            selectedList.add(albumList.get(i));
+                        } else {
 
+                        }
                     }
-                }
                 } else {
                     for (int i = 0; i < searchList.size(); i++) {
                         if (searchList.get(i).getIsSelect()) {
@@ -225,6 +230,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             } else {
                 searchList.clear();
                 albumList.clear();
+
+
                 new LoadContacts().execute();
 
 
@@ -232,6 +239,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         } else {
             searchList.clear();
             albumList.clear();
+
             new LoadContacts().execute();
 
             /*adapter = new SelectFriendAdapter(this, albumList);
@@ -253,6 +261,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     searchList.clear();
                     albumList.clear();
+
+
                     new LoadContacts().execute();
 
                     /*adapter = new SelectFriendAdapter(this, albumList);
@@ -278,16 +288,18 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     }
 
     private class LoadContacts extends AsyncTask<Void, Void, Void> {
-        ProgressDialog pd;
+       // ProgressDialog pd;
 
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            ContentResolver contentResolver = SelectFriendActivity.this.getContentResolver();
-            Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            contentResolver = SelectFriendActivity.this.getContentResolver();
+            cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            size = cursor.getCount();
             if (cursor.getCount() > 0) {
-                while (cursor.moveToNext()) {
+                cursor.moveToPosition(index * offset);
+                while ((cursor.moveToNext()) && (cursor.getPosition() < ((index + 1) * offset))) {
+
                     String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
                         Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -312,10 +324,14 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                         }
 
                         cursorInfo.close();
+
                     }
                 }
-                cursor.close();
             }
+
+            cursor.close();
+
+
             return null;
         }
 
@@ -324,14 +340,24 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             super.onPostExecute(result);
 
+            /* if (index == 0) {*/
             adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
             recyclerView.setLayoutManager(layoutManager);
 
             recyclerView.setAdapter(adapter);
-            if (pd.isShowing())
-                pd.dismiss();
+           /* } else {
+                adapter.notifyDataSetChanged();
+            }*/
+
+          /*  if (pd.isShowing())
+                pd.dismiss();*/
+            index = index + 1;
+            if (index * offset <= size) {
+                new LoadContacts().execute();
+            }
+
 
         }
 
@@ -340,8 +366,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             super.onPreExecute();
             // Show Dialog
-            pd = ProgressDialog.show(SelectFriendActivity.this, "Loading Contacts",
-                    "Please Wait...");
+           /* pd = ProgressDialog.show(SelectFriendActivity.this, "Loading Contacts",
+                    "Please Wait...");*/
         }
 
     }
