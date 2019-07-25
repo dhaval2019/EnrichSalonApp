@@ -99,6 +99,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         tvClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(SelectFriendActivity.this, ReferAFriendActivity.class);
+                startActivity(intent);
                 SelectFriendActivity.this.finish();
 
 
@@ -186,9 +188,16 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             Intent intent = new Intent(SelectFriendActivity.this, ThankyouActivity.class);
             intent.putExtra("friendResponseModel", model);
             startActivity(intent);
+            SelectFriendActivity.this.finish();
         }
     }
+    @Override
+    public void onBackPressed() {
 
+        Intent intent = new Intent(SelectFriendActivity.this, ReferAFriendActivity.class);
+        startActivity(intent);
+        SelectFriendActivity.this.finish();
+    }
     public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
