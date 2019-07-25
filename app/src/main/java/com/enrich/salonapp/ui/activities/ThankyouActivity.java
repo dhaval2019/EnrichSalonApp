@@ -1,7 +1,10 @@
 package com.enrich.salonapp.ui.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
@@ -13,7 +16,8 @@ import butterknife.ButterKnife;
 public class ThankyouActivity extends AppCompatActivity {
     @BindView(R.id.tvthankyou)
     TextView tvThankYou;
-
+    @BindView(R.id.continue_shopping_button)
+    Button btnContinueShopping;//by dhaval shah 7/7/19
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +25,18 @@ public class ThankyouActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         FriendResponseModel model = bundle.getParcelable("friendResponseModel");
+
+        btnContinueShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ThankyouActivity.this,HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+
+            }
+        });
+
         String eg = "";
         if (model.ExistingGuests.size() == 1) {
             for (int i = 0; i < model.ExistingGuests.size(); i++) {
@@ -57,23 +73,23 @@ public class ThankyouActivity extends AppCompatActivity {
         String rftExistingGuestSingle = "";
         String rftExistingGuestMulti = "";
         if (model.ExistingGuests.size() == 1) {
-            rftExistingGuestSingle = "The guest -" + eg + "you have referred is already an existing Enrich customer. Please select another guest to invite. ";
+            rftExistingGuestSingle = "The guest -" + eg + " you have referred is already an existing Enrich customer. Please select another guest to invite. ";
         } else if (model.ExistingGuests.size() >= 1) {
-            rftExistingGuestMulti = "The guests -" + eg + "you have referred are already an existing Enrich customer. Please select another guests to invite. ";
+            rftExistingGuestMulti = "The guests -" + eg + " you have referred are already an existing Enrich customer. Please select another guests to invite. ";
         }
         String rftExistingReferralSingle="";
         String rftExistingReferralMulti="";
         if (model.ExistingReferrals.size() == 1) {
-            rftExistingReferralSingle = "The guest -" + er + "you have referred has already been invited by another. Please select another guest to invite. ";
+            rftExistingReferralSingle = "The guest -" + er + " you have referred has already been invited by another. Please select another guest to invite. ";
         } else if (model.ExistingReferrals.size() >= 1) {
-            rftExistingReferralMulti = "The guests - " + er + "you have referred have already been invited by another. Please select another guests to invite. ";
+            rftExistingReferralMulti = "The guests - " + er + " you have referred have already been invited by another. Please select another guests to invite. ";
         }
 
         String rftValidReferralSingle="";
         String rftValidReferralMulti="";
 
         if (model.ValidReferrals.size() == 1) {
-            rftValidReferralSingle = "The guest -" + vr + "you have referred has been invited. Thank you! ";
+            rftValidReferralSingle = "The guest -" + vr + " you have referred has been invited. Thank you! ";
         } else if (model.ValidReferrals.size() >= 1) {
             rftValidReferralMulti = "The guests -" + vr + " you have referred have been invited. Thank you! ";
         }
@@ -122,5 +138,12 @@ public class ThankyouActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(ThankyouActivity.this, SelectFriendActivity.class);
+        startActivity(intent);
+        ThankyouActivity.this.finish();
     }
 }
