@@ -307,7 +307,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             size = cursor.getCount();
             if (cursor.getCount() > 0) {
                 cursor.moveToPosition(index * offset);
-                while ((cursor.moveToNext()) && (cursor.getPosition() < ((index + 1) * offset))) {
+                while ((cursor.moveToNext()) && (cursor.getPosition() <= ((index + 1) * offset))) {
 
                     String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
