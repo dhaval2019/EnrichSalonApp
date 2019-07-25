@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +27,8 @@ public class ReferAFriendActivity extends BaseActivity {
     RelativeLayout popupLayout;
     @BindView(R.id.tvclose)
     TextView txtClose;
+    @BindView(R.id.backarrow)
+    ImageView ivBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,14 @@ public class ReferAFriendActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ReferAFriendActivity.this, SelectFriendActivity.class);
                 startActivity(intent);
+                ReferAFriendActivity.this.finish();
+            }
+        });
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ReferAFriendActivity.this.finish();
             }
         });
         txtFriendLink.setOnClickListener(new View.OnClickListener() {
@@ -63,5 +74,11 @@ public class ReferAFriendActivity extends BaseActivity {
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+
+
+        ReferAFriendActivity.this.finish();
     }
 }
