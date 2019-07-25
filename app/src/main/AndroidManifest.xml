@@ -26,6 +26,7 @@
         tools:targetApi="n">
         <activity android:name=".ui.activities.ThankyouActivity"></activity>
         <activity android:name=".ui.activities.SelectFriendActivity" />
+
         <activity android:name=".ui.activities.ReferAFriendActivity" />
 
         <uses-library
