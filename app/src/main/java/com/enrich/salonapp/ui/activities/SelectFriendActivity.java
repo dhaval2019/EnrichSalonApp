@@ -4,6 +4,7 @@ import android.Manifest;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
@@ -62,7 +64,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectFriendActivity extends BaseActivity implements FriendContract.View{
+public class SelectFriendActivity extends BaseActivity implements FriendContract.View {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.card_view)
@@ -80,6 +82,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     private DataRepository dataRepository;
     @BindView(R.id.tvclose)
     TextView tvClose;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,15 +103,15 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             @Override
             public void onClick(View view) {
                 selectedList.clear();
-               // if (searchList.isEmpty()) {
-                    for (int i = 0; i < albumList.size(); i++) {
-                        if (albumList.get(i).getIsSelect()) {
-                            selectedList.add(albumList.get(i));
-                        } else {
+                 if (searchList.isEmpty()) {
+                for (int i = 0; i < albumList.size(); i++) {
+                    if (albumList.get(i).getIsSelect()) {
+                        selectedList.add(albumList.get(i));
+                    } else {
 
-                        }
                     }
-               /* } else {
+                }
+                } else {
                     for (int i = 0; i < searchList.size(); i++) {
                         if (searchList.get(i).getIsSelect()) {
                             selectedList.add(searchList.get(i));
@@ -116,18 +119,18 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
                         }
                     }
-                }*/
-                 ArrayList<GuestMobileNo> guestReferredMobileNos= new ArrayList<GuestMobileNo>();
+                }
+                ArrayList<GuestMobileNo> guestReferredMobileNos = new ArrayList<GuestMobileNo>();
                 ReferFriendModel referFriendModel = new ReferFriendModel();
                 referFriendModel.setGuestId(EnrichUtils.getUserData(SelectFriendActivity.this).Id);
                 for (int j = 0; j < selectedList.size(); j++) {
-                    GuestMobileNo guestMobileNo =  new GuestMobileNo();
+                    GuestMobileNo guestMobileNo = new GuestMobileNo();
                     guestMobileNo.setMobileNo(selectedList.get(j).getMobNo());
                     guestReferredMobileNos.add(guestMobileNo);
-                   // Log.e("name", selectedList.get(j).getName());
+                    // Log.e("name", selectedList.get(j).getName());
                 }
                 referFriendModel.setGuestReferredMobileNos(guestReferredMobileNos);
-                friendPresenter.referFriend(SelectFriendActivity.this,referFriendModel);
+                friendPresenter.referFriend(SelectFriendActivity.this, referFriendModel);
 
 
             }
@@ -168,17 +171,19 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             }
         });
     }
+
     @Override
     public void friendReferred(FriendResponseModel model) {
         if (model != null) {
-           // Log.e("tag1",model.ExistingGuests.get(0).getMobileNo());
-          //  Log.e("tag2",model.toString());
-           // Log.e("tag2",model.ExistingReferrals.get(0).getMobileNo());
+            // Log.e("tag1",model.ExistingGuests.get(0).getMobileNo());
+            //  Log.e("tag2",model.toString());
+            // Log.e("tag2",model.ExistingReferrals.get(0).getMobileNo());
             Intent intent = new Intent(SelectFriendActivity.this, ThankyouActivity.class);
             intent.putExtra("friendResponseModel", model);
             startActivity(intent);
         }
     }
+
     public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -218,26 +223,23 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                     // result of the request.
                 }
             } else {
+                searchList.clear();
                 albumList.clear();
-                albumList = getContacts(this);
+                new LoadContacts().execute();
 
-                adapter = new SelectFriendAdapter(this, albumList);
 
-                LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(layoutManager);
-
-                recyclerView.setAdapter(adapter);
             }
         } else {
+            searchList.clear();
             albumList.clear();
-            albumList = getContacts(this);
+            new LoadContacts().execute();
 
-            adapter = new SelectFriendAdapter(this, albumList);
+            /*adapter = new SelectFriendAdapter(this, albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
 
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);*/
         }
     }
 
@@ -249,15 +251,16 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    searchList.clear();
                     albumList.clear();
-                    albumList = getContacts(this);
+                    new LoadContacts().execute();
 
-                    adapter = new SelectFriendAdapter(this, albumList);
+                    /*adapter = new SelectFriendAdapter(this, albumList);
 
                     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
                     recyclerView.setLayoutManager(layoutManager);
 
-                    recyclerView.setAdapter(adapter);
+                    recyclerView.setAdapter(adapter);*/
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
@@ -274,40 +277,74 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         }
     }
 
-    public List<SelectFriendModel> getContacts(Context ctx) {
-        List<SelectFriendModel> list = new ArrayList<>();
-        ContentResolver contentResolver = ctx.getContentResolver();
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        if (cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-                    InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(),
-                            ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id)));
+    private class LoadContacts extends AsyncTask<Void, Void, Void> {
+        ProgressDialog pd;
 
-                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
-                    Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 
-                    Bitmap photo = null;
-                    if (inputStream != null) {
-                        photo = BitmapFactory.decodeStream(inputStream);
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ContentResolver contentResolver = SelectFriendActivity.this.getContentResolver();
+            Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            if (cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                        Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+                        InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(SelectFriendActivity.this.getContentResolver(),
+                                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id)));
+
+                        Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
+                        Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+
+                        Bitmap photo = null;
+                        if (inputStream != null) {
+                            photo = BitmapFactory.decodeStream(inputStream);
+                        }
+                        while (cursorInfo.moveToNext()) {
+                            SelectFriendModel info = new SelectFriendModel();
+                            info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                            info.setMobileNo(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+
+                            info.setPhoto(pURI);
+                            albumList.add(info);
+                        }
+
+                        cursorInfo.close();
                     }
-                    while (cursorInfo.moveToNext()) {
-                        SelectFriendModel info = new SelectFriendModel();
-                        info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                        info.setMobileNo(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-
-                        info.setPhoto(pURI);
-                        list.add(info);
-                    }
-
-                    cursorInfo.close();
                 }
+                cursor.close();
             }
-            cursor.close();
+            return null;
         }
-        return list;
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+
+            adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setAdapter(adapter);
+            if (pd.isShowing())
+                pd.dismiss();
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+            // Show Dialog
+            pd = ProgressDialog.show(SelectFriendActivity.this, "Loading Contacts",
+                    "Please Wait...");
+        }
+
     }
+
+
 }
