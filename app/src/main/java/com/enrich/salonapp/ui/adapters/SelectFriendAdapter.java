@@ -75,14 +75,42 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
 
         holder.isSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
                 //set your object's last status
-                album.setIsSelect(isChecked);
+
+            //    album.setIsSelect(b);
+
+                if (checkMaxLimit()) {
+
+                    if (album.getIsSelect() && b) {
+                        holder.isSelect.setChecked(false);
+                        album.setIsSelect(false);
+
+                    } else {
+                        holder.isSelect.setChecked(false);
+                        album.setIsSelect(false);
+
+                    }
+                } else {
+                    if (b) {
+                        album.setIsSelect(true);
+                    } else {
+                        album.setIsSelect(false);
+                    }
+                }
             }
         });
 
     }
-
+    public boolean checkMaxLimit() {
+        int countermax = 0;
+        for(SelectFriendModel item : albumList){
+            if(item.getIsSelect()){
+                countermax++;
+            }
+        }
+        return countermax >= 3;
+    }
 
     @Override
     public int getItemCount() {
