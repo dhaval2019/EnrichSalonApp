@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.SelectFriendModel;
+import com.enrich.salonapp.ui.activities.SelectFriendActivity;
 import com.enrich.salonapp.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,10 +62,10 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-     final   SelectFriendModel album = albumList.get(position);
+        final SelectFriendModel album = albumList.get(position);
         holder.userName.setText(album.getName());
         holder.userMobileNo.setText(album.getMobNo());
-       // holder.userImage.setImageURI(album.getPhoto());
+        // holder.userImage.setImageURI(album.getPhoto());
         Picasso.with(mContext).load(album.getPhoto()).resize(100, 100)
                 .transform(new CircleTransform())
                 .placeholder(R.drawable.profile_icon).into(holder.userImage);
@@ -78,7 +80,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
             public void onCheckedChanged(CompoundButton buttonView, boolean b) {
                 //set your object's last status
 
-            //    album.setIsSelect(b);
+                //    album.setIsSelect(b);
 
                 if (checkMaxLimit()) {
 
@@ -102,13 +104,32 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
         });
 
     }
+
     public boolean checkMaxLimit() {
+        ArrayList<SelectFriendModel> tempList = new ArrayList<SelectFriendModel>();
         int countermax = 0;
-        for(SelectFriendModel item : albumList){
-            if(item.getIsSelect()){
-                countermax++;
+        tempList.addAll(SelectFriendActivity.albumList);
+        for (SelectFriendModel item2 : SelectFriendActivity.searchList) {
+            if (tempList.contains(item2)) {
+
+            } else
+            {
+                tempList.add(item2);
             }
+
+
         }
+        for (SelectFriendModel item1 : tempList) {
+            if (item1.getIsSelect()) {
+                countermax++;
+
+            }
+
+
+        }
+
+
+
         return countermax >= 3;
     }
 
