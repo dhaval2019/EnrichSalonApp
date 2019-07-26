@@ -172,7 +172,7 @@ public class ThankyouActivity extends AppCompatActivity {
             {
                 if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                 {
-                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    vr = SelectFriendActivity.selectedList.get(j).getName() + "";
                     break;
                 }
             }
@@ -182,7 +182,7 @@ public class ThankyouActivity extends AppCompatActivity {
             {
                 if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                 {
-                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    vr = SelectFriendActivity.selectedList.get(j).getName() + "";
                     break;
                 }
             }
@@ -195,7 +195,7 @@ public class ThankyouActivity extends AppCompatActivity {
                     if( model.ValidReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                     {
 
-                        er = er + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                        vr = vr + " , " + SelectFriendActivity.selectedList.get(j).getName();
                     }
                 }
 
