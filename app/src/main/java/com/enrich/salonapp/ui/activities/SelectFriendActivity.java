@@ -75,7 +75,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     private SelectFriendAdapter adapter;
     public static List<SelectFriendModel> albumList = new ArrayList<>();
     public static List<SelectFriendModel> searchList = new ArrayList<>();
-    private List<SelectFriendModel> selectedList = new ArrayList<>();
+    public static List<SelectFriendModel> selectedList = new ArrayList<>();
     @BindView(R.id.searchbar)
     EditText serachBar;
     private FriendPresenter friendPresenter;
