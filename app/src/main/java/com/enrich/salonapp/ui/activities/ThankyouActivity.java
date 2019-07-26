@@ -39,17 +39,112 @@ public class ThankyouActivity extends AppCompatActivity {
 
         String eg = "";
         if (model.ExistingGuests.size() == 1) {
-            for (int i = 0; i < model.ExistingGuests.size(); i++) {
-                eg = model.ExistingGuests.get(i).getMobileNo() + "";
+            /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+                        eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    }
+                }
+
+            }*/
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
             }
         } else if (model.ExistingGuests.size() > 1) {
-            eg = model.ExistingGuests.get(0).getMobileNo() + "";
-            for (int i = 1; i < model.ExistingGuests.size(); i++) {
+           // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
+            }
+            /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
                 eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
+            }*/
+            for (int i = 1; i < model.ExistingGuests.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+
+                        eg = eg + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                    }
+                }
+
             }
         }
+
         String er = "";
         if (model.ExistingReferrals.size() == 1) {
+            /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+                        eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    }
+                }
+
+            }*/
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
+            }
+        } else if (model.ExistingReferrals.size() > 1) {
+            // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
+            }
+            /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
+                eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
+            }*/
+            for (int i = 1; i < model.ExistingReferrals.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ExistingReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+
+                        er = er + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                    }
+                }
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*if (model.ExistingReferrals.size() == 1) {
             for (int i = 0; i < model.ExistingReferrals.size(); i++) {
                 er = model.ExistingReferrals.get(i).getMobileNo() + "";
             }
@@ -58,9 +153,64 @@ public class ThankyouActivity extends AppCompatActivity {
             for (int i = 1; i < model.ExistingReferrals.size(); i++) {
                 er = er + " , " + model.ExistingReferrals.get(i).getMobileNo();
             }
-        }
+        }*/
+
+
         String vr = "";
         if (model.ValidReferrals.size() == 1) {
+            /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+                        eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    }
+                }
+
+            }*/
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
+            }
+        } else if (model.ValidReferrals.size() > 1) {
+            // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            {
+                if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                {
+                    er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    break;
+                }
+            }
+            /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
+                eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
+            }*/
+            for (int i = 1; i < model.ValidReferrals.size(); i++) {
+                for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+                {
+                    if( model.ValidReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
+                    {
+
+                        er = er + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                    }
+                }
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+       /* if (model.ValidReferrals.size() == 1) {
             for (int i = 0; i < model.ValidReferrals.size(); i++) {
                 vr = model.ValidReferrals.get(i).getMobileNo() + "";
             }
@@ -69,7 +219,7 @@ public class ThankyouActivity extends AppCompatActivity {
             for (int i = 1; i < model.ValidReferrals.size(); i++) {
                 vr = vr + " , " + model.ValidReferrals.get(i).getMobileNo();
             }
-        }
+        }*/
         String rftExistingGuestSingle = "";
         String rftExistingGuestMulti = "";
         if (model.ExistingGuests.size() == 1) {
