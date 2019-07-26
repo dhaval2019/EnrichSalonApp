@@ -73,8 +73,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     Button btnContinue;//by dhaval shah 7/7/19
     private static final int PERMISSION_REQUEST_CONTACT = 1;
     private SelectFriendAdapter adapter;
-    private List<SelectFriendModel> albumList = new ArrayList<>();
-    private List<SelectFriendModel> searchList = new ArrayList<>();
+    public static List<SelectFriendModel> albumList = new ArrayList<>();
+    public static List<SelectFriendModel> searchList = new ArrayList<>();
     private List<SelectFriendModel> selectedList = new ArrayList<>();
     @BindView(R.id.searchbar)
     EditText serachBar;
@@ -119,11 +119,23 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                         }
                     }
                 } else {
-                    for (int i = 0; i < searchList.size(); i++) {
-                        if (searchList.get(i).getIsSelect()) {
-                            selectedList.add(searchList.get(i));
-                        } else {
+                    for (int j = 0; j < albumList.size(); j++) {
+                        if (albumList.get(j).getIsSelect()) {
+                            selectedList.add(albumList.get(j));
+                        }
 
+
+                    }
+                    for(int m=0;m<searchList.size();m++)
+                    {
+                        if(searchList.get(m).getIsSelect())
+                        {
+                            if(selectedList.contains(searchList.get(m)))
+                            {
+
+                            }else {
+                                selectedList.add(searchList.get(m));
+                            }
                         }
                     }
                 }
@@ -191,6 +203,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             SelectFriendActivity.this.finish();
         }
     }
+
     @Override
     public void onBackPressed() {
 
@@ -198,6 +211,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         startActivity(intent);
         SelectFriendActivity.this.finish();
     }
+
     public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -297,7 +311,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     }
 
     private class LoadContacts extends AsyncTask<Void, Void, Void> {
-       // ProgressDialog pd;
+        // ProgressDialog pd;
 
 
         @Override
