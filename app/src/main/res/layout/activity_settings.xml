@@ -289,14 +289,14 @@
                             app:font_type="regular" />
                     </LinearLayout>
                 </LinearLayout>
-                <View
+               <!-- <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_1dp"
                     android:layout_marginTop="@dimen/dimen_15dp"
                     android:layout_marginBottom="@dimen/dimen_15dp"
                     android:background="#E0E0E0" />
 
-                <!-- Refer A Friend -->
+                &lt;!&ndash; Refer A Friend &ndash;&gt;
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -336,7 +336,7 @@
                         android:paddingLeft="@dimen/dimen_10dp"
                         android:paddingRight="@dimen/dimen_10dp"
                         android:src="@drawable/ic_more_vert_black_24dp" />
-                </RelativeLayout>
+                </RelativeLayout>-->
             </LinearLayout>
         </FrameLayout>
 
