@@ -38,8 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_profile_icon"
@@ -64,8 +64,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_profile_label"
                         android:layout_below="@+id/nav_profile_icon"
+                        android:layout_alignLeft="@+id/nav_profile_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -76,8 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_my_package_icon"
@@ -102,8 +102,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_my_package_label"
                         android:layout_below="@+id/nav_my_package_icon"
+                        android:layout_alignLeft="@+id/nav_my_package_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -114,8 +114,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_wallet_icon"
@@ -140,8 +140,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_wallet_label"
                         android:layout_below="@+id/nav_wallet_icon"
+                        android:layout_alignLeft="@+id/nav_wallet_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -152,8 +152,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_appointments_icon"
@@ -178,8 +178,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_appointments_label"
                         android:layout_below="@+id/nav_appointments_icon"
+                        android:layout_alignLeft="@+id/nav_appointments_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -190,8 +190,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
                     android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding"
                     android:visibility="gone">
 
                     <ImageView
@@ -216,37 +216,74 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_notification_label"
                         android:layout_below="@+id/nav_notification_icon"
+                        android:layout_alignLeft="@+id/nav_notification_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
 
                 <!-- SHARE -->
+                <!--   <RelativeLayout
+                       android:id="@+id/share_container"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal"
+                       android:paddingBottom="@dimen/nav_title_container_padding"
+                       android:paddingTop="@dimen/nav_title_container_padding">
+
+                       <ImageView
+                           android:id="@+id/nav_refer_icon"
+                           android:layout_width="30dp"
+                           android:layout_height="30dp"
+                           android:layout_centerVertical="true"
+                           android:src="@drawable/ic_share"
+                           android:tint="@color/white" />
+
+                       <com.enrich.salonapp.ui.views.CustomTextView
+                           android:id="@+id/nav_refer_label"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_centerVertical="true"
+                           android:layout_marginLeft="20dp"
+                           android:layout_toRightOf="@+id/nav_refer_icon"
+                           android:text="Share"
+                           android:textColor="@color/white"
+                           android:textSize="16sp"
+                           app:font_type="light" />
+
+                       <View
+                           android:layout_width="50dp"
+                           android:layout_height="1dp"
+                           android:layout_alignLeft="@+id/nav_refer_label"
+                           android:layout_below="@+id/nav_refer_icon"
+                           android:layout_marginTop="15dp"
+                           android:background="#e5e5e5" />
+                   </RelativeLayout>-->
+
                 <RelativeLayout
-                    android:id="@+id/share_container"
+                    android:id="@+id/refer_a_friend_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
-                        android:id="@+id/nav_refer_icon"
+                        android:id="@+id/nav_refer_a_friend_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_share"
+                        android:src="@drawable/add_friend"
                         android:tint="@color/white" />
 
                     <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/nav_refer_label"
+                        android:id="@+id/nav_refer_a_friend_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/nav_refer_icon"
-                        android:text="Share"
+                        android:layout_toRightOf="@id/nav_refer_a_friend_icon"
+                        android:text="Refer A Friend"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:font_type="light" />
@@ -254,11 +291,12 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_refer_label"
-                        android:layout_below="@+id/nav_refer_icon"
+                        android:layout_below="@id/nav_refer_a_friend_icon"
+                        android:layout_alignLeft="@id/nav_refer_a_friend_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
+
 
                 <!-- CONTACT US -->
                 <RelativeLayout
@@ -266,8 +304,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_contact_icon"
@@ -292,8 +330,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_contact_label"
                         android:layout_below="@+id/nav_contact_icon"
+                        android:layout_alignLeft="@+id/nav_contact_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -304,8 +342,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_rate_icon"
@@ -330,8 +368,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_rate_label"
                         android:layout_below="@+id/nav_rate_icon"
+                        android:layout_alignLeft="@+id/nav_rate_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
@@ -342,8 +380,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/nav_settings_icon"
@@ -368,51 +406,49 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/nav_settings_label"
                         android:layout_below="@+id/nav_settings_icon"
+                        android:layout_alignLeft="@+id/nav_settings_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
 
 
+                <!--  <RelativeLayout
+                      android:id="@+id/refer_a_friend_container"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:paddingBottom="@dimen/nav_title_container_padding"
+                      android:paddingTop="@dimen/nav_title_container_padding">
 
+                      <ImageView
+                          android:id="@+id/nav_refer_a_friend_icon"
+                          android:layout_width="30dp"
+                          android:layout_height="30dp"
+                          android:layout_centerVertical="true"
+                          android:src="@unchecked/add_friend"
+                          android:tint="@color/white" />
 
-              <!--  <RelativeLayout
-                    android:id="@+id/refer_a_friend_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                      <com.enrich.salonapp.ui.views.CustomTextView
+                          android:id="@+id/nav_refer_a_friend_label"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_centerVertical="true"
+                          android:layout_marginLeft="20dp"
+                          android:layout_toRightOf="@id/nav_refer_a_friend_icon"
+                          android:text="Refer A Friend"
+                          android:textColor="@color/white"
+                          android:textSize="16sp"
+                          app:font_type="light" />
 
-                    <ImageView
-                        android:id="@+id/nav_refer_a_friend_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerVertical="true"
-                        android:src="@unchecked/add_friend"
-                        android:tint="@color/white" />
-
-                    <com.enrich.salonapp.ui.views.CustomTextView
-                        android:id="@+id/nav_refer_a_friend_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/nav_refer_a_friend_icon"
-                        android:text="Refer A Friend"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        app:font_type="light" />
-
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="1dp"
-                        android:layout_alignLeft="@id/nav_refer_a_friend_label"
-                        android:layout_below="@id/nav_refer_a_friend_icon"
-                        android:layout_marginTop="15dp"
-                        android:background="#e5e5e5" />
-                </RelativeLayout>-->
+                      <View
+                          android:layout_width="50dp"
+                          android:layout_height="1dp"
+                          android:layout_alignLeft="@id/nav_refer_a_friend_label"
+                          android:layout_below="@id/nav_refer_a_friend_icon"
+                          android:layout_marginTop="15dp"
+                          android:background="#e5e5e5" />
+                  </RelativeLayout>-->
 
 
                 <!-- LOGOUT -->
@@ -421,8 +457,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/nav_title_container_padding"
-                    android:paddingTop="@dimen/nav_title_container_padding">
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
 
                     <ImageView
                         android:id="@+id/logout_icon"
@@ -447,8 +483,8 @@
                     <View
                         android:layout_width="50dp"
                         android:layout_height="1dp"
-                        android:layout_alignLeft="@+id/logout_label"
                         android:layout_below="@+id/logout_icon"
+                        android:layout_alignLeft="@+id/logout_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
                 </RelativeLayout>
