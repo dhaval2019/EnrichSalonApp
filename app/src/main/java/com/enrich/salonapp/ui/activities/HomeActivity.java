@@ -87,8 +87,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.contact_us_container)
     RelativeLayout contactUsContainer;
 
-    @BindView(R.id.share_container)
-    RelativeLayout shareContainer;
+  /*  @BindView(R.id.share_container)
+    RelativeLayout shareContainer;*/
 
     @BindView(R.id.rate_us_container)
     RelativeLayout rateUsContainer;
@@ -116,8 +116,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
 
 
-    /*@BindView(R.id.refer_a_friend_container)
-    RelativeLayout referAFriendContainer;//by dhaval shah 6/7/19*/
+    @BindView(R.id.refer_a_friend_container)
+    RelativeLayout referAFriendContainer;//by dhaval shah 6/7/19
 
     CenterDetailModel centerDetailModel;
 
@@ -237,7 +237,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        shareContainer.setOnClickListener(new View.OnClickListener() {
+      /*  shareContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
@@ -245,7 +245,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 intent.putExtra(android.content.Intent.EXTRA_TEXT, "It’s easier than ever to book your appointments with us. Intall the Enrich app and get done in a jiffy! https://play.google.com/store/apps/details?id=com.enrich.salonapp");
                 startActivity(Intent.createChooser(intent, "Share"));
             }
-        });
+        });*/
 
         rateUsContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,13 +279,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(intent);
             }
         });
-       /* referAFriendContainer.setOnClickListener(new View.OnClickListener() {
+        referAFriendContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, ReferAFriendActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
         addFragment(HomeFragment.getInstance(drawer));
 
         DataRepository dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
