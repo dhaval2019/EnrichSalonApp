@@ -104,8 +104,8 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     Tracker mTracker;
 
 
-    @BindView(R.id.refer_a_friend_label_container)//dhaval shah 17-7-19
-    LinearLayout referAFriendContainer;
+    /*@BindView(R.id.refer_a_friend_label_container)//dhaval shah 17-7-19
+    LinearLayout referAFriendContainer;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,13 +214,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             }
         });
 
-        referAFriendContainer.setOnClickListener(new View.OnClickListener() {
+       /* referAFriendContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, ReferAFriendActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         forgotPasswordClickHere.setOnClickListener(new View.OnClickListener() {
             @Override
