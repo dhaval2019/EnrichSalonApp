@@ -59,7 +59,10 @@ import com.enrich.salonapp.util.threads.ThreadExecutor;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,11 +74,13 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     CardView cardView;
     @BindView(R.id.continue_button)
     Button btnContinue;//by dhaval shah 7/7/19
+
+    public static Button btnRefresh;//by dhaval shah 30/7/19
     private static final int PERMISSION_REQUEST_CONTACT = 1;
     private SelectFriendAdapter adapter;
-    public static List<SelectFriendModel> albumList = new ArrayList<>();
-    public static List<SelectFriendModel> searchList = new ArrayList<>();
-    public static List<SelectFriendModel> selectedList = new ArrayList<>();
+    public static ArrayList<SelectFriendModel> albumList = new ArrayList<>();
+    public static ArrayList<SelectFriendModel> searchList = new ArrayList<>();
+    public static ArrayList<SelectFriendModel> selectedList = new ArrayList<>();
     @BindView(R.id.searchbar)
     EditText serachBar;
     private FriendPresenter friendPresenter;
@@ -87,13 +92,17 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     int offset = 10;
     private Cursor cursor;
     ContentResolver contentResolver;
+    public static int isFirstTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
+        btnRefresh = (Button) findViewById(R.id.refresh_button);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         friendPresenter = new FriendPresenter(this, dataRepository);
         tvClose.setOnClickListener(new View.OnClickListener() {
@@ -106,11 +115,26 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             }
         });
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchList.clear();
+                albumList.clear();
+                index = 0;
+                size = 10;
+                offset = 10;
+                new LoadContacts().execute();
+
+
+            }
+        });
+
+
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedList.clear();
-                if (searchList.isEmpty()) {
+                if (searchList.isEmpty()) {// I am putting this here since we must take latest selected contacts
                     for (int i = 0; i < albumList.size(); i++) {
                         if (albumList.get(i).getIsSelect()) {
                             selectedList.add(albumList.get(i));
@@ -126,14 +150,11 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
 
                     }
-                    for(int m=0;m<searchList.size();m++)
-                    {
-                        if(searchList.get(m).getIsSelect())
-                        {
-                            if(selectedList.contains(searchList.get(m)))
-                            {
+                    for (int m = 0; m < searchList.size(); m++) {
+                        if (searchList.get(m).getIsSelect()) {
+                            if (selectedList.contains(searchList.get(m))) {
 
-                            }else {
+                            } else {
                                 selectedList.add(searchList.get(m));
                             }
                         }
@@ -155,7 +176,17 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             }
         });
         searchList.clear();
-        askForContactPermission();
+        if (isFirstTime == 0) {
+            askForContactPermission();
+            isFirstTime = 1;
+        } else {
+            adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setAdapter(adapter);
+        }
         Animation animation;
         animation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.bottom_to_original);
@@ -190,6 +221,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             }
         });
     }
+
 
     @Override
     public void friendReferred(FriendResponseModel model) {
@@ -309,7 +341,24 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             // permissions this app might request
         }
     }
+    public  ArrayList<SelectFriendModel> removeDuplicates(ArrayList<com.enrich.salonapp.data.model.SelectFriendModel> param1)
+    {
 
+        LinkedHashSet<SelectFriendModel> lhs = new LinkedHashSet<SelectFriendModel>();
+
+        /* Adding ArrayList elements to the LinkedHashSet
+         * in order to remove the duplicate elements and
+         * to preserve the insertion order.
+         */
+        lhs.addAll(param1);
+
+        // Removing ArrayList elements
+        param1.clear();
+
+        // Adding LinkedHashSet elements to the ArrayList
+        param1.addAll(lhs);
+        return param1;
+    }
     private class LoadContacts extends AsyncTask<Void, Void, Void> {
         // ProgressDialog pd;
 
@@ -343,7 +392,10 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                             info.setMobileNo(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
 
                             info.setPhoto(pURI);
-                            albumList.add(info);
+                            if (!albumList.contains(info)) {
+                                albumList.add(info);
+                            }
+
                         }
 
                         cursorInfo.close();
@@ -362,7 +414,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         protected void onPostExecute(Void result) {
 
             super.onPostExecute(result);
-
+            albumList=removeDuplicates(albumList);
             /* if (index == 0) {*/
             adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
 
