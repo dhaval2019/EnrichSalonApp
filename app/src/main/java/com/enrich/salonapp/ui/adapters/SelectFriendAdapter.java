@@ -100,20 +100,26 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
                         album.setIsSelect(false);
                     }
                 }
+                if (checkAtleastOneSelected()) {
+                    SelectFriendActivity.btnRefresh.setVisibility(View.GONE);
+
+
+                } else {
+                    SelectFriendActivity.btnRefresh.setVisibility(View.VISIBLE);
+                }
             }
         });
 
     }
 
-    public boolean checkMaxLimit() {
+    public boolean checkAtleastOneSelected() {
         ArrayList<SelectFriendModel> tempList = new ArrayList<SelectFriendModel>();
         int countermax = 0;
         tempList.addAll(SelectFriendActivity.albumList);
         for (SelectFriendModel item2 : SelectFriendActivity.searchList) {
             if (tempList.contains(item2)) {
 
-            } else
-            {
+            } else {
                 tempList.add(item2);
             }
 
@@ -128,6 +134,31 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
 
         }
 
+
+        return countermax >= 1;
+    }
+
+    public boolean checkMaxLimit() {
+        ArrayList<SelectFriendModel> tempList = new ArrayList<SelectFriendModel>();
+        int countermax = 0;
+        tempList.addAll(SelectFriendActivity.albumList);
+        for (SelectFriendModel item2 : SelectFriendActivity.searchList) {
+            if (tempList.contains(item2)) {
+
+            } else {
+                tempList.add(item2);
+            }
+
+
+        }
+        for (SelectFriendModel item1 : tempList) {
+            if (item1.getIsSelect()) {
+                countermax++;
+
+            }
+
+
+        }
 
 
         return countermax >= 3;
