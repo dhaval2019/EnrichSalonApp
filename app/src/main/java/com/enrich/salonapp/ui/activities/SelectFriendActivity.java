@@ -390,7 +390,12 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                         while (cursorInfo.moveToNext()) {
                             SelectFriendModel info = new SelectFriendModel();
                             info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                            info.setMobileNo(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+
+                            String mobNo=cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            mobNo=    mobNo.replaceAll("-", "");
+                            mobNo=    mobNo.replaceAll("\\s+", "");
+                            mobNo=  mobNo.replaceAll(" ", "");
+                            info.setMobileNo(mobNo);
 
                             info.setPhoto(pURI);
                             if (!albumList.contains(info)) {
