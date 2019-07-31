@@ -181,6 +181,10 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             askForContactPermission();
             isFirstTime = 1;
         } else {
+            for(int m=0;m<albumList.size();m++)
+            {
+                albumList.get(m).setIsSelect(false);
+            }
             adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
