@@ -68,7 +68,18 @@ public class SelectFriendModel implements Parcelable {
 
 
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        SelectFriendModel myObject = (SelectFriendModel) o;
+
+        if (!(myObject.getMobNo().replaceAll("\\s+", "")).equalsIgnoreCase(getMobNo().replaceAll("\\s+", ""))) return false;
+       // if (!myObject.getName().equalsIgnoreCase(getName())) return false;
+
+        return true;
+    }
     @Override
     public int describeContents() {
         return 0;
