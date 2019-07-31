@@ -1,239 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.enrich.salonapp.ui.activities.ReferAFriendActivity"
+    >
+
+    <!--  <LinearLayout
+          android:id="@+id/backlayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/dimen_35dp"
+          android:layout_marginLeft="@dimen/dimen_35dp"
+          android:layout_marginTop="@dimen/dimen_10dp"
+          android:gravity="left|center_vertical"
+          android:orientation="horizontal"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+-->
+    <ImageView
+        android:id="@+id/backarrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<com.enrich.salonapp.ui.views.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dimen_5dp"
+        android:gravity="center"
+        android:text="@string/txt_back"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_18sp"
+        app:font_type="bold" />
+</LinearLayout>
+-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dimen_35dp"
+        android:layout_marginLeft="@dimen/dimen_35dp"
+        android:layout_marginTop="@dimen/dimen_40dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/refer_a_friend_artwork"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dimen_43dp"
+        android:layout_marginLeft="@dimen/dimen_43dp"
+        android:layout_marginTop="@dimen/dimen_175dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/women_announcement_artwork"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.enrich.salonapp.ui.activities.ReferAFriendActivity"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_35dp"
+        android:layout_marginLeft="@dimen/dimen_35dp"
+        android:layout_marginTop="@dimen/dimen_435dp"
+        android:layout_marginEnd="@dimen/dimen_35dp"
+        android:layout_marginRight="@dimen/dimen_35dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-      <!--  <LinearLayout
-            android:id="@+id/backlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_35dp"
-            android:layout_marginLeft="@dimen/dimen_35dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
--->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_arrow_back"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:id="@+id/backarrow"/>
-
-            <!--<com.enrich.salonapp.ui.views.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dimen_5dp"
-                android:gravity="center"
-                android:text="@string/txt_back"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_18sp"
-                app:font_type="bold" />
-        </LinearLayout>
--->
-        <ImageView
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/tvfrnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/dimen_35dp"
-            android:layout_marginLeft="@dimen/dimen_35dp"
-            android:layout_marginTop="@dimen/dimen_40dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/refer_a_friend_artwork"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="left|center_vertical"
 
-        <ImageView
+            android:gravity="center_vertical|left"
+
+            android:text="@string/txt_refer_a_friend_intro_page"
+            android:textColor="@color/violet_frnd_text"
+            android:textSize="@dimen/dimen_16sp"
+
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/tvfrndlink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/dimen_43dp"
-            android:layout_marginLeft="@dimen/dimen_43dp"
-            android:layout_marginTop="@dimen/dimen_175dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/women_announcement_artwork"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:gravity="center_vertical|left"
 
-        <LinearLayout
+            android:text="@string/txt_refer_a_frnd_intro_link"
+            android:textColor="@color/dark_gold"
+            android:textSize="@dimen/dimen_14sp"
+
+            app:font_type="regular" />
+    </LinearLayout>
+
+    <com.enrich.salonapp.ui.views.CustomButton
+        android:id="@+id/invite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_30dp"
+        android:background="@drawable/rounded_corner_gold_btn"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dimen_35dp"
+        android:paddingTop="@dimen/dimen_15dp"
+        android:paddingRight="@dimen/dimen_35dp"
+        android:paddingBottom="@dimen/dimen_15dp"
+        android:text="@string/txt_send_invite"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dimen_18sp"
+        app:font_type="regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
+
+    <LinearLayout
+        android:id="@+id/sign_in_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_30dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.enrich.salonapp.ui.views.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_35dp"
-            android:layout_marginLeft="@dimen/dimen_35dp"
-            android:layout_marginTop="@dimen/dimen_435dp"
-            android:layout_marginEnd="@dimen/dimen_35dp"
-            android:layout_marginRight="@dimen/dimen_35dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/tvfrnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-
-                android:gravity="center_vertical|left"
-
-                android:text="@string/txt_refer_a_friend_intro_page"
-                android:textColor="@color/violet_frnd_text"
-                android:textSize="@dimen/dimen_16sp"
-
-                app:font_type="regular" />
-
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/tvfrndlink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:gravity="center_vertical|left"
-
-                android:text="@string/txt_refer_a_frnd_intro_link"
-                android:textColor="@color/dark_gold"
-                android:textSize="@dimen/dimen_14sp"
-
-                app:font_type="regular" />
-        </LinearLayout>
+            android:gravity="center"
+            android:text="You are not logged in."
+            android:textColor="@color/violet_frnd_text"
+            android:textSize="@dimen/dimen_18sp"
+            app:font_type="light"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:visibility="gone"/>
 
         <com.enrich.salonapp.ui.views.CustomButton
-            android:id="@+id/invite_button"
+            android:id="@+id/settings_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_30dp"
-            android:background="@drawable/rounded_corner_gold_btn"
-            android:gravity="center"
-            android:paddingLeft="@dimen/dimen_35dp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:paddingRight="@dimen/dimen_35dp"
-            android:paddingBottom="@dimen/dimen_15dp"
-            android:text="@string/txt_send_invite"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/dimen_18sp"
-            app:font_type="regular"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:background="@drawable/gold_bg_gradient_curved"
+            android:text="Login"
+            android:textColor="@color/white"
+            app:font_type="semi_bold" />
+    </LinearLayout>
 
-            />
+    <RelativeLayout
+        android:id="@+id/popuplayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_50dp"
+        android:visibility="gone"
+
+        app:layout_constraintBaseline_toBaselineOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/invite_button"
+        app:layout_constraintRight_toRightOf="@id/invite_button">
 
         <RelativeLayout
-            android:id="@+id/popuplayout"
+            android:id="@+id/headinglayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@android:color/white"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dimen_50dp"
-            android:visibility="gone"
-
-            app:layout_constraintBaseline_toBaselineOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/invite_button"
-            app:layout_constraintRight_toRightOf="@id/invite_button">
-
-            <RelativeLayout
-                android:id="@+id/headinglayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/tvpopuptextheading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dimen_15dp"
-                    android:text="@string/txt_refer_a_frnd_intro_link"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/dimen_20sp"
-                    app:font_type="regular"
-
-                    />
-
-                <com.enrich.salonapp.ui.views.CustomTextView
-                    android:id="@+id/tvclose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_15dp"
-                    android:text="X"
-                    android:textColor="@color/dark_gold"
-                    android:textSize="@dimen/dimen_30sp"
-                    app:font_type="regular"
-
-                    />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/border"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_1dp"
-                android:layout_below="@id/headinglayout"
-
-                android:layout_marginTop="@dimen/dimen_10dp"
-
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:background="@color/dark_gold" />
+            android:layout_alignParentTop="true">
 
             <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/tvpopuptext1"
+                android:id="@+id/tvpopuptextheading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/border"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_5dp"
-                android:layout_marginRight="@dimen/dimen_15dp"
-                android:gravity="left|top"
-                android:text="@string/txt_refer_a_frnd_popup_txt1"
-                app:font_type="regular" />
+                android:text="@string/txt_refer_a_frnd_intro_link"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/dimen_20sp"
+                app:font_type="regular"
+
+                />
 
             <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/tvpopuptext2"
+                android:id="@+id/tvclose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvpopuptext1"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dimen_15dp"
-                android:gravity="left|top"
-                android:text="@string/txt_refer_a_frnd_popup_txt2"
-                app:font_type="regular" />
+                android:text="X"
+                android:textColor="@color/dark_gold"
+                android:textSize="@dimen/dimen_30sp"
+                app:font_type="regular"
 
-            <com.enrich.salonapp.ui.views.CustomTextView
-                android:id="@+id/tvpopuptext3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvpopuptext2"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/dimen_15dp"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_marginRight="@dimen/dimen_15dp"
-                android:gravity="left|top"
-                android:text="@string/txt_refer_a_frnd_popup_txt3"
-                app:font_type="regular" />
+                />
         </RelativeLayout>
 
-    </android.support.constraint.ConstraintLayout>
+        <View
+            android:id="@+id/border"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_below="@id/headinglayout"
+
+            android:layout_marginTop="@dimen/dimen_10dp"
+
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:background="@color/dark_gold" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/tvpopuptext1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/border"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:gravity="left|top"
+            android:text="@string/txt_refer_a_frnd_popup_txt1"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/tvpopuptext2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvpopuptext1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:gravity="left|top"
+            android:text="@string/txt_refer_a_frnd_popup_txt2"
+            app:font_type="regular" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:id="@+id/tvpopuptext3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvpopuptext2"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginRight="@dimen/dimen_15dp"
+            android:gravity="left|top"
+            android:text="@string/txt_refer_a_frnd_popup_txt3"
+            app:font_type="regular" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
