@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blur_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -41,6 +42,7 @@
                     app:font_type="regular" />
 
                 <com.enrich.salonapp.ui.views.CustomTextView
+                    android:id="@+id/tvclose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -51,8 +53,7 @@
                     android:text="X"
                     android:textColor="@color/dark_gold"
                     android:textSize="@dimen/dimen_30sp"
-                    app:font_type="regular"
-                    android:id="@+id/tvclose"/>
+                    app:font_type="regular" />
 
             </RelativeLayout>
 
@@ -90,36 +91,64 @@
 
                 />
 
-            <com.enrich.salonapp.ui.views.CustomButton
-                android:id="@+id/continue_button"
+            <LinearLayout
+                android:id="@+id/bottomlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/dimen_40dp"
-                android:layout_marginRight="@dimen/dimen_40dp"
+                android:layout_marginLeft="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_40dp"
-                android:background="@drawable/rounded_corner_gold_btn"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dimen_35dp"
-                android:paddingTop="@dimen/dimen_15dp"
-                android:paddingRight="@dimen/dimen_35dp"
-                android:paddingBottom="@dimen/dimen_15dp"
-                android:text="@string/txt_continue"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/dimen_18sp"
-                app:font_type="regular"
+                android:layout_marginRight="@dimen/dimen_40dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:orientation="horizontal">
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/refresh_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/rounded_corner_gold_btn"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_25dp"
+                    android:paddingTop="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_25dp"
+                    android:paddingBottom="@dimen/dimen_15dp"
+                    android:text="@string/txt_refresh"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/dimen_18sp"
+                    app:font_type="regular"
 
 
-                />
+                    />
+
+                <com.enrich.salonapp.ui.views.CustomButton
+                    android:id="@+id/continue_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/rounded_corner_gold_btn"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_25dp"
+                    android:paddingTop="@dimen/dimen_15dp"
+                    android:paddingRight="@dimen/dimen_25dp"
+                    android:paddingBottom="@dimen/dimen_15dp"
+                    android:text="@string/txt_continue"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/dimen_18sp"
+                    app:font_type="regular"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+
+                    />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/continue_button"
+                android:layout_above="@id/bottomlayout"
                 android:layout_below="@id/searchbar"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:clipToPadding="false"
