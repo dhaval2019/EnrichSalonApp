@@ -336,6 +336,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
                 } else {
                     Toast.makeText(this, "No permission for contacts", Toast.LENGTH_LONG).show();
+                    SelectFriendActivity.this.finish();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
