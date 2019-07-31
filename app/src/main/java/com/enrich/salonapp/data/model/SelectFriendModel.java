@@ -61,12 +61,12 @@ public class SelectFriendModel implements Parcelable {
         cbSelect = (boolean) in.readValue(null);
 
     }
-    public String phoeNumberWithOutCountryCode(String phoneNumberWithCountryCode) {
+  /*  public String phoeNumberWithOutCountryCode(String phoneNumberWithCountryCode) {
         Pattern complie = Pattern.compile(" ");
         String[] phonenUmber = complie.split(phoneNumberWithCountryCode);
         //Log.e("number is", phonenUmber[1]);
         return phonenUmber[1];
-    }
+    }*/
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(photo);
@@ -84,9 +84,9 @@ public class SelectFriendModel implements Parcelable {
         SelectFriendModel myObject = (SelectFriendModel) o;
 
 
-        if (!(myObject.getMobNo().replaceAll("-", "")).equalsIgnoreCase(getMobNo().replaceAll("-", ""))) return false;
-        if (!(myObject.getMobNo().replaceAll("\\s+", "")).equalsIgnoreCase(getMobNo().replaceAll("\\s+", ""))) return false;
-        if (!(phoeNumberWithOutCountryCode(myObject.getMobNo())).equalsIgnoreCase(phoeNumberWithOutCountryCode(getMobNo()))) return false;
+        if (!(myObject.getMobNo()).equalsIgnoreCase(getMobNo())) return false;
+
+      //  if (!(phoeNumberWithOutCountryCode(myObject.getMobNo())).equalsIgnoreCase(phoeNumberWithOutCountryCode(getMobNo()))) return false;
        // if (!myObject.getName().equalsIgnoreCase(getName())) return false;
 
         return true;
