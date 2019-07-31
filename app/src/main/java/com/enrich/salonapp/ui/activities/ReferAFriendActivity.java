@@ -13,12 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
+import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReferAFriendActivity extends BaseActivity {
+public class ReferAFriendActivity extends BaseActivity implements LoginListener {
     @BindView(R.id.invite_button)
     Button btnInvite;//by dhaval shah 7/7/19
     @BindView(R.id.tvfrndlink)
@@ -29,13 +32,33 @@ public class ReferAFriendActivity extends BaseActivity {
     TextView txtClose;
     @BindView(R.id.backarrow)
     ImageView ivBack;
+    @BindView(R.id.sign_in_container)
+    LinearLayout signInContainer;
+    @BindView(R.id.settings_login_button)
+    Button settingsLoginButton;
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refer_afriend);
         ButterKnife.bind(this);
+
+        if (EnrichUtils.getUserData(ReferAFriendActivity.this) != null) {
+            btnInvite.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
+        } else {
+            btnInvite.setVisibility(View.GONE);
+            signInContainer.setVisibility(View.VISIBLE);
+
+            settingsLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginBottomSheetFragment.getInstance(ReferAFriendActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                }
+            });
+        }
         popupLayout.setVisibility(View.GONE);
-        btnInvite.setVisibility(View.VISIBLE);
+       // btnInvite.setVisibility(View.VISIBLE);
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,14 +86,40 @@ public class ReferAFriendActivity extends BaseActivity {
                         R.anim.bottom_to_original);
                 popupLayout.setAnimation(animation);
                 popupLayout.bringToFront();
-                btnInvite.setVisibility(View.GONE);
+                if (EnrichUtils.getUserData(ReferAFriendActivity.this) != null) {
+                    btnInvite.setVisibility(View.VISIBLE);
+                    signInContainer.setVisibility(View.GONE);
+                } else {
+                    btnInvite.setVisibility(View.GONE);
+                    signInContainer.setVisibility(View.VISIBLE);
+
+                    settingsLoginButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LoginBottomSheetFragment.getInstance(ReferAFriendActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                        }
+                    });
+                }
             }
         });
         txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupLayout.setVisibility(View.GONE);
-                btnInvite.setVisibility(View.VISIBLE);
+                if (EnrichUtils.getUserData(ReferAFriendActivity.this) != null) {
+                    btnInvite.setVisibility(View.VISIBLE);
+                    signInContainer.setVisibility(View.GONE);
+                } else {
+                    btnInvite.setVisibility(View.GONE);
+                    signInContainer.setVisibility(View.VISIBLE);
+
+                    settingsLoginButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LoginBottomSheetFragment.getInstance(ReferAFriendActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
+                        }
+                    });
+                }
             }
         });
 
@@ -80,5 +129,13 @@ public class ReferAFriendActivity extends BaseActivity {
 
 
         ReferAFriendActivity.this.finish();
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        if (EnrichUtils.getUserData(this) != null) {
+            btnInvite.setVisibility(View.VISIBLE);
+            signInContainer.setVisibility(View.GONE);
+        }
     }
 }
