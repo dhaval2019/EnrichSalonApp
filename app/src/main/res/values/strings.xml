@@ -121,7 +121,7 @@
     <string name="facebook_app_id">2253022791599567</string>
     <string name="fb_login_protocol_scheme">fb2253022791599567</string>
     <string name="semgent_write_key">vlYWHeIjxVNaZCyRHlxsyY47xjAdKddx</string>
-
+    <string name="txt_refresh">Refresh</string>
     <string name="rs_symbol">\u20B9</string>
     <string name="txt_confirm_order">Confirm Order</string>
     <string name="txt_pay_at_salon">Pay at Salon</string>
