@@ -121,7 +121,7 @@
     <string name="facebook_app_id">2253022791599567</string>
     <string name="fb_login_protocol_scheme">fb2253022791599567</string>
     <string name="semgent_write_key">vlYWHeIjxVNaZCyRHlxsyY47xjAdKddx</string>
-
+    <string name="txt_refresh">Refresh</string>
     <string name="rs_symbol">\u20B9</string>
     <string name="txt_confirm_order">Confirm Order</string>
     <string name="txt_pay_at_salon">Pay at Salon</string>
@@ -133,15 +133,15 @@
     <string name="txt_continue_shopping">Continue shopping</string>
     <string name="txt_refer_a_friend_intro_page">Do you like Enrich services? Do you think your friends would like us too? Refer them and get rewarded for it!</string>
     <string name="txt_refer_a_frnd_intro_link">How this works?</string>
-    <string name="txt_refer_a_frnd_popup_txt1">Select three friends or family whom you want to refer, and tap on \'Continue\'.
+    <string name="txt_refer_a_frnd_popup_txt1">Select three friends or family whom you want to refer, and tap on \'Continue\'. If your selection is valid, you will be allowed to proceed.
 
 
 </string>
-    <string name="txt_refer_a_frnd_popup_txt2">If your selection is valid, you will get 250 points, and your referred guest will get 50 points, in your respective Enrich accounts.
+    <string name="txt_refer_a_frnd_popup_txt2">Selection is valid if the guest is not an existing customer, and if the guest has not already been referred by someone else.
 
 
 </string>
-    <string name="txt_refer_a_frnd_popup_txt3">Selection is valid if the guest is not an existing customer, and if the guest has not already been referred by someone else.
+    <string name="txt_refer_a_frnd_popup_txt3">If the referred guest downloads the app and completes a booking and visit, you will get 250 points, and your referred guest will get 50 points, in your respective Enrich accounts.
 
 </string>
 </resources>
