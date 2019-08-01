@@ -347,7 +347,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             // permissions this app might request
         }
     }
-    public  ArrayList<SelectFriendModel> removeDuplicates(ArrayList<com.enrich.salonapp.data.model.SelectFriendModel> param1)
+    public  ArrayList<SelectFriendModel> removeDuplicates(ArrayList<SelectFriendModel> param1)
     {
 
         LinkedHashSet<SelectFriendModel> lhs = new LinkedHashSet<SelectFriendModel>();
