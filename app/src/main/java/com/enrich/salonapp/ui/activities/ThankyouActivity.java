@@ -1,14 +1,22 @@
 package com.enrich.salonapp.ui.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.FBEventModel;
 import com.enrich.salonapp.data.model.FriendResponseModel;
+import com.enrich.salonapp.data.model.Referal;
+import com.enrich.salonapp.util.EnrichUtils;
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,14 +37,15 @@ public class ThankyouActivity extends AppCompatActivity {
         btnContinueShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ThankyouActivity.this,HomeActivity.class);
+                Intent intent = new Intent(ThankyouActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
 
             }
         });
-
+        FBEventModel fbEventModel= new FBEventModel();
+        ArrayList<Referal> referalArrayList = new ArrayList<Referal>();
         String eg = "";
         if (model.ExistingGuests.size() == 1) {
             /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
@@ -49,7 +58,7 @@ public class ThankyouActivity extends AppCompatActivity {
                 }
 
             }*/
-            for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
+            for(int j = 0; j< SelectFriendActivity.selectedList.size(); j++)
             {
                 if( model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                 {
@@ -173,6 +182,10 @@ public class ThankyouActivity extends AppCompatActivity {
                 if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                 {
                     vr = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    Referal referal = new Referal();
+                    referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                    referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
+                    referalArrayList.add(referal);
                     break;
                 }
             }
@@ -183,6 +196,10 @@ public class ThankyouActivity extends AppCompatActivity {
                 if( model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo()))
                 {
                     vr = SelectFriendActivity.selectedList.get(j).getName() + "";
+                    Referal referal = new Referal();
+                    referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                    referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
+                    referalArrayList.add(referal);
                     break;
                 }
             }
@@ -196,6 +213,10 @@ public class ThankyouActivity extends AppCompatActivity {
                     {
 
                         vr = vr + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                        Referal referal = new Referal();
+                        referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                        referal.setReferalContactNo(SelectFriendActivity.selectedList.get(j).getMobNo());
+                        referalArrayList.add(referal);
                     }
                 }
 
@@ -286,7 +307,11 @@ public class ThankyouActivity extends AppCompatActivity {
                 tvThankYou.setText(rftExistingReferralMulti);
             }
         }
-
+        fbEventModel.setReferalArrayList(referalArrayList);
+        fbEventModel.setStoreName(EnrichUtils.getHomeStore(this).Name);
+        fbEventModel.setUserName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+        fbEventModel.setUserPhoneNo( EnrichUtils.getUserData(this).MobileNumber);
+        logFriendReferred(fbEventModel);
 
     }
     @Override
@@ -295,5 +320,12 @@ public class ThankyouActivity extends AppCompatActivity {
         Intent intent = new Intent(ThankyouActivity.this, SelectFriendActivity.class);
         startActivity(intent);
         ThankyouActivity.this.finish();
+    }
+    private void logFriendReferred(FBEventModel model) {
+        // FACEBOOK - AppEvents
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, EnrichUtils.newGson().toJson(model));
+        Log.e("friend", EnrichUtils.newGson().toJson(model));
+        AppEventsLogger.newLogger(this).logEvent("ReferAFriend",params);
     }
 }
