@@ -276,7 +276,7 @@ public class ThankyouActivity extends AppCompatActivity {
 
         if (model.ExistingGuests.size() == 1) {
             if (bvr) {
-                tvThankYou.append(" "+rftExistingGuestSingle);
+                tvThankYou.append("\n"+rftExistingGuestSingle);
                 beg = true;
             } else {
                 tvThankYou.setText(rftExistingGuestSingle);
@@ -285,7 +285,7 @@ public class ThankyouActivity extends AppCompatActivity {
         }else
         if (model.ExistingGuests.size() > 1) {
             if (bvr) {
-                tvThankYou.append(" "+rftExistingGuestMulti);
+                tvThankYou.append("\n"+rftExistingGuestMulti);
                 beg = true;
             } else {
                 tvThankYou.setText(rftExistingGuestMulti);
@@ -295,14 +295,14 @@ public class ThankyouActivity extends AppCompatActivity {
 
         if (model.ExistingReferrals.size() == 1) {
             if ((bvr) || (beg)) {
-                tvThankYou.append(" "+rftExistingReferralSingle);
+                tvThankYou.append("\n"+rftExistingReferralSingle);
             } else {
                 tvThankYou.setText(rftExistingReferralSingle);
             }
         }else
         if (model.ExistingReferrals.size() > 1) {
             if ((bvr) || (beg)) {
-                tvThankYou.append(" "+rftExistingReferralMulti);
+                tvThankYou.append("\n"+rftExistingReferralMulti);
             } else {
                 tvThankYou.setText(rftExistingReferralMulti);
             }
