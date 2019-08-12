@@ -2,7 +2,9 @@ package com.enrich.salonapp.ui.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -14,10 +16,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -32,6 +37,7 @@ import com.enrich.salonapp.data.model.AuthenticationRequestModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.data.model.RegisterFCMRequestModel;
 import com.enrich.salonapp.data.model.RegisterFCMResponseModel;
+import com.enrich.salonapp.data.model.SelectFriendModel;
 import com.enrich.salonapp.di.Injection;
 import com.enrich.salonapp.ui.contracts.AppUpdateContract;
 import com.enrich.salonapp.ui.contracts.AuthenticationTokenContract;
@@ -46,6 +52,7 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.GpsTracker;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.supertoast.utils.HelloService;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 import com.facebook.appevents.FacebookUninstallTracker;
@@ -75,6 +82,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -121,10 +129,11 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationClient;
+    public static ArrayList<SelectFriendModel> albumList = new ArrayList<>();
 
 //    private int callToAction;
 //    private OfferModel offerModel;
-
+    private static final int PERMISSION_REQUEST_CONTACT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +176,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
         googleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
         googleApiClient.connect();
-        displayLocationSettingsRequest();
+        askForContactPermission();
+
 
         updateProgressStatus("", false);
 
@@ -181,6 +191,92 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                     }
                 }
         );
+    }
+    public void askForContactPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_CONTACTS)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Contacts access needed");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setMessage("please confirm Contacts access");//TODO put real question
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @TargetApi(Build.VERSION_CODES.M)
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            requestPermissions(
+                                    new String[]
+                                            {Manifest.permission.READ_CONTACTS}
+                                    , PERMISSION_REQUEST_CONTACT);
+                        }
+                    });
+                    builder.show();
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+
+                    // No explanation needed, we can request the permission.
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_CONTACTS},
+                            PERMISSION_REQUEST_CONTACT);
+
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            } else {
+
+                startService(new Intent(this,HelloService.class));
+
+                displayLocationSettingsRequest();
+            }
+        } else {
+
+            startService(new Intent(this,HelloService.class));
+            displayLocationSettingsRequest();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        switch (requestCode) {
+
+            case PERMISSION_REQUEST_CONTACT: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+
+
+                    startService(new Intent(this, HelloService.class));
+                    displayLocationSettingsRequest();
+
+                } else {
+                    Toast.makeText(this, "No permission for contacts", Toast.LENGTH_LONG).show();
+                    displayLocationSettingsRequest();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            default:
+                EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+                break;
+
+
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     private void getAppUpdate() {
@@ -391,11 +487,11 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         }
     }
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
