@@ -5,11 +5,13 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +57,7 @@ import com.enrich.salonapp.ui.presenters.AddressPresenter;
 import com.enrich.salonapp.ui.presenters.FriendPresenter;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.enrich.salonapp.util.supertoast.utils.HelloService;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
 
@@ -75,10 +79,10 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     @BindView(R.id.continue_button)
     Button btnContinue;//by dhaval shah 7/7/19
 
-    public static Button btnRefresh;//by dhaval shah 30/7/19
+   // public static Button btnRefresh;//by dhaval shah 30/7/19
     private static final int PERMISSION_REQUEST_CONTACT = 1;
-    private SelectFriendAdapter adapter;
-    public static ArrayList<SelectFriendModel> albumList = new ArrayList<>();
+    private   SelectFriendAdapter adapter;
+    //public static ArrayList<SelectFriendModel> albumList = new ArrayList<>();
     public static ArrayList<SelectFriendModel> searchList = new ArrayList<>();
     public static ArrayList<SelectFriendModel> selectedList = new ArrayList<>();
     @BindView(R.id.searchbar)
@@ -92,7 +96,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     int offset = 10;
     private Cursor cursor;
     ContentResolver contentResolver;
-    public static int isFirstTime = 0;
+    //public static int isFirstTime = 0;
 
     //
     @Override
@@ -100,7 +104,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
-        btnRefresh = (Button) findViewById(R.id.refresh_button);
+       // btnRefresh = (Button) findViewById(R.id.refresh_button);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
@@ -116,37 +120,39 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             }
         });
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
+       /* btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchList.clear();
+              *//*  searchList.clear();
                 albumList.clear();
                 index = 0;
                 size = 10;
                 offset = 10;
-                new LoadContacts().execute();
+                new LoadContacts().execute();*//*
 
 
             }
-        });
+        });*/
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("list-updated"));
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedList.clear();
                 if (searchList.isEmpty()) {// I am putting this here since we must take latest selected contacts
-                    for (int i = 0; i < albumList.size(); i++) {
-                        if (albumList.get(i).getIsSelect()) {
-                            selectedList.add(albumList.get(i));
+                    for (int i = 0; i < SplashActivity.albumList.size(); i++) {
+                        if ( SplashActivity.albumList.get(i).getIsSelect()) {
+                            selectedList.add( SplashActivity.albumList.get(i));
                         } else {
 
                         }
                     }
                 } else {
-                    for (int j = 0; j < albumList.size(); j++) {
-                        if (albumList.get(j).getIsSelect()) {
-                            selectedList.add(albumList.get(j));
+                    for (int j = 0; j < SplashActivity.albumList.size(); j++) {
+                        if ( SplashActivity.albumList.get(j).getIsSelect()) {
+                            selectedList.add( SplashActivity.albumList.get(j));
                         }
 
 
@@ -177,21 +183,21 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             }
         });
         searchList.clear();
-        if (isFirstTime == 0) {
+       /* if (isFirstTime == 0) {
             askForContactPermission();
             isFirstTime = 1;
-        } else {
-            for(int m=0;m<albumList.size();m++)
+        } else {*/
+            for(int m=0;m< SplashActivity.albumList.size();m++)
             {
-                albumList.get(m).setIsSelect(false);
+                SplashActivity.albumList.get(m).setIsSelect(false);
             }
-            adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
+            adapter = new SelectFriendAdapter(SelectFriendActivity.this,  SplashActivity.albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
             recyclerView.setLayoutManager(layoutManager);
 
             recyclerView.setAdapter(adapter);
-        }
+     //   }
         Animation animation;
         animation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.bottom_to_original);
@@ -201,9 +207,9 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 searchList.clear();
-                for (int i = 0; i < albumList.size(); i++) {
-                    if (albumList.get(i).getName().toLowerCase().contains(cs.toString().toLowerCase())) {
-                        searchList.add(albumList.get(i));
+                for (int i = 0; i <  SplashActivity.albumList.size(); i++) {
+                    if ( SplashActivity.albumList.get(i).getName().toLowerCase().contains(cs.toString().toLowerCase())) {
+                        searchList.add( SplashActivity.albumList.get(i));
 
                     }
                 }
@@ -240,7 +246,23 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             SelectFriendActivity.this.finish();
         }
     }
-
+   private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            if(message.equalsIgnoreCase("done"))
+            {
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
     @Override
     public void onBackPressed() {
 
@@ -249,7 +271,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
         SelectFriendActivity.this.finish();
     }
 
-    public void askForContactPermission() {
+    /*public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 
@@ -289,7 +311,7 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                 }
             } else {
                 searchList.clear();
-                albumList.clear();
+                HelloService.albumList.clear();
 
 
                 new LoadContacts().execute();
@@ -298,16 +320,16 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
             }
         } else {
             searchList.clear();
-            albumList.clear();
+            HelloService.albumList.clear();
 
             new LoadContacts().execute();
 
-            /*adapter = new SelectFriendAdapter(this, albumList);
+            *//*adapter = new SelectFriendAdapter(this, albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
 
-            recyclerView.setAdapter(adapter);*/
+            recyclerView.setAdapter(adapter);*//*
         }
     }
 
@@ -325,12 +347,12 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
                     new LoadContacts().execute();
 
-                    /*adapter = new SelectFriendAdapter(this, albumList);
+                    *//*adapter = new SelectFriendAdapter(this, albumList);
 
                     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
                     recyclerView.setLayoutManager(layoutManager);
 
-                    recyclerView.setAdapter(adapter);*/
+                    recyclerView.setAdapter(adapter);*//*
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
@@ -352,10 +374,10 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
         LinkedHashSet<SelectFriendModel> lhs = new LinkedHashSet<SelectFriendModel>();
 
-        /* Adding ArrayList elements to the LinkedHashSet
+        *//* Adding ArrayList elements to the LinkedHashSet
          * in order to remove the duplicate elements and
          * to preserve the insertion order.
-         */
+         *//*
         lhs.addAll(param1);
 
         // Removing ArrayList elements
@@ -426,19 +448,19 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             super.onPostExecute(result);
             albumList=removeDuplicates(albumList);
-            /* if (index == 0) {*/
+            *//* if (index == 0) {*//*
             adapter = new SelectFriendAdapter(SelectFriendActivity.this, albumList);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(SelectFriendActivity.this);
             recyclerView.setLayoutManager(layoutManager);
 
             recyclerView.setAdapter(adapter);
-           /* } else {
+           *//* } else {
                 adapter.notifyDataSetChanged();
-            }*/
+            }*//*
 
-          /*  if (pd.isShowing())
-                pd.dismiss();*/
+          *//*  if (pd.isShowing())
+                pd.dismiss();*//*
             index = index + 1;
             if (index * offset <= size) {
                 new LoadContacts().execute();
@@ -452,11 +474,11 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
 
             super.onPreExecute();
             // Show Dialog
-           /* pd = ProgressDialog.show(SelectFriendActivity.this, "Loading Contacts",
-                    "Please Wait...");*/
+           *//* pd = ProgressDialog.show(SelectFriendActivity.this, "Loading Contacts",
+                    "Please Wait...");*//*
         }
 
-    }
+    }*/
 
 
 }
