@@ -28,7 +28,7 @@
         <activity android:name=".ui.activities.SelectFriendActivity" />
 
         <activity android:name=".ui.activities.ReferAFriendActivity" />
-
+        <service android:name="com.enrich.salonapp.util.supertoast.utils.HelloService" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
