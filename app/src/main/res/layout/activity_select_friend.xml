@@ -119,7 +119,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/dimen_18sp"
                     app:font_type="regular"
-
+                    android:visibility="gone"
 
                     />
 
