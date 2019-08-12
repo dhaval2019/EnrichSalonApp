@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.SelectFriendModel;
 import com.enrich.salonapp.ui.activities.SelectFriendActivity;
+import com.enrich.salonapp.ui.activities.SplashActivity;
 import com.enrich.salonapp.util.CircleTransform;
+import com.enrich.salonapp.util.supertoast.utils.HelloService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -101,19 +103,19 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
                         album.setIsSelect(false);
                     }
                 }
-                if (checkAtleastOneSelected()) {
+               /* if (checkAtleastOneSelected()) {
                     SelectFriendActivity.btnRefresh.setVisibility(View.GONE);
 
 
                 } else {
                     SelectFriendActivity.btnRefresh.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         });
 
     }
 
-    public boolean checkAtleastOneSelected() {
+   /* public boolean checkAtleastOneSelected() {
         ArrayList<SelectFriendModel> tempList = new ArrayList<SelectFriendModel>();
         int countermax = 0;
         tempList.addAll(SelectFriendActivity.albumList);
@@ -137,12 +139,12 @@ public class SelectFriendAdapter extends RecyclerView.Adapter<SelectFriendAdapte
 
 
         return countermax >= 1;
-    }
+    }*/
 
     public boolean checkMaxLimit() {
         ArrayList<SelectFriendModel> tempList = new ArrayList<SelectFriendModel>();
         int countermax = 0;
-        tempList.addAll(SelectFriendActivity.albumList);
+        tempList.addAll(SplashActivity.albumList);
         for (SelectFriendModel item2 : SelectFriendActivity.searchList) {
             if (tempList.contains(item2)) {
 
