@@ -151,7 +151,15 @@ public class ProfileActivity extends AppCompatActivity implements LoginListener 
         setAddressData(guestModel.GuestAddress);
         if (guestModel.IsMember == Constants.IS_MEMBER) {
             membershipCardview.setVisibility(View.VISIBLE);
-            membershipName.setText(String.format("%s", guestModel.MembershipModel.get(0).MembershipName));
+            if(guestModel.MembershipModel.isEmpty()) {
+            }else{
+                if (guestModel.MembershipModel.get(0).MembershipName.isEmpty()) {
+
+                }else
+                {
+                    membershipName.setText(String.format("%s", guestModel.MembershipModel.get(0).MembershipName));
+                }
+            }
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date stringToDate = sdf.parse(guestModel.MembershipModel.get(0).ExpiryDate.substring(0, 10));
