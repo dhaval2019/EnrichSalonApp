@@ -3,6 +3,7 @@ package com.enrich.salonapp.ui.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -131,9 +132,10 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     private FusedLocationProviderClient fusedLocationClient;
     public static ArrayList<SelectFriendModel> albumList = new ArrayList<>();
 
-//    private int callToAction;
+    //    private int callToAction;
 //    private OfferModel offerModel;
     private static final int PERMISSION_REQUEST_CONTACT = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +194,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                 }
         );
     }
+
     public void askForContactPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -232,13 +235,13 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                 }
             } else {
 
-                startService(new Intent(this,HelloService.class));
+                startService(new Intent(this, HelloService.class));
 
                 displayLocationSettingsRequest();
             }
         } else {
 
-            startService(new Intent(this,HelloService.class));
+            startService(new Intent(this, HelloService.class));
             displayLocationSettingsRequest();
         }
     }
@@ -255,8 +258,6 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
 
-
-
                     startService(new Intent(this, HelloService.class));
                     displayLocationSettingsRequest();
 
@@ -271,7 +272,6 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
             default:
                 EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
                 break;
-
 
 
             // other 'case' lines to check for other
@@ -295,35 +295,37 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     private void getAuthenticationToken() {
         guestModel = getUserData(this);
         if (guestModel != null) {
-            AuthenticationModel model = application.getAuthenticationModel();
-            if (model != null) {
-                try {
-                    SimpleDateFormat stringToDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-                    Date expiryDate = stringToDate.parse(model.expires);
-                    Date today = new Date();
+            if (application != null) {
+                AuthenticationModel model = application.getAuthenticationModel();
+                if (model != null) {
+                    try {
+                        SimpleDateFormat stringToDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+                        Date expiryDate = stringToDate.parse(model.expires);
+                        Date today = new Date();
 
-                    if (today.after(expiryDate)) {
-                        updateProgressStatus("Contacting Server...", true);
-                        AuthenticationRequestModel authenticationRequestModel = new AuthenticationRequestModel();
-                        authenticationRequestModel.username = getUserData(SplashActivity.this).UserName;
-                        authenticationRequestModel.password = getUserData(SplashActivity.this).Password;
-                        authenticationTokenPresenter.getAuthenticationToken(SplashActivity.this, authenticationRequestModel, false);
-                        return;
-                    } else {
-                        switchToNextScreen();
+                        if (today.after(expiryDate)) {
+                            updateProgressStatus("Contacting Server...", true);
+                            AuthenticationRequestModel authenticationRequestModel = new AuthenticationRequestModel();
+                            authenticationRequestModel.username = getUserData(SplashActivity.this).UserName;
+                            authenticationRequestModel.password = getUserData(SplashActivity.this).Password;
+                            authenticationTokenPresenter.getAuthenticationToken(SplashActivity.this, authenticationRequestModel, false);
+                            return;
+                        } else {
+                            switchToNextScreen();
 //                        getBeautyAndBling();
 //                        updateProgressStatus("Getting Your Data...", true);
 //                        guestPresenter.getUserData(this, application.getAuthenticationModel().userId, false);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } else {
+                    updateProgressStatus("Contacting Server...", true);
+                    AuthenticationRequestModel authenticationRequestModel = new AuthenticationRequestModel();
+                    authenticationRequestModel.username = getUserData(SplashActivity.this).UserName;
+                    authenticationRequestModel.password = getUserData(SplashActivity.this).Password;
+                    authenticationTokenPresenter.getAuthenticationToken(SplashActivity.this, authenticationRequestModel, false);
                 }
-            } else {
-                updateProgressStatus("Contacting Server...", true);
-                AuthenticationRequestModel authenticationRequestModel = new AuthenticationRequestModel();
-                authenticationRequestModel.username = getUserData(SplashActivity.this).UserName;
-                authenticationRequestModel.password = getUserData(SplashActivity.this).Password;
-                authenticationTokenPresenter.getAuthenticationToken(SplashActivity.this, authenticationRequestModel, false);
             }
         } else {
             boolean isTutorialShown = SharedPreferenceStore.getValue(this, Constants.TUTORIAL_SHOWN, false);
@@ -661,7 +663,9 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        if (! (SplashActivity.this.isFinishing())) {
+            dialog.show();
+        }
     }
 
     private void showForceUpdateDialog() {
