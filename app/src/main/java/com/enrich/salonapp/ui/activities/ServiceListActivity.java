@@ -305,7 +305,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onClick(View view) {
                 changeGenderIcons(true);
                 if (!isHomeSelected) {
-                    getServiceList(categoryModel.CategoryId, Constants.FEMALE);
+                    if(categoryModel.CategoryId.isEmpty())
+                    {
+
+                    }else {
+                        getServiceList(categoryModel.CategoryId, Constants.FEMALE);
+                    }
                 } else {
                     showToastMessage("Home Services are currently only available for Females.");
                 }
