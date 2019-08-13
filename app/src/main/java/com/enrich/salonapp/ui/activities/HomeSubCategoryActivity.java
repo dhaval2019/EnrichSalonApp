@@ -74,10 +74,12 @@ public class HomeSubCategoryActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("CATEGORIES");
 
         subCategoryList = getIntent().getParcelableArrayListExtra("SubCategoryList");
+        if (subCategoryList.isEmpty()) {
 
-        HomeSubCategoryRecyclerViewAdapter adapter = new HomeSubCategoryRecyclerViewAdapter(this, subCategoryList, true);
-        homeSubCategoryRecyclerView.setAdapter(adapter);
-        homeSubCategoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
+        } else {
+            HomeSubCategoryRecyclerViewAdapter adapter = new HomeSubCategoryRecyclerViewAdapter(this, subCategoryList, true);
+            homeSubCategoryRecyclerView.setAdapter(adapter);
+            homeSubCategoryRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
     }
 }
