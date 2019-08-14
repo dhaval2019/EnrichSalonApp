@@ -3,15 +3,20 @@ package com.enrich.salonapp.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.data.model.Product.ProductRequestModel;
+import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
+import com.enrich.salonapp.ui.activities.OfferActivity;
 import com.enrich.salonapp.ui.activities.PackageDetailActivity;
 import com.enrich.salonapp.ui.activities.PackagesActivity;
 import com.enrich.salonapp.ui.activities.ProductActivity;
 import com.enrich.salonapp.ui.activities.ProductDetailActivity;
 import com.enrich.salonapp.ui.activities.ServiceListActivity;
 import com.enrich.salonapp.ui.activities.WebActivity;
+import com.enrich.salonapp.ui.fragments.HomeFragment;
 
 import java.util.ArrayList;
 
@@ -70,7 +75,37 @@ public class OfferHandler {
     }
 
     private static void launchServiceListPage(Activity activity, OfferModel model) {
+        String catId = " ";
+        SubCategoryModel subCategoryModel = null;
+        int position=0;
+        if (HomeFragment.isHome) {
+            for (int i = 0; i < HomeFragment.subCategoryList.size(); i++) {
+                if (HomeFragment.subCategoryList.get(i).Id == model.ServiceCategory) {
+                    catId = HomeFragment.subCategoryList.get(i).SubCategoryId;
+                    subCategoryModel = HomeFragment.subCategoryList.get(i);
+                    position = i;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < HomeFragment.categoryList.size(); i++) {
+                if (HomeFragment.categoryList.get(i).Id == model.ServiceCategory) {
+                    catId = HomeFragment.categoryList.get(i).CategoryId;
+                    position = i;
+                    break;
+                }
+            }
+        }
+        // Toast.makeText(activity.getBaseContext(),catId+"",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(activity, ServiceListActivity.class);
+        //  intent.putExtra("centerId", model.CenterId);
+        // intent.putExtra("isHomeSelected",model.IsHome);
+        // intent.putExtra("Gender",model.Gender);
+        intent.putExtra("CategoryListPosition", position);
+        intent.putExtra("fromWhere", 0);
+        intent.putExtra("catId", catId);
+        intent.putExtra("subcatmodel", subCategoryModel);
+        intent.putExtra("serviceCatName", model.ServiceCategoryName);
         activity.startActivity(intent);
     }
 
