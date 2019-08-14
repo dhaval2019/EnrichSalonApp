@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
+import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.ui.adapters.OfferAdapter;
 import com.google.android.gms.analytics.HitBuilders;
@@ -74,6 +75,7 @@ public class OfferActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("OFFERS");
 
         offerList = getIntent().getParcelableArrayListExtra("OfferList");
+
 
         setOfferAdapter(offerList);
     }
