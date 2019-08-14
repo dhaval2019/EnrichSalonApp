@@ -203,8 +203,9 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     LinearLayout salonHomeTabContainer;
 
     ArrayList<OfferModel> offerList;
-    ArrayList<CategoryModel> categoryList;
-    ArrayList<SubCategoryModel> subCategoryList;
+    public static ArrayList<CategoryModel> categoryList = new ArrayList<CategoryModel>();
+    public static ArrayList<SubCategoryModel> subCategoryList= new ArrayList<SubCategoryModel>();
+    public static boolean isHome=false;
     ArrayList<PackageModel> packageList;
 
     HomePagePresenter homePagePresenter;
@@ -274,8 +275,11 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             public void onClick(View view) {
                 Intent intent = new Intent(context, OfferActivity.class);
                 if (offerList != null)
-                    if (!offerList.isEmpty())
+                    if (!offerList.isEmpty()) {
                         intent.putExtra("OfferList", offerList);
+
+                    }
+
                 startActivity(intent);
             }
         });
@@ -285,8 +289,10 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
             public void onClick(View view) {
                 Intent intent = new Intent(context, OfferActivity.class);
                 if (offerList != null)
-                    if (!offerList.isEmpty())
+                    if (!offerList.isEmpty()) {
                         intent.putExtra("OfferList", offerList);
+
+                    }
                 startActivity(intent);
             }
         });
@@ -402,14 +408,14 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     private void getDataForSalonType(boolean isSalon) {
         if (isSalon) {
             isSalonStr = "0";
-
+            isHome=false;
             Map<String, String> map = new HashMap<>();
             map.put("IsHomeOffer", isSalonStr);
             homePagePresenter.getOffersList(context, map);
             getCategories();
         } else {
             isSalonStr = "1";
-
+            isHome=true;
             Map<String, String> map = new HashMap<>();
             map.put("IsHomeOffer", isSalonStr);
             homePagePresenter.getOffersList(context, map);
@@ -545,6 +551,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showCategoryList(CategoryResponseModel model) {
+        categoryList.clear();
         categoryList = model.Categories;
 
         categoriesHomeAdapter = new CategoriesHomeAdapter(context, model.Categories, false, this);
@@ -668,6 +675,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     @Override
     public void showSubCategories(SubCategoryResponseModel model) {
         if (!model.SubCategories.isEmpty()) {
+            subCategoryList.clear();
             subCategoryList = model.SubCategories;
 
             HomeSubCategoryAdapter adapter = new HomeSubCategoryAdapter(context, model.SubCategories, true);
