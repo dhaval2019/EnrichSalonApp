@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.enrich.salonapp.EnrichApplication;
@@ -31,6 +32,7 @@ import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.CategoryModel;
 import com.enrich.salonapp.data.model.CategoryResponseModel;
 import com.enrich.salonapp.data.model.CenterDetailModel;
+import com.enrich.salonapp.data.model.OfferModel;
 import com.enrich.salonapp.data.model.ParentServiceViewModel;
 import com.enrich.salonapp.data.model.ServiceList.ParentAndNormalServiceListResponseModel;
 import com.enrich.salonapp.data.model.ServiceList.SubCategoryModel;
@@ -45,6 +47,7 @@ import com.enrich.salonapp.ui.adapters.SampleHomeParentAndNormalServiceAdapter;
 import com.enrich.salonapp.ui.contracts.CategoryContract;
 import com.enrich.salonapp.ui.contracts.ParentsAndNormalServiceListContract;
 import com.enrich.salonapp.ui.contracts.ServiceListContract;
+import com.enrich.salonapp.ui.fragments.HomeFragment;
 import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.ui.presenters.CategoryPresenter;
 import com.enrich.salonapp.ui.presenters.ParentsAndNormalServiceListPresenter;
@@ -145,14 +148,18 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     HomeParentAndNormalServiceAdapter parentAndNormalServiceAdapter;
 
     Tracker mTracker;
-
+    String centerId;
     int gender;
     String genderStr;
-
+    int fromWhere = 1;
     boolean isHomeSelected;
     boolean isRebook;
 
+    String catId;
     BottomSheetDialog dialog;
+    SubCategoryModel offerSubCategoryModel = null;
+    String serviceCatName = " ";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +167,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         setContentView(R.layout.activity_service_list_new);
 
         ButterKnife.bind(this);
+        Intent intent = getIntent();
 
         // SEND ANALYTICS
         application = (EnrichApplication) getApplication();
@@ -180,36 +188,80 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitleTextColor(Color.parseColor("#000000"));
         getSupportActionBar().setTitle("");
-
+        centerId = getIntent().getStringExtra("centerId");
         position = getIntent().getIntExtra("CategoryListPosition", 0);
         isHomeSelected = getIntent().getBooleanExtra("isHomeSelected", false);
         isRebook = getIntent().getBooleanExtra("isRebook", false);
         gender = getIntent().getIntExtra("Gender", 0);
+        fromWhere = getIntent().getIntExtra("fromWhere", 1);
+        catId = getIntent().getStringExtra("catId");
+        offerSubCategoryModel = getIntent().getExtras().getParcelable("subcatmodel");
 
+        serviceCatName = getIntent().getStringExtra("serviceCatName");
         if (isRebook) {
             centerDetailModel = EnrichUtils.getHomeStoreForRebook(this);
         } else {
             centerDetailModel = EnrichUtils.getHomeStore(this);
         }
+        memberText.setVisibility(View.VISIBLE);
 
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         serviceListPresenter = new ServiceListPresenter(this, dataRepository);
         categoryPresenter = new CategoryPresenter(this, dataRepository);
         parentsAndNormalServiceListPresenter = new ParentsAndNormalServiceListPresenter(this, dataRepository);
+        //Toast.makeText(ServiceListActivity.this,offerSubCategoryModel+"",Toast.LENGTH_LONG).show();
+        if (fromWhere == 0) {
 
-        if (isHomeSelected) {
-            maleContainer.setVisibility(View.GONE);
-            genderStr = "Female";
-            changeGenderIcons(true);
-            getServiceList(Constants.HOME_CATEGORY_ID, Constants.FEMALE);
-        } else {
-            Map<String, String> categoryMap = new HashMap<>();
-            categoryMap.put("CenterId", centerDetailModel.Id);
-            categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
-            if (isHomeSelected) {
-                categoryMap.put("HomeCategory", "home");
+
+            if (HomeFragment.isHome) {
+                genderStr = "Female";
+                isHomeSelected = true;
+                subCategoryModel = offerSubCategoryModel;
+                memberText.setVisibility(View.GONE);
+                changeGenderIcons(true);
+                setHomeSubCategorySpinner(HomeFragment.subCategoryList);
+                getServiceListForHome();
+
+            } else {
+               /* Map<String, String> categoryMap = new HashMap<>();
+                categoryMap.put("CenterId", centerDetailModel.Id);
+
+                categoryMap.put("parentCategoryId", parentCatId);
+                if (isHomeSelected) {
+                    categoryMap.put("HomeCategory", "home");
+                }
+                categoryPresenter.getCategoriesList(this, categoryMap, true);*/
+                if (EnrichUtils.getUserData(ServiceListActivity.this) != null) {
+                    gender = EnrichUtils.getUserData(ServiceListActivity.this).Gender;
+                    genderStr = EnrichUtils.getUserData(ServiceListActivity.this).Gender == 1 ? "Male" : "Female";
+                } else {
+                    gender = Constants.FEMALE;
+                    genderStr = "Female";
+                }
+                changeGenderIcons(gender != Constants.MALE);
+                Map<String, String> map = new HashMap<>();
+                map.put("CategoryId", catId);
+                map.put("CenterId", centerDetailModel.Id);
+                map.put("gender", gender + "");
+                setCategorySpinner(HomeFragment.categoryList);
+                serviceListPresenter.getSubCategories(this, map);
             }
-            categoryPresenter.getCategoriesList(this, categoryMap, true);
+        } else {
+
+            if (isHomeSelected) {
+                maleContainer.setVisibility(View.GONE);
+                genderStr = "Female";
+                changeGenderIcons(true);
+                getServiceList(Constants.HOME_CATEGORY_ID, Constants.FEMALE);
+            } else {
+                Map<String, String> categoryMap = new HashMap<>();
+                categoryMap.put("CenterId", centerDetailModel.Id);
+                categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
+                if (isHomeSelected) {
+                    categoryMap.put("HomeCategory", "home");
+                }
+                categoryPresenter.getCategoriesList(this, categoryMap, true);
+            }
         }
 
         categoryDropdownContainer.setOnClickListener(new View.OnClickListener() {
@@ -305,10 +357,9 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onClick(View view) {
                 changeGenderIcons(true);
                 if (!isHomeSelected) {
-                    if(categoryModel.CategoryId.isEmpty())
-                    {
+                    if (categoryModel.CategoryId.isEmpty()) {
 
-                    }else {
+                    } else {
                         getServiceList(categoryModel.CategoryId, Constants.FEMALE);
                     }
                 } else {
@@ -496,7 +547,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             serviceCartContainer.setVisibility(View.GONE);
         } else {
             serviceCartContainer.setVisibility(View.VISIBLE);
-            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs),  (int) Math.round( application.getTotalPrice())));
+            serviceTotalPrice.setText(String.format("%s %d", getResources().getString(R.string.Rs), (int) Math.round(application.getTotalPrice())));
             serviceTotalItems.setText(String.format("%d", application.getCartItems().size()));
         }
     }
