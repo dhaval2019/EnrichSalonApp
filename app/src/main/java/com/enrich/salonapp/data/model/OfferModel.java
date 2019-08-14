@@ -41,6 +41,9 @@ public class OfferModel implements Parcelable {
     public String OfferImageURL;
     public String OfferBannerURL;
     public String ToastImageURL;
+    public int ServiceCategory;
+    public String ServiceCategoryName;
+    public int Gender;
 
     public OfferModel() {
     }
@@ -76,6 +79,9 @@ public class OfferModel implements Parcelable {
         OfferImageURL = in.readString();
         OfferBannerURL = in.readString();
         ToastImageURL = in.readString();
+        ServiceCategory = in.readInt();
+        ServiceCategoryName = in.readString();
+        Gender = in.readInt();
     }
 
     @Override
@@ -110,6 +116,11 @@ public class OfferModel implements Parcelable {
         dest.writeString(OfferImageURL);
         dest.writeString(OfferBannerURL);
         dest.writeString(ToastImageURL);
+
+
+        dest.writeInt(ServiceCategory);
+        dest.writeString(ServiceCategoryName);
+        dest.writeInt(Gender);
     }
 
     @Override
