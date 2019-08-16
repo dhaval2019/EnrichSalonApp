@@ -14,7 +14,10 @@ public class CategoryModel implements Parcelable {
     public int SortOrder;
     public String Code;
     public ImagePathsModel ImageUrl;
+    public CategoryModel()
+    {
 
+    }
     protected CategoryModel(Parcel in) {
         Id = in.readInt();
         CategoryId = in.readString();
