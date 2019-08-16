@@ -34,9 +34,9 @@ public class HomeSubCategorySpinnerAdapter extends ArrayAdapter<SubCategoryModel
         }
 
         TextView name = convertView.findViewById(R.id.category_name);
-
-        name.setText(list.get(position).Name);
-
+        if (position < list.size()) {
+            name.setText(list.get(position).Name);
+        }
         return convertView;
     }
 
@@ -48,8 +48,9 @@ public class HomeSubCategorySpinnerAdapter extends ArrayAdapter<SubCategoryModel
         }
 
         TextView name = convertView.findViewById(R.id.category_name);
-
-        name.setText(list.get(position).Name);
+        if (position < list.size()) {
+            name.setText(list.get(position).Name);
+        }
 
         return convertView;
     }
