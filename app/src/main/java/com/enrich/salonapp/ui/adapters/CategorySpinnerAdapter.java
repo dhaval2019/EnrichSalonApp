@@ -34,9 +34,9 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategoryModel> {
         }
 
         TextView name = convertView.findViewById(R.id.category_name);
-
-        name.setText(list.get(position).Name);
-
+        if (position < list.size()) {
+            name.setText(list.get(position).Name);
+        }
         return convertView;
     }
 
@@ -48,9 +48,9 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategoryModel> {
         }
 
         TextView name = convertView.findViewById(R.id.category_name);
-
-        name.setText(list.get(position).Name);
-
+        if (position < list.size()) {
+            name.setText(list.get(position).Name);
+        }
         return convertView;
     }
 }
