@@ -42,6 +42,10 @@ public class SubCategoryModel implements Parcelable, Parent<ServiceViewModel> {
         ChildServices = childServices;
     }
 
+    public SubCategoryModel() {
+
+    }
+
     protected SubCategoryModel(Parcel in) {
         Id = in.readInt();
         SubCategoryId = in.readString();
