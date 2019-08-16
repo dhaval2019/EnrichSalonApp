@@ -140,9 +140,9 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
     private CategoryPresenter categoryPresenter;
     private ParentsAndNormalServiceListPresenter parentsAndNormalServiceListPresenter;
 
-    CategoryModel categoryModel;
-    SubCategoryModel subCategoryModel;
-    CenterDetailModel centerDetailModel;
+    CategoryModel categoryModel = new CategoryModel();
+    SubCategoryModel subCategoryModel = new SubCategoryModel();
+    CenterDetailModel centerDetailModel = new CenterDetailModel();
 
     NewServiceListAdapter adapter;
     HomeParentAndNormalServiceAdapter parentAndNormalServiceAdapter;
