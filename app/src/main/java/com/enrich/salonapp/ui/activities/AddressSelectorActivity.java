@@ -260,7 +260,19 @@ public class AddressSelectorActivity extends AppCompatActivity {
                     } else {
                         addHomeAddress.setVisibility(View.GONE);
                         addressSelectHome.setVisibility(View.VISIBLE);
-                        addressSelectHome.setText(list.get(i).Location);
+                       // addressSelectHome.setText(list.get(i).Location);
+                        String locationTextH=" ";
+                        String cityTextH=" ";
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextH = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextH = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextH=list.get(i).Location;
+
+                        }
+                        addressSelectHome.setText(list.get(i).HouseNameFlatNo+","+locationTextH+","+list.get(i).Landmark+","+cityTextH);
                     }
                     break;
                 case AddAddressActivity.ADDRESS_WORK:
@@ -270,7 +282,19 @@ public class AddressSelectorActivity extends AppCompatActivity {
                     } else {
                         addWorkAddress.setVisibility(View.GONE);
                         addressSelectWork.setVisibility(View.VISIBLE);
-                        addressSelectWork.setText(list.get(i).Location);
+                       // addressSelectWork.setText(list.get(i).Location);
+                        String locationTextW=" ";
+                        String cityTextW=" ";
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextW = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextW = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextW=list.get(i).Location;
+
+                        }
+                        addressSelectWork.setText(list.get(i).HouseNameFlatNo+","+locationTextW+","+list.get(i).Landmark+","+cityTextW);
                     }
                     break;
                 case AddAddressActivity.ADDRESS_OTHER:
@@ -280,7 +304,19 @@ public class AddressSelectorActivity extends AppCompatActivity {
                     } else {
                         addOtherAddress.setVisibility(View.GONE);
                         addressSelectOther.setVisibility(View.VISIBLE);
-                        addressSelectOther.setText(list.get(i).Location);
+                        //addressSelectOther.setText(list.get(i).Location);
+                        String locationTextO=" ";
+                        String cityTextO=" ";
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextO = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextO = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextO=list.get(i).Location;
+
+                        }
+                        addressSelectOther.setText(list.get(i).HouseNameFlatNo+","+locationTextO+","+list.get(i).Landmark+","+cityTextO);
                     }
                     break;
             }
