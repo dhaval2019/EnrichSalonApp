@@ -257,9 +257,9 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
                     case AddAddressActivity.ADDRESS_HOME:
                         String locationTextH=" ";
                         String cityTextH=" ";
-                        if (list.get(i).Location.contains(" ")) {
-                            locationTextH = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
-                            cityTextH = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextH = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextH = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
 
                         }else
                         {
@@ -271,9 +271,9 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
                     case AddAddressActivity.ADDRESS_WORK:
                         String locationTextW=" ";
                         String cityTextW=" ";
-                        if (list.get(i).Location.contains(" ")) {
-                            locationTextW = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
-                            cityTextW = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextW = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextW = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
 
                         }else
                         {
@@ -285,9 +285,9 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
                     case AddAddressActivity.ADDRESS_OTHER:
                         String locationTextO=" ";
                         String cityTextO=" ";
-                        if (list.get(i).Location.contains(" ")) {
-                            locationTextO = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
-                            cityTextO = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+                        if (list.get(i).Location.trim().contains(" ")) {
+                            locationTextO = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                            cityTextO = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
 
                         }else
                         {
