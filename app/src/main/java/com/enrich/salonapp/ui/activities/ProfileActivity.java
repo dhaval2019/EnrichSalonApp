@@ -200,13 +200,49 @@ public class ProfileActivity extends AppCompatActivity implements LoginListener 
                 for (int i = 0; i < list.size(); i++) {
                     switch (list.get(i).AddressType) {
                         case "S":
-                            addressHome.setText(list.get(i).Location);
+                            //addressHome.setText(list.get(i).Location);
+                            String locationTextH=" ";
+                            String cityTextH=" ";
+                            if (list.get(i).Location.trim().contains(" ")) {
+                                locationTextH = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                                cityTextH = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                            }else
+                            {
+                                locationTextH=list.get(i).Location;
+
+                            }
+                            addressHome.setText(list.get(i).HouseNameFlatNo+","+locationTextH+","+list.get(i).Landmark+","+cityTextH);
                             break;
                         case "W":
-                            addressWork.setText(list.get(i).Location);
+                           // addressWork.setText(list.get(i).Location);
+                            String locationTextW=" ";
+                            String cityTextW=" ";
+                            if (list.get(i).Location.trim().contains(" ")) {
+                                locationTextW = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                                cityTextW = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                            }else
+                            {
+                                locationTextW=list.get(i).Location;
+
+                            }
+                            addressWork.setText(list.get(i).HouseNameFlatNo+","+locationTextW+","+list.get(i).Landmark+","+cityTextW);
                             break;
                         case "O":
-                            addressOther.setText(list.get(i).Location);
+                           // addressOther.setText(list.get(i).Location);
+                            String locationTextO=" ";
+                            String cityTextO=" ";
+                            if (list.get(i).Location.trim().contains(" ")) {
+                                locationTextO = list.get(i).Location.trim().substring(0, list.get(i).Location.trim().lastIndexOf(" "));
+                                cityTextO = list.get(i).Location.trim().substring(list.get(i).Location.trim().lastIndexOf(" ") + 1);
+
+                            }else
+                            {
+                                locationTextO=list.get(i).Location;
+
+                            }
+                            addressOther.setText(list.get(i).HouseNameFlatNo+","+locationTextO+","+list.get(i).Landmark+","+cityTextO);
                             break;
                     }
                 }
