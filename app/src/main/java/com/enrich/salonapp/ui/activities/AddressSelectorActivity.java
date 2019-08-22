@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.enrich.salonapp.data.model.AddressModel;
 import com.enrich.salonapp.data.model.GuestModel;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
+import com.enrich.salonapp.util.supertoast.Style;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.segment.analytics.Analytics;
@@ -85,7 +87,14 @@ public class AddressSelectorActivity extends AppCompatActivity {
     @BindView(R.id.address_other_image)
     ImageView addressOtherImage;
 
+    @BindView(R.id.homelayout)
+    FrameLayout homeLayout;
 
+    @BindView(R.id.worklayout)
+    FrameLayout workLayout;
+
+    @BindView(R.id.otherlayout)
+    FrameLayout otherLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,33 +132,39 @@ public class AddressSelectorActivity extends AppCompatActivity {
 
         setAddress();
 
-        addHomeAddress.setOnClickListener(new View.OnClickListener() {
+        homeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
-                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_HOME);
-                intent.putExtra("Address", EnrichUtils.getHomeAddress(AddressSelectorActivity.this));
-                startActivityForResult(intent, ADD_ADDRESS);
+             //   if(addressSelectHome.getVisibility()==View.VISIBLE) {
+                    Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
+                    intent.putExtra("AddressType", AddAddressActivity.ADDRESS_HOME);
+                    intent.putExtra("Address", EnrichUtils.getHomeAddress(AddressSelectorActivity.this));
+                    startActivityForResult(intent, ADD_ADDRESS);
+              //  }
             }
         });
 
-        addWorkAddress.setOnClickListener(new View.OnClickListener() {
+        workLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
-                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_WORK);
-                intent.putExtra("Address", EnrichUtils.getWorkAddress(AddressSelectorActivity.this));
-                startActivityForResult(intent, ADD_ADDRESS);
+                //if(addressSelectWork.getVisibility()==View.VISIBLE) {
+                    Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
+                    intent.putExtra("AddressType", AddAddressActivity.ADDRESS_WORK);
+                    intent.putExtra("Address", EnrichUtils.getWorkAddress(AddressSelectorActivity.this));
+                    startActivityForResult(intent, ADD_ADDRESS);
+               // }
             }
         });
 
-        addOtherAddress.setOnClickListener(new View.OnClickListener() {
+        otherLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
-                intent.putExtra("AddressType", AddAddressActivity.ADDRESS_OTHER);
-                intent.putExtra("Address", EnrichUtils.getOtherAddress(AddressSelectorActivity.this));
-                startActivityForResult(intent, ADD_ADDRESS);
+                //if(addressSelectOther.getVisibility()==View.VISIBLE) {
+                    Intent intent = new Intent(AddressSelectorActivity.this, AddAddressActivity.class);
+                    intent.putExtra("AddressType", AddAddressActivity.ADDRESS_OTHER);
+                    intent.putExtra("Address", EnrichUtils.getOtherAddress(AddressSelectorActivity.this));
+                    startActivityForResult(intent, ADD_ADDRESS);
+               // }
             }
         });
 
