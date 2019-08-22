@@ -5,14 +5,14 @@ import android.os.Parcelable;
 
 public class AddressModel implements Parcelable {
 
-    public int GuestAddressId=0;
-    public String Location="";
-    public String HouseNameFlatNo="";
-    public String Landmark="";
-    public double Latitude=0.0;
-    public double Longitude=0.0;
-    public String AddressType="";
-    public String GuestId="";
+    public int GuestAddressId;
+    public String Location;
+    public String HouseNameFlatNo;
+    public String Landmark;
+    public double Latitude;
+    public double Longitude;
+    public String AddressType;
+    public String GuestId;
 
     public AddressModel() {
     }
