@@ -559,11 +559,11 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     @Override
     public void saveUserDetails(final GuestModel model) {
-        GuestModel guestModel = EnrichUtils.getUserData(this);
-        model.Password = guestModel.Password;
-
-        EnrichUtils.saveUserData(this, guestModel);
-
+        /*GuestModel guestModel = EnrichUtils.getUserData(this);
+        model.Password = guestModel.Password;//dhaval shah 22/08/2019
+*/
+       // EnrichUtils.saveUserData(this, guestModel);
+        EnrichUtils.saveUserData(this, model);//dhaval shah 22/08/2019
         switchToNextScreen();
     }
 
