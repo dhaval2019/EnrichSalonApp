@@ -255,13 +255,46 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
             for (int i = 0; i < list.size(); i++) {
                 switch (list.get(i).AddressType) {
                     case AddAddressActivity.ADDRESS_HOME:
-                        editAddressHome.setText(list.get(i).Location);
+                        String locationTextH=" ";
+                        String cityTextH=" ";
+                        if (list.get(i).Location.contains(" ")) {
+                            locationTextH = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
+                            cityTextH = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextH=list.get(i).Location;
+
+                        }
+                        editAddressHome.setText(list.get(i).HouseNameFlatNo+","+locationTextH+","+list.get(i).Landmark+","+cityTextH);
                         break;
                     case AddAddressActivity.ADDRESS_WORK:
-                        editAddressWork.setText(list.get(i).Location);
+                        String locationTextW=" ";
+                        String cityTextW=" ";
+                        if (list.get(i).Location.contains(" ")) {
+                            locationTextW = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
+                            cityTextW = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextW=list.get(i).Location;
+
+                        }
+                        editAddressWork.setText(list.get(i).HouseNameFlatNo+","+locationTextW+","+list.get(i).Landmark+","+cityTextW);
                         break;
                     case AddAddressActivity.ADDRESS_OTHER:
-                        editAddressOther.setText(list.get(i).Location);
+                        String locationTextO=" ";
+                        String cityTextO=" ";
+                        if (list.get(i).Location.contains(" ")) {
+                            locationTextO = list.get(i).Location.substring(0, list.get(i).Location.lastIndexOf(" "));
+                            cityTextO = list.get(i).Location.substring(list.get(i).Location.lastIndexOf(" ") + 1);
+
+                        }else
+                        {
+                            locationTextO=list.get(i).Location;
+
+                        }
+                        editAddressOther.setText(list.get(i).HouseNameFlatNo+","+locationTextO+","+list.get(i).Landmark+","+cityTextO);
                         break;
                 }
             }
