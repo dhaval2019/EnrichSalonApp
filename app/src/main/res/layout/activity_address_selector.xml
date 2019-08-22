@@ -57,7 +57,8 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/homelayout">
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_select_home"
@@ -129,7 +130,8 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/worklayout">
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_select_work"
@@ -201,7 +203,8 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/otherlayout">
 
                     <com.enrich.salonapp.ui.views.CustomTextView
                         android:id="@+id/address_select_other"
