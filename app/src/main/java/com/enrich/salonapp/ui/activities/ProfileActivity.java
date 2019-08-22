@@ -149,6 +149,7 @@ public class ProfileActivity extends AppCompatActivity implements LoginListener 
         phone.setText(String.format("%s", guestModel.MobileNumber));
         gender.setText(guestModel.Gender == 1 ? "Male" : "Female");
         setAddressData(guestModel.GuestAddress);
+        //Toast.makeText(ProfileActivity.this,guestModel.Address1+"\n"+guestModel.Address2,Toast.LENGTH_LONG).show();
         if (guestModel.IsMember == Constants.IS_MEMBER) {
             membershipCardview.setVisibility(View.VISIBLE);
             if(guestModel.MembershipModel.isEmpty()) {
