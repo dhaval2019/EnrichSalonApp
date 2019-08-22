@@ -193,8 +193,8 @@ public class AddAddressActivity extends BaseActivity implements AddressContract.
 
         if (addressModel != null) {
             if (addressModel.Location.trim().contains(" ")) {
-                String loc = addressModel.Location.substring(0, addressModel.Location.lastIndexOf(" "));
-                String city = addressModel.Location.substring(addressModel.Location.lastIndexOf(" ") + 1);
+                String loc = addressModel.Location.trim().substring(0, addressModel.Location.trim().lastIndexOf(" "));
+                String city = addressModel.Location.trim().substring(addressModel.Location.trim().lastIndexOf(" ") + 1);
                 locationText.setText(loc);
                 cityText.setText(city);
             }else
