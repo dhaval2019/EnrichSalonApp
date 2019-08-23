@@ -51,6 +51,7 @@ import com.enrich.salonapp.ui.presenters.RegisterFCMPresenter;
 import com.enrich.salonapp.util.Constants;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.GpsTracker;
+import com.enrich.salonapp.util.NetworkHelper;
 import com.enrich.salonapp.util.SharedPreferenceStore;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.supertoast.utils.HelloService;
@@ -102,7 +103,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 
     @BindView(R.id.progress_status)
     TextView progressStatus;
-
+    private NetworkHelper networkHelper = NetworkHelper.getInstance();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public static final int REQUEST_CHECK_SETTINGS = 7;
     private static final int RC_LOCATION_PERMISSION = 123;
@@ -149,50 +150,73 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
 //        offerModel = getIntent().getParcelableExtra("OfferModelFromNotification");
 
         // SEND ANALYTICS
-        application = (EnrichApplication) getApplication();
-        mTracker = application.getDefaultTracker();
+        checkNetWork();
+    }
 
-        mTracker.setScreenName("" + this.getClass().getSimpleName());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        mTracker.enableAdvertisingIdCollection(true);
+    public void checkNetWork() {
+        if (networkHelper.isNetworkAvailable(this)) {
+            application = (EnrichApplication) getApplication();
+            mTracker = application.getDefaultTracker();
 
-        application.getFirebaseInstance().setUserProperty("platform", "Android");
+            mTracker.setScreenName("" + this.getClass().getSimpleName());
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.enableAdvertisingIdCollection(true);
 
-        // Making notification bar transparent
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
+            application.getFirebaseInstance().setUserProperty("platform", "Android");
 
-        EnrichUtils.changeStatusBarColor(getWindow());
+            // Making notification bar transparent
+            if (Build.VERSION.SDK_INT >= 21) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
 
-        dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
-        authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
-        guestPresenter = new GuestPresenter(this, dataRepository);
-        appUpdatePresenter = new AppUpdatePresenter(this, dataRepository);
-        registerFCMPresenter = new RegisterFCMPresenter(this, dataRepository);
+            EnrichUtils.changeStatusBarColor(getWindow());
+
+            dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
+            authenticationTokenPresenter = new AuthenticationTokenPresenter(this, dataRepository);
+            guestPresenter = new GuestPresenter(this, dataRepository);
+            appUpdatePresenter = new AppUpdatePresenter(this, dataRepository);
+            registerFCMPresenter = new RegisterFCMPresenter(this, dataRepository);
 
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
+            // Construct a PlaceDetectionClient.
+            mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
 
-        googleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
-        googleApiClient.connect();
-        askForContactPermission();
+            googleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+            googleApiClient.connect();
+            askForContactPermission();
 
 
-        updateProgressStatus("", false);
+            updateProgressStatus("", false);
 
-        // Facebook Uninstall Tracker
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
-                new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        String deviceToken = instanceIdResult.getToken();
-                        FacebookUninstallTracker.updateDeviceToken(deviceToken);
+            // Facebook Uninstall Tracker
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
+                    new OnSuccessListener<InstanceIdResult>() {
+                        @Override
+                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                            String deviceToken = instanceIdResult.getToken();
+                            FacebookUninstallTracker.updateDeviceToken(deviceToken);
+                        }
                     }
-                }
-        );
+            );
+        } else {
+            try {
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Closing the App")
+                        .setMessage("No Internet Connection,check your settings")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+
+                        })
+                        .show();
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     public void askForContactPermission() {
@@ -562,7 +586,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
         /*GuestModel guestModel = EnrichUtils.getUserData(this);
         model.Password = guestModel.Password;//dhaval shah 22/08/2019
 */
-       // EnrichUtils.saveUserData(this, guestModel);
+        // EnrichUtils.saveUserData(this, guestModel);
         EnrichUtils.saveUserData(this, model);//dhaval shah 22/08/2019
         switchToNextScreen();
     }
@@ -663,7 +687,7 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                 dialog.dismiss();
             }
         });
-        if (! (SplashActivity.this.isFinishing())) {
+        if (!(SplashActivity.this.isFinishing())) {
             dialog.show();
         }
     }
