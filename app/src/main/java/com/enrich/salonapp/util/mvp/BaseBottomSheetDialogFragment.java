@@ -17,7 +17,12 @@ public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment imp
 
     @Override
     public void showToastMessage(Context context, String message) {
-        Toast.makeText(context, "" + message, Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(context, "" + message, Toast.LENGTH_SHORT).show();
+        }catch(Exception e)
+        {
+
+        }
     }
 
     @Override
