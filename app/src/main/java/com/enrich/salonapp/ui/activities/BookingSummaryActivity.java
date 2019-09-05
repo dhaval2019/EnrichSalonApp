@@ -475,16 +475,18 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 null) {
             TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
                     .INTENT_EXTRA_TRANSACTION_RESPONSE);
+            if(transactionResponse.getPayuResponse() != null) {
 
-            try {
-                JSONObject transactionResponseJSONObject = new JSONObject(transactionResponse.getPayuResponse());
-                JSONObject payUResponseJSONObject = transactionResponseJSONObject.getJSONObject("result");
-                String cardType = payUResponseJSONObject.getString("card_type");
-                String amount = payUResponseJSONObject.getString("amount");
+                try {
+                    JSONObject transactionResponseJSONObject = new JSONObject(transactionResponse.getPayuResponse());
+                    JSONObject payUResponseJSONObject = transactionResponseJSONObject.getJSONObject("result");
+                    String cardType = payUResponseJSONObject.getString("card_type");
+                    String amount = payUResponseJSONObject.getString("amount");
 
-                EnrichUtils.log(cardType);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    EnrichUtils.log(cardType);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
@@ -785,7 +787,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -837,7 +839,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
         stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
+        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());
