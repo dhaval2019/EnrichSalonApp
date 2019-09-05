@@ -32,7 +32,10 @@ public class ThankyouActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thankyou);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        FriendResponseModel model = bundle.getParcelable("friendResponseModel");
+        FriendResponseModel model=null;
+        if(bundle != null && bundle.getParcelable("friendResponseModel")!=null) {
+             model = bundle.getParcelable("friendResponseModel");
+        }
 
         btnContinueShopping.setOnClickListener(new View.OnClickListener() {
             @Override
