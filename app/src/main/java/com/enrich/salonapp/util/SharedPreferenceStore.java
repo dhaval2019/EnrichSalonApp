@@ -16,10 +16,15 @@ public class SharedPreferenceStore {
     }
 
     public static void storeValue(Context context, String key, String value) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value).apply();
-        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(key));
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(key, value).apply();
+            LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(key));
+        }catch(Exception e)
+        {
+
+        }
     }
 
     public static void storeValue(Context context, String key, boolean value) {
