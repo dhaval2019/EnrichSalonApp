@@ -219,25 +219,33 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void showPasswordField(IsUserRegisteredResponseModel model) {
-        Crashlytics.setString("PhoneNumber", userNameEdit.getText().toString());
-        if (model.Error.StatusCode == 200) {
-            passwordEditContainer.setVisibility(View.VISIBLE);
-            passwordContainer.setVisibility(View.VISIBLE);
-        } else if (model.Error.StatusCode == 403) {
-            EnrichUtils.showMessage(context, "Invalid Number");
-        } else if (model.Error.StatusCode == 404) {
+        try {
+            Crashlytics.setString("PhoneNumber", userNameEdit.getText().toString());
+            if (model.Error.StatusCode == 200) {
+                passwordEditContainer.setVisibility(View.VISIBLE);
+                passwordContainer.setVisibility(View.VISIBLE);
+            } else if (model.Error.StatusCode == 403) {
+                EnrichUtils.showMessage(context, "Invalid Number");
+            } else if (model.Error.StatusCode == 404) {
 //             Redirect to Registration screen
-            Intent intent = new Intent(context, RegisterActivity.class);
-            intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
-            intent.putExtra("IsFromLoginLater", true);
-            startActivity(intent);
-        } else if (model.Error.StatusCode == 410) {// NO EMAIL
-            passwordEditContainer.setVisibility(View.VISIBLE);
-            passwordContainer.setVisibility(View.VISIBLE);
-        } else if (model.Error.StatusCode == 409) {// NO USERNAME
-            Intent intent = new Intent(context, RegisterActivity.class);
-            intent.putExtra("GuestData", model.Guest);
-            startActivity(intent);
+                Intent intent = new Intent(context, RegisterActivity.class);
+                intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
+                intent.putExtra("IsFromLoginLater", true);
+                startActivity(intent);
+            } else if (model.Error.StatusCode == 410) {// NO EMAIL
+                passwordEditContainer.setVisibility(View.VISIBLE);
+                passwordContainer.setVisibility(View.VISIBLE);
+            } else if (model.Error.StatusCode == 409) {// NO USERNAME
+                try {
+                    Intent intent = new Intent(context, RegisterActivity.class);
+                    intent.putExtra("GuestData", model.Guest);
+                    startActivity(intent);
+                } catch (Exception e) {
+
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -282,9 +290,11 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                 registerFCMPresenter.registerFCM(context, fcmModel);
             }
         });
+        try {
+            Toast.makeText(context, "Welcome " + model.FirstName + "!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
 
-        Toast.makeText(context, "Welcome " + model.FirstName + "!", Toast.LENGTH_SHORT).show();
-
+        }
         Analytics.with(context).track(Constants.SEGMENT_LOGIN, new Properties()
                 .putValue("user_id", model.Id)
                 .putValue("first_name", model.FirstName)
