@@ -475,7 +475,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                 null) {
             TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
                     .INTENT_EXTRA_TRANSACTION_RESPONSE);
-            if (transactionResponse.getPayuResponse() != null) {
+            if(transactionResponse.getPayuResponse() != null) {
 
                 try {
                     JSONObject transactionResponseJSONObject = new JSONObject(transactionResponse.getPayuResponse());
@@ -958,7 +958,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             }
             Properties properties = new Properties();
             properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-            //  properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+          //  properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
             properties.putValue("category", application.getCartItems().get(i).CategoryName);
             properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
             properties.putValue("amount_st", st_amount);//changed by dhaval shah 28/6/19
@@ -1056,20 +1056,18 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
 
     private void logSegmentBookingStatus(String status) {
         List<Properties> propertiesArrayList = new ArrayList<>();
-        try {
-            for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
-                Properties properties = new Properties();
-                properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
-                //properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
-                properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah 28/6/19
-                properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
-                // properties.putValue("amount", "" + invoiceModel.Price._final);
-                properties.putValue("amount", "" + (int) Math.round(application.getTotalPrice()));//changed by dhaval shah 28/6/19
-                propertiesArrayList.add(properties);
-            }
-        } catch (Exception e) {
 
+        for (int i = 0; i < invoiceModel.AppointmentServices.size(); i++) {
+            Properties properties = new Properties();
+            properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
+            //properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
+            properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah 28/6/19
+            properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
+            // properties.putValue("amount", "" + invoiceModel.Price._final);
+            properties.putValue("amount", "" + (int) Math.round(application.getTotalPrice()));//changed by dhaval shah 28/6/19
+            propertiesArrayList.add(properties);
         }
+
         Properties properties = new Properties()
                 .putValue("user_id", EnrichUtils.getUserData(this).Id)
                 .putValue("mobile", EnrichUtils.getUserData(this).MobileNumber)
