@@ -296,7 +296,9 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                     }
 
                     changeGenderIcons(gender != Constants.MALE);
-                    getServiceList(categoryModel.CategoryId, gender);
+                    if(categoryModel.CategoryId != null) {
+                        getServiceList(categoryModel.CategoryId, gender);
+                    }
                 }
             }
 
