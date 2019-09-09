@@ -219,34 +219,37 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void showPasswordField(IsUserRegisteredResponseModel model) {
-        try {
-            Crashlytics.setString("PhoneNumber", userNameEdit.getText().toString());
-            if (model.Error.StatusCode == 200) {
-                passwordEditContainer.setVisibility(View.VISIBLE);
-                passwordContainer.setVisibility(View.VISIBLE);
-            } else if (model.Error.StatusCode == 403) {
-                EnrichUtils.showMessage(context, "Invalid Number");
-            } else if (model.Error.StatusCode == 404) {
+
+        Crashlytics.setString("PhoneNumber", userNameEdit.getText().toString());
+        if (model != null) {
+
+            if (model.Error != null) {
+
+
+                if (model.Error.StatusCode == 200) {
+                    passwordEditContainer.setVisibility(View.VISIBLE);
+                    passwordContainer.setVisibility(View.VISIBLE);
+                } else if (model.Error.StatusCode == 403) {
+                    EnrichUtils.showMessage(context, "Invalid Number");
+                } else if (model.Error.StatusCode == 404) {
 //             Redirect to Registration screen
-                Intent intent = new Intent(context, RegisterActivity.class);
-                intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
-                intent.putExtra("IsFromLoginLater", true);
-                startActivity(intent);
-            } else if (model.Error.StatusCode == 410) {// NO EMAIL
-                passwordEditContainer.setVisibility(View.VISIBLE);
-                passwordContainer.setVisibility(View.VISIBLE);
-            } else if (model.Error.StatusCode == 409) {// NO USERNAME
-                try {
+                    Intent intent = new Intent(context, RegisterActivity.class);
+                    intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
+                    intent.putExtra("IsFromLoginLater", true);
+                    startActivity(intent);
+                } else if (model.Error.StatusCode == 410) {// NO EMAIL
+                    passwordEditContainer.setVisibility(View.VISIBLE);
+                    passwordContainer.setVisibility(View.VISIBLE);
+                } else if (model.Error.StatusCode == 409) {// NO USERNAME
+
                     Intent intent = new Intent(context, RegisterActivity.class);
                     intent.putExtra("GuestData", model.Guest);
                     startActivity(intent);
-                } catch (Exception e) {
 
                 }
             }
-        } catch (Exception e) {
-
         }
+
     }
 
     @Override
