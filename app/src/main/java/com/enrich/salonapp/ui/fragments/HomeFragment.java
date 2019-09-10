@@ -566,18 +566,20 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showAppointments(AppointmentResponseModel model) {
-        if (model.Appointments.size() != 0) {
-            appointmentContainer.setVisibility(View.VISIBLE);
-            appointmentsRecyclerView.setVisibility(View.VISIBLE);
-            noAppointmentContainer.setVisibility(View.GONE);
+        if(model != null) {
+            if (model.Appointments.size() != 0) {
+                appointmentContainer.setVisibility(View.VISIBLE);
+                appointmentsRecyclerView.setVisibility(View.VISIBLE);
+                noAppointmentContainer.setVisibility(View.GONE);
 
-            AppointmentHomeAdapter appointmentHomeAdapter = new AppointmentHomeAdapter(context, model.Appointments);
-            appointmentsRecyclerView.setAdapter(appointmentHomeAdapter);
-            appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        } else {
-            appointmentContainer.setVisibility(View.VISIBLE);
-            appointmentsRecyclerView.setVisibility(View.GONE);
-            noAppointmentContainer.setVisibility(View.VISIBLE);
+                AppointmentHomeAdapter appointmentHomeAdapter = new AppointmentHomeAdapter(context, model.Appointments);
+                appointmentsRecyclerView.setAdapter(appointmentHomeAdapter);
+                appointmentsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            } else {
+                appointmentContainer.setVisibility(View.VISIBLE);
+                appointmentsRecyclerView.setVisibility(View.GONE);
+                noAppointmentContainer.setVisibility(View.VISIBLE);
+            }
         }
     }
 
