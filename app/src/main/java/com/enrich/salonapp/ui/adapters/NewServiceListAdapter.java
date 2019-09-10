@@ -277,20 +277,28 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
 
     @Override
     public int getChildViewType(int parentPosition, int childPosition) {
-        Crashlytics.setString("SubCategoryName", filteredList.get(parentPosition).Name);
-        if (parentPosition < filteredList.size()) {
-            if (childPosition < filteredList.get(parentPosition).ChildServices.size()) {
-                if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Normal")) {
-                    return CHILD_NORMAL;
-                } else if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Parent")) {
-                    return CHILD_PARENT;
-                } else {
-                    return 0;
-                }
+        if (filteredList != null) {
+            Crashlytics.setString("SubCategoryName", filteredList.get(parentPosition).Name);
+            if (parentPosition < filteredList.size()) {
+
+
+                if (filteredList.get(parentPosition).ChildServices != null) {
+
+
+                    if (childPosition < filteredList.get(parentPosition).ChildServices.size()) {
+                        if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Normal")) {
+                            return CHILD_NORMAL;
+                        } else if (filteredList.get(parentPosition).ChildServices.get(childPosition).ServiceType.equalsIgnoreCase("Parent")) {
+                            return CHILD_PARENT;
+                        } else {
+                            return 0;
+                        }
+                    } else
+                        return 0;
+                } else return 0;
             } else
                 return 0;
-        } else
-            return 0;
+        } else return 0;
     }
 
     @Override
