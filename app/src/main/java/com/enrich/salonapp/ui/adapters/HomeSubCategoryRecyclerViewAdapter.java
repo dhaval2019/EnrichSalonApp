@@ -66,8 +66,10 @@ public class HomeSubCategoryRecyclerViewAdapter extends RecyclerView.Adapter<Hom
 
     @Override
     public int getItemCount() {
-
+        if (list != null) {
             return list.size();
+        } else
+            return 0;
 
     }
 
