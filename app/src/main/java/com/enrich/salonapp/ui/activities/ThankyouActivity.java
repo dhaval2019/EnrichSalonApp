@@ -34,12 +34,13 @@ public class ThankyouActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         FriendResponseModel model = null;
-        if ((bundle != null) && (bundle.getParcelable("friendResponseModel") != null)) {
-            model = bundle.getParcelable("friendResponseModel");
-            FBEventModel fbEventModel = new FBEventModel();
-            ArrayList<Referal> referalArrayList = new ArrayList<Referal>();
-            String eg = "";
-            if (model.ExistingGuests.size() == 1) {
+        if (bundle != null) {
+            if (bundle.getParcelable("friendResponseModel") != null) {
+                model = bundle.getParcelable("friendResponseModel");
+                FBEventModel fbEventModel = new FBEventModel();
+                ArrayList<Referal> referalArrayList = new ArrayList<Referal>();
+                String eg = "";
+                if (model.ExistingGuests.size() == 1) {
             /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
                 for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
                 {
@@ -50,36 +51,36 @@ public class ThankyouActivity extends AppCompatActivity {
                 }
 
             }*/
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        eg = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        break;
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            break;
+                        }
                     }
-                }
-            } else if (model.ExistingGuests.size() > 1) {
-                // eg = model.ExistingGuests.get(0).getMobileNo() + "";
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        eg = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        break;
+                } else if (model.ExistingGuests.size() > 1) {
+                    // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ExistingGuests.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            eg = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            break;
+                        }
                     }
-                }
             /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
                 eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
             }*/
-                for (int i = 1; i < model.ExistingGuests.size(); i++) {
-                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                        if (model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                    for (int i = 1; i < model.ExistingGuests.size(); i++) {
+                        for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                            if (model.ExistingGuests.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
 
-                            eg = eg + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                                eg = eg + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                            }
                         }
+
                     }
-
                 }
-            }
 
-            String er = "";
-            if (model.ExistingReferrals.size() == 1) {
+                String er = "";
+                if (model.ExistingReferrals.size() == 1) {
             /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
                 for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
                 {
@@ -90,33 +91,33 @@ public class ThankyouActivity extends AppCompatActivity {
                 }
 
             }*/
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        er = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        break;
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            break;
+                        }
                     }
-                }
-            } else if (model.ExistingReferrals.size() > 1) {
-                // eg = model.ExistingGuests.get(0).getMobileNo() + "";
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        er = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        break;
+                } else if (model.ExistingReferrals.size() > 1) {
+                    // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ExistingReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            er = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            break;
+                        }
                     }
-                }
             /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
                 eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
             }*/
-                for (int i = 1; i < model.ExistingReferrals.size(); i++) {
-                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                        if (model.ExistingReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                    for (int i = 1; i < model.ExistingReferrals.size(); i++) {
+                        for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                            if (model.ExistingReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
 
-                            er = er + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                                er = er + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                            }
                         }
-                    }
 
+                    }
                 }
-            }
 
 
 
@@ -145,8 +146,8 @@ public class ThankyouActivity extends AppCompatActivity {
         }*/
 
 
-            String vr = "";
-            if (model.ValidReferrals.size() == 1) {
+                String vr = "";
+                if (model.ValidReferrals.size() == 1) {
             /*for (int i = 0; i < model.ExistingGuests.size(); i++) {
                 for(int j=0;j<SelectFriendActivity.selectedList.size();j++)
                 {
@@ -157,45 +158,45 @@ public class ThankyouActivity extends AppCompatActivity {
                 }
 
             }*/
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        vr = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        Referal referal = new Referal();
-                        referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
-                        referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
-                        referalArrayList.add(referal);
-                        break;
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            vr = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            Referal referal = new Referal();
+                            referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                            referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
+                            referalArrayList.add(referal);
+                            break;
+                        }
                     }
-                }
-            } else if (model.ValidReferrals.size() > 1) {
-                // eg = model.ExistingGuests.get(0).getMobileNo() + "";
-                for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                    if (model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
-                        vr = SelectFriendActivity.selectedList.get(j).getName() + "";
-                        Referal referal = new Referal();
-                        referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
-                        referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
-                        referalArrayList.add(referal);
-                        break;
+                } else if (model.ValidReferrals.size() > 1) {
+                    // eg = model.ExistingGuests.get(0).getMobileNo() + "";
+                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                        if (model.ValidReferrals.get(0).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                            vr = SelectFriendActivity.selectedList.get(j).getName() + "";
+                            Referal referal = new Referal();
+                            referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                            referal.setReferalContactNo(model.ValidReferrals.get(0).getMobileNo());
+                            referalArrayList.add(referal);
+                            break;
+                        }
                     }
-                }
             /*for (int i = 1; i < model.ExistingGuests.size(); i++) {
                 eg = eg + " , " + model.ExistingGuests.get(i).getMobileNo();
             }*/
-                for (int i = 1; i < model.ValidReferrals.size(); i++) {
-                    for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
-                        if (model.ValidReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
+                    for (int i = 1; i < model.ValidReferrals.size(); i++) {
+                        for (int j = 0; j < SelectFriendActivity.selectedList.size(); j++) {
+                            if (model.ValidReferrals.get(i).getMobileNo().equalsIgnoreCase(SelectFriendActivity.selectedList.get(j).getMobNo())) {
 
-                            vr = vr + " , " + SelectFriendActivity.selectedList.get(j).getName();
-                            Referal referal = new Referal();
-                            referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
-                            referal.setReferalContactNo(SelectFriendActivity.selectedList.get(j).getMobNo());
-                            referalArrayList.add(referal);
+                                vr = vr + " , " + SelectFriendActivity.selectedList.get(j).getName();
+                                Referal referal = new Referal();
+                                referal.setReferalName(SelectFriendActivity.selectedList.get(j).getName());
+                                referal.setReferalContactNo(SelectFriendActivity.selectedList.get(j).getMobNo());
+                                referalArrayList.add(referal);
+                            }
                         }
-                    }
 
+                    }
                 }
-            }
 
 
 
@@ -215,74 +216,75 @@ public class ThankyouActivity extends AppCompatActivity {
                 vr = vr + " , " + model.ValidReferrals.get(i).getMobileNo();
             }
         }*/
-            String rftExistingGuestSingle = "";
-            String rftExistingGuestMulti = "";
-            if (model.ExistingGuests.size() == 1) {
-                rftExistingGuestSingle = "The guest -" + eg + " you have referred is already an existing Enrich customer. Please select another guest to invite. ";
-            } else if (model.ExistingGuests.size() >= 1) {
-                rftExistingGuestMulti = "The guests -" + eg + " you have referred are already an existing Enrich customer. Please select another guests to invite. ";
-            }
-            String rftExistingReferralSingle = "";
-            String rftExistingReferralMulti = "";
-            if (model.ExistingReferrals.size() == 1) {
-                rftExistingReferralSingle = "The guest -" + er + " you have referred has already been invited by another. Please select another guest to invite. ";
-            } else if (model.ExistingReferrals.size() >= 1) {
-                rftExistingReferralMulti = "The guests - " + er + " you have referred have already been invited by another. Please select another guests to invite. ";
-            }
-
-            String rftValidReferralSingle = "";
-            String rftValidReferralMulti = "";
-
-            if (model.ValidReferrals.size() == 1) {
-                rftValidReferralSingle = "The guest -" + vr + " you have referred has been invited. Thank you! ";
-            } else if (model.ValidReferrals.size() >= 1) {
-                rftValidReferralMulti = "The guests -" + vr + " you have referred have been invited. Thank you! ";
-            }
-            boolean bvr = false, beg = false;
-            if (model.ValidReferrals.size() == 1) {
-                tvThankYou.setText(rftValidReferralSingle.toString());
-                bvr = true;
-            } else if (model.ValidReferrals.size() > 1) {
-                tvThankYou.setText(rftValidReferralMulti.toString());
-                bvr = true;
-            }
-
-            if (model.ExistingGuests.size() == 1) {
-                if (bvr) {
-                    tvThankYou.append("\n" + rftExistingGuestSingle);
-                    beg = true;
-                } else {
-                    tvThankYou.setText(rftExistingGuestSingle);
-                    beg = true;
+                String rftExistingGuestSingle = "";
+                String rftExistingGuestMulti = "";
+                if (model.ExistingGuests.size() == 1) {
+                    rftExistingGuestSingle = "The guest -" + eg + " you have referred is already an existing Enrich customer. Please select another guest to invite. ";
+                } else if (model.ExistingGuests.size() >= 1) {
+                    rftExistingGuestMulti = "The guests -" + eg + " you have referred are already an existing Enrich customer. Please select another guests to invite. ";
                 }
-            } else if (model.ExistingGuests.size() > 1) {
-                if (bvr) {
-                    tvThankYou.append("\n" + rftExistingGuestMulti);
-                    beg = true;
-                } else {
-                    tvThankYou.setText(rftExistingGuestMulti);
-                    beg = true;
+                String rftExistingReferralSingle = "";
+                String rftExistingReferralMulti = "";
+                if (model.ExistingReferrals.size() == 1) {
+                    rftExistingReferralSingle = "The guest -" + er + " you have referred has already been invited by another. Please select another guest to invite. ";
+                } else if (model.ExistingReferrals.size() >= 1) {
+                    rftExistingReferralMulti = "The guests - " + er + " you have referred have already been invited by another. Please select another guests to invite. ";
                 }
-            }
 
-            if (model.ExistingReferrals.size() == 1) {
-                if ((bvr) || (beg)) {
-                    tvThankYou.append("\n" + rftExistingReferralSingle);
-                } else {
-                    tvThankYou.setText(rftExistingReferralSingle);
+                String rftValidReferralSingle = "";
+                String rftValidReferralMulti = "";
+
+                if (model.ValidReferrals.size() == 1) {
+                    rftValidReferralSingle = "The guest -" + vr + " you have referred has been invited. Thank you! ";
+                } else if (model.ValidReferrals.size() >= 1) {
+                    rftValidReferralMulti = "The guests -" + vr + " you have referred have been invited. Thank you! ";
                 }
-            } else if (model.ExistingReferrals.size() > 1) {
-                if ((bvr) || (beg)) {
-                    tvThankYou.append("\n" + rftExistingReferralMulti);
-                } else {
-                    tvThankYou.setText(rftExistingReferralMulti);
+                boolean bvr = false, beg = false;
+                if (model.ValidReferrals.size() == 1) {
+                    tvThankYou.setText(rftValidReferralSingle.toString());
+                    bvr = true;
+                } else if (model.ValidReferrals.size() > 1) {
+                    tvThankYou.setText(rftValidReferralMulti.toString());
+                    bvr = true;
                 }
+
+                if (model.ExistingGuests.size() == 1) {
+                    if (bvr) {
+                        tvThankYou.append("\n" + rftExistingGuestSingle);
+                        beg = true;
+                    } else {
+                        tvThankYou.setText(rftExistingGuestSingle);
+                        beg = true;
+                    }
+                } else if (model.ExistingGuests.size() > 1) {
+                    if (bvr) {
+                        tvThankYou.append("\n" + rftExistingGuestMulti);
+                        beg = true;
+                    } else {
+                        tvThankYou.setText(rftExistingGuestMulti);
+                        beg = true;
+                    }
+                }
+
+                if (model.ExistingReferrals.size() == 1) {
+                    if ((bvr) || (beg)) {
+                        tvThankYou.append("\n" + rftExistingReferralSingle);
+                    } else {
+                        tvThankYou.setText(rftExistingReferralSingle);
+                    }
+                } else if (model.ExistingReferrals.size() > 1) {
+                    if ((bvr) || (beg)) {
+                        tvThankYou.append("\n" + rftExistingReferralMulti);
+                    } else {
+                        tvThankYou.setText(rftExistingReferralMulti);
+                    }
+                }
+                fbEventModel.setReferalArrayList(referalArrayList);
+                fbEventModel.setStoreName(EnrichUtils.getHomeStore(this).Name);
+                fbEventModel.setUserName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
+                fbEventModel.setUserPhoneNo(EnrichUtils.getUserData(this).MobileNumber);
+                logFriendReferred(fbEventModel);
             }
-            fbEventModel.setReferalArrayList(referalArrayList);
-            fbEventModel.setStoreName(EnrichUtils.getHomeStore(this).Name);
-            fbEventModel.setUserName(EnrichUtils.getUserData(this).FirstName + " " + EnrichUtils.getUserData(this).LastName);
-            fbEventModel.setUserPhoneNo(EnrichUtils.getUserData(this).MobileNumber);
-            logFriendReferred(fbEventModel);
         }
 
         btnContinueShopping.setOnClickListener(new View.OnClickListener() {
