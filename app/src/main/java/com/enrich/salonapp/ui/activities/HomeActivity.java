@@ -471,13 +471,15 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void checkBeautyAndBling(BeautyAndBlingResponseModel model) {
         if (EnrichUtils.getUserData(this) != null) {
-            if(model.BeautyAndBling != null) {
-                if (!model.BeautyAndBling.isEmpty()) {
-                    for (int i = 0; i < model.BeautyAndBling.size(); i++) {
-                        if (model.BeautyAndBling.get(i).IsActive) {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("GuestId", EnrichUtils.getUserData(this).Id);
-                            beautyAndBlingEligibilityPresenter.getSpinCount(this, map);
+            if(model != null) {
+                if (model.BeautyAndBling != null) {
+                    if (!model.BeautyAndBling.isEmpty()) {
+                        for (int i = 0; i < model.BeautyAndBling.size(); i++) {
+                            if (model.BeautyAndBling.get(i).IsActive) {
+                                Map<String, String> map = new HashMap<>();
+                                map.put("GuestId", EnrichUtils.getUserData(this).Id);
+                                beautyAndBlingEligibilityPresenter.getSpinCount(this, map);
+                            }
                         }
                     }
                 }
