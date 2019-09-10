@@ -46,7 +46,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if(list != null) {
+            return list.size();
+        }else
+        {
+            return 0;
+        }
     }
 
     @SuppressLint("SetTextI18n")
