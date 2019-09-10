@@ -508,8 +508,10 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
     @Override
     protected void onPause() {
         super.onPause();
-        if (googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
+        if(googleApiClient != null) {
+            if (googleApiClient.isConnected()) {
+                googleApiClient.disconnect();
+            }
         }
     }
 
