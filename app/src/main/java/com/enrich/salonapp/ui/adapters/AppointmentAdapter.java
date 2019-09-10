@@ -53,13 +53,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     boolean isCurrent;
     boolean isHomeSelected;
     int pos;
-    String appGroupId;
+  //  String appGroupId;
     BottomSheetDialog dialog;
 
     DataRepository dataRepository;
     CancelAppointmentsPresenter cancelAppointmentsPresenter;
 
-    AppointmentModel model;
+   // AppointmentModel model;
 
     public AppointmentAdapter(Activity activity, ArrayList<AppointmentModel> list, boolean isCurrent) {
         this.activity = activity;
@@ -82,7 +82,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(AppointmentViewHolder holder, final int position) {
-        model = list.get(position);
+     final   AppointmentModel    model = list.get(position);
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat stringToTime = new SimpleDateFormat("hh:mm:ss");
@@ -113,7 +113,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.appointmentStore.setText(model.Center.Name);
         holder.appointmentTherapist.setText("Stylist: " + model.AppointmentServices.get(0).RequestedTherapist.FullName);
 
-        holder.appointmentPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int)Math.round(list.get(position).Price._final));
+        holder.appointmentPrice.setText(activity.getResources().getString(R.string.Rs) + " " + (int) Math.round(list.get(position).Price._final));
 
         if (isCurrent) {
             holder.appointmentCancel.setVisibility(View.VISIBLE);
@@ -128,7 +128,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             @Override
             public void onClick(View v) {
                 pos = position;
-                showCancelDialog(model);
+                showCancelDialog();
             }
         });
 
@@ -186,12 +186,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
             logSegmentCancelAppointment();
 
-            Iterator itr = list.iterator();
+          /*  Iterator itr = list.iterator();
             while (itr.hasNext()) {
                 AppointmentModel appointmentModel = (AppointmentModel) itr.next();
                 if (appointmentModel.AppointmentGroupId.equals(appGroupId))
                     itr.remove();
-            }
+            }*/
+            /*for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).AppointmentGroupId.equalsIgnoreCase(appGroupId)) {
+                    list.remove(i);
+                    break;
+                }
+            }*/
+            list.remove(pos);
             notifyDataSetChanged();
             dialog.cancel();
         } else {
@@ -201,7 +208,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     private void logSegmentCancelAppointment() {
         List<Properties> propertiesArrayList = new ArrayList<>();
-
+        AppointmentModel model = list.get(pos);
         for (int i = 0; i < model.AppointmentServices.size(); i++) {
             SegmentLoggingServiceModel segmentLoggingServiceModel = new SegmentLoggingServiceModel();
             segmentLoggingServiceModel.service = model.AppointmentServices.get(i).Service.name;
@@ -294,7 +301,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public void showCancelDialog(final AppointmentModel model) {
+    public void showCancelDialog() {
         View view = inflater.inflate(R.layout.cancel_service_dialog, null);
         dialog = new BottomSheetDialog(activity);
         dialog.setContentView(view);
@@ -319,8 +326,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
                 if (selectedId != -1) {
                     String reasonStr = ((RadioButton) dialog.findViewById(selectedId)).getText().toString();
-                    appGroupId = model.AppointmentGroupId;
-                    cancelAppointment(reasonStr, model.AppointmentGroupId);
+                    //appGroupId = model.AppointmentGroupId;
+                    //cancelAppointment(reasonStr, model.AppointmentGroupId);
+                    cancelAppointment(reasonStr,list.get(pos).AppointmentGroupId);
                 } else {
                     EnrichUtils.showMessage(activity, "Please select a reason");
                 }
