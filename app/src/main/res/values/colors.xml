@@ -19,9 +19,10 @@
     <color name="new_grey">#838485</color>
     <color name="new_dark_grey">#434343</color>
     <color name="new_yellow">#d9b262</color>
-
+    <color name="black_white_btn_shadow">#1a1a1a</color>
     <color name="light_gold">#e8c783</color>
     <color name="dark_gold">#d69e5c</color>
+    <color name="goldbtnshadow">#4dffa710</color>
     <color name="beauty_and_bling_background">#c3b48d</color>
 
     <color name="black_translucent">#60000000</color>
