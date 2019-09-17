@@ -14,7 +14,6 @@
     <color name="text_color">#4e5f6f</color>
     <color name="teal">#1abc9c</color>
     <color name="transparent">#00ffffff</color>
-
     <color name="light_brown">#f0d6c9</color>
     <color name="new_grey">#838485</color>
     <color name="new_dark_grey">#434343</color>
@@ -22,7 +21,9 @@
     <color name="black_white_btn_shadow">#1a1a1a</color>
     <color name="light_gold">#e8c783</color>
     <color name="dark_gold">#d69e5c</color>
+    <color name="referafrnd_gold">#d6ae5c</color>
     <color name="goldbtnshadow">#4dffa710</color>
+    <color name="continue_btn_shadow">#e7c681</color>
     <color name="beauty_and_bling_background">#c3b48d</color>
 
     <color name="black_translucent">#60000000</color>
@@ -57,6 +58,8 @@
     <color name="magenta">#FF00FF</color>
     <color name="violet_frnd_text">#6736c3</color>
     <color name="green_select_friend">#42e167</color>
+    <color name="code_redeem_text_color">#5d5d5d</color>
+    <color name="code_redeem_referral_code">#aeaeae</color>
     <array name="rainbow">
         <item>@color/bright_pink</item>
         <item>@color/red</item>
