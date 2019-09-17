@@ -173,7 +173,7 @@
     <com.enrich.salonapp.ui.views.CustomButton
         android:id="@+id/invite_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="21dp"
         android:layout_marginLeft="21dp"
         android:layout_marginEnd="37dp"
