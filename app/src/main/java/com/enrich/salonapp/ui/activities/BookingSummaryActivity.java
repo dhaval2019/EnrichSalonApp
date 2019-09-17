@@ -787,7 +787,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         String udf9 = "";
         String udf10 = "";
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         builder.setAmount("" + new DecimalFormat(".##").format(amount))
                 .setTxnId(txnId)
                 .setPhone(phone)
@@ -839,7 +839,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
         stringBuilder.append(params.get(PayUmoneyConstants.UDF4)).append("|");
         stringBuilder.append(params.get(PayUmoneyConstants.UDF5)).append("||||||");
 
-        AppEnvironment appEnvironment = AppEnvironment.SANDBOX;
+        AppEnvironment appEnvironment = AppEnvironment.PRODUCTION;
         stringBuilder.append(appEnvironment.salt());
 
         String hash = hashCal(stringBuilder.toString());
