@@ -278,34 +278,36 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void saveUserDetails(final GuestModel model) {
-        model.UserName = userNameEdit.getText().toString();
-        model.Password = passwordEdit.getText().toString();
+        if(model != null) {
+            model.UserName = userNameEdit.getText().toString();
+            model.Password = passwordEdit.getText().toString();
 
-        EnrichUtils.saveUserData(context, model);
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                RegisterFCMRequestModel fcmModel = new RegisterFCMRequestModel();
-                fcmModel.GuestId = model.Id;
-                fcmModel.Platform = Constants.PLATFORM_ANDROID;
-                fcmModel.Token = instanceIdResult.getToken();
+            EnrichUtils.saveUserData(context, model);
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context, new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    RegisterFCMRequestModel fcmModel = new RegisterFCMRequestModel();
+                    fcmModel.GuestId = model.Id;
+                    fcmModel.Platform = Constants.PLATFORM_ANDROID;
+                    fcmModel.Token = instanceIdResult.getToken();
 
-                registerFCMPresenter.registerFCM(context, fcmModel);
-            }
-        });
-        try {
+                    registerFCMPresenter.registerFCM(context, fcmModel);
+                }
+            });
+            // try {
             Toast.makeText(context, "Welcome " + model.FirstName + "!", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
+       /* } catch (Exception e) {
 
+        }*/
+            Analytics.with(context).track(Constants.SEGMENT_LOGIN, new Properties()
+                    .putValue("user_id", model.Id)
+                    .putValue("first_name", model.FirstName)
+                    .putValue("last_name", model.LastName)
+                    .putValue("email", model.Email)
+                    .putValue("mobile", model.MobileNumber));
+
+            LoginBottomSheetFragment.this.dismiss();
         }
-        Analytics.with(context).track(Constants.SEGMENT_LOGIN, new Properties()
-                .putValue("user_id", model.Id)
-                .putValue("first_name", model.FirstName)
-                .putValue("last_name", model.LastName)
-                .putValue("email", model.Email)
-                .putValue("mobile", model.MobileNumber));
-
-        LoginBottomSheetFragment.this.dismiss();
     }
 
     @Override
