@@ -10,7 +10,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
     <application
         android:name=".EnrichApplication"
         android:allowBackup="true"
@@ -24,11 +25,19 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup,android:usesCleartextTraffic"
         tools:targetApi="n">
-        <activity android:name=".ui.activities.ThankyouActivity"></activity>
-        <activity android:name=".ui.activities.SelectFriendActivity" />
+        <activity android:name=".ui.activities.CodeRedeemActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activities.ThankyouActivity" />
+        <activity android:name=".ui.activities.SelectFriendActivity" />
         <activity android:name=".ui.activities.ReferAFriendActivity" />
-        <service android:name="com.enrich.salonapp.util.supertoast.utils.HelloService" />
+
+        <service android:name=".util.supertoast.utils.HelloService" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
