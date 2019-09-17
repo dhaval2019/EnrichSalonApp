@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mask_group_3"
+    tools:context=".ui.activities.CodeRedeemActivity">
+
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="29.5dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="28.5dp"
+        android:layout_marginRight="28.5dp"
+        android:layout_marginBottom="63dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".ui.activities.CodeRedeemActivity">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            android:src="@drawable/redclose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="51.4dp"
+            android:layout_marginLeft="51.4dp"
+            android:layout_marginTop="72.1dp"
+            android:src="@drawable/giftbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="254dp"
+            android:gravity="center_horizontal"
+            android:text="Redeem your code"
+            android:textColor="@color/black_white_btn_shadow"
+            android:textSize="@dimen/dimen_18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.enrich.salonapp.ui.views.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21.5dp"
+            android:layout_marginLeft="21.5dp"
+            android:layout_marginTop="285dp"
+            android:layout_marginEnd="21.5dp"
+            android:layout_marginRight="21.5dp"
+            android:gravity="center_horizontal"
+            android:text="@string/txt_dummy_frnd"
+            android:textColor="@color/code_redeem_text_color"
+            android:textSize="@dimen/dimen_12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tvreddem"/>
+
+        <com.enrich.salonapp.ui.views.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginRight="33dp"
+            android:layout_marginBottom="115dp"
+            android:gravity="center_horizontal"
+            android:hint="@string/txt_referal_input_text"
+            android:textColor="@color/code_redeem_referral_code"
+            android:textColorHint="@color/code_redeem_referral_code"
+            android:textSize="@dimen/dimen_12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@android:color/black"
+            android:id="@+id/edtrefral"
+
+            />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toRightOf="@+id/edtrefral"
+            android:src="@drawable/cross"
+            android:layout_marginBottom="127dp"
+            android:layout_marginEnd="45.2dp"
+            android:layout_marginRight="45.2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.enrich.salonapp.ui.views.CustomButton
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="34.5dp"
+            android:layout_marginLeft="34.5dp"
+            android:layout_marginEnd="33.5dp"
+            android:layout_marginRight="33.5dp"
+            android:layout_marginBottom="29dp"
+            android:background="@drawable/rounded_corner_gold_btn"
+            android:gravity="center"
+            android:text="@string/txt_continue"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dimen_18sp"
+            app:font_type="regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtrefral"
+
+            />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
