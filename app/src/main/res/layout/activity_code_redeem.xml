@@ -89,6 +89,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:backgroundTint="@android:color/black"
             android:id="@+id/edtrefral"
+            app:layout_constraintTop_toBottomOf="@id/tvreddem"
 
             />
         <ImageView
