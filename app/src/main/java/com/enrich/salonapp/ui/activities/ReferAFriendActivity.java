@@ -36,6 +36,8 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
     LinearLayout signInContainer;
     @BindView(R.id.settings_login_button)
     Button settingsLoginButton;
+    @BindView(R.id.imgshare)
+    ImageView ivShare;
     //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,17 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
             public void onClick(View view) {
 
                 ReferAFriendActivity.this.finish();
+            }
+        });
+        ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Invite Code");
+                i.putExtra(android.content.Intent.EXTRA_TEXT, "johnk1315em");
+                startActivity(Intent.createChooser(i,"Share via"));
+
             }
         });
         txtFriendLink.setOnClickListener(new View.OnClickListener() {
