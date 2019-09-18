@@ -71,7 +71,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/tvreddem"/>
 
-        <com.enrich.salonapp.ui.views.CustomEditText
+       <!-- <com.enrich.salonapp.ui.views.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
@@ -91,8 +91,8 @@
             android:id="@+id/edtrefral"
             app:layout_constraintTop_toBottomOf="@id/tvreddem"
 
-            />
-        <ImageView
+            />-->
+        <!--<ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,8 +103,44 @@
             android:layout_marginEnd="45.2dp"
             android:layout_marginRight="45.2dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginRight="33dp"
+            android:layout_marginBottom="115dp"
+            app:layout_constraintTop_toBottomOf="@id/tvreddem"
+            android:id="@+id/referallayout">
 
+            <com.enrich.salonapp.ui.views.CustomEditText
+                android:backgroundTint="@android:color/black"
+                android:id="@+id/edtrefral"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+
+                android:textColor="@color/code_redeem_referral_code"
+                android:textColorHint="@color/code_redeem_referral_code"
+                android:textSize="@dimen/dimen_12sp"
+                android:hint="@string/txt_referal_input_text"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/calc_clear_txt_Prise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/imgcross" />
+
+        </FrameLayout>
         <com.enrich.salonapp.ui.views.CustomButton
             android:id="@+id/continue_button"
             android:layout_width="match_parent"
@@ -124,7 +160,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtrefral"
+            app:layout_constraintTop_toBottomOf="@id/referallayout"
 
             />
     </android.support.constraint.ConstraintLayout>
