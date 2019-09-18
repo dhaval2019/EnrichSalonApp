@@ -124,7 +124,23 @@
             app:font_type="regular" />
     </LinearLayout>
 
+    <com.enrich.salonapp.ui.views.CustomTextView
+        android:id="@+id/tvsharetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
 
+        android:gravity="center_vertical|left"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginBottom="144dp"
+        android:text="@string/txt_share_code_text"
+        android:textColor="@color/code_redeem_referral_code"
+        android:textSize="@dimen/dimen_12sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textlayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:font_type="regular" />
     <RelativeLayout
         android:id="@+id/sharebtn"
         android:layout_width="match_parent"
@@ -138,7 +154,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textlayout">
+        app:layout_constraintTop_toBottomOf="@id/tvsharetext">
 
        <com.enrich.salonapp.ui.views.CustomTextView
            android:layout_width="wrap_content"
