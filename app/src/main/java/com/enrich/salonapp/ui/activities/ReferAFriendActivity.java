@@ -64,9 +64,15 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReferAFriendActivity.this, SelectFriendActivity.class);
+                /*Intent intent = new Intent(ReferAFriendActivity.this, SelectFriendActivity.class);
                 startActivity(intent);
-                ReferAFriendActivity.this.finish();
+                ReferAFriendActivity.this.finish();*/
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.setPackage("com.whatsapp");
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Invite Code");
+                i.putExtra(android.content.Intent.EXTRA_TEXT, "johnk1315em");
+                startActivity(Intent.createChooser(i,"Share via"));
             }
         });
         ivBack.setOnClickListener(new View.OnClickListener() {
