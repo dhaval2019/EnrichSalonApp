@@ -133,10 +133,8 @@
     <string name="txt_continue_shopping">Continue shopping</string>
     <string name="txt_refer_a_friend_intro_page">Do you like Enrich services? Do you think your friends would like us too? Refer them and get rewarded for it!</string>
     <string name="txt_refer_a_frnd_intro_link">How this works?</string>
-    <string name="txt_refer_a_frnd_popup_txt1">Select three friends or family whom you want to refer, and tap on \'Continue\'. If your selection is valid, you will be allowed to proceed.
-
-
-</string>
+    <string name="txt_refer_a_frnd_popup_txt1">Select three friends or family whom you want to refer, and tap on \'Continue\'. If your selection is valid, you will be allowed to proceed.</string>
+    <string name="txt_share_code_text">Share Your Invite Code</string>
     <string name="txt_refer_a_frnd_popup_txt2">Selection is valid if the guest is not an existing customer, and if the guest has not already been referred by someone else.
 
 
