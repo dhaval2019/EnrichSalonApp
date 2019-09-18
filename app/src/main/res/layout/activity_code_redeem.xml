@@ -133,7 +133,7 @@
                 android:singleLine="true" />
 
             <ImageView
-                android:id="@+id/calc_clear_txt_Prise"
+                android:id="@+id/code_clear_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
