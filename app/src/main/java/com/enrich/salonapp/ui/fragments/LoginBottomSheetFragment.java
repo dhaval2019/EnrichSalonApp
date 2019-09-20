@@ -93,7 +93,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     EnrichApplication application;
     Tracker mTracker;
-
+    boolean isUserNameAccepted=false;
     Context context;
 
     static LoginListener loginListener;
@@ -128,7 +128,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_bottom_dialog, container, false);
         ButterKnife.bind(this, view);
-
+        isUserNameAccepted=false;
         dataRepository = Injection.provideDataRepository(context, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
         signInPresenter = new SignInPresenter(this, dataRepository);
@@ -141,6 +141,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    isUserNameAccepted=true;
                     signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
                 }
                 return false;
@@ -176,6 +177,12 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
                 String userNameStr = userNameEdit.getText().toString();
                 String passwordStr = passwordEdit.getText().toString();
+                if(!isUserNameAccepted) {
+                    if ((!userNameStr.isEmpty()) && passwordStr.isEmpty()) {
+                        signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
+                        return;
+                    }
+                }else
 
                 if (userNameStr.isEmpty() || passwordStr.isEmpty()) {
                     EnrichUtils.showMessage(context, "Please enter all the fields");
