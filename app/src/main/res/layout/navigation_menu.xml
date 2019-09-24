@@ -297,6 +297,42 @@
                         android:background="#e5e5e5" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/redeem_your_code_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/nav_title_container_padding"
+                    android:paddingBottom="@dimen/nav_title_container_padding">
+
+                    <ImageView
+                        android:id="@+id/nav_redeem_your_code_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/baseline_redeem_black_48"
+                        android:tint="@color/white" />
+
+                    <com.enrich.salonapp.ui.views.CustomTextView
+                        android:id="@+id/nav_redeem_your_code_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/nav_redeem_your_code_icon"
+                        android:text="Redeem Your Code"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:font_type="light" />
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/nav_redeem_your_code_icon"
+                        android:layout_alignLeft="@id/nav_redeem_your_code_label"
+                        android:layout_marginTop="15dp"
+                        android:background="#e5e5e5" />
+                </RelativeLayout>
 
                 <!-- CONTACT US -->
                 <RelativeLayout
