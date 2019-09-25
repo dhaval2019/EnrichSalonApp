@@ -179,7 +179,9 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                 String passwordStr = passwordEdit.getText().toString();
                 if(!isUserNameAccepted) {
                     if ((!userNameStr.isEmpty()) && passwordStr.isEmpty()) {
+                        isUserNameAccepted=false;
                         signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
+
                         return;
                     }
                 }else
@@ -238,7 +240,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                     passwordContainer.setVisibility(View.VISIBLE);
                 } else if (model.Error.StatusCode == 403) {
                     EnrichUtils.showMessage(context, "Invalid Number");
-                } else if (model.Error.StatusCode == 404) {
+                } else if (model.Error.StatusCode == 404) {//new user or no username no email ,fresh user
 //             Redirect to Registration screen
                     Intent intent = new Intent(context, RegisterActivity.class);
                     intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
@@ -247,7 +249,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                 } else if (model.Error.StatusCode == 410) {// NO EMAIL
                     passwordEditContainer.setVisibility(View.VISIBLE);
                     passwordContainer.setVisibility(View.VISIBLE);
-                } else if (model.Error.StatusCode == 409) {// NO USERNAME
+                } else if (model.Error.StatusCode == 409) {// NO USERNAME//new user with no username and available email id
 
                     Intent intent = new Intent(context, RegisterActivity.class);
                     intent.putExtra("GuestData", model.Guest);
