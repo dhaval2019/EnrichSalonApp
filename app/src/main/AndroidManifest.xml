@@ -25,9 +25,10 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup,android:usesCleartextTraffic"
         tools:targetApi="n">
-        <activity android:name=".ui.activities.CodeRedeemActivity" android:screenOrientation="portrait">
-
-        </activity>
+        <activity android:name=".ui.activities.RegistrationCodeRedeemActivity"></activity>
+        <activity
+            android:name=".ui.activities.CodeRedeemActivity"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".ui.activities.ThankyouActivity" />
         <activity android:name=".ui.activities.SelectFriendActivity" />
         <activity android:name=".ui.activities.ReferAFriendActivity" />
