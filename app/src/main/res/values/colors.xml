@@ -58,7 +58,7 @@
     <color name="magenta">#FF00FF</color>
     <color name="violet_frnd_text">#6736c3</color>
     <color name="green_select_friend">#42e167</color>
-    <color name="code_redeem_text_color">#5d5d5d</color>
+    <color name="code_redeem_text_color">#673f79</color>
     <color name="code_redeem_referral_code">#aeaeae</color>
     <array name="rainbow">
         <item>@color/bright_pink</item>
