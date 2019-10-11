@@ -179,6 +179,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                 String passwordStr = passwordEdit.getText().toString();
                 if(!isUserNameAccepted) {
                     if ((!userNameStr.isEmpty()) && passwordStr.isEmpty()) {
+
                         signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
                         return;
                     }
@@ -240,6 +241,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                     EnrichUtils.showMessage(context, "Invalid Number");
                 } else if (model.Error.StatusCode == 404) {
 //             Redirect to Registration screen
+                    isUserNameAccepted=false;
                     Intent intent = new Intent(context, RegisterActivity.class);
                     intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
                     intent.putExtra("IsFromLoginLater", true);
@@ -248,7 +250,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                     passwordEditContainer.setVisibility(View.VISIBLE);
                     passwordContainer.setVisibility(View.VISIBLE);
                 } else if (model.Error.StatusCode == 409) {// NO USERNAME
-
+                    isUserNameAccepted=false;
                     Intent intent = new Intent(context, RegisterActivity.class);
                     intent.putExtra("GuestData", model.Guest);
                     startActivity(intent);
