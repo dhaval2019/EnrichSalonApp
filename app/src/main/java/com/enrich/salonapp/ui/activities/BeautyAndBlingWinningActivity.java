@@ -13,6 +13,8 @@ import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.SpinModel;
 import com.enrich.salonapp.ui.adapters.WinningSpinRecyclerView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.w3c.dom.Text;
 
@@ -38,14 +40,19 @@ public class BeautyAndBlingWinningActivity extends AppCompatActivity {
     boolean isNewUser;
 
     boolean areAllSpinsDone = false;
-
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beauty_and_bling_winning);
 
         ButterKnife.bind(this);
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Beauty and Bling winning screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         isNewUser = getIntent().getBooleanExtra("IsNewUser", false);
 
         int winnings = getIntent().getIntExtra("PointsWon", 0);
