@@ -57,7 +57,8 @@ import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.supertoast.utils.HelloService;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
-import com.facebook.appevents.FacebookUninstallTracker;
+//import com.facebook.appevents.FacebookUninstallTracker;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
@@ -195,7 +196,8 @@ public class SplashActivity extends BaseActivity implements AuthenticationTokenC
                         @Override
                         public void onSuccess(InstanceIdResult instanceIdResult) {
                             String deviceToken = instanceIdResult.getToken();
-                            FacebookUninstallTracker.updateDeviceToken(deviceToken);
+                          //  FacebookUninstallTracker.updateDeviceToken(deviceToken);
+                            AppEventsLogger.setPushNotificationsRegistrationId(deviceToken);
                         }
                     }
             );
