@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.util.CustomTypefaceSpan;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,14 +42,19 @@ public class BeautyAndBlingLandingActivity extends AppCompatActivity {
     TextView beautyAndBlingSkip;
 
     boolean isNewUser;
-
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beauty_and_bling_landing);
 
         ButterKnife.bind(this);
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Beauty and Bling landing screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         isNewUser = getIntent().getBooleanExtra("IsNewUser", false);
 
         String bandText2Str = "Spend " + getResources().getString(R.string.rs_symbol) + "2500 on services or products and spin the wheel for assured reward points of up to 2500.";
