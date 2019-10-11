@@ -297,7 +297,7 @@
                         android:background="#e5e5e5" />
                 </RelativeLayout>
 
-                <RelativeLayout
+               <!-- <RelativeLayout
                     android:id="@+id/redeem_your_code_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -332,7 +332,7 @@
                         android:layout_alignLeft="@id/nav_redeem_your_code_label"
                         android:layout_marginTop="15dp"
                         android:background="#e5e5e5" />
-                </RelativeLayout>
+                </RelativeLayout>-->
 
                 <!-- CONTACT US -->
                 <RelativeLayout
