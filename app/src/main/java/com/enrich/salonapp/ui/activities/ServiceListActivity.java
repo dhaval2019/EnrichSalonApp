@@ -195,8 +195,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         gender = getIntent().getIntExtra("Gender", 0);
         fromWhere = getIntent().getIntExtra("fromWhere", 1);
         catId = getIntent().getStringExtra("catId");
-        offerSubCategoryModel = getIntent().getExtras().getParcelable("subcatmodel");
+        try {
+            offerSubCategoryModel = getIntent().getExtras().getParcelable("subcatmodel");
+        }catch(Exception e)
+        {
 
+        }
         serviceCatName = getIntent().getStringExtra("serviceCatName");
         if (isRebook) {
             centerDetailModel = EnrichUtils.getHomeStoreForRebook(this);
