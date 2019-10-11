@@ -108,18 +108,19 @@ public class MyPackageDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#000000"));
 
         packageModel = getIntent().getParcelableExtra("MyPackageDetail");
+        if (packageModel != null) {
+            packageDetailName.setText(packageModel.PackageTitle);
+            packageDetailDescription.setText(packageModel.PackageDescription);
+            packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " + (int) Math.round(packageModel.StartingPrice));
+            Picasso.with(this).load(packageModel.PackageImageURL).into(packageDetailImage);
 
-        packageDetailName.setText(packageModel.PackageTitle);
-        packageDetailDescription.setText(packageModel.PackageDescription);
-        packageDetailPrice.setText(getResources().getString(R.string.Rs) + " " +  (int) Math.round(packageModel.StartingPrice));
-        Picasso.with(this).load(packageModel.PackageImageURL).into(packageDetailImage);
+            ExpandableMyPackageBundleAdapter packageBundleAdapter = new ExpandableMyPackageBundleAdapter(this, packageModel.PackageBundle);
+            packageBundleRecyclerView.setAdapter(packageBundleAdapter);
+            packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
-        ExpandableMyPackageBundleAdapter packageBundleAdapter = new ExpandableMyPackageBundleAdapter(this, packageModel.PackageBundle);
-        packageBundleRecyclerView.setAdapter(packageBundleAdapter);
-        packageBundleRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        packageBundleRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-
-        packageBundleRecyclerView.setFocusable(false);
-        packageBundleRecyclerView.setNestedScrollingEnabled(true);
+            packageBundleRecyclerView.setFocusable(false);
+            packageBundleRecyclerView.setNestedScrollingEnabled(true);
+        }
     }
 }
