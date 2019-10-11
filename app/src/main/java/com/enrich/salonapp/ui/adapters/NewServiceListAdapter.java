@@ -184,13 +184,13 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
                 if (EnrichUtils.getUserData(activity).IsMember == Constants.IS_MEMBER) {
                     childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price.membershipPrice)));
                     childHolder.strikePriceContainer.setVisibility(View.VISIBLE);
-                    childHolder.strikePrice.setText(String.format("%d", (int) Math.round(model.price._final)));
+                    childHolder.strikePrice.setText(String.format("%d", (int) Math.round(model.price.sales)));
                 } else {
-                    childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price._final)));
+                    childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price.sales)));
                     childHolder.strikePriceContainer.setVisibility(View.GONE);
                 }
             } else {
-                childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price._final)));
+                childHolder.mainPrice.setText(String.format("%d", (int) Math.round(model.price.sales)));
                 childHolder.strikePriceContainer.setVisibility(View.GONE);
             }
 
