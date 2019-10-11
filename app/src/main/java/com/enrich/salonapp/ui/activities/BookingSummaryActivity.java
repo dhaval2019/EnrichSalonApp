@@ -110,6 +110,10 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
     @BindView(R.id.cashback_amount)
     TextView cashbackAmount;
 
+
+    @BindView(R.id.taxable_amount)
+    TextView taxableAmount;
+
     @BindView(R.id.address_label)
     TextView addressLabel;
 
@@ -562,14 +566,16 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i4));
             int i5 = (int) Math.round(model.getCashBackApplied());
             cashbackAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i5));
-
+            int i6 = (int) Math.round(model.getActualPrice() - model.getDiscount() - model.getCashBackApplied());//dhaval shah 10/10/2019
+            taxableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i6));
         } else if (application.cartHasPackages()) {
             totalPrice.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(application.getTotalPrice())));
             grossTotalAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getActualPrice())));
             payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTotal())));
             discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getDiscount())));
             taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTax())));
-
+            int i6 = (int) Math.round(model.getActualPrice() - model.getDiscount() - model.getCashBackApplied());//dhaval shah 10/10/2019
+            taxableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i6));
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
 
@@ -581,6 +587,8 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
             payableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTotal())));
             discountAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getDiscount())));
             taxAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), (int) Math.round(model.getTax())));
+            int i6 = (int) Math.round(model.getActualPrice() - model.getDiscount() - model.getCashBackApplied());//dhaval shah 10/10/2019
+            taxableAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), i6));
 
             dateTimeSlot.setText("-");
             stylistLabel.setText("-");
@@ -1062,7 +1070,7 @@ public class BookingSummaryActivity extends BaseActivity implements BookingSumma
                     Properties properties = new Properties();
                     properties.putValue("service", invoiceModel.AppointmentServices.get(i).Service.name);
                     //properties.putValue("category", invoiceModel.AppointmentServices.get(i).Service.CategoryName);
-                    if( application.getCartItems().get(i).CategoryName != null) {
+                    if (application.getCartItems().get(i).CategoryName != null) {
                         properties.putValue("category", application.getCartItems().get(i).CategoryName);//changed by dhaval shah 28/6/19
                     }
                     properties.putValue("stylist", invoiceModel.AppointmentServices.get(i).RequestedTherapist.FullName);
