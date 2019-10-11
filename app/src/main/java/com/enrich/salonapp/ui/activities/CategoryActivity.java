@@ -98,7 +98,9 @@ public class CategoryActivity extends BaseActivity implements CategoryContract.V
         categoryPresenter = new CategoryPresenter(this, dataRepository);
 
         Map<String, String> categoryMap = new HashMap<>();
-        categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        if( EnrichUtils.getHomeStore(this) != null) {
+            categoryMap.put("CenterId", EnrichUtils.getHomeStore(this).Id);
+        }
         categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
         categoryPresenter.getCategoriesList(this, categoryMap, true);
 
