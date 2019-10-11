@@ -151,7 +151,12 @@ public class ProfileActivity extends AppCompatActivity implements LoginListener 
         setAddressData(guestModel.GuestAddress);
         //Toast.makeText(ProfileActivity.this,guestModel.Address1+"\n"+guestModel.Address2,Toast.LENGTH_LONG).show();
         if (guestModel.IsMember == Constants.IS_MEMBER) {
-            membershipCardview.setVisibility(View.VISIBLE);
+            try {
+                membershipCardview.setVisibility(View.VISIBLE);
+            }catch(Exception e)
+            {
+
+            }
             if(guestModel.MembershipModel.isEmpty()) {
             }else{
                 if (guestModel.MembershipModel.get(0).MembershipName.isEmpty()) {
