@@ -41,6 +41,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.DataRepository;
 import com.enrich.salonapp.data.model.AddressResponseModel;
@@ -60,6 +61,8 @@ import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.supertoast.utils.HelloService;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -99,6 +102,8 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
     //public static int isFirstTime = 0;
 
     //
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +112,11 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
        // btnRefresh = (Button) findViewById(R.id.refresh_button);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Select friend screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
         friendPresenter = new FriendPresenter(this, dataRepository);
         tvClose.setOnClickListener(new View.OnClickListener() {
