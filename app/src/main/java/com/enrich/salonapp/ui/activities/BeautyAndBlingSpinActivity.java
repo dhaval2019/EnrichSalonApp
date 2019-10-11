@@ -27,6 +27,8 @@ import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.mvp.BaseActivity;
 import com.enrich.salonapp.util.threads.MainUiThread;
 import com.enrich.salonapp.util.threads.ThreadExecutor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,14 +96,19 @@ public class BeautyAndBlingSpinActivity extends BaseActivity implements SpinPric
     private String purchaseType;
 
     private ArrayList<CampaignRewardModel> priceList;
-
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spin);
 
         ButterKnife.bind(this);
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Beauty and Bling Spin screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         isNewUser = getIntent().getBooleanExtra("IsNewUser", false);
         spinIndex = getIntent().getIntExtra("SpinIndex", -1);
         invoiceId = getIntent().getStringExtra("InvoiceId");
