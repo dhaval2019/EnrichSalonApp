@@ -93,7 +93,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     EnrichApplication application;
     Tracker mTracker;
-    boolean isUserNameAccepted=false;
+    boolean isUserNameAccepted = false;
     Context context;
 
     static LoginListener loginListener;
@@ -128,7 +128,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_bottom_dialog, container, false);
         ButterKnife.bind(this, view);
-        isUserNameAccepted=false;
+        isUserNameAccepted = false;
         dataRepository = Injection.provideDataRepository(context, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
 
         signInPresenter = new SignInPresenter(this, dataRepository);
@@ -141,7 +141,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    isUserNameAccepted=true;
+                    isUserNameAccepted = true;
                     signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
                 }
                 return false;
@@ -177,15 +177,13 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
                 String userNameStr = userNameEdit.getText().toString();
                 String passwordStr = passwordEdit.getText().toString();
-                if(!isUserNameAccepted) {
+                if (!isUserNameAccepted) {
                     if ((!userNameStr.isEmpty()) && passwordStr.isEmpty()) {
 
                         signInPresenter.isUserRegistered(context, userNameEdit.getText().toString());
                         return;
                     }
-                }else
-
-                if (userNameStr.isEmpty() || passwordStr.isEmpty()) {
+                } else if (userNameStr.isEmpty() || passwordStr.isEmpty()) {
                     EnrichUtils.showMessage(context, "Please enter all the fields");
                     return;
                 }
@@ -241,19 +239,25 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
                     EnrichUtils.showMessage(context, "Invalid Number");
                 } else if (model.Error.StatusCode == 404) {
 //             Redirect to Registration screen
-                    isUserNameAccepted=false;
-                    Intent intent = new Intent(context, RegisterActivity.class);
-                    intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
-                    intent.putExtra("IsFromLoginLater", true);
-                    startActivity(intent);
+                    if (context != null) {
+                        isUserNameAccepted = false;
+                        Intent intent = new Intent(context, RegisterActivity.class);
+                        intent.putExtra("PhoneNumber", userNameEdit.getText().toString());
+                        intent.putExtra("IsFromLoginLater", true);
+                        startActivity(intent);
+                    }
                 } else if (model.Error.StatusCode == 410) {// NO EMAIL
                     passwordEditContainer.setVisibility(View.VISIBLE);
                     passwordContainer.setVisibility(View.VISIBLE);
                 } else if (model.Error.StatusCode == 409) {// NO USERNAME
-                    isUserNameAccepted=false;
-                    Intent intent = new Intent(context, RegisterActivity.class);
-                    intent.putExtra("GuestData", model.Guest);
-                    startActivity(intent);
+                    if (context != null) {
+                        isUserNameAccepted = false;
+                        Intent intent = new Intent(context, RegisterActivity.class);
+
+                        intent.putExtra("GuestData", model.Guest);
+
+                        startActivity(intent);
+                    }
 
                 }
             }
@@ -287,7 +291,7 @@ public class LoginBottomSheetFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void saveUserDetails(final GuestModel model) {
-        if(model != null) {
+        if (model != null) {
             model.UserName = userNameEdit.getText().toString();
             model.Password = passwordEdit.getText().toString();
 
