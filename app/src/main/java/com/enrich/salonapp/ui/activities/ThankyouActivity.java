@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.data.model.FBEventModel;
 import com.enrich.salonapp.data.model.FriendResponseModel;
@@ -15,6 +16,8 @@ import com.enrich.salonapp.data.model.Referal;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
@@ -26,12 +29,18 @@ public class ThankyouActivity extends AppCompatActivity {
     TextView tvThankYou;
     @BindView(R.id.continue_shopping_button)
     Button btnContinueShopping;//by dhaval shah 7/7/19
-
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thankyou);
         ButterKnife.bind(this);
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Thank you activity screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         Bundle bundle = getIntent().getExtras();
         FriendResponseModel model = null;
         if (bundle != null) {
