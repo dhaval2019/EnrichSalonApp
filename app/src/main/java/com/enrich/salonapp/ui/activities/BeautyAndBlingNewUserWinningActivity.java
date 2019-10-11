@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.util.CustomTypefaceSpan;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,14 +50,19 @@ public class BeautyAndBlingNewUserWinningActivity extends AppCompatActivity {
     private int pointsWon;
     private boolean spinTaken;
     private String validityDateStr;
-
+    Tracker mTracker;
+    EnrichApplication application;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beauty_and_bling_new_user_winning);
 
         ButterKnife.bind(this);
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Beauty and Bling new user winning screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         pointsWon = getIntent().getIntExtra("PointsWon", 0);
         spinTaken = getIntent().getBooleanExtra("SpinTaken", false);
         validityDateStr = getIntent().getStringExtra("ValidityDateStr");
