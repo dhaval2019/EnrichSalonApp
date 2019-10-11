@@ -12,11 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.enrich.salonapp.EnrichApplication;
 import com.enrich.salonapp.R;
 import com.enrich.salonapp.ui.fragments.LoginBottomSheetFragment;
 import com.enrich.salonapp.util.EnrichUtils;
 import com.enrich.salonapp.util.LoginListener;
 import com.enrich.salonapp.util.mvp.BaseActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,25 +29,31 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
     Button btnInvite;//by dhaval shah 7/7/19
     @BindView(R.id.tvfrndlink)
     TextView txtFriendLink;
-    @BindView(R.id.popuplayout)
-    RelativeLayout popupLayout;
-    @BindView(R.id.tvclose)
-    TextView txtClose;
+   /* @BindView(R.id.popuplayout)
+    RelativeLayout popupLayout;*/
+  /*  @BindView(R.id.tvclose)
+    TextView txtClose;*/
     @BindView(R.id.backarrow)
     ImageView ivBack;
     @BindView(R.id.sign_in_container)
     LinearLayout signInContainer;
     @BindView(R.id.settings_login_button)
     Button settingsLoginButton;
-    @BindView(R.id.imgshare)
-    ImageView ivShare;
+    @BindView(R.id.toplayout)
+    RelativeLayout topLayout;
+    Tracker mTracker;
+    EnrichApplication application;
     //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refer_afriend);
         ButterKnife.bind(this);
-
+        application = (EnrichApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Refer Afriend screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.enableAdvertisingIdCollection(true);
         if (EnrichUtils.getUserData(ReferAFriendActivity.this) != null) {
             btnInvite.setVisibility(View.VISIBLE);
             signInContainer.setVisibility(View.GONE);
@@ -59,47 +68,30 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
                 }
             });
         }
-        popupLayout.setVisibility(View.GONE);
+       // popupLayout.setVisibility(View.GONE);
        // btnInvite.setVisibility(View.VISIBLE);
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(ReferAFriendActivity.this, SelectFriendActivity.class);
+                Intent intent = new Intent(ReferAFriendActivity.this, SelectFriendActivity.class);
                 startActivity(intent);
-                ReferAFriendActivity.this.finish();*/
-                Intent i=new Intent(android.content.Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.setPackage("com.whatsapp");
-                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Invite Code");
-                i.putExtra(android.content.Intent.EXTRA_TEXT, "johnk1315em");
-                startActivity(Intent.createChooser(i,"Share via"));
+                ReferAFriendActivity.this.finish();
             }
         });
-        ivBack.setOnClickListener(new View.OnClickListener() {
+        topLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ReferAFriendActivity.this.finish();
             }
         });
-        ivShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i=new Intent(android.content.Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Invite Code");
-                i.putExtra(android.content.Intent.EXTRA_TEXT, "johnk1315em");
-                startActivity(Intent.createChooser(i,"Share via"));
-
-            }
-        });
         txtFriendLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupLayout.setVisibility(View.VISIBLE);
-               /* RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) popupLayout.getLayoutParams();
+                /*popupLayout.setVisibility(View.VISIBLE);
+               *//* RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) popupLayout.getLayoutParams();
                 lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                popupLayout.setLayoutParams(lp);*/
+                popupLayout.setLayoutParams(lp);*//*
                 Animation animation;
                 animation = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.bottom_to_original);
@@ -118,13 +110,13 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
                             LoginBottomSheetFragment.getInstance(ReferAFriendActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
                         }
                     });
-                }
+                }*/
             }
         });
-        txtClose.setOnClickListener(new View.OnClickListener() {
+       /* txtClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupLayout.setVisibility(View.GONE);
+              *//*  popupLayout.setVisibility(View.GONE);
                 if (EnrichUtils.getUserData(ReferAFriendActivity.this) != null) {
                     btnInvite.setVisibility(View.VISIBLE);
                     signInContainer.setVisibility(View.GONE);
@@ -138,9 +130,9 @@ public class ReferAFriendActivity extends BaseActivity implements LoginListener 
                             LoginBottomSheetFragment.getInstance(ReferAFriendActivity.this).show(getSupportFragmentManager(), "login_bottomsheet_fragment");
                         }
                     });
-                }
+                }*//*
             }
-        });
+        });*/
 
     }
     @Override
