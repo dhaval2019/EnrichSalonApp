@@ -197,8 +197,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
         catId = getIntent().getStringExtra("catId");
         try {
             offerSubCategoryModel = getIntent().getExtras().getParcelable("subcatmodel");
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
 
         }
         serviceCatName = getIntent().getStringExtra("serviceCatName");
@@ -300,7 +299,7 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                     }
 
                     changeGenderIcons(gender != Constants.MALE);
-                    if(categoryModel != null) {
+                    if (categoryModel != null) {
                         if (categoryModel.CategoryId != null) {
                             getServiceList(categoryModel.CategoryId, gender);
                         }
@@ -365,11 +364,16 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
             public void onClick(View view) {
                 changeGenderIcons(true);
                 if (!isHomeSelected) {
-                    if (categoryModel.CategoryId.isEmpty()) {
+                    if (categoryModel != null) {
+
+
+                        getServiceList(categoryModel.CategoryId, Constants.FEMALE);
+                    }
+                    /*if (categoryModel.CategoryId.isEmpty()) {
 
                     } else {
                         getServiceList(categoryModel.CategoryId, Constants.FEMALE);
-                    }
+                    }*/
                 } else {
                     showToastMessage("Home Services are currently only available for Females.");
                 }
@@ -540,8 +544,12 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
 
     private void getServiceListForHome() {
         Map<String, String> map = new HashMap<>();
-        map.put("CenterId", centerDetailModel.Id);
-        map.put("SubCategoryId", subCategoryModel.SubCategoryId);
+        if (centerDetailModel != null) {
+            map.put("CenterId", centerDetailModel.Id);
+        }
+        if (subCategoryModel != null) {
+            map.put("SubCategoryId", subCategoryModel.SubCategoryId);
+        }
         if (EnrichUtils.getUserData(this) != null)
             map.put("GuestId", EnrichUtils.getUserData(this).Id);
         map.put("Tag", genderStr);
