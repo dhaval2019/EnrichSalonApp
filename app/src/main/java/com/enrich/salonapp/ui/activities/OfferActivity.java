@@ -81,13 +81,20 @@ public class OfferActivity extends AppCompatActivity {
     }
 
     private void setOfferAdapter(ArrayList<OfferModel> list) {
-        if(list.isEmpty())
+        if (list != null) {
+
+
+            OfferAdapter lookHomeAdapter = new OfferAdapter(this, list);
+            offersRecyclerView.setAdapter(lookHomeAdapter);
+            offersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        }
+        /*if(list.isEmpty())
         {
 
         }else {
             OfferAdapter lookHomeAdapter = new OfferAdapter(this, list);
             offersRecyclerView.setAdapter(lookHomeAdapter);
             offersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        }
+        }*/
     }
 }
