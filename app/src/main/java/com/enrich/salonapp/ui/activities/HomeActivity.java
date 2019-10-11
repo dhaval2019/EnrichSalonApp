@@ -118,8 +118,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @BindView(R.id.refer_a_friend_container)
     RelativeLayout referAFriendContainer;//by dhaval shah 6/7/19
-    @BindView(R.id.redeem_your_code_container)
-    RelativeLayout redeemYourCodeContainer;//by dhaval shah 24/9/19
+  /*  @BindView(R.id.redeem_your_code_container)
+    RelativeLayout redeemYourCodeContainer;//by dhaval shah 24/9/19*/
     CenterDetailModel centerDetailModel;
 
     GuestModel guestModel;
@@ -287,13 +287,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(intent);
             }
         });
-        redeemYourCodeContainer.setOnClickListener(new View.OnClickListener() {
+      /*  redeemYourCodeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CodeRedeemActivity.class);
-                startActivity(intent);
+                *//*Intent intent = new Intent(HomeActivity.this, CodeRedeemActivity.class);
+                startActivity(intent);*//*
             }
-        });
+        });*/
         addFragment(HomeFragment.getInstance(drawer));
 
         DataRepository dataRepository = Injection.provideDataRepository(this, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
