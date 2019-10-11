@@ -25,16 +25,10 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup,android:usesCleartextTraffic"
         tools:targetApi="n">
-        <activity android:name=".ui.activities.CodeRedeemActivity" android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.activities.ThankyouActivity" />
-        <activity android:name=".ui.activities.SelectFriendActivity" />
-        <activity android:name=".ui.activities.ReferAFriendActivity" />
+        <activity android:name=".ui.activities.ThankyouActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.SelectFriendActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.ReferAFriendActivity" android:screenOrientation="portrait"/>
 
         <service android:name=".util.supertoast.utils.HelloService" />
 
