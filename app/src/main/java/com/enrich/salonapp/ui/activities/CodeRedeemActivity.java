@@ -1,3 +1,4 @@
+/*
 package com.enrich.salonapp.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
@@ -13,3 +14,4 @@ public class CodeRedeemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_code_redeem);
     }
 }
+*/
