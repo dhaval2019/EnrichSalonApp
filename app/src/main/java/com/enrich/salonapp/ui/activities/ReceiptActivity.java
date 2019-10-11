@@ -122,8 +122,9 @@ public class ReceiptActivity extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
 
         collapsingToolbarLayout.setTitle("RECEIPT");
-
-        paymentConfirmOrderPurchaseAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), paymentSummaryModel.getTotal()));
+        if (paymentSummaryModel != null) {
+            paymentConfirmOrderPurchaseAmount.setText(String.format("%s %s", getResources().getString(R.string.Rs), paymentSummaryModel.getTotal()));
+        }
 
         try {
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -157,11 +158,9 @@ public class ReceiptActivity extends AppCompatActivity {
         paymentConfirmOrderSalonName.setText(String.format("%s", EnrichUtils.getHomeStore(this).Name));
         orderSalonNumber.setText(String.format("%s", EnrichUtils.getHomeStore(this).Phone));
         Linkify.addLinks(orderSalonNumber, Linkify.ALL);
-        if (application.cartHasServices())
-        {
+        if (application.cartHasServices()) {
             orderPaymentAddress.setVisibility(View.VISIBLE);
-        }else
-        {
+        } else {
             orderPaymentAddress.setVisibility(View.GONE);
         }
         orderSalonNumber.setOnClickListener(new View.OnClickListener() {
