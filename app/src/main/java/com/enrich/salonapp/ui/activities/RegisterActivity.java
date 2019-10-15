@@ -231,7 +231,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         if (requestCode == VERIFY_OTP) {
             if (resultCode == RESULT_OK) {
 
-               /* if (!isFromLoginLater) {
+                if (!isFromLoginLater) {
                     if (EnrichUtils.getHomeStore(this) != null) {
                         Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -247,12 +247,12 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
                     }
                 } else {
                     finish();
-                }*/
-                Intent intent = new Intent(RegisterActivity.this, RegistrationCodeRedeemActivity.class);
+                }
+                /*Intent intent = new Intent(RegisterActivity.this, RegistrationCodeRedeemActivity.class);
                 intent.putExtra("IsFromLoginLater", isFromLoginLater);
 
                 startActivity(intent);
-                finish();
+                finish();*/
             }
         }
     }
