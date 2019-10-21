@@ -141,7 +141,9 @@ public class EditProfileActivity extends BaseActivity implements UpdateGuestCont
         editGenderFemale.setTypeface(custom_font);
 
         guestModel = EnrichUtils.getUserData(this);
-        firstName.setText(guestModel.FirstName);
+        if(guestModel != null) {
+            firstName.setText(guestModel.FirstName);
+        }
         lastName.setText(guestModel.LastName);
         email.setText(guestModel.Email);
         phone.setText(guestModel.MobileNumber);
