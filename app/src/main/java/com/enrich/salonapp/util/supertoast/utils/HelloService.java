@@ -122,49 +122,55 @@ public class HelloService extends Service {
         protected Void doInBackground(Void... params) {
             contentResolver = getBaseContext().getContentResolver();
             cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-            size = cursor.getCount();
-            if (cursor.getCount() > 0) {
-                cursor.moveToPosition(index * offset);
-                while ((cursor.moveToNext()) && (cursor.getPosition() <= ((index + 1) * offset))) {
+            if(cursor!=null) {
+                size = cursor.getCount();
+                if (cursor.getCount() > 0) {
+                    cursor.moveToPosition(index * offset);
+                    while ((cursor.moveToNext()) && (cursor.getPosition() <= ((index + 1) * offset))) {
 
-                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                    if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                        Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-                        InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getBaseContext().getContentResolver(),
-                                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id)));
+                        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                        if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                            Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+                            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getBaseContext().getContentResolver(),
+                                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id)));
 
-                        Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
-                        Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
+                            Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 
-                        Bitmap photo = null;
-                        if (inputStream != null) {
-                            photo = BitmapFactory.decodeStream(inputStream);
-                        }
-                        while (cursorInfo.moveToNext()) {
-                            SelectFriendModel info = new SelectFriendModel();
-                            info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                            Bitmap photo = null;
+                            if (inputStream != null) {
+                                photo = BitmapFactory.decodeStream(inputStream);
+                            }
+                            while (cursorInfo.moveToNext()) {
+                                SelectFriendModel info = new SelectFriendModel();
+                                info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
 
-                            String mobNo = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            mobNo = mobNo.replaceAll("-", "");
-                            mobNo = mobNo.replaceAll("\\s+", "");
-                            mobNo = mobNo.replaceAll(" ", "");
-                            info.setMobileNo(mobNo);
+                                String mobNo = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                try {
+                                    mobNo = mobNo.replaceAll("-", "");
+                                } catch (Exception e) {
 
-                            info.setPhoto(pURI);
-                            if (!SplashActivity.albumList.contains(info)) {
-                                SplashActivity.albumList.add(info);
+                                }
+                                mobNo = mobNo.replaceAll("\\s+", "");
+                                mobNo = mobNo.replaceAll(" ", "");
+                                info.setMobileNo(mobNo);
+
+                                info.setPhoto(pURI);
+                                if (!SplashActivity.albumList.contains(info)) {
+                                    SplashActivity.albumList.add(info);
+                                }
+
                             }
 
+                            cursorInfo.close();
+
                         }
-
-                        cursorInfo.close();
-
                     }
                 }
-            }
 
-            cursor.close();
+                cursor.close();
+            }
 
 
             return null;
