@@ -128,11 +128,13 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
 //        }
 
         if (phoneNumberStr == null) {
-            firstNameEdit.setText(model.FirstName);
-            lastNameEdit.setText(model.LastName);
-            emailEdit.setText(model.Email);
-            phoneNumberEdit.setText(String.format("%s", model.MobileNumber));
-            phoneNumberEdit.setEnabled(false);
+            if(model!=null) {
+                firstNameEdit.setText(model.FirstName);
+                lastNameEdit.setText(model.LastName);
+                emailEdit.setText(model.Email);
+                phoneNumberEdit.setText(String.format("%s", model.MobileNumber));
+                phoneNumberEdit.setEnabled(false);
+            }
         } else {
             phoneNumberEdit.setText(phoneNumberStr);
             phoneNumberEdit.setEnabled(false);
