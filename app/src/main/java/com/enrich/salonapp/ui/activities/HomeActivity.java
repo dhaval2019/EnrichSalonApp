@@ -115,11 +115,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     RelativeLayout myPackageContainer;
 
 
-
     @BindView(R.id.refer_a_friend_container)
     RelativeLayout referAFriendContainer;//by dhaval shah 6/7/19
-  /*  @BindView(R.id.redeem_your_code_container)
-    RelativeLayout redeemYourCodeContainer;//by dhaval shah 24/9/19*/
+    /*  @BindView(R.id.redeem_your_code_container)
+      RelativeLayout redeemYourCodeContainer;//by dhaval shah 24/9/19*/
     CenterDetailModel centerDetailModel;
 
     GuestModel guestModel;
@@ -153,8 +152,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
+        try {
+            callToAction = Integer.parseInt(getIntent().getStringExtra("CallToAction") == null ? "-1" : getIntent().getStringExtra("CallToAction"));
+        } catch (Exception e) {
 
-        callToAction = Integer.parseInt(getIntent().getStringExtra("CallToAction") == null ? "-1" : getIntent().getStringExtra("CallToAction"));
+        }
         offerModel = getIntent().getParcelableExtra("OfferModelFromNotification");
 
         if (callToAction != -1 && offerModel != null) {
@@ -479,7 +481,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void checkBeautyAndBling(BeautyAndBlingResponseModel model) {
         if (EnrichUtils.getUserData(this) != null) {
-            if(model != null) {
+            if (model != null) {
                 if (model.BeautyAndBling != null) {
                     if (!model.BeautyAndBling.isEmpty()) {
                         for (int i = 0; i < model.BeautyAndBling.size(); i++) {
