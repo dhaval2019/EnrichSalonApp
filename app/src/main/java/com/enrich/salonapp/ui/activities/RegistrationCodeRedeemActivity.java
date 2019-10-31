@@ -1,3 +1,4 @@
+/*
 
 package com.enrich.salonapp.ui.activities;
 
@@ -34,3 +35,4 @@ public class RegistrationCodeRedeemActivity extends AppCompatActivity {
         }
     }
 }
+*/
