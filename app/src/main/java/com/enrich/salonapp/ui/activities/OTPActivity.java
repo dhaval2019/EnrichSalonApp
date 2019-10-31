@@ -111,8 +111,9 @@ public class OTPActivity extends BaseActivity implements OTPContract.RegisterVie
                 VerifyOTPRequestModel model = new VerifyOTPRequestModel();
                 model.CenterId = Constants.CENTER_ID;
                 model.OTP = otpNumberEdit.getText().toString();
-                model.VerificationId = createOTPResponseModel.VerificationId;
-
+                if (createOTPResponseModel != null) {
+                    model.VerificationId = createOTPResponseModel.VerificationId;
+                }
                 registrationRequestModel.OTP = model.OTP;
                 registrationRequestModel.VerificationId = model.VerificationId;
 

@@ -149,11 +149,12 @@ public class ReceiptActivity extends AppCompatActivity {
             orderTimeLayout.setVisibility(View.GONE);
             orderDateLayout.setVisibility(View.GONE);
         }
-
-        if (confirmOrderRequestModel.getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_CASH) {
-            paymentConfirmOrderPaymentMode.setText("Cash");
-        } else if (confirmOrderRequestModel.getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
-            paymentConfirmOrderPaymentMode.setText("Online");
+        if (confirmOrderRequestModel != null) {
+            if (confirmOrderRequestModel.getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_CASH) {
+                paymentConfirmOrderPaymentMode.setText("Cash");
+            } else if (confirmOrderRequestModel.getConfirmOrder().getModeOfPayment() == Constants.PAYMENT_MODE_ONLINE) {
+                paymentConfirmOrderPaymentMode.setText("Online");
+            }
         }
         paymentConfirmOrderSalonName.setText(String.format("%s", EnrichUtils.getHomeStore(this).Name));
         orderSalonNumber.setText(String.format("%s", EnrichUtils.getHomeStore(this).Phone));

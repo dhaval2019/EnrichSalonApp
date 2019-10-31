@@ -178,7 +178,9 @@ public class SelectFriendActivity extends BaseActivity implements FriendContract
                 }
                 ArrayList<GuestMobileNo> guestReferredMobileNos = new ArrayList<GuestMobileNo>();
                 ReferFriendModel referFriendModel = new ReferFriendModel();
-                referFriendModel.setGuestId(EnrichUtils.getUserData(SelectFriendActivity.this).Id);
+                if(EnrichUtils.getUserData(SelectFriendActivity.this)!=null) {
+                    referFriendModel.setGuestId(EnrichUtils.getUserData(SelectFriendActivity.this).Id);
+                }
                 for (int j = 0; j < selectedList.size(); j++) {
                     GuestMobileNo guestMobileNo = new GuestMobileNo();
                     guestMobileNo.setMobileNo(selectedList.get(j).getMobNo());

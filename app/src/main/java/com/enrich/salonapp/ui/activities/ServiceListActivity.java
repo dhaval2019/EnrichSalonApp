@@ -258,7 +258,9 @@ public class ServiceListActivity extends BaseActivity implements ServiceListCont
                 getServiceList(Constants.HOME_CATEGORY_ID, Constants.FEMALE);
             } else {
                 Map<String, String> categoryMap = new HashMap<>();
-                categoryMap.put("CenterId", centerDetailModel.Id);
+                if(centerDetailModel != null) {
+                    categoryMap.put("CenterId", centerDetailModel.Id);
+                }
                 categoryMap.put("parentCategoryId", Constants.PARENT_CATEGORY_ID);
                 if (isHomeSelected) {
                     categoryMap.put("HomeCategory", "home");

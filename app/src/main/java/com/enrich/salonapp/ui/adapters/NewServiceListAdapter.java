@@ -278,9 +278,9 @@ public class NewServiceListAdapter extends ExpandableRecyclerAdapter<SubCategory
     @Override
     public int getChildViewType(int parentPosition, int childPosition) {
         if (filteredList != null) {
-            Crashlytics.setString("SubCategoryName", filteredList.get(parentPosition).Name);
-            if (parentPosition < filteredList.size()) {
 
+            if (parentPosition < filteredList.size()) {
+                Crashlytics.setString("SubCategoryName", filteredList.get(parentPosition).Name);
 
                 if (filteredList.get(parentPosition).ChildServices != null) {
 

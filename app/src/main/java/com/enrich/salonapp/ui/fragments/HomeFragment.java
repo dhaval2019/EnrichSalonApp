@@ -204,8 +204,8 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     ArrayList<OfferModel> offerList;
     public static ArrayList<CategoryModel> categoryList = new ArrayList<CategoryModel>();
-    public static ArrayList<SubCategoryModel> subCategoryList= new ArrayList<SubCategoryModel>();
-    public static boolean isHome=false;
+    public static ArrayList<SubCategoryModel> subCategoryList = new ArrayList<SubCategoryModel>();
+    public static boolean isHome = false;
     ArrayList<PackageModel> packageList;
 
     HomePagePresenter homePagePresenter;
@@ -256,125 +256,125 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         ButterKnife.bind(this, rootView);
-
-        if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_BOTH) {
-            salonHomeTabContainer.setVisibility(View.VISIBLE);
-            salonComponentsContainer.setVisibility(View.VISIBLE);
-        } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_SALON) {
-            salonHomeTabContainer.setVisibility(View.GONE);
-            salonComponentsContainer.setVisibility(View.VISIBLE);
-            homeComponentsContainer.setVisibility(View.GONE);
-        } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_HOME) {
-            salonHomeTabContainer.setVisibility(View.GONE);
-            salonComponentsContainer.setVisibility(View.GONE);
-            homeComponentsContainer.setVisibility(View.VISIBLE);
-        }
-
-        offerMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, OfferActivity.class);
-                if (offerList != null)
-                    if (!offerList.isEmpty()) {
-                        intent.putExtra("OfferList", offerList);
-
-                    }
-
-                startActivity(intent);
+        if (context != null) {
+            if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_BOTH) {
+                salonHomeTabContainer.setVisibility(View.VISIBLE);
+                salonComponentsContainer.setVisibility(View.VISIBLE);
+            } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_SALON) {
+                salonHomeTabContainer.setVisibility(View.GONE);
+                salonComponentsContainer.setVisibility(View.VISIBLE);
+                homeComponentsContainer.setVisibility(View.GONE);
+            } else if (EnrichUtils.getHomeStore(context).CenterType == Constants.CENTER_TYPE_HOME) {
+                salonHomeTabContainer.setVisibility(View.GONE);
+                salonComponentsContainer.setVisibility(View.GONE);
+                homeComponentsContainer.setVisibility(View.VISIBLE);
             }
-        });
 
-        homeOfferMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, OfferActivity.class);
-                if (offerList != null)
-                    if (!offerList.isEmpty()) {
-                        intent.putExtra("OfferList", offerList);
+            offerMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, OfferActivity.class);
+                    if (offerList != null)
+                        if (!offerList.isEmpty()) {
+                            intent.putExtra("OfferList", offerList);
 
-                    }
-                startActivity(intent);
-            }
-        });
+                        }
 
-        appointmentsMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, AppointmentsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        categoriesMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CategoryActivity.class);
-                intent.putExtra("CategoryList", categoryList);
-                startActivity(intent);
-            }
-        });
-
-        homeCategoriesMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, HomeSubCategoryActivity.class);
-                intent.putExtra("SubCategoryList", subCategoryList);
-                startActivity(intent);
-            }
-        });
-
-        packagesMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (packageList != null) {
-                    Intent intent = new Intent(context, PackagesActivity.class);
-                    intent.putExtra("PackageList", packageList);
                     startActivity(intent);
                 }
-            }
-        });
+            });
 
-        appointmentsLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, AppointmentsActivity.class);
-                startActivity(intent);
-            }
-        });
+            homeOfferMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, OfferActivity.class);
+                    if (offerList != null)
+                        if (!offerList.isEmpty()) {
+                            intent.putExtra("OfferList", offerList);
 
-        productsMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ProductHomePageActivity.class);
-                startActivity(intent);
-            }
-        });
+                        }
+                    startActivity(intent);
+                }
+            });
 
-        noAppointmentBookNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ServiceListActivity.class);
-                startActivity(intent);
-            }
-        });
+            appointmentsMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, AppointmentsActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-        salonContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDataForSalonType(true);
-            }
-        });
+            categoriesMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, CategoryActivity.class);
+                    intent.putExtra("CategoryList", categoryList);
+                    startActivity(intent);
+                }
+            });
 
-        homeContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EnrichUtils.showProgressDialog((Activity) context);
-                getDataForSalonType(false);
-            }
-        });
+            homeCategoriesMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, HomeSubCategoryActivity.class);
+                    intent.putExtra("SubCategoryList", subCategoryList);
+                    startActivity(intent);
+                }
+            });
 
-        dataRepository = Injection.provideDataRepository(context, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
+            packagesMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (packageList != null) {
+                        Intent intent = new Intent(context, PackagesActivity.class);
+                        intent.putExtra("PackageList", packageList);
+                        startActivity(intent);
+                    }
+                }
+            });
 
+            appointmentsLabel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AppointmentsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            productsMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProductHomePageActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            noAppointmentBookNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ServiceListActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            salonContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getDataForSalonType(true);
+                }
+            });
+
+            homeContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EnrichUtils.showProgressDialog((Activity) context);
+                    getDataForSalonType(false);
+                }
+            });
+
+            dataRepository = Injection.provideDataRepository(context, MainUiThread.getInstance(), ThreadExecutor.getInstance(), null);
+        }
         homePagePresenter = new HomePagePresenter(this, dataRepository);
         productPresenter = new ProductPresenter(this, dataRepository);
         productFilterPresenter = new ProductFilterPresenter(this, dataRepository);
@@ -408,14 +408,14 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
     private void getDataForSalonType(boolean isSalon) {
         if (isSalon) {
             isSalonStr = "0";
-            isHome=false;
+            isHome = false;
             Map<String, String> map = new HashMap<>();
             map.put("IsHomeOffer", isSalonStr);
             homePagePresenter.getOffersList(context, map);
             getCategories();
         } else {
             isSalonStr = "1";
-            isHome=true;
+            isHome = true;
             Map<String, String> map = new HashMap<>();
             map.put("IsHomeOffer", isSalonStr);
             homePagePresenter.getOffersList(context, map);
@@ -566,7 +566,7 @@ public class HomeFragment extends BaseFragment implements HomePageContract.View,
 
     @Override
     public void showAppointments(AppointmentResponseModel model) {
-        if(model != null) {
+        if (model != null) {
             if (model.Appointments.size() != 0) {
                 appointmentContainer.setVisibility(View.VISIBLE);
                 appointmentsRecyclerView.setVisibility(View.VISIBLE);
