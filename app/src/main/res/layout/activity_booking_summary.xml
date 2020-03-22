@@ -576,7 +576,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
                 android:background="@drawable/gold_bg_gradient_curved"
-                android:text="Pay at Salon"
+                android:text="Cash Payment"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:font_type="regular" />
