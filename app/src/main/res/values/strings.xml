@@ -124,7 +124,7 @@
     <string name="txt_refresh">Refresh</string>
     <string name="rs_symbol">\u20B9</string>
     <string name="txt_confirm_order">Confirm Order</string>
-    <string name="txt_pay_at_salon">Pay at Salon</string>
+    <string name="txt_pay_at_salon">Cash Payment</string>
     <string name="txt_back">Back</string>
     <string name="txt_dummy_frnd">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat nunc vitae mi sollicitudin finibus. Cras ultricies tempus lectus a facilisis.</string>
     <string name="txt_send_invite">Send Invite</string>
